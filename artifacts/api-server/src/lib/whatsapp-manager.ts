@@ -7,6 +7,8 @@ import { Server as SocketServer } from "socket.io";
 
 // Map of session ID to WPPConnect client
 const clients = new Map<string, any>();
+// Set of session IDs currently being started (to prevent duplicate launches)
+const pendingSessions = new Set<string>();
 // Map of session ID to current QR code
 const qrCodes = new Map<string, string>();
 
@@ -39,6 +41,13 @@ export async function startSession(sessionId: string): Promise<void> {
     logger.info({ sessionId }, "Session already active");
     return;
   }
+
+  if (pendingSessions.has(sessionId)) {
+    logger.info({ sessionId }, "Session start already in progress");
+    return;
+  }
+
+  pendingSessions.add(sessionId);
 
   // Update status to connecting
   await db
@@ -112,6 +121,7 @@ export async function startSession(sessionId: string): Promise<void> {
     });
 
     clients.set(sessionId, client);
+    pendingSessions.delete(sessionId);
 
     // Setup message listener
     client.onMessage(async (message: any) => {
@@ -161,6 +171,7 @@ export async function startSession(sessionId: string): Promise<void> {
       }
     });
   } catch (e) {
+    pendingSessions.delete(sessionId);
     logger.error({ sessionId, err: e }, "Failed to start WhatsApp session");
     await db
       .update(whatsappSessionsTable)
@@ -172,6 +183,7 @@ export async function startSession(sessionId: string): Promise<void> {
 }
 
 export async function stopSession(sessionId: string): Promise<void> {
+  pendingSessions.delete(sessionId);
   const client = clients.get(sessionId);
   if (client) {
     try {
