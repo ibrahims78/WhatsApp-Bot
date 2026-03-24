@@ -55,6 +55,20 @@ export async function startSession(sessionId: string): Promise<void> {
       autoClose: false,
       disableWelcome: true,
       logQR: false,
+      // Use the puppeteer-downloaded Chrome in the Replit environment
+      executablePath: "/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome",
+      puppeteerOptions: {
+        args: [
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-accelerated-2d-canvas",
+          "--disable-gpu",
+          "--no-first-run",
+          "--no-zygote",
+          "--single-process",
+        ],
+      },
       catchQR: async (base64QR: string, asciiQR: string, attempts: number) => {
         logger.info({ sessionId, attempts }, "QR code generated");
         qrCodes.set(sessionId, base64QR);

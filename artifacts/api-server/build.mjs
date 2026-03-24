@@ -29,6 +29,14 @@ async function buildAll() {
     // - use path traversal to read files (e.g. @google-cloud/secret-manager loads sibling .proto files)
     external: [
       "*.node",
+      // wppconnect and its deps use dynamic CJS require() patterns (lazy-cache, clone-deep)
+      // that cannot be statically bundled — must be resolved at runtime from node_modules
+      "@wppconnect-team/wppconnect",
+      "puppeteer",
+      "puppeteer-core",
+      "lazy-cache",
+      "clone-deep",
+      "kind-of",
       "sharp",
       "better-sqlite3",
       "sqlite3",
