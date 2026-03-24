@@ -50,12 +50,16 @@ export default function SessionDetail() {
     setLiveQr(qr);
   });
 
-  const { data: session, isLoading } = useGetSession(id);
+  const { data: session, isLoading } = useGetSession(id, {
+    query: { refetchInterval: 2000 }
+  });
 
-  // Also poll QR via API as a fallback (every 3 seconds while connecting)
+  const isWaitingForQr = session?.status === 'connecting' || session?.status === 'notLogged';
+
+  // Also poll QR via API as a fallback (every 3 seconds while connecting or waiting for scan)
   const { data: qrData } = useGetSessionQr(id, {
     query: {
-      enabled: session?.status === 'connecting',
+      enabled: isWaitingForQr,
       refetchInterval: 3000,
       onSuccess: (data: any) => {
         if (data?.qr) setLiveQr(data.qr);
@@ -63,9 +67,9 @@ export default function SessionDetail() {
     }
   });
 
-  // Reset live QR when session disconnects
+  // Reset live QR when session disconnects or connects
   useEffect(() => {
-    if (session?.status !== 'connecting') {
+    if (session?.status !== 'connecting' && session?.status !== 'notLogged') {
       setLiveQr(null);
     }
     // Also seed from API data if available
@@ -161,7 +165,7 @@ export default function SessionDetail() {
                 {t('sess_connect')}
               </Button>
             )}
-            {(session.status === 'connected' || session.status === 'connecting') && (
+            {(session.status === 'connected' || session.status === 'connecting' || session.status === 'notLogged') && (
               <Button variant="destructive" onClick={() => disconnectMutation.mutate({ id })} disabled={disconnectMutation.isPending} className="hover-elevate">
                 <PowerOff className="w-4 h-4 me-2" />
                 {t('sess_disconnect')}
@@ -171,7 +175,7 @@ export default function SessionDetail() {
         </div>
 
         {/* QR Code Section */}
-        {session.status === 'connecting' && (
+        {isWaitingForQr && (
           <Card className="glass-card border-primary/20 shadow-primary/5">
             <CardContent className="flex flex-col items-center justify-center p-12 text-center">
               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
