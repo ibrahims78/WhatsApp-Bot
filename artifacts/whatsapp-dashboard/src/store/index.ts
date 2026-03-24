@@ -17,6 +17,19 @@ interface AppState {
   setLanguage: (lang: SupportedLanguage) => void;
 }
 
+function applyTheme(theme: 'light' | 'dark') {
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}
+
+function applyLanguage(language: SupportedLanguage) {
+  document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  document.documentElement.lang = language;
+}
+
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
@@ -25,33 +38,24 @@ export const useAppStore = create<AppState>()(
       setAuth: (token, user) => set({ token, user }),
       clearAuth: () => set({ token: null, user: null }),
       
-      theme: 'dark',
+      theme: 'light',
       setTheme: (theme) => {
         set({ theme });
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
+        applyTheme(theme);
       },
       
-      language: 'en',
+      language: 'ar',
       setLanguage: (language) => {
         set({ language });
-        document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-        document.documentElement.lang = language;
+        applyLanguage(language);
       },
     }),
     {
       name: 'whatsapp-dashboard-storage',
       onRehydrateStorage: () => (state) => {
         if (state) {
-          // Apply DOM mutations on load
-          if (state.theme === 'dark') document.documentElement.classList.add('dark');
-          else document.documentElement.classList.remove('dark');
-          
-          document.documentElement.dir = state.language === 'ar' ? 'rtl' : 'ltr';
-          document.documentElement.lang = state.language;
+          applyTheme(state.theme);
+          applyLanguage(state.language);
         }
       }
     }
