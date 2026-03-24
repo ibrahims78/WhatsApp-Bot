@@ -1,2 +1,3 @@
-2026/03/24-22:27:37.989 ad7 Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/shared_proto_db/metadata since it was missing.
-2026/03/24-22:27:38.014 ad7 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/shared_proto_db/metadata/MANIFEST-000001
+2026/03/24-22:45:04.870 119f Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/shared_proto_db/metadata/MANIFEST-000001
+2026/03/24-22:45:04.871 119f Recovering log #3
+2026/03/24-22:45:04.871 119f Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/shared_proto_db/metadata/000003.log 

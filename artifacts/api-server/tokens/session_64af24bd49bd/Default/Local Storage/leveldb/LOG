@@ -1,2 +1,3 @@
-2026/03/24-22:27:37.957 ae0 Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Local Storage/leveldb since it was missing.
-2026/03/24-22:27:37.970 ae0 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Local Storage/leveldb/MANIFEST-000001
+2026/03/24-22:45:04.833 119e Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Local Storage/leveldb/MANIFEST-000001
+2026/03/24-22:45:04.848 119e Recovering log #3
+2026/03/24-22:45:04.849 119e Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Local Storage/leveldb/000003.log 

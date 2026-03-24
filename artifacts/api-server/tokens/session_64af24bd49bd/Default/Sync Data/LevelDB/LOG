@@ -1,2 +1,3 @@
-2026/03/24-22:27:37.957 ad7 Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Sync Data/LevelDB since it was missing.
-2026/03/24-22:27:37.966 ad7 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Sync Data/LevelDB/MANIFEST-000001
+2026/03/24-22:45:04.831 119d Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Sync Data/LevelDB/MANIFEST-000001
+2026/03/24-22:45:04.835 119d Recovering log #3
+2026/03/24-22:45:04.835 119d Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Sync Data/LevelDB/000003.log 

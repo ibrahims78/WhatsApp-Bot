@@ -108,15 +108,18 @@ export async function startSession(sessionId: string): Promise<void> {
           } catch (e) {
             logger.warn({ sessionId }, "Could not get phone number");
           }
-        } else if (status === "desconnectedMobile" || status === "disconnected" || status === "notLogged") {
+        } else if (status === "disconnectedMobile" || status === "disconnected" || status === "browserClose") {
+          // Truly disconnected — clean up and notify frontend
           await db
             .update(whatsappSessionsTable)
             .set({ status: "disconnected" })
             .where(eq(whatsappSessionsTable.id, sessionId));
 
           clients.delete(sessionId);
+          pendingSessions.delete(sessionId);
           emitToAll("status", { sessionId, status: "disconnected" });
         }
+        // notLogged / inChat / isLogin are intermediate states during QR scan — ignore
       },
     });
 

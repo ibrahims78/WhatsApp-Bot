@@ -1,2 +1,3 @@
-2026/03/24-22:27:37.998 af1 Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Session Storage since it was missing.
-2026/03/24-22:27:38.017 af1 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Session Storage/MANIFEST-000001
+2026/03/24-22:45:05.022 119d Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Session Storage/MANIFEST-000001
+2026/03/24-22:45:05.022 119d Recovering log #3
+2026/03/24-22:45:05.022 119d Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_64af24bd49bd/Default/Session Storage/000003.log 
