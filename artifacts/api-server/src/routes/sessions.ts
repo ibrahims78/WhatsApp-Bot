@@ -2,7 +2,7 @@ import { Router, type IRouter } from "express";
 import { db, whatsappSessionsTable, messagesTable } from "@workspace/db";
 import { eq, desc, and, gte, sql } from "drizzle-orm";
 import { requireAuth } from "../lib/auth";
-import { startSession, stopSession, getQrCode } from "../lib/whatsapp-manager";
+import { startSession, stopSession, getQrCode, isBrowserActive } from "../lib/whatsapp-manager";
 import { v4 as uuidv4 } from "uuid";
 import { logger } from "../lib/logger";
 
@@ -90,6 +90,12 @@ router.post("/sessions/:id/connect", requireAuth, async (req, res): Promise<void
 
   if (!session) {
     res.status(404).json({ error: "Session not found" });
+    return;
+  }
+
+  // If a browser is already running for this session, don't start another one
+  if (isBrowserActive(id)) {
+    res.json({ success: true, message: "Session browser already running. Scan the QR code." });
     return;
   }
 

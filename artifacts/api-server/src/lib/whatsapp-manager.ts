@@ -5,10 +5,10 @@ import { logger } from "./logger";
 import type { Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
 
-// Map of session ID to WPPConnect client
+// Map of session ID to WPPConnect client (only set after create() resolves)
 const clients = new Map<string, any>();
-// Set of session IDs currently being started (to prevent duplicate launches)
-const pendingSessions = new Set<string>();
+// Set of session IDs that have an active browser process running
+const activeBrowsers = new Set<string>();
 // Map of session ID to current QR code
 const qrCodes = new Map<string, string>();
 
@@ -42,12 +42,12 @@ export async function startSession(sessionId: string): Promise<void> {
     return;
   }
 
-  if (pendingSessions.has(sessionId)) {
-    logger.info({ sessionId }, "Session start already in progress");
+  if (activeBrowsers.has(sessionId)) {
+    logger.info({ sessionId }, "Browser already running for this session");
     return;
   }
 
-  pendingSessions.add(sessionId);
+  activeBrowsers.add(sessionId);
 
   // Update status to connecting
   await db
@@ -64,7 +64,6 @@ export async function startSession(sessionId: string): Promise<void> {
       autoClose: false,
       disableWelcome: true,
       logQR: false,
-      // Use the puppeteer-downloaded Chrome in the Replit environment
       executablePath: "/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome",
       puppeteerOptions: {
         args: [
@@ -108,23 +107,32 @@ export async function startSession(sessionId: string): Promise<void> {
           } catch (e) {
             logger.warn({ sessionId }, "Could not get phone number");
           }
-        } else if (status === "disconnectedMobile" || status === "disconnected" || status === "browserClose") {
-          // Truly disconnected — clean up and notify frontend
+        } else if (status === "browserClose" || status === "autocloseCalled") {
+          // Browser was fully closed — clean everything up
+          activeBrowsers.delete(sessionId);
+          clients.delete(sessionId);
+          qrCodes.delete(sessionId);
+
           await db
             .update(whatsappSessionsTable)
             .set({ status: "disconnected" })
             .where(eq(whatsappSessionsTable.id, sessionId));
 
-          clients.delete(sessionId);
-          pendingSessions.delete(sessionId);
           emitToAll("status", { sessionId, status: "disconnected" });
+        } else if (status === "notLogged") {
+          // QR is ready to scan — keep browser alive, just notify frontend
+          await db
+            .update(whatsappSessionsTable)
+            .set({ status: "notLogged" })
+            .where(eq(whatsappSessionsTable.id, sessionId));
+
+          emitToAll("status", { sessionId, status: "notLogged" });
         }
-        // notLogged / inChat / isLogin are intermediate states during QR scan — ignore
+        // disconnectedMobile, inChat, isLogin are intermediate states — do NOT clean up browser
       },
     });
 
     clients.set(sessionId, client);
-    pendingSessions.delete(sessionId);
 
     // Setup message listener
     client.onMessage(async (message: any) => {
@@ -135,7 +143,6 @@ export async function startSession(sessionId: string): Promise<void> {
 
         if (!session) return;
 
-        // Save message to DB
         await db.insert(messagesTable).values({
           sessionId,
           direction: "inbound",
@@ -149,16 +156,13 @@ export async function startSession(sessionId: string): Promise<void> {
           timestamp: new Date(message.timestamp * 1000),
         });
 
-        // Update received count
         await db
           .update(whatsappSessionsTable)
           .set({ totalMessagesReceived: sql`${whatsappSessionsTable.totalMessagesReceived} + 1` })
           .where(eq(whatsappSessionsTable.id, sessionId));
 
-        // Emit to dashboard
         emitToAll("message", { sessionId, message });
 
-        // Send to webhook if configured
         if (session.webhookUrl) {
           const events = session.webhookEvents ? JSON.parse(session.webhookEvents) : [];
           if (events.includes("message.received") || events.length === 0) {
@@ -174,7 +178,7 @@ export async function startSession(sessionId: string): Promise<void> {
       }
     });
   } catch (e) {
-    pendingSessions.delete(sessionId);
+    activeBrowsers.delete(sessionId);
     logger.error({ sessionId, err: e }, "Failed to start WhatsApp session");
     await db
       .update(whatsappSessionsTable)
@@ -186,7 +190,7 @@ export async function startSession(sessionId: string): Promise<void> {
 }
 
 export async function stopSession(sessionId: string): Promise<void> {
-  pendingSessions.delete(sessionId);
+  activeBrowsers.delete(sessionId);
   const client = clients.get(sessionId);
   if (client) {
     try {
@@ -212,6 +216,10 @@ export function getClient(sessionId: string) {
 
 export function getQrCode(sessionId: string): string | null {
   return qrCodes.get(sessionId) || null;
+}
+
+export function isBrowserActive(sessionId: string): boolean {
+  return activeBrowsers.has(sessionId) || clients.has(sessionId);
 }
 
 function triggerWebhook(url: string, payload: object) {
