@@ -1,22 +1,31 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: WhatsApp Multi-Session Bot API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: users
+    description: User management
+  - name: api-keys
+    description: API key management
+  - name: sessions
+    description: WhatsApp session management
+  - name: send
+    description: Message sending operations
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,7 +33,596 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with username and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginBody"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout current session
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current authenticated user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Current user info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users:
+    get:
+      operationId: listUsers
+      tags: [users]
+      summary: List all users (admin only)
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      operationId: createUser
+      tags: [users]
+      summary: Create a new user (admin only)
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserBody"
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /users/{id}:
+    get:
+      operationId: getUser
+      tags: [users]
+      summary: Get a specific user
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateUser
+      tags: [users]
+      summary: Update a user (admin only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserBody"
+      responses:
+        "200":
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+    delete:
+      operationId: deleteUser
+      tags: [users]
+      summary: Delete a user (admin only)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: User deleted
+
+  /api-keys:
+    get:
+      operationId: listApiKeys
+      tags: [api-keys]
+      summary: List API keys for current user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: List of API keys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiKey"
+    post:
+      operationId: createApiKey
+      tags: [api-keys]
+      summary: Create a new API key
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateApiKeyBody"
+      responses:
+        "201":
+          description: API key created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiKeyWithSecret"
+
+  /api-keys/{id}:
+    delete:
+      operationId: deleteApiKey
+      tags: [api-keys]
+      summary: Delete an API key
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: API key deleted
+
+  /sessions:
+    get:
+      operationId: listSessions
+      tags: [sessions]
+      summary: List all WhatsApp sessions
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      responses:
+        "200":
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WhatsAppSession"
+    post:
+      operationId: createSession
+      tags: [sessions]
+      summary: Create a new WhatsApp session
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSessionBody"
+      responses:
+        "201":
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhatsAppSession"
+
+  /sessions/{id}:
+    get:
+      operationId: getSession
+      tags: [sessions]
+      summary: Get a specific session
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhatsAppSession"
+        "404":
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteSession
+      tags: [sessions]
+      summary: Delete a WhatsApp session
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Session deleted
+
+  /sessions/{id}/connect:
+    post:
+      operationId: connectSession
+      tags: [sessions]
+      summary: Initiate WhatsApp connection (generates QR)
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Connection initiated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /sessions/{id}/disconnect:
+    post:
+      operationId: disconnectSession
+      tags: [sessions]
+      summary: Disconnect a WhatsApp session
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Disconnected
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /sessions/{id}/qr:
+    get:
+      operationId: getSessionQr
+      tags: [sessions]
+      summary: Get current QR code for a session
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: QR code data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QrResponse"
+
+  /sessions/{id}/stats:
+    get:
+      operationId: getSessionStats
+      tags: [sessions]
+      summary: Get statistics for a session
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionStats"
+
+  /sessions/{id}/messages:
+    get:
+      operationId: getSessionMessages
+      tags: [sessions]
+      summary: Get message history for a session
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Message list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+
+  /sessions/{id}/webhook:
+    patch:
+      operationId: updateSessionWebhook
+      tags: [sessions]
+      summary: Update webhook configuration for a session
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateWebhookBody"
+      responses:
+        "200":
+          description: Webhook updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhatsAppSession"
+
+  /sessions/{id}/features:
+    patch:
+      operationId: updateSessionFeatures
+      tags: [sessions]
+      summary: Update feature flags for a session
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFeaturesBody"
+      responses:
+        "200":
+          description: Features updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhatsAppSession"
+
+  /send/text:
+    post:
+      operationId: sendText
+      tags: [send]
+      summary: Send a text message
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendTextBody"
+      responses:
+        "200":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SendMessageResponse"
+
+  /send/image:
+    post:
+      operationId: sendImage
+      tags: [send]
+      summary: Send an image
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendImageBody"
+      responses:
+        "200":
+          description: Image sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SendMessageResponse"
+
+  /send/video:
+    post:
+      operationId: sendVideo
+      tags: [send]
+      summary: Send a video
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendVideoBody"
+      responses:
+        "200":
+          description: Video sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SendMessageResponse"
+
+  /send/audio:
+    post:
+      operationId: sendAudio
+      tags: [send]
+      summary: Send an audio message
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendAudioBody"
+      responses:
+        "200":
+          description: Audio sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SendMessageResponse"
+
+  /send/file:
+    post:
+      operationId: sendFile
+      tags: [send]
+      summary: Send a file/document
+      security:
+        - cookieAuth: []
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendFileBody"
+      responses:
+        "200":
+          description: File sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SendMessageResponse"
+
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session_token
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
   schemas:
     HealthStatus:
       type: object
@@ -34,3 +632,402 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+        - success
+        - message
+
+    LoginBody:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+      required:
+        - token
+        - user
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: ["string", "null"]
+        role:
+          type: string
+          enum: [admin, employee]
+        permissions:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - username
+        - role
+        - isActive
+        - createdAt
+        - updatedAt
+
+    CreateUserBody:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: ["string", "null"]
+        password:
+          type: string
+        role:
+          type: string
+          enum: [admin, employee]
+        permissions:
+          type: ["string", "null"]
+      required:
+        - username
+        - password
+        - role
+
+    UpdateUserBody:
+      type: object
+      properties:
+        username:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        password:
+          type: ["string", "null"]
+        role:
+          type: ["string", "null"]
+        permissions:
+          type: ["string", "null"]
+        isActive:
+          type: ["boolean", "null"]
+
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        name:
+          type: string
+        keyPrefix:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        lastUsedAt:
+          type: ["string", "null"]
+          format: date-time
+      required:
+        - id
+        - userId
+        - name
+        - keyPrefix
+        - createdAt
+
+    ApiKeyWithSecret:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        name:
+          type: string
+        keyPrefix:
+          type: string
+        secret:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - name
+        - keyPrefix
+        - secret
+        - createdAt
+
+    CreateApiKeyBody:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+        - name
+
+    WhatsAppSession:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        phoneNumber:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [disconnected, connecting, connected, banned]
+        webhookUrl:
+          type: ["string", "null"]
+        webhookEvents:
+          type: ["string", "null"]
+        features:
+          type: ["string", "null"]
+        totalMessagesSent:
+          type: integer
+        totalMessagesReceived:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - status
+        - totalMessagesSent
+        - totalMessagesReceived
+        - createdAt
+        - updatedAt
+
+    CreateSessionBody:
+      type: object
+      properties:
+        name:
+          type: string
+        webhookUrl:
+          type: ["string", "null"]
+      required:
+        - name
+
+    UpdateWebhookBody:
+      type: object
+      properties:
+        webhookUrl:
+          type: ["string", "null"]
+        webhookEvents:
+          type: ["string", "null"]
+
+    UpdateFeaturesBody:
+      type: object
+      properties:
+        features:
+          type: ["string", "null"]
+
+    QrResponse:
+      type: object
+      properties:
+        qr:
+          type: ["string", "null"]
+        status:
+          type: string
+      required:
+        - status
+
+    SessionStats:
+      type: object
+      properties:
+        totalSent:
+          type: integer
+        totalReceived:
+          type: integer
+        todaySent:
+          type: integer
+        todayReceived:
+          type: integer
+        messagesByType:
+          type: object
+          properties:
+            text:
+              type: integer
+            image:
+              type: integer
+            video:
+              type: integer
+            audio:
+              type: integer
+            file:
+              type: integer
+          required:
+            - text
+            - image
+            - video
+            - audio
+            - file
+      required:
+        - totalSent
+        - totalReceived
+        - todaySent
+        - todayReceived
+        - messagesByType
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        sessionId:
+          type: string
+        direction:
+          type: string
+          enum: [inbound, outbound]
+        fromNumber:
+          type: string
+        toNumber:
+          type: string
+        messageType:
+          type: string
+          enum: [text, image, video, audio, file, sticker, location, contact]
+        content:
+          type: ["string", "null"]
+        mediaUrl:
+          type: ["string", "null"]
+        caption:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [sent, delivered, read, failed]
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - id
+        - sessionId
+        - direction
+        - fromNumber
+        - toNumber
+        - messageType
+        - status
+        - timestamp
+
+    SendTextBody:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        number:
+          type: string
+        message:
+          type: string
+      required:
+        - sessionId
+        - number
+        - message
+
+    SendImageBody:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        number:
+          type: string
+        imageUrl:
+          type: string
+        caption:
+          type: ["string", "null"]
+      required:
+        - sessionId
+        - number
+        - imageUrl
+
+    SendVideoBody:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        number:
+          type: string
+        videoUrl:
+          type: string
+        caption:
+          type: ["string", "null"]
+      required:
+        - sessionId
+        - number
+        - videoUrl
+
+    SendAudioBody:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        number:
+          type: string
+        audioUrl:
+          type: string
+      required:
+        - sessionId
+        - number
+        - audioUrl
+
+    SendFileBody:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        number:
+          type: string
+        fileUrl:
+          type: string
+        fileName:
+          type: string
+        caption:
+          type: ["string", "null"]
+      required:
+        - sessionId
+        - number
+        - fileUrl
+        - fileName
+
+    SendMessageResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        messageId:
+          type: ["string", "null"]
+        error:
+          type: ["string", "null"]
+      required:
+        - success

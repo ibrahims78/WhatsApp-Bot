@@ -1,0 +1,15 @@
+packages:
+  "recharts": "For rendering statistics charts on the dashboard and session details"
+  "socket.io-client": "For real-time WebSocket updates of session status, QR codes, and messages"
+  "qrcode.react": "For rendering WhatsApp connection QR codes"
+  "zustand": "For lightweight global state management (auth, language, theme)"
+  "date-fns": "For formatting timestamps in message logs and statistics"
+  "@hookform/resolvers": "For Zod validation integration with react-hook-form"
+  "framer-motion": "For page transitions and micro-interactions"
+  "clsx": "Utility for conditionally joining classNames"
+  "tailwind-merge": "Utility to merge tailwind classes"
+
+images:
+  - path: "artifacts/whatsapp-dashboard/public/images/auth-bg.png"
+    description: "Abstract dark mode geometric background with glowing teal and deep blue neon accents, professional SaaS aesthetic, smooth gradients"
+    aspect_ratio: "16:9"
