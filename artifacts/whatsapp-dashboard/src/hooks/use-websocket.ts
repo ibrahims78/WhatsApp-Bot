@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
 import { getListSessionsQueryKey, getGetSessionQueryKey, getGetSessionMessagesQueryKey } from '@workspace/api-client-react';
@@ -9,31 +9,32 @@ interface WsEvents {
   message: { sessionId: string; message: any };
 }
 
+type QrListener = (data: WsEvents['qr']) => void;
+
+const qrListeners = new Set<QrListener>();
+
 export function useWebSocket() {
   const [connected, setConnected] = useState(false);
   const socketRef = useRef<Socket | null>(null);
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    // Connect to the same host under /ws path
     const socket = io('/', {
-      path: '/ws',
-      transports: ['websocket'],
+      path: '/socket.io',
+      transports: ['websocket', 'polling'],
     });
 
     socket.on('connect', () => setConnected(true));
     socket.on('disconnect', () => setConnected(false));
 
     socket.on('status', (data: WsEvents['status']) => {
-      // Invalidate list and specific session
       queryClient.invalidateQueries({ queryKey: getListSessionsQueryKey() });
       queryClient.invalidateQueries({ queryKey: getGetSessionQueryKey(data.sessionId) });
     });
 
     socket.on('qr', (data: WsEvents['qr']) => {
-      // We can update a local state or let components listen directly, 
-      // but TanStack query invalidation on the QR endpoint is safer for complex structures
       queryClient.invalidateQueries({ queryKey: [`/api/sessions/${data.sessionId}/qr`] });
+      qrListeners.forEach(fn => fn(data));
     });
 
     socket.on('message', (data: WsEvents['message']) => {
@@ -48,4 +49,21 @@ export function useWebSocket() {
   }, [queryClient]);
 
   return { connected, socket: socketRef.current };
+}
+
+export function useQrEvent(sessionId: string, onQr: (qr: string) => void) {
+  const onQrRef = useRef(onQr);
+  onQrRef.current = onQr;
+
+  useEffect(() => {
+    const handler: QrListener = (data) => {
+      if (data.sessionId === sessionId) {
+        onQrRef.current(data.qr);
+      }
+    };
+    qrListeners.add(handler);
+    return () => {
+      qrListeners.delete(handler);
+    };
+  }, [sessionId]);
 }
