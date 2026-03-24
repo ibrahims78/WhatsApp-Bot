@@ -1,5 +1,6 @@
 {pkgs}: {
   deps = [
+    pkgs.udev
     pkgs.xorg.libXtst
     pkgs.xorg.libXScrnSaver
     pkgs.xorg.libxshmfence
