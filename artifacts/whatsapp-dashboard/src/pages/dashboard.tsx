@@ -3,7 +3,7 @@ import { useListSessions } from "@workspace/api-client-react";
 import { useAppStore } from "@/store";
 import { getTranslation } from "@/lib/i18n";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquare, Smartphone, Activity, BarChart3 } from "lucide-react";
+import { MessageSquare, Smartphone, Activity, BarChart3, Send } from "lucide-react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 export default function Dashboard() {
