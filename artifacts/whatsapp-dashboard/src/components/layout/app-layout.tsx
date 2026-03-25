@@ -6,13 +6,11 @@ import { useAppStore } from "@/store";
 import { Redirect } from "wouter";
 
 export function AppLayout({ children }: { children: ReactNode }) {
-  const { user, language } = useAppStore();
+  const { user } = useAppStore();
 
   if (!user) {
     return <Redirect to="/login" />;
   }
-
-  const isRtl = language === 'ar';
 
   const style = {
     "--sidebar-width": "17rem",
@@ -21,7 +19,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
 
   return (
     <SidebarProvider style={style as React.CSSProperties}>
-      <div className={`flex h-screen w-full bg-background overflow-hidden ${isRtl ? 'flex-row-reverse' : ''}`}>
+      <div className="flex h-screen w-full bg-background overflow-hidden">
         <AppSidebar />
         <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
           <Header />

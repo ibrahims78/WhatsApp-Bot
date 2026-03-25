@@ -5,6 +5,7 @@ import { useAppStore } from "@/store";
 
 export function Header() {
   const { theme, setTheme, language, setLanguage, user } = useAppStore();
+  const isRtl = language === 'ar';
 
   return (
     <header className="flex items-center justify-between px-4 md:px-6 py-4 glass border-b border-border/50 sticky top-0 z-30 shrink-0">
@@ -41,7 +42,11 @@ export function Header() {
           </div>
           <div className="flex flex-col min-w-0">
             <span className="text-sm font-semibold leading-none truncate">{user?.username}</span>
-            <span className="text-xs text-muted-foreground capitalize">{user?.role}</span>
+            <span className={`text-xs text-muted-foreground ${isRtl ? '' : 'capitalize'}`}>
+              {isRtl
+                ? (user?.role === 'admin' ? 'مدير' : 'موظف')
+                : user?.role}
+            </span>
           </div>
         </div>
       </div>

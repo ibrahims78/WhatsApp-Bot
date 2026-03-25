@@ -150,6 +150,16 @@
   --app-font-sans: 'Cairo', sans-serif;
 }
 
+/* Flip sidebar trigger icon in RTL so it points toward the sidebar */
+[dir="rtl"] [data-slot="sidebar-trigger"] svg {
+  transform: scaleX(-1);
+}
+
+/* Ensure sidebar gap-spacer doesn't cause double-spacing in RTL */
+[dir="rtl"] [data-slot="sidebar-gap"] {
+  direction: ltr;
+}
+
 @layer base {
   * {
     @apply border-border;

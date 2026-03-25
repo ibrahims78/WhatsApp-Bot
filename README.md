@@ -1,8 +1,10 @@
-# WhatsApp Manager — لوحة إدارة واتساب
+# WhatsApp Manager — مدير واتساب
 
 <div align="center">
 
-A professional, full-stack WhatsApp session management platform with a bilingual (Arabic/English) dashboard, REST API, and real-time WebSocket support.
+**[English](#english-documentation) | [العربية](#arabic-documentation)**
+
+A professional full-stack WhatsApp session management platform with bilingual (Arabic/English) dashboard, REST API, and real-time WebSocket support.
 
 لوحة تحكم احترافية متكاملة لإدارة جلسات واتساب متعددة مع دعم ثنائي اللغة (عربي/إنجليزي) وواجهة برمجية REST ودعم WebSocket للوقت الفعلي.
 
@@ -15,414 +17,316 @@ A professional, full-stack WhatsApp session management platform with a bilingual
 
 ---
 
-## ✨ Features / المميزات
+<a name="english-documentation"></a>
+## English Documentation
 
-- **Multi-Session WhatsApp Management** — Create and control multiple WhatsApp bot instances simultaneously.
-- **Real-Time QR Code Authentication** — Live QR code streaming via WebSocket so users can link devices instantly.
-- **Bilingual UI (Arabic + English)** — Full RTL support with native Arabic font (Cairo) and seamless language switching.
-- **Light / Dark Mode** — Polished light and dark themes with persistent user preferences.
-- **Messaging** — Send text, image, video, audio, and document messages through any connected session.
-- **Webhook Integration** — Forward incoming WhatsApp events to any external system (n8n, Zapier, custom backends, etc.).
-- **User & Role Management** — Admin panel for managing users and assigning roles (admin / employee).
-- **API Key Management** — Generate and revoke API keys for programmatic external access.
-- **Glassmorphism Design** — Modern premium SaaS aesthetic built with Tailwind CSS and Shadcn UI components.
-- **Monorepo Architecture** — Clean pnpm workspace with full TypeScript support and shared libraries.
+### Features
 
----
+- **Multi-Session Management** — Create and control multiple WhatsApp accounts simultaneously
+- **Real-Time QR Code Scanning** — Live QR streaming via WebSocket to link devices instantly
+- **Bilingual UI (Arabic + English)** — Full RTL support with native Arabic font (Cairo) and seamless language switching
+- **Light / Dark Mode** — Polished themes with persistent user preferences
+- **Send Messages** — Text, image, video, audio, and document messages via UI or API
+- **Webhook Integration** — Forward incoming WhatsApp events to n8n, Zapier, or any custom backend
+- **User & Role Management** — Admin panel with role-based access (admin / employee)
+- **API Key Management** — Generate and revoke API keys for programmatic access
+- **Glassmorphism Design** — Modern SaaS aesthetic with Tailwind CSS and Shadcn UI
 
-## 🏗️ Project Architecture / معمارية المشروع
+### Architecture
 
-This project is a **TypeScript monorepo** managed with `pnpm workspaces`. It is split into three layers:
+This is a TypeScript monorepo managed with `pnpm workspaces`:
 
 ```
 workspace/
 ├── artifacts/
-│   ├── api-server/          # Express.js REST API & WebSocket server
+│   ├── api-server/          # Express.js REST API & Socket.IO WebSocket server
 │   └── whatsapp-dashboard/  # React + Vite frontend dashboard
 ├── lib/
 │   ├── db/                  # Drizzle ORM schema + PostgreSQL client
-│   ├── api-spec/            # OpenAPI specification (source of truth)
-│   ├── api-zod/             # Shared Zod validation schemas
-│   └── api-client-react/    # Auto-generated React Query hooks (orval)
-├── scripts/                 # Utility & build scripts
-├── pnpm-workspace.yaml      # Workspace & dependency catalog
-└── tsconfig.json            # Root TypeScript configuration
+│   ├── api-spec/            # OpenAPI specification (single source of truth)
+│   ├── api-zod/             # Generated Zod validation schemas
+│   └── api-client-react/    # Generated React Query hooks
+└── scripts/                 # Utility & build scripts
 ```
 
-### Key Libraries & Technologies
+### Tech Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Runtime | Node.js ≥ 20, TypeScript 5.9 | Language & runtime |
-| Package Manager | pnpm (workspaces + catalog) | Monorepo dependency management |
-| Backend Framework | Express.js v5 | HTTP server & routing |
-| WhatsApp Protocol | `@wppconnect-team/wppconnect` | WhatsApp Web automation |
-| Real-Time | Socket.IO 4 | WebSocket events (QR codes, session updates) |
-| Database | PostgreSQL + Drizzle ORM | Persistent data storage |
-| Authentication | JWT + bcryptjs | Stateless auth tokens + password hashing |
-| Frontend | React 19 + Vite 7 | SPA with fast HMR |
-| UI Components | Shadcn UI + Tailwind CSS v4 | Accessible, theme-aware component library |
-| State Management | Zustand (with `persist`) | Global state with localStorage persistence |
-| Data Fetching | TanStack Query v5 | Server state & caching |
-| API Contract | OpenAPI 3 → orval codegen | Type-safe client hooks from spec |
-| Validation | Zod | Schema validation on both client and server |
-| Logging | pino | Structured JSON logging |
-| Routing | wouter | Lightweight client-side routing |
-| i18n | Custom translation store | Arabic (RTL) / English with Zustand |
+| Layer | Technology |
+|-------|-----------|
+| Runtime | Node.js ≥ 20, TypeScript 5.9 |
+| Package Manager | pnpm workspaces + catalog |
+| Backend | Express.js v5 + Socket.IO 4 |
+| WhatsApp | `@wppconnect-team/wppconnect` (Puppeteer-based) |
+| Database | PostgreSQL + Drizzle ORM |
+| Authentication | JWT + bcryptjs |
+| Frontend | React 19 + Vite 7 |
+| UI Components | Shadcn UI + Tailwind CSS v4 |
+| State Management | Zustand (with `persist`) |
+| Data Fetching | TanStack Query v5 |
+| Routing | wouter |
+| i18n | Custom translation store |
 
----
+### Getting Started
 
-## 📂 Module Details / تفاصيل الوحدات
-
-### `artifacts/api-server` — Backend API
-
-The core Express.js application. Responsibilities:
-
-- **Session Lifecycle** — Create, connect, disconnect, and delete WhatsApp sessions using `wppconnect`. Each session corresponds to a linked WhatsApp account.
-- **QR Code Streaming** — When a session is initializing, `wppconnect` generates a QR code. The server emits it via Socket.IO to any connected dashboard client in real time.
-- **REST API** — Full CRUD endpoints for sessions, users, API keys, and messages. All routes are documented in the OpenAPI spec.
-- **Authentication Middleware** — JWT bearer token verification for protected routes. API keys are also supported for programmatic access.
-- **Webhook Forwarding** — Incoming WhatsApp messages/events are forwarded to the configured webhook URL per session (e.g., an n8n workflow).
-- **Seed on Boot** — On first run, a default admin user is created automatically (`admin` / `admin123`).
-- **Build System** — Uses `esbuild` for fast production bundling into `dist/index.mjs`.
-
-**Entry point:** `artifacts/api-server/src/index.ts`
-
-### `artifacts/whatsapp-dashboard` — Frontend Dashboard
-
-A React SPA built with Vite. Pages and features:
-
-| Page | Route | Description |
-|------|-------|-------------|
-| Login | `/login` | JWT authentication form |
-| Dashboard | `/` | Overview cards and message volume chart |
-| Sessions | `/sessions` | List, create, and manage WhatsApp sessions |
-| Session Detail | `/sessions/:id` | QR scan, statistics, message log, webhook & features config |
-| Send Message | `/send` | Campaign/message sender (text, image, video, audio, document) |
-| Users | `/users` | Admin-only user management |
-| API Keys | `/api-keys` | Generate and revoke API access keys |
-
-**Key frontend files:**
-
-| File | Purpose |
-|------|---------|
-| `src/store/index.ts` | Zustand global store (auth, theme, language) |
-| `src/lib/i18n.ts` | Translation dictionary for Arabic and English |
-| `src/hooks/use-websocket.ts` | Socket.IO client hook for real-time QR updates |
-| `src/components/layout/` | App shell: sidebar, header, page layout |
-
-### `lib/db` — Database Layer
-
-- **Schema** (`src/schema/`) — Drizzle ORM table definitions for `users`, `sessions`, `messages`, and `api_keys`.
-- **Client** (`src/index.ts`) — PostgreSQL connection pool exported for use by the API server.
-- **Migrations** — Run `pnpm --filter @workspace/db push` to push the schema to the database using `drizzle-kit`.
-
-### `lib/api-spec` — OpenAPI Contract
-
-Single source of truth for all API contracts. The spec is used to:
-1. Document the API.
-2. Generate type-safe React Query hooks via `orval` (`lib/api-client-react`).
-3. Generate Zod schemas (`lib/api-zod`).
-
-Run `pnpm run --filter @workspace/api-spec codegen` after any spec change to regenerate client code.
-
----
-
-## 🚀 Getting Started / البدء
-
-### Prerequisites
-
-- Node.js ≥ 20
-- pnpm ≥ 10
-- PostgreSQL database (connection string in `DATABASE_URL`)
-
-### Installation
+**Prerequisites:** Node.js ≥ 20, pnpm ≥ 10, PostgreSQL database.
 
 ```bash
-# Clone the repository
-git clone <repo-url>
-cd whatsapp-manager
-
 # Install all workspace dependencies
 pnpm install
 
-# Push the database schema
+# Push database schema
 pnpm --filter @workspace/db push
 ```
 
-### Environment Variables
-
-Create a `.env` file at the root or set these variables in your environment:
+**Environment Variables:**
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
 | `DATABASE_URL` | ✅ | — | PostgreSQL connection string |
 | `PORT` | ✅ | `8080` | API server port |
-| `JWT_SECRET` | ⚠️ | auto-generated | Secret for signing JWT tokens. **Set this in production!** |
+| `JWT_SECRET` | ⚠️ | auto-generated | JWT signing secret — **set this in production!** |
 | `ADMIN_PASSWORD` | ❌ | `admin123` | Password for the seeded admin user |
 
-### Running in Development
-
-Two processes need to run simultaneously:
+**Run in development (two terminals):**
 
 ```bash
-# Terminal 1 — API Server (port 8080)
+# Terminal 1 — API Server
 PORT=8080 pnpm --filter @workspace/api-server run dev
 
-# Terminal 2 — Frontend Dashboard (port 23097)
-PORT=23097 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev
+# Terminal 2 — Dashboard
+PORT=5000 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev
 ```
 
-The dashboard will be available at `http://localhost:23097`.
-
-### Default Credentials
-
-On first boot, a default admin account is seeded:
-
-| Field | Value |
-|-------|-------|
-| Username | `admin` |
-| Password | `admin123` |
+Open `http://localhost:5000` — default login: `admin` / `admin123`.
 
 > ⚠️ **Change the default password immediately in production.**
 
----
+### Dashboard Pages
 
-## 📖 API Reference / مرجع الـ API
+| Page | Route | Description |
+|------|-------|-------------|
+| Login | `/login` | JWT authentication |
+| Dashboard | `/` | Overview cards and message volume chart |
+| Sessions | `/sessions` | List and manage WhatsApp sessions |
+| Session Detail | `/sessions/:id` | QR scan, stats, messages, webhook & features |
+| Send Message | `/send` | Send text, image, video, audio, document |
+| Users | `/users` | Admin-only user management |
+| API Keys | `/api-keys` | Generate and revoke API keys |
 
-All endpoints require a `Bearer` token (obtained from `POST /api/auth/login`) or a valid API key in the `Authorization` header.
+### API Reference
 
-### Authentication
+All endpoints require a `Bearer` JWT token or `X-API-Key` header.
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/auth/login` | Login and receive a JWT token |
-| `POST` | `/api/auth/logout` | Invalidate current session |
-
-### Sessions
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/sessions` | List all sessions |
-| `POST` | `/api/sessions` | Create a new session |
-| `GET` | `/api/sessions/:id` | Get session details |
-| `DELETE` | `/api/sessions/:id` | Delete a session |
-| `POST` | `/api/sessions/:id/connect` | Connect (start) a session |
-| `POST` | `/api/sessions/:id/disconnect` | Disconnect a session |
-| `GET` | `/api/sessions/:id/qr` | Get current QR code |
-| `GET` | `/api/sessions/:id/messages` | Get message history |
-| `PATCH` | `/api/sessions/:id/webhook` | Update webhook URL |
-| `PATCH` | `/api/sessions/:id/features` | Update allowed features |
-
-### Messaging
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/send/text` | Send a text message |
-| `POST` | `/api/send/image` | Send an image |
-| `POST` | `/api/send/video` | Send a video |
-| `POST` | `/api/send/audio` | Send an audio file |
-| `POST` | `/api/send/file` | Send a document/file |
-
-### Users (Admin only)
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/users` | List all users |
-| `POST` | `/api/users` | Create a new user |
-| `DELETE` | `/api/users/:id` | Delete a user |
-
-### API Keys
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/api-keys` | List API keys |
-| `POST` | `/api/api-keys` | Generate a new API key |
-| `DELETE` | `/api/api-keys/:id` | Revoke an API key |
-
-### Real-Time Events (WebSocket)
-
-Connect to the WebSocket server at `ws://localhost:8080` using Socket.IO.
-
-| Event | Direction | Payload | Description |
-|-------|-----------|---------|-------------|
-| `qr` | Server → Client | `{ sessionId, qr }` | QR code data for a connecting session |
-| `session_status` | Server → Client | `{ sessionId, status }` | Session status change |
-
----
-
-## 🔧 Configuration / الإعدادات
-
-### Session Features
-
-Each session can have specific messaging features enabled or disabled. These are controlled from the Session Detail → Settings tab:
-
-| Feature | Description |
-|---------|-------------|
-| `sendText` | Allow sending text messages |
-| `sendImage` | Allow sending images |
-| `sendVideo` | Allow sending videos |
-| `sendAudio` | Allow sending audio |
-| `sendFile` | Allow sending documents |
-| `receiveText` | Process incoming text |
-| `receiveImage` | Process incoming images |
-| `receiveVideo` | Process incoming videos |
-| `receiveAudio` | Process incoming audio |
-| `receiveFile` | Process incoming documents |
-
-### Webhook Payload
-
-When a message is received on a session with a configured webhook URL, the server sends an HTTP POST:
-
-```json
-{
-  "sessionId": "session-uuid",
-  "event": "message",
-  "data": {
-    "from": "1234567890@c.us",
-    "body": "Hello!",
-    "type": "chat",
-    "timestamp": 1706000000
-  }
-}
+**Authentication**
+```
+POST /api/auth/login     — Login and receive JWT
+POST /api/auth/logout    — Logout
 ```
 
----
+**Sessions**
+```
+GET    /api/sessions              — List all sessions
+POST   /api/sessions              — Create session
+GET    /api/sessions/:id          — Get session
+DELETE /api/sessions/:id          — Delete session
+POST   /api/sessions/:id/connect  — Connect session
+POST   /api/sessions/:id/disconnect — Disconnect session
+GET    /api/sessions/:id/qr       — Get QR code
+GET    /api/sessions/:id/messages — Message history
+PATCH  /api/sessions/:id/webhook  — Update webhook URL
+PATCH  /api/sessions/:id/features — Update features
+```
 
-## 🌍 Internationalization / الترجمة
+**Messaging**
+```
+POST /api/sessions/:id/send/text     — Send text
+POST /api/sessions/:id/send/image    — Send image
+POST /api/sessions/:id/send/video    — Send video
+POST /api/sessions/:id/send/audio    — Send audio
+POST /api/sessions/:id/send/file     — Send document
+```
 
-The dashboard supports **Arabic (ar)** and **English (en)**.
+### WebSocket Events
 
-- Default language: **Arabic (RTL)**
-- Default theme: **Light mode**
-- Settings are persisted in `localStorage`
+Connect via Socket.IO to receive real-time updates:
 
-To add a new language:
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `qr` | `{ sessionId, qr }` | QR code for a connecting session |
+| `session_status` | `{ sessionId, status }` | Session status change |
 
-1. Add a new entry to `artifacts/whatsapp-dashboard/src/lib/i18n.ts`:
-   ```typescript
-   export const translations = {
-     en: { ... },
-     ar: { ... },
-     fr: { ... }  // Add your language
-   };
-   ```
-2. Update `SupportedLanguage` type and handle font/direction in `applyLanguage()` in `store/index.ts`.
-
----
-
-## 🏭 Production Deployment / النشر للإنتاج
-
-### Build
+### Production Deployment
 
 ```bash
-# Build the API server
+# Build API server
 pnpm --filter @workspace/api-server run build
 
-# Build the frontend (outputs to artifacts/whatsapp-dashboard/dist/public/)
+# Build dashboard (output → artifacts/whatsapp-dashboard/dist/public/)
 pnpm --filter @workspace/whatsapp-dashboard run build
 ```
 
-### Production Considerations
-
-1. **Set `JWT_SECRET`** to a long, random string (e.g., `openssl rand -base64 64`).
-2. **Change default admin password** after first login.
-3. **Use a process manager** (PM2, systemd) for the API server.
-4. **Serve the frontend** as static files via Nginx or any CDN.
-5. **Configure PostgreSQL** with proper connection pooling and TLS.
-6. **Puppeteer/Chromium** — `wppconnect` uses Puppeteer internally. Ensure Chromium is available in your production environment.
-
-### Docker (Example)
-
-```dockerfile
-FROM node:20-slim
-WORKDIR /app
-COPY . .
-RUN npm install -g pnpm && pnpm install
-RUN pnpm --filter @workspace/db push
-RUN pnpm --filter @workspace/api-server run build
-EXPOSE 8080
-CMD ["node", "--enable-source-maps", "artifacts/api-server/dist/index.mjs"]
-```
+Production checklist:
+1. Set `JWT_SECRET` to a strong random string (`openssl rand -base64 64`)
+2. Change the default admin password after first login
+3. Use a process manager (PM2, systemd) for the API server
+4. Serve the frontend as static files via Nginx or a CDN
+5. Ensure Chromium is available (required by wppconnect/Puppeteer)
 
 ---
 
-## 📁 File Structure Reference
+<a name="arabic-documentation"></a>
+## توثيق باللغة العربية
+
+### نظرة عامة
+
+مدير واتساب هو منصة متكاملة مفتوحة المصدر لإدارة جلسات واتساب متعددة. تُتيح لك الاتصال بحسابات واتساب وإرسال واستقبال الرسائل برمجياً ومراقبة جميع الأنشطة من لوحة تحكم ثنائية اللغة.
+
+### المميزات
+
+- **إدارة جلسات متعددة** — ربط وإدارة عدة حسابات واتساب في آنٍ واحد
+- **مسح QR في الوقت الفعلي** — ربط أجهزة جديدة عبر WebSocket مباشرةً من اللوحة
+- **واجهة عربية/إنجليزية** — دعم RTL كامل مع خط Cairo للعربية وتبديل سلس بين اللغتين
+- **الوضع الداكن/الفاتح** — تبديل ثيمات مع حفظ تفضيلات المستخدم
+- **إرسال الرسائل** — نص وصور وفيديو وصوت ومستندات عبر الواجهة أو API
+- **دعم Webhook** — إعادة توجيه الرسائل الواردة إلى n8n أو أي نظام خارجي
+- **إدارة المستخدمين** — لوحة إدارة مع صلاحيات مدير وموظف
+- **مفاتيح API** — إنشاء وإلغاء مفاتيح API للوصول البرمجي
+
+### هيكل المشروع
 
 ```
-artifacts/api-server/src/
-├── index.ts              # Server entry point, middleware, seed
-├── routes/
-│   ├── auth.ts           # Login / logout
-│   ├── sessions.ts       # Session CRUD + connect/disconnect
-│   ├── send.ts           # Message sending endpoints
-│   ├── users.ts          # User management
-│   ├── api-keys.ts       # API key management
-│   └── messages.ts       # Message history
-├── middleware/
-│   ├── auth.ts           # JWT & API key verification
-│   └── error.ts          # Global error handler
-└── services/
-    └── wppconnect.ts     # WhatsApp session manager
-
-artifacts/whatsapp-dashboard/src/
-├── App.tsx               # Router + QueryClient provider
-├── main.tsx              # React root
-├── store/index.ts        # Zustand global state
+workspace/
+├── artifacts/
+│   ├── api-server/          # خادم API Express.js + Socket.IO
+│   └── whatsapp-dashboard/  # لوحة التحكم React + Vite
 ├── lib/
-│   ├── i18n.ts           # Translation dictionary
-│   └── utils.ts          # Tailwind cn() helper
-├── components/
-│   ├── layout/           # App shell (sidebar, header, layout)
-│   └── ui/               # Shadcn UI components
-├── pages/
-│   ├── login.tsx
-│   ├── dashboard.tsx
-│   ├── sessions/
-│   │   ├── index.tsx
-│   │   └── detail.tsx
-│   ├── users/index.tsx
-│   ├── api-keys/index.tsx
-│   └── send/index.tsx
-└── hooks/
-    ├── use-websocket.ts  # Socket.IO integration
-    └── use-toast.ts      # Toast notifications
-
-lib/
-├── db/src/
-│   ├── schema/           # Drizzle table definitions
-│   └── index.ts          # DB client export
-├── api-spec/             # openapi.yaml
-├── api-zod/              # Generated Zod schemas
-└── api-client-react/src/ # Generated React Query hooks
+│   ├── db/                  # مخطط Drizzle ORM + عميل PostgreSQL
+│   ├── api-spec/            # مواصفات OpenAPI (المرجع الوحيد للـ API)
+│   ├── api-zod/             # مخططات Zod المُولَّدة
+│   └── api-client-react/    # خطافات React Query المُولَّدة
+└── scripts/                 # سكريبتات مساعدة
 ```
 
+### التقنيات المستخدمة
+
+| الطبقة | التقنية |
+|--------|---------|
+| وقت التشغيل | Node.js ≥ 20، TypeScript 5.9 |
+| إدارة الحزم | pnpm workspaces |
+| الخادم | Express.js v5 + Socket.IO 4 |
+| واتساب | wppconnect (مبني على Puppeteer) |
+| قاعدة البيانات | PostgreSQL + Drizzle ORM |
+| المصادقة | JWT + bcryptjs |
+| الواجهة الأمامية | React 19 + Vite 7 |
+| مكونات UI | Shadcn UI + Tailwind CSS v4 |
+| إدارة الحالة | Zustand |
+| جلب البيانات | TanStack Query v5 |
+
+### البدء السريع
+
+**المتطلبات:** Node.js ≥ 20، pnpm ≥ 10، قاعدة بيانات PostgreSQL.
+
+```bash
+# تثبيت جميع الاعتماديات
+pnpm install
+
+# رفع مخطط قاعدة البيانات
+pnpm --filter @workspace/db push
+```
+
+**متغيرات البيئة:**
+
+| المتغير | مطلوب | الافتراضي | الوصف |
+|---------|-------|-----------|-------|
+| `DATABASE_URL` | ✅ | — | رابط اتصال PostgreSQL |
+| `PORT` | ✅ | `8080` | منفذ خادم API |
+| `JWT_SECRET` | ⚠️ | تلقائي | مفتاح JWT — **أضفه في الإنتاج!** |
+| `ADMIN_PASSWORD` | ❌ | `admin123` | كلمة مرور حساب المدير الأولي |
+
+**تشغيل بيئة التطوير (نافذتا طرفية):**
+
+```bash
+# الطرفية الأولى — خادم API
+PORT=8080 pnpm --filter @workspace/api-server run dev
+
+# الطرفية الثانية — لوحة التحكم
+PORT=5000 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev
+```
+
+افتح `http://localhost:5000` — بيانات الدخول الافتراضية: `admin` / `admin123`.
+
+> ⚠️ **غيّر كلمة المرور الافتراضية فوراً في بيئة الإنتاج.**
+
+### صفحات لوحة التحكم
+
+| الصفحة | المسار | الوصف |
+|--------|--------|-------|
+| تسجيل الدخول | `/login` | المصادقة بـ JWT |
+| لوحة القيادة | `/` | بطاقات الملخص ومخطط حجم الرسائل |
+| الجلسات | `/sessions` | قائمة وإدارة جلسات واتساب |
+| تفاصيل الجلسة | `/sessions/:id` | QR، إحصائيات، رسائل، Webhook، ميزات |
+| إرسال رسالة | `/send` | إرسال نص وصور وفيديو وصوت ومستندات |
+| المستخدمون | `/users` | إدارة المستخدمين (مدراء فقط) |
+| مفاتيح API | `/api-keys` | إنشاء وإلغاء مفاتيح الوصول |
+
+### أمثلة API
+
+```bash
+# تسجيل الدخول
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "admin123"}'
+
+# إرسال رسالة نصية
+curl -X POST http://localhost:8080/api/sessions/{id}/send/text \
+  -H "X-API-Key: your_api_key" \
+  -H "Content-Type: application/json" \
+  -d '{"number": "966501234567", "text": "مرحباً!"}'
+```
+
+### أحداث WebSocket الفورية
+
+اتصل عبر Socket.IO لاستقبال التحديثات الفورية:
+
+| الحدث | البيانات | الوصف |
+|-------|---------|-------|
+| `qr` | `{ sessionId, qr }` | رمز QR للجلسة قيد الاتصال |
+| `session_status` | `{ sessionId, status }` | تغيير حالة الجلسة |
+
+### النشر للإنتاج
+
+```bash
+# بناء خادم API
+pnpm --filter @workspace/api-server run build
+
+# بناء لوحة التحكم (الناتج في artifacts/whatsapp-dashboard/dist/public/)
+pnpm --filter @workspace/whatsapp-dashboard run build
+```
+
+قائمة التحقق للإنتاج:
+1. تعيين `JWT_SECRET` لقيمة عشوائية قوية
+2. تغيير كلمة مرور المدير الافتراضية بعد أول دخول
+3. استخدام مدير عمليات (PM2 أو systemd) لخادم API
+4. تقديم الواجهة الأمامية كملفات ثابتة عبر Nginx أو CDN
+5. التأكد من توفر Chromium في بيئة التشغيل (مطلوب لـ wppconnect)
+
 ---
 
-## 🤝 Contributing / المساهمة
+## Contributing / المساهمة
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature/my-feature`.
-3. Make your changes following the existing code style.
-4. Update translations in `lib/i18n.ts` if adding UI text.
-5. Run the API server and dashboard to verify your changes.
-6. Submit a pull request with a clear description.
-
-### Code Style
-
-- TypeScript strict mode enabled.
+- Fork the repository and create a feature branch.
 - Use logical CSS properties (`ms-`, `me-`, `ps-`, `pe-`) for RTL compatibility.
-- All UI strings must have both `en` and `ar` entries in `i18n.ts`.
-- Follow the existing Shadcn UI component patterns.
+- All new UI strings must have both `en` and `ar` entries in `lib/i18n.ts`.
+- Follow existing Shadcn UI component patterns.
 
 ---
 
-## 📄 License
+## License / الرخصة
 
-MIT License — feel free to use and modify for personal or commercial projects.
+MIT License — free to use and modify for personal or commercial projects.
 
 ---
 
 <div align="center">
-  Built with ❤️ using TypeScript, React, Express, and wppconnect
+  Built with TypeScript · React · Express · wppconnect
 </div>
