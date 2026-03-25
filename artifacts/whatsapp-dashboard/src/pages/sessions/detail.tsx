@@ -39,54 +39,69 @@ export default function SessionDetail() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   
-  // Live QR state — updated immediately from WebSocket
+  // Live QR state — updated immediately from WebSocket or polling
   const [liveQr, setLiveQr] = useState<string | null>(null);
+  // Optimistic connect state — show QR spinner immediately after clicking Connect
+  const [connectingOptimistic, setConnectingOptimistic] = useState(false);
 
-  // Initialize WebSocket
+  // Initialize WebSocket (polling fallback is automatic in socket.io)
   useWebSocket();
 
   // Listen for QR events directly from WebSocket
   useQrEvent(id, (qr) => {
     setLiveQr(qr);
+    setConnectingOptimistic(false);
   });
 
   const { data: session, isLoading } = useGetSession(id, {
     query: { refetchInterval: 2000 }
   });
 
-  const isWaitingForQr = session?.status === 'connecting' || session?.status === 'notLogged';
+  const isWaitingForQr =
+    connectingOptimistic ||
+    session?.status === 'connecting' ||
+    session?.status === 'notLogged';
 
-  // Also poll QR via API as a fallback (every 3 seconds while connecting or waiting for scan)
+  // Once session status reflects connecting/notLogged, clear optimistic flag
+  useEffect(() => {
+    if (session?.status === 'connecting' || session?.status === 'notLogged' || session?.status === 'connected') {
+      setConnectingOptimistic(false);
+    }
+  }, [session?.status]);
+
+  // Poll QR via API every 3 seconds while waiting (works even if WebSocket fails)
   const { data: qrData } = useGetSessionQr(id, {
     query: {
       enabled: isWaitingForQr,
       refetchInterval: 3000,
-      onSuccess: (data: any) => {
-        if (data?.qr) setLiveQr(data.qr);
-      },
     }
   });
 
-  // Reset live QR when session disconnects or connects
+  // Seed liveQr from polling data and reset when session settles
   useEffect(() => {
-    if (session?.status !== 'connecting' && session?.status !== 'notLogged') {
+    if (session?.status !== 'connecting' && session?.status !== 'notLogged' && !connectingOptimistic) {
       setLiveQr(null);
     }
-    // Also seed from API data if available
-    if (qrData?.qr && !liveQr) {
+    if (qrData?.qr) {
       setLiveQr(qrData.qr);
     }
-  }, [session?.status, qrData?.qr]);
+  }, [session?.status, qrData?.qr, connectingOptimistic]);
 
   const { data: messages } = useGetSessionMessages(id, { limit: 50 }, { query: { enabled: !!session } });
 
   const connectMutation = useConnectSession({
     mutation: {
-      onSuccess: () => {
+      onMutate: () => {
         setLiveQr(null);
+        setConnectingOptimistic(true);
+      },
+      onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getGetSessionQueryKey(id) });
       },
-      onError: () => toast({ variant: "destructive", title: t('error'), description: t('sd_connect_error') })
+      onError: () => {
+        setConnectingOptimistic(false);
+        toast({ variant: "destructive", title: t('error'), description: t('sd_connect_error') });
+      }
     }
   });
 

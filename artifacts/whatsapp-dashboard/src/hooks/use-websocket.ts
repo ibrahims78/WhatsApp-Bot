@@ -21,7 +21,9 @@ export function useWebSocket() {
   useEffect(() => {
     const socket = io('/', {
       path: '/socket.io',
-      transports: ['websocket', 'polling'],
+      // Use polling first — more reliable through Replit's mTLS proxy
+      transports: ['polling', 'websocket'],
+      upgrade: true,
     });
 
     socket.on('connect', () => setConnected(true));
