@@ -1,32 +1,31 @@
 kind = "web"
-  previewPath = "/"
-  title = "WhatsApp Bot Dashboard"
-  version = "1.0.0"
-  id = "artifacts/whatsapp-dashboard"
-  router = "path"
+previewPath = "/"
+title = "WhatsApp Bot Dashboard"
+version = "1.0.0"
+id = "artifacts/whatsapp-dashboard"
+router = "path"
 
-  [[integratedSkills]]
-  name = "react-vite"
-  version = "1.0.0"
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
 
-  [[services]]
-  name = "web"
-  paths = [ "/" ]
-  localPort = 23097
+[[services]]
+name = "web"
+paths = ["/"]
+localPort = 5000
 
-  [services.development]
-  run = "PORT=23097 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev"
+[services.development]
+run = "PORT=5000 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev"
 
-  [services.production]
-  build = [ "pnpm", "--filter", "@workspace/whatsapp-dashboard", "run", "build" ]
-  publicDir = "artifacts/whatsapp-dashboard/dist/public"
-  serve = "static"
+[services.production]
+build = ["pnpm", "--filter", "@workspace/whatsapp-dashboard", "run", "build"]
+publicDir = "artifacts/whatsapp-dashboard/dist/public"
+serve = "static"
 
-  [[services.production.rewrites]]
-  from = "/*"
-  to = "/index.html"
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
 
-  [services.env]
-  PORT = "23097"
-  BASE_PATH = "/"
-  
+[services.env]
+PORT = "5000"
+BASE_PATH = "/"

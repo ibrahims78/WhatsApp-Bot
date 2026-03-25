@@ -1,6 +1,9 @@
 modules = ["nodejs-24", "postgresql-16"]
 
 [[artifacts]]
+id = "artifacts/whatsapp-dashboard"
+
+[[artifacts]]
 id = "artifacts/api-server"
 
 [[artifacts]]
@@ -24,23 +27,11 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Start application"
+args = "artifacts/whatsapp-dashboard: web"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
 args = "API Server"
-
-[[workflows.workflow]]
-name = "Start application"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "PORT=23097 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev"
-waitForPort = 23097
-
-[workflows.workflow.metadata]
-outputType = "webview"
 
 [[workflows.workflow]]
 name = "API Server"
