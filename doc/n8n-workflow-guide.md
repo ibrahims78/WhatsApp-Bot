@@ -3,7 +3,7 @@
 ## ما هو هذا الورك فلو؟
 
 هذا ورك فلو جاهز لـ **n8n** يربط نظام **WhatsApp Manager** بأتمتة متكاملة.  
-يستقبل كل أنواع رسائل الواتساب الواردة ويردّ عليها بالنوع المناسب (نص / صورة / صوت / مستند) تلقائياً.
+يستقبل **جميع** أنواع رسائل الواتساب ويردّ عليها بالنوع المناسب تلقائياً، مع وضع **Echo للاختبار** وتسجيل الأخطاء.
 
 ---
 
@@ -18,11 +18,11 @@
                     │
                     ▼
             🔀 Route by Message Type (استقبال)
-        ┌───┬───┬───┬───┬────────┐
-        ▼   ▼   ▼   ▼   ▼       ▼
-      Text Img Vid Aud Doc    Other
-        │   │   │   │   │
-        └───┴───┴───┴───┘
+   ┌──┬──┬──┬──┬──┬───┬──────┐
+   ▼  ▼  ▼  ▼  ▼  ▼   ▼
+  Txt Img Vid Aud Doc Stk  Loc
+   │  │  │  │  │  │   │
+   └──┴──┴──┴──┴──┴───┘
                 │
                 ▼
         🔗 Merge All Replies
@@ -32,10 +32,15 @@
                 │
                 ▼
         🔀 Route by Reply Type (إرسال)
-        ┌───┬───┬───┬────────┐
-        ▼   ▼   ▼   ▼
-      📤   🖼️  🎵  📄
-      Text Img Aud Doc
+   ┌──┬──┬──┬──┬──┬───┬──────┐
+   ▼  ▼  ▼  ▼  ▼  ▼   ▼
+  📤  🖼️  🎬  🎵  📄  🎯  📍
+  Txt Img Vid Aud Doc Stk Loc
+   │  │  │  │  │  │   │
+   └──┴──error──┴──┴───┘
+                │
+                ▼
+        ⚠️ Log Send Error
 ```
 
 ---
@@ -48,14 +53,16 @@
 |--------|--------|
 | 📥 Receive WhatsApp Message | يستقبل الرسائل الواردة عبر Webhook POST |
 | ✅ Respond 200 OK | يُقرّ الاستلام فوراً لمنع إعادة المحاولة |
-| 🔍 Extract Message Fields | يُعالج الـ payload ويستخرج الحقول |
-| 🔀 Route by Message Type | يوجّه حسب نوع الرسالة الواردة |
-| 💬 Handle Text | يعالج الرسائل النصية (يرد بكلمات مفتاحية) |
+| 🔍 Extract Message Fields | يُعالج الـ payload ويستخرج الحقول (بما فيها lat/lng) |
+| 🔀 Route by Message Type | يوجّه حسب نوع الرسالة الواردة (7 مسارات) |
+| 💬 Handle Text | يعالج النصوص + **وضع Echo للاختبار** |
 | 🖼️ Handle Image | يعالج الصور الواردة |
 | 🎬 Handle Video | يعالج الفيديو الوارد |
 | 🎵 Handle Audio / Voice | يعالج الصوت والرسائل الصوتية |
 | 📄 Handle Document | يعالج المستندات (PDF, DOCX, ZIP...) |
-| 🔗 Merge All Replies | يجمع مخرجات كل المعالجات |
+| 🎯 Handle Sticker | **جديد** — يعالج الملصقات الواردة |
+| 📍 Handle Location | **جديد** — يعالج المواقع الجغرافية + رابط Google Maps |
+| 🔗 Merge All Replies | يجمع مخرجات جميع المعالجات |
 | ⏱️ Wait 2 Seconds | تأخير 2 ثانية لتجنب الحظر من واتساب |
 
 ### جانب الإرسال
@@ -65,8 +72,26 @@
 | 🔀 Route by Reply Type | يوجّه حسب `replyType` | — |
 | 📤 Send Text Reply | رسالة نصية | `replyText` |
 | 🖼️ Send Image Reply | صورة | `replyImageUrl` + `replyCaption` (اختياري) |
+| 🎬 Send Video Reply | **جديد** — فيديو حقيقي | `replyVideoUrl` + `replyCaption` (اختياري) |
 | 🎵 Send Audio Reply | ملف صوتي | `replyAudioUrl` |
 | 📄 Send Document Reply | مستند/ملف | `replyFileUrl` + `replyFileName` + `replyCaption` (اختياري) |
+| 🎯 Send Sticker Reply | **جديد** — ملصق | `replyImageUrl` (PNG/JPG/WebP → يُحوَّل تلقائياً) |
+| 📍 Send Location Reply | **جديد** — موقع جغرافي | `replyLat` + `replyLng` + `replyLocationDesc` (اختياري) |
+| ⚠️ Log Send Error | **جديد** — يسجّل أخطاء الإرسال | يتصل بكل عقد الإرسال عبر error output |
+
+---
+
+## 🧪 وضع Echo للاختبار
+
+أرسل رسالة تبدأ بـ `صدى` أو `echo` على واتساب لاختبار الاتصال:
+
+| ترسل | يردّ البوت |
+|------|-----------|
+| `صدى مرحبا` | `🔁 صدى: مرحبا` |
+| `echo hello world` | `🔁 Echo: hello world` |
+| `صدى` (فارغة) | `🔁 صدى: (رسالة فارغة)` |
+
+مفيد للتحقق من أن الـ Webhook يصل والرد يُرسَل بنجاح.
 
 ---
 
@@ -74,43 +99,64 @@
 
 في كل عقدة Handle، حدّد `replyType` بالقيمة المناسبة وأضف الحقل المطلوب:
 
-### مثال: الرد على صورة بصورة أخرى
-
-في عقدة **🖼️ Handle Image**، عدّل الكود:
+### الرد بصورة
 ```javascript
 return {
-  sessionId,
-  phoneNumber: phone,
-  replyType: 'image',                              // ← غيّر من 'text' إلى 'image'
-  replyImageUrl: 'https://example.com/reply.jpg', // ← أضف رابط الصورة
-  replyCaption: 'هذه صورة رد!',                   // ← اختياري
-  receivedMediaUrl: mediaUrl
+  sessionId, phoneNumber: phone,
+  replyType: 'image',
+  replyImageUrl: 'https://example.com/photo.jpg',
+  replyCaption: 'إليك الصورة!'
 };
 ```
 
-### مثال: الرد على مستند بمستند آخر
-
-في عقدة **📄 Handle Document**:
+### الرد بفيديو
 ```javascript
 return {
-  sessionId,
-  phoneNumber: phone,
-  replyType: 'document',
-  replyFileUrl: 'https://example.com/reply.pdf',
-  replyFileName: 'document.pdf',
-  replyCaption: 'إليك الملف المطلوب',
-  receivedMediaUrl: mediaUrl
+  sessionId, phoneNumber: phone,
+  replyType: 'video',
+  replyVideoUrl: 'https://example.com/video.mp4',
+  replyCaption: 'شاهد هذا الفيديو!'
 };
 ```
 
-### مثال: الرد بملف صوتي
-
+### الرد بملف صوتي
 ```javascript
 return {
-  sessionId,
-  phoneNumber: phone,
+  sessionId, phoneNumber: phone,
   replyType: 'audio',
-  replyAudioUrl: 'https://example.com/reply.mp3'
+  replyAudioUrl: 'https://example.com/audio.mp3'
+};
+```
+
+### الرد بمستند
+```javascript
+return {
+  sessionId, phoneNumber: phone,
+  replyType: 'document',
+  replyFileUrl: 'https://example.com/file.pdf',
+  replyFileName: 'document.pdf',
+  replyCaption: 'إليك الملف المطلوب'
+};
+```
+
+### الرد بملصق
+```javascript
+return {
+  sessionId, phoneNumber: phone,
+  replyType: 'sticker',
+  replyImageUrl: 'https://example.com/image.png'
+  // يُحوَّل تلقائياً إلى ملصق واتساب
+};
+```
+
+### الرد بموقع جغرافي
+```javascript
+return {
+  sessionId, phoneNumber: phone,
+  replyType: 'location',
+  replyLat: 24.7136,
+  replyLng: 46.6753,
+  replyLocationDesc: 'الرياض — المملكة العربية السعودية'
 };
 ```
 
@@ -125,7 +171,7 @@ return {
 
 ### 2. مفتاح API (Credential)
 
-في أي عقدة إرسال (📤/🖼️/🎵/📄)، أضف credential من نوع **HTTP Header Auth**:
+في أي عقدة إرسال، أضف credential من نوع **HTTP Header Auth**:
 - **Name**: `X-API-Key`
 - **Value**: مفتاح الـ API من صفحة **مفاتيح API** في لوحة التحكم
 
@@ -141,6 +187,7 @@ return {
 4. أضف الـ credential (مفتاح API) كما هو موضح أعلاه
 5. فعّل الورك فلو من زر التفعيل في أعلى اليمين
 6. انسخ رابط الـ Webhook والصقه في إعدادات الجلسة
+7. **اختبر**: أرسل `صدى مرحبا` على واتساب وتحقق من الرد
 
 ---
 
@@ -148,13 +195,13 @@ return {
 
 | النوع | القيمة | الاستقبال | الإرسال |
 |-------|--------|-----------|---------|
-| نص | `chat` | ✅ | ✅ (`replyType: 'text'`) |
+| نص | `chat` | ✅ + Echo | ✅ (`replyType: 'text'`) |
 | صورة | `image` | ✅ | ✅ (`replyType: 'image'`) |
-| فيديو | `video` | ✅ | ✅ (أرسله كـ document) |
+| فيديو | `video` | ✅ | ✅ (`replyType: 'video'`) |
 | صوت / رسالة صوتية | `audio` / `ptt` | ✅ | ✅ (`replyType: 'audio'`) |
 | مستند | `document` | ✅ | ✅ (`replyType: 'document'`) |
-| ملصق | `sticker` | ✅ (fallback) | — |
-| موقع | `location` | ✅ (fallback) | — |
+| ملصق | `sticker` | ✅ | ✅ (`replyType: 'sticker'`) |
+| موقع | `location` | ✅ + Google Maps | ✅ (`replyType: 'location'`) |
 
 ---
 
@@ -168,12 +215,15 @@ return {
     "type": "chat",
     "from": "966501234567@c.us",
     "to": "966509876543@c.us",
-    "body": "مرحبا",
+    "body": "صدى مرحبا",
     "timestamp": 1706000000,
     "mediaUrl": null,
     "fileName": null,
     "caption": null,
-    "mimetype": null
+    "mimetype": null,
+    "lat": null,
+    "lng": null,
+    "loc": null
   }
 }
 ```
@@ -182,13 +232,16 @@ return {
 |-------|-------|
 | `event` | دائماً `"message.received"` |
 | `sessionId` | معرّف الجلسة التي استقبلت الرسالة |
-| `data.type` | نوع الرسالة: `chat` / `image` / `video` / `audio` / `ptt` / `document` |
+| `data.type` | نوع الرسالة: `chat` / `image` / `video` / `audio` / `ptt` / `document` / `sticker` / `location` |
 | `data.from` | رقم المُرسِل بصيغة `966501234567@c.us` |
 | `data.body` | نص الرسالة (فارغ للوسائط) |
 | `data.mediaUrl` | رابط الوسائط إن وُجدت |
 | `data.fileName` | اسم الملف للمستندات |
 | `data.caption` | تعليق الوسائط |
 | `data.mimetype` | نوع الملف (مثل `image/jpeg`) |
+| `data.lat` | خط العرض (للمواقع فقط) |
+| `data.lng` | خط الطول (للمواقع فقط) |
+| `data.loc` | وصف الموقع (للمواقع فقط) |
 
 ---
 
@@ -196,5 +249,7 @@ return {
 
 - **عقدة Wait**: التأخير 2 ثانية يُقلّل من خطر حظر رقمك من واتساب.
 - **Respond 200 OK**: يجب أن يكون أول رد للخادم، وإلا سيُعيد الخادم إرسال الرسالة.
+- **⚠️ Log Send Error**: تتصل بجميع عقد الإرسال عبر error output — أي فشل في الإرسال يُسجَّل تلقائياً.
+- **وضع Echo**: مثالي لاختبار الربط بدون الحاجة لكتابة منطق مخصص.
+- **الملصقات**: أي صورة PNG/JPG/WebP تُحوَّل تلقائياً عبر الـ API.
 - كل جلسة واتساب لها Webhook منفصل يمكنك توجيهها لورك فلوهات مختلفة.
-- لإرسال فيديو: استخدم `replyType: 'document'` مع رابط الفيديو واسم الملف — واتساب يُشغّله تلقائياً.
