@@ -51,144 +51,46 @@
     },
     {
       "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.category }}",
         "rules": {
-          "values": [
+          "rules": [
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "text",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Text"
+              "value2": "text",
+              "output": 0
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "image",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Image"
+              "value2": "image",
+              "output": 1
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "video",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Video"
+              "value2": "video",
+              "output": 2
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "audio",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Audio"
+              "value2": "audio",
+              "output": 3
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "document",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Document"
+              "value2": "document",
+              "output": 4
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "sticker",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Sticker"
+              "value2": "sticker",
+              "output": 5
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "location",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Location"
+              "value2": "location",
+              "output": 6
             }
           ]
         },
-        "options": {
-          "fallbackOutput": "extra"
-        }
+        "fallbackOutput": 7
       },
       "id": "node-switch",
       "name": "🔀 Route by Message Type",
       "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
+      "typeVersion": 1,
       "position": [
         680,
         780
@@ -325,144 +227,46 @@
     },
     {
       "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.replyType }}",
         "rules": {
-          "values": [
+          "rules": [
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.replyType }}",
-                    "rightValue": "text",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Text"
+              "value2": "text",
+              "output": 0
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.replyType }}",
-                    "rightValue": "image",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Image"
+              "value2": "image",
+              "output": 1
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.replyType }}",
-                    "rightValue": "video",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Video"
+              "value2": "video",
+              "output": 2
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.replyType }}",
-                    "rightValue": "audio",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Audio"
+              "value2": "audio",
+              "output": 3
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.replyType }}",
-                    "rightValue": "document",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Document"
+              "value2": "document",
+              "output": 4
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.replyType }}",
-                    "rightValue": "sticker",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Sticker"
+              "value2": "sticker",
+              "output": 5
             },
             {
-              "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.replyType }}",
-                    "rightValue": "location",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "caseSensitive": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "Location"
+              "value2": "location",
+              "output": 6
             }
           ]
         },
-        "options": {
-          "fallbackOutput": "extra"
-        }
+        "fallbackOutput": 7
       },
       "id": "node-switch-reply",
       "name": "🔀 Route by Reply Type",
       "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
+      "typeVersion": 1,
       "position": [
         1560,
         880
