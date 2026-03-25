@@ -197,20 +197,6 @@
     },
     {
       "parameters": {
-        "jsCode": "// ─── Merge all handler outputs ───\nreturn $json;"
-      },
-      "id": "node-merge",
-      "name": "🔗 Merge All Replies",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        1160,
-        880
-      ],
-      "notes": "Single merge point. All 7 type handlers connect here."
-    },
-    {
-      "parameters": {
         "resume": "timeInterval",
         "amount": 2,
         "unit": "seconds"
@@ -611,7 +597,7 @@
       "main": [
         [
           {
-            "node": "🔗 Merge All Replies",
+            "node": "⏱️ Wait 2 Seconds",
             "type": "main",
             "index": 0
           }
@@ -622,9 +608,9 @@
       "main": [
         [
           {
-            "node": "🔗 Merge All Replies",
+            "node": "⏱️ Wait 2 Seconds",
             "type": "main",
-            "index": 1
+            "index": 0
           }
         ]
       ]
@@ -633,9 +619,9 @@
       "main": [
         [
           {
-            "node": "🔗 Merge All Replies",
+            "node": "⏱️ Wait 2 Seconds",
             "type": "main",
-            "index": 2
+            "index": 0
           }
         ]
       ]
@@ -644,9 +630,9 @@
       "main": [
         [
           {
-            "node": "🔗 Merge All Replies",
+            "node": "⏱️ Wait 2 Seconds",
             "type": "main",
-            "index": 3
+            "index": 0
           }
         ]
       ]
@@ -655,9 +641,9 @@
       "main": [
         [
           {
-            "node": "🔗 Merge All Replies",
+            "node": "⏱️ Wait 2 Seconds",
             "type": "main",
-            "index": 4
+            "index": 0
           }
         ]
       ]
@@ -666,25 +652,14 @@
       "main": [
         [
           {
-            "node": "🔗 Merge All Replies",
+            "node": "⏱️ Wait 2 Seconds",
             "type": "main",
-            "index": 5
+            "index": 0
           }
         ]
       ]
     },
     "📍 Handle Location": {
-      "main": [
-        [
-          {
-            "node": "🔗 Merge All Replies",
-            "type": "main",
-            "index": 6
-          }
-        ]
-      ]
-    },
-    "🔗 Merge All Replies": {
       "main": [
         [
           {
