@@ -262,6 +262,19 @@
         }
       },
       "notes": "Use this node to send PDF, DOCX, or any document. Set sendFileUrl and sendFileName upstream."
+    },
+    {
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 2,
+        "unit": "seconds"
+      },
+      "id": "node-wait",
+      "name": "⏱️ Wait 2 Seconds",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1280, 520],
+      "notes": "Adds a 2-second delay before sending the reply. Reduces the risk of being flagged as a bot by WhatsApp."
     }
   ],
   "connections": {
@@ -295,6 +308,13 @@
     "🎵 Handle Audio / Voice": { "main": [[{ "node": "🔗 Merge All Replies", "type": "main", "index": 3 }]] },
     "📄 Handle Document":      { "main": [[{ "node": "🔗 Merge All Replies", "type": "main", "index": 4 }]] },
     "🔗 Merge All Replies": {
+      "main": [
+        [
+          { "node": "⏱️ Wait 2 Seconds", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "⏱️ Wait 2 Seconds": {
       "main": [
         [
           { "node": "📤 Send Text Reply", "type": "main", "index": 0 }
