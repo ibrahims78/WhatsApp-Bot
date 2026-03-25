@@ -138,7 +138,7 @@ export default function ApiKeys() {
                       <Key className="w-4 h-4 text-muted-foreground" />
                       {k.name}
                     </TableCell>
-                    <TableCell className="font-mono text-sm text-muted-foreground">{k.keyPrefix}••••••••</TableCell>
+                    <TableCell className="font-mono text-sm text-muted-foreground" dir="ltr">{k.keyPrefix}••••••••</TableCell>
                     <TableCell className="text-muted-foreground">{new Date(k.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell className="text-end">
                       <Button 

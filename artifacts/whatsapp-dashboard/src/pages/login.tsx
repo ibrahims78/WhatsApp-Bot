@@ -93,6 +93,7 @@ export default function Login() {
                         <Input 
                           placeholder="admin" 
                           {...field} 
+                          dir="ltr"
                           className="h-12 bg-background/50 border-border/50 focus:bg-background transition-colors"
                         />
                       </FormControl>

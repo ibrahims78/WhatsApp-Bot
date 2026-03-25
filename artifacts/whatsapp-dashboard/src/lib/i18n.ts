@@ -63,6 +63,16 @@ export const translations = {
     sess_empty_title: "No sessions found",
     sess_empty_desc: "Create your first WhatsApp session to get started.",
     sess_not_found: "Session not found",
+    sess_status_notLogged: "Not Logged",
+    
+    // Chart days
+    day_mon: "Mon",
+    day_tue: "Tue",
+    day_wed: "Wed",
+    day_thu: "Thu",
+    day_fri: "Fri",
+    day_sat: "Sat",
+    day_sun: "Sun",
 
     // Session Details
     sd_overview: "Overview",
@@ -199,6 +209,16 @@ export const translations = {
     sess_empty_title: "لا توجد جلسات",
     sess_empty_desc: "أنشئ أول جلسة واتساب للبدء.",
     sess_not_found: "الجلسة غير موجودة",
+    sess_status_notLogged: "غير مسجل",
+    
+    // Chart days
+    day_mon: "الاثنين",
+    day_tue: "الثلاثاء",
+    day_wed: "الأربعاء",
+    day_thu: "الخميس",
+    day_fri: "الجمعة",
+    day_sat: "السبت",
+    day_sun: "الأحد",
 
     // Session Details
     sd_overview: "نظرة عامة",

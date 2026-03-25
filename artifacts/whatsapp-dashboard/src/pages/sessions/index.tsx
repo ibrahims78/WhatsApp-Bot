@@ -101,7 +101,7 @@ export default function Sessions() {
                       <div>
                         <CardTitle className="text-lg">{session.name}</CardTitle>
                         <p className="text-sm text-muted-foreground mt-0.5 font-mono">
-                          {session.phoneNumber || 'No number'}
+                          {session.phoneNumber || t('sess_no_number')}
                         </p>
                       </div>
                     </div>
@@ -110,8 +110,8 @@ export default function Sessions() {
                 <CardContent className="pt-6 flex-1">
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-sm font-medium text-muted-foreground">{t('status')}</span>
-                    <Badge variant="outline" className={`${getStatusColor(session.status)} capitalize px-3 py-1`}>
-                      {session.status}
+                    <Badge variant="outline" className={`${getStatusColor(session.status)} px-3 py-1`}>
+                      {t(`sess_status_${session.status}` as Parameters<typeof getTranslation>[1]) || session.status}
                     </Badge>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mt-6">

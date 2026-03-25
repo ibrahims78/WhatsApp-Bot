@@ -152,7 +152,7 @@ export default function SessionDetail() {
               <h1 className="text-2xl font-bold tracking-tight">{session.name}</h1>
               <div className="flex items-center gap-3 mt-1">
                 <span className="text-muted-foreground font-mono text-sm">{session.phoneNumber || t('sess_no_number')}</span>
-                <Badge variant={session.status === 'connected' ? 'default' : session.status === 'connecting' ? 'outline' : 'secondary'} className="capitalize">
+                <Badge variant={session.status === 'connected' ? 'default' : session.status === 'connecting' ? 'outline' : 'secondary'}>
                   {t(`sess_status_${session.status}` as any) || session.status}
                 </Badge>
               </div>

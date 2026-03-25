@@ -116,7 +116,7 @@ export default function SendMessage() {
                   <FormField control={form.control} name="number" render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t('send_recipient')}</FormLabel>
-                      <FormControl><Input placeholder="e.g. 1234567890" {...field} className="h-12 bg-background" /></FormControl>
+                      <FormControl><Input placeholder="e.g. 1234567890" {...field} dir="ltr" className="h-12 bg-background" /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -149,7 +149,7 @@ export default function SendMessage() {
                   <FormField control={form.control} name="mediaUrl" render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t('send_media_url')}</FormLabel>
-                      <FormControl><Input placeholder="https://example.com/media.jpg" {...field} className="h-12 bg-background" /></FormControl>
+                      <FormControl><Input placeholder="https://example.com/media.jpg" {...field} dir="ltr" className="h-12 bg-background" /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />

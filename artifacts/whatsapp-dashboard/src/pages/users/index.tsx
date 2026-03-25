@@ -137,9 +137,9 @@ export default function Users() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={u.role === 'admin' ? 'default' : 'secondary'} className="capitalize">
+                      <Badge variant={u.role === 'admin' ? 'default' : 'secondary'}>
                         {u.role === 'admin' && <Shield className="w-3 h-3 me-1"/>}
-                        {u.role}
+                        {t(u.role === 'admin' ? 'user_admin' : 'user_employee')}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground">{new Date(u.createdAt).toLocaleDateString()}</TableCell>

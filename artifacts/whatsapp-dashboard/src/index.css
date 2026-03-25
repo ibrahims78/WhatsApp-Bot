@@ -172,6 +172,14 @@
   @apply bg-card/60 backdrop-blur-xl border-card-border/50 shadow-xl;
 }
 
+/* Hover elevate utility */
+.hover-elevate {
+  @apply transition-all duration-200 ease-out;
+}
+.hover-elevate:hover {
+  @apply -translate-y-0.5 shadow-lg;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

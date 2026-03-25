@@ -18,15 +18,14 @@ export default function Dashboard() {
   const totalSent = sessions?.reduce((acc, curr) => acc + (curr.totalMessagesSent || 0), 0) || 0;
   const totalReceived = sessions?.reduce((acc, curr) => acc + (curr.totalMessagesReceived || 0), 0) || 0;
 
-  // Mock data for chart - in a real app this would come from an API
   const chartData = [
-    { name: 'Mon', sent: 120, received: 98 },
-    { name: 'Tue', sent: 230, received: 150 },
-    { name: 'Wed', sent: 340, received: 210 },
-    { name: 'Thu', sent: 290, received: 180 },
-    { name: 'Fri', sent: 450, received: 320 },
-    { name: 'Sat', sent: 180, received: 140 },
-    { name: 'Sun', sent: 100, received: 80 },
+    { name: t('day_mon'), sent: 120, received: 98 },
+    { name: t('day_tue'), sent: 230, received: 150 },
+    { name: t('day_wed'), sent: 340, received: 210 },
+    { name: t('day_thu'), sent: 290, received: 180 },
+    { name: t('day_fri'), sent: 450, received: 320 },
+    { name: t('day_sat'), sent: 180, received: 140 },
+    { name: t('day_sun'), sent: 100, received: 80 },
   ];
 
   return (
