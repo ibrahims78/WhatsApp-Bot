@@ -358,18 +358,22 @@ export default function SessionDetail() {
                   <p className="text-sm font-semibold text-muted-foreground mb-2">{t('sd_webhook_payload')}</p>
                   <div className="relative group">
                     <pre className="bg-muted/80 border border-border rounded-lg p-4 text-xs font-mono overflow-x-auto leading-relaxed" dir="ltr">{`{
-  "sessionId": "abc-123",
-  "event": "message",
+  "event": "message.received",
+  "sessionId": "session_abc123",
   "data": {
-    "from": "966501234567@c.us",
-    "body": "Hello!",
     "type": "chat",
+    "from": "966501234567@c.us",
+    "to": "966509876543@c.us",
+    "body": "Hello!",
     "timestamp": 1706000000,
-    "mediaUrl": null
+    "mediaUrl": null,
+    "fileName": null,
+    "caption": null,
+    "mimetype": null
   }
 }`}</pre>
                     <button
-                      onClick={() => { navigator.clipboard.writeText(`{"sessionId":"abc-123","event":"message","data":{"from":"966501234567@c.us","body":"Hello!","type":"chat","timestamp":1706000000,"mediaUrl":null}}`); toast({ title: t('copied') }); }}
+                      onClick={() => { navigator.clipboard.writeText(`{"event":"message.received","sessionId":"session_abc123","data":{"type":"chat","from":"966501234567@c.us","to":"966509876543@c.us","body":"Hello!","timestamp":1706000000,"mediaUrl":null,"fileName":null,"caption":null,"mimetype":null}}`); toast({ title: t('copied') }); }}
                       className="absolute top-2 end-2 p-1.5 rounded-md bg-background border border-border opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted"
                     >
                       <Copy className="w-3.5 h-3.5 text-muted-foreground" />

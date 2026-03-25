@@ -169,7 +169,17 @@ export async function startSession(sessionId: string): Promise<void> {
             triggerWebhook(session.webhookUrl, {
               event: "message.received",
               sessionId,
-              message,
+              data: {
+                type: message.type || "chat",
+                from: message.from || "",
+                to: message.to || "",
+                body: message.body || "",
+                timestamp: message.timestamp || Math.floor(Date.now() / 1000),
+                mediaUrl: message.mediaUrl || null,
+                fileName: message.fileName || null,
+                caption: message.caption || null,
+                mimetype: message.mimetype || null,
+              },
             });
           }
         }

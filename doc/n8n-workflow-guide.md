@@ -117,20 +117,36 @@
 
 ## payload الرسائل الواردة
 
+هذا هو الشكل الحقيقي الذي يُرسله الخادم لـ n8n عند كل رسالة واردة:
+
 ```json
 {
-  "sessionId": "my-session",
+  "event": "message.received",
+  "sessionId": "session_abc123",
   "data": {
     "type": "chat",
     "from": "966501234567@c.us",
+    "to": "966509876543@c.us",
     "body": "مرحبا",
+    "timestamp": 1706000000,
     "mediaUrl": null,
     "fileName": null,
-    "caption": "",
-    "mimetype": ""
+    "caption": null,
+    "mimetype": null
   }
 }
 ```
+
+| الحقل | الوصف |
+|-------|-------|
+| `event` | دائماً `"message.received"` |
+| `sessionId` | معرّف الجلسة الذي أستقبل الرسالة |
+| `data.type` | نوع الرسالة: `chat` / `image` / `video` / `audio` / `ptt` / `document` |
+| `data.from` | رقم المُرسِل بصيغة `966501234567@c.us` |
+| `data.body` | نص الرسالة (فارغ للرسائل الوسائطية) |
+| `data.mediaUrl` | رابط الوسائط إن وُجدت |
+| `data.caption` | تعليق الوسائط |
+| `data.mimetype` | نوع الملف (مثل `image/jpeg`) |
 
 ---
 
