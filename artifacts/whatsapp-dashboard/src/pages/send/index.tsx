@@ -9,7 +9,7 @@ import {
 } from "@workspace/api-client-react";
 import { useAppStore } from "@/store";
 import { getTranslation } from "@/lib/i18n";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,36 +18,53 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Send, FileText, Image as ImageIcon, Video, Music, File } from "lucide-react";
+import { Send, FileText, Image as ImageIcon, Video, Music, File, Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useCallback, useRef, useState } from "react";
 
 const messageTypeIds = ['text', 'image', 'video', 'audio', 'file'] as const;
 const messageTypeIcons = { text: FileText, image: ImageIcon, video: Video, audio: Music, file: File };
+
+const acceptMap: Record<string, string> = {
+  image: "image/jpeg,image/png,image/gif,image/webp",
+  video: "video/mp4,video/quicktime,video/x-msvideo",
+  audio: "audio/mpeg,audio/ogg,audio/wav,audio/x-m4a,audio/mp4",
+  file: "*/*",
+};
 
 const sendSchema = z.object({
   sessionId: z.string().min(1, "Session is required"),
   number: z.string().min(1, "Recipient number is required"),
   type: z.enum(['text', 'image', 'video', 'audio', 'file']),
   content: z.string().optional(),
-  mediaUrl: z.string().url().optional().or(z.literal("")),
+  mediaData: z.string().optional(),
   fileName: z.string().optional(),
 }).superRefine((val, ctx) => {
   if (val.type === 'text' && !val.content) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Message content is required", path: ['content'] });
   }
-  if (val.type !== 'text' && !val.mediaUrl) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Media URL is required", path: ['mediaUrl'] });
-  }
-  if (val.type === 'file' && !val.fileName) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "File name is required", path: ['fileName'] });
+  if (val.type !== 'text' && !val.mediaData) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please upload a file", path: ['mediaData'] });
   }
 });
+
+function fileToDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 export default function SendMessage() {
   const { data: sessions } = useListSessions();
   const { language } = useAppStore();
   const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key);
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedFile, setUploadedFile] = useState<{ name: string; size: string; preview?: string } | null>(null);
+  const [isConverting, setIsConverting] = useState(false);
 
   const sendTextMut = useSendText();
   const sendImageMut = useSendImage();
@@ -57,17 +74,49 @@ export default function SendMessage() {
 
   const form = useForm<z.infer<typeof sendSchema>>({
     resolver: zodResolver(sendSchema),
-    defaultValues: { type: 'text', content: "", mediaUrl: "", fileName: "" }
+    defaultValues: { type: 'text', content: "", mediaData: "", fileName: "" }
   });
 
   const selectedType = form.watch("type");
   const isPending = sendTextMut.isPending || sendImageMut.isPending || sendVideoMut.isPending || sendAudioMut.isPending || sendFileMut.isPending;
 
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsConverting(true);
+    try {
+      const dataUrl = await fileToDataUrl(file);
+      form.setValue("mediaData", dataUrl);
+      form.setValue("fileName", file.name);
+      const sizeKb = file.size / 1024;
+      const sizeStr = sizeKb > 1024 ? `${(sizeKb / 1024).toFixed(1)} MB` : `${sizeKb.toFixed(0)} KB`;
+      const preview = file.type.startsWith("image/") ? dataUrl : undefined;
+      setUploadedFile({ name: file.name, size: sizeStr, preview });
+    } catch {
+      toast({ variant: "destructive", title: t('error'), description: "Failed to read file" });
+    } finally {
+      setIsConverting(false);
+    }
+  }, [form, toast, t]);
+
+  const clearFile = () => {
+    setUploadedFile(null);
+    form.setValue("mediaData", "");
+    form.setValue("fileName", "");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const onTypeChange = (val: string) => {
+    form.setValue("type", val as any);
+    clearFile();
+  };
+
   const onSubmit = (values: z.infer<typeof sendSchema>) => {
     const commonOpts = {
       onSuccess: () => {
         toast({ title: t('success') });
-        form.reset({ ...values, content: "", mediaUrl: "" });
+        form.reset({ type: values.type, content: "", mediaData: "", fileName: "" });
+        clearFile();
       },
       onError: (e: any) => toast({ variant: "destructive", title: t('error'), description: e.error || "Failed" })
     };
@@ -75,15 +124,17 @@ export default function SendMessage() {
     if (values.type === 'text') {
       sendTextMut.mutate({ data: { sessionId: values.sessionId, number: values.number, message: values.content! } }, commonOpts);
     } else if (values.type === 'image') {
-      sendImageMut.mutate({ data: { sessionId: values.sessionId, number: values.number, imageUrl: values.mediaUrl!, caption: values.content } }, commonOpts);
+      sendImageMut.mutate({ data: { sessionId: values.sessionId, number: values.number, imageUrl: values.mediaData!, caption: values.content } }, commonOpts);
     } else if (values.type === 'video') {
-      sendVideoMut.mutate({ data: { sessionId: values.sessionId, number: values.number, videoUrl: values.mediaUrl!, caption: values.content } }, commonOpts);
+      sendVideoMut.mutate({ data: { sessionId: values.sessionId, number: values.number, videoUrl: values.mediaData!, caption: values.content } }, commonOpts);
     } else if (values.type === 'audio') {
-      sendAudioMut.mutate({ data: { sessionId: values.sessionId, number: values.number, audioUrl: values.mediaUrl! } }, commonOpts);
+      sendAudioMut.mutate({ data: { sessionId: values.sessionId, number: values.number, audioUrl: values.mediaData! } }, commonOpts);
     } else if (values.type === 'file') {
-      sendFileMut.mutate({ data: { sessionId: values.sessionId, number: values.number, fileUrl: values.mediaUrl!, fileName: values.fileName!, caption: values.content } }, commonOpts);
+      sendFileMut.mutate({ data: { sessionId: values.sessionId, number: values.number, fileUrl: values.mediaData!, fileName: values.fileName!, caption: values.content } }, commonOpts);
     }
   };
+
+  const uploadHintKey = `send_upload_hint_${selectedType === 'file' ? 'file' : selectedType}` as Parameters<typeof getTranslation>[1];
 
   return (
     <AppLayout>
@@ -116,7 +167,7 @@ export default function SendMessage() {
                   <FormField control={form.control} name="number" render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t('send_recipient')}</FormLabel>
-                      <FormControl><Input placeholder="e.g. 1234567890" {...field} dir="ltr" className="h-12 bg-background" /></FormControl>
+                      <FormControl><Input placeholder="e.g. 966501234567" {...field} dir="ltr" className="h-12 bg-background" /></FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -133,7 +184,7 @@ export default function SendMessage() {
                         return (
                           <div 
                             key={typeId} 
-                            onClick={() => field.onChange(typeId)}
+                            onClick={() => onTypeChange(typeId)}
                             className={`flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all ${isSelected ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-background hover:bg-muted'}`}
                           >
                             <Icon className="w-5 h-5 sm:w-6 sm:h-6 mb-2" />
@@ -146,20 +197,57 @@ export default function SendMessage() {
                 )} />
 
                 {selectedType !== 'text' && (
-                  <FormField control={form.control} name="mediaUrl" render={({ field }) => (
+                  <FormField control={form.control} name="mediaData" render={() => (
                     <FormItem>
-                      <FormLabel>{t('send_media_url')}</FormLabel>
-                      <FormControl><Input placeholder="https://example.com/media.jpg" {...field} dir="ltr" className="h-12 bg-background" /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                )}
+                      <FormLabel>{t('send_upload_file')}</FormLabel>
+                      <FormControl>
+                        <div>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept={acceptMap[selectedType] || "*/*"}
+                            onChange={handleFileChange}
+                            className="hidden"
+                            id="file-upload-input"
+                          />
 
-                {selectedType === 'file' && (
-                  <FormField control={form.control} name="fileName" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('send_file_name')}</FormLabel>
-                      <FormControl><Input placeholder="document.pdf" {...field} className="h-12 bg-background" /></FormControl>
+                          {!uploadedFile ? (
+                            <label
+                              htmlFor="file-upload-input"
+                              className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-xl cursor-pointer hover:bg-muted/50 transition-colors bg-background"
+                            >
+                              {isConverting ? (
+                                <p className="text-sm text-muted-foreground animate-pulse">{t('send_uploading')}</p>
+                              ) : (
+                                <>
+                                  <Upload className="w-8 h-8 mb-2 text-muted-foreground" />
+                                  <p className="text-sm font-medium text-muted-foreground">{t('send_upload_file')}</p>
+                                  <p className="text-xs text-muted-foreground/60 mt-1">{t(uploadHintKey)}</p>
+                                </>
+                              )}
+                            </label>
+                          ) : (
+                            <div className="flex items-center gap-4 p-4 border border-border rounded-xl bg-background">
+                              {uploadedFile.preview ? (
+                                <img src={uploadedFile.preview} alt="preview" className="w-14 h-14 object-cover rounded-lg flex-shrink-0" />
+                              ) : (
+                                <div className="w-14 h-14 flex items-center justify-center rounded-lg bg-primary/10 flex-shrink-0">
+                                  {selectedType === 'video' && <Video className="w-6 h-6 text-primary" />}
+                                  {selectedType === 'audio' && <Music className="w-6 h-6 text-primary" />}
+                                  {selectedType === 'file' && <File className="w-6 h-6 text-primary" />}
+                                </div>
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{uploadedFile.name}</p>
+                                <p className="text-xs text-muted-foreground mt-1">{uploadedFile.size}</p>
+                              </div>
+                              <Button type="button" variant="ghost" size="icon" onClick={clearFile} className="flex-shrink-0 rounded-full hover:bg-destructive/10 hover:text-destructive">
+                                <X className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />
@@ -181,7 +269,7 @@ export default function SendMessage() {
                   )} />
                 )}
 
-                <Button type="submit" size="lg" className="w-full text-base font-bold hover-elevate shadow-lg shadow-primary/20" disabled={isPending}>
+                <Button type="submit" size="lg" className="w-full text-base font-bold hover-elevate shadow-lg shadow-primary/20" disabled={isPending || isConverting}>
                   <Send className="w-5 h-5 me-2" />
                   {isPending ? t('loading') : t('send_btn')}
                 </Button>

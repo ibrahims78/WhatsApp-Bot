@@ -98,6 +98,14 @@ export const translations = {
     sd_disconnect_error: "Failed to disconnect",
     sd_webhook_updated: "Webhook updated",
     sd_features_updated: "Features updated",
+    sd_webhook_guide_title: "How to set up the Webhook URL",
+    sd_webhook_guide_step1: "Open n8n and create a new Workflow.",
+    sd_webhook_guide_step2: "Add a Webhook node — set the method to POST.",
+    sd_webhook_guide_step3: "Copy the Webhook URL shown in n8n (starts with https://...).",
+    sd_webhook_guide_step4: "Paste it in the field above and click Save.",
+    sd_webhook_guide_step5: "Activate the n8n workflow (toggle in the top-right).",
+    sd_webhook_note: "The URL is set manually. Each session has its own independent Webhook URL, so you can route different sessions to different n8n workflows.",
+    sd_webhook_payload: "What n8n receives for each message",
     
     // Users
     user_subtitle: "Manage system access and roles",
@@ -118,7 +126,11 @@ export const translations = {
     key_secret_warning: "Store this secret key safely. It will not be shown again!",
     key_empty: "No API keys generated yet.",
     key_name_placeholder: "e.g. Production Server",
-    
+    key_usage_title: "How to use the API",
+    key_usage_desc: "Add this header to every API request instead of logging in each time:",
+    key_usage_example: "Example — send a text message:",
+    key_usage_note: "Replace {SESSION_ID} with the session ID from the Sessions page, and {PHONE} with the recipient's number including country code (e.g. 966501234567).",
+
     // Send
     send_title: "Send Campaign/Message",
     send_subtitle: "Send messages via any connected instance",
@@ -128,6 +140,12 @@ export const translations = {
     send_type: "Message Type",
     send_content: "Message Content",
     send_media_url: "Media URL",
+    send_upload_file: "Upload File",
+    send_upload_hint_image: "JPG, PNG, GIF, WebP — max 10 MB",
+    send_upload_hint_video: "MP4, MOV, AVI — max 50 MB",
+    send_upload_hint_audio: "MP3, OGG, WAV, M4A — max 20 MB",
+    send_upload_hint_file: "PDF, DOCX, XLSX, ZIP, etc. — max 100 MB",
+    send_uploading: "Preparing file...",
     send_caption: "Caption (Optional)",
     send_file_name: "File Name",
     send_btn: "Send Message",
@@ -244,6 +262,14 @@ export const translations = {
     sd_disconnect_error: "فشل قطع الاتصال",
     sd_webhook_updated: "تم تحديث الـ Webhook",
     sd_features_updated: "تم تحديث الميزات",
+    sd_webhook_guide_title: "كيفية إعداد رابط Webhook",
+    sd_webhook_guide_step1: "افتح n8n وأنشئ Workflow جديداً.",
+    sd_webhook_guide_step2: "أضف عقدة Webhook — اضبط الطريقة على POST.",
+    sd_webhook_guide_step3: "انسخ رابط Webhook الظاهر في n8n (يبدأ بـ https://...).",
+    sd_webhook_guide_step4: "الصقه في الحقل أعلاه واضغط حفظ.",
+    sd_webhook_guide_step5: "فعّل سير العمل في n8n (المفتاح في الأعلى اليمين).",
+    sd_webhook_note: "الرابط يُضاف يدوياً. كل جلسة لها رابط Webhook مستقل بحيث يمكنك توجيه جلسات مختلفة إلى سير عمل n8n مختلفة.",
+    sd_webhook_payload: "ما يستقبله n8n عند كل رسالة",
     
     // Users
     user_subtitle: "إدارة صلاحيات الوصول والأدوار",
@@ -264,7 +290,11 @@ export const translations = {
     key_secret_warning: "احفظ هذا المفتاح السري بأمان. لن يتم عرضه مرة أخرى!",
     key_empty: "لا توجد مفاتيح API بعد.",
     key_name_placeholder: "مثال: خادم الإنتاج",
-    
+    key_usage_title: "كيفية استخدام API",
+    key_usage_desc: "أضف هذا الترويسة (Header) لكل طلب API بدلاً من تسجيل الدخول في كل مرة:",
+    key_usage_example: "مثال — إرسال رسالة نصية:",
+    key_usage_note: "استبدل {SESSION_ID} بمعرّف الجلسة من صفحة الجلسات، و{PHONE} برقم المستلم مع رمز الدولة (مثال: 966501234567).",
+
     // Send
     send_title: "إرسال حملة/رسالة",
     send_subtitle: "إرسال رسائل عبر أي جلسة متصلة",
@@ -274,6 +304,12 @@ export const translations = {
     send_type: "نوع الرسالة",
     send_content: "محتوى الرسالة",
     send_media_url: "رابط الوسائط",
+    send_upload_file: "رفع ملف",
+    send_upload_hint_image: "JPG, PNG, GIF, WebP — بحد أقصى 10 MB",
+    send_upload_hint_video: "MP4, MOV, AVI — بحد أقصى 50 MB",
+    send_upload_hint_audio: "MP3, OGG, WAV, M4A — بحد أقصى 20 MB",
+    send_upload_hint_file: "PDF, DOCX, XLSX, ZIP وغيرها — بحد أقصى 100 MB",
+    send_uploading: "جاري تحضير الملف...",
     send_caption: "التعليق (اختياري)",
     send_file_name: "اسم الملف",
     send_btn: "إرسال الرسالة",

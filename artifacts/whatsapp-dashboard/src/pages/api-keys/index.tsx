@@ -5,7 +5,7 @@ import { getTranslation } from "@/lib/i18n";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Trash2, Key, Copy, AlertTriangle } from "lucide-react";
+import { Plus, Trash2, Key, Copy, AlertTriangle, Code2, Terminal } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,22 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 const keySchema = z.object({
   name: z.string().min(1, "Name is required"),
 });
+
+function CodeBlock({ code, onCopy }: { code: string; onCopy: () => void }) {
+  return (
+    <div className="relative group">
+      <pre className="bg-muted/80 border border-border rounded-lg p-4 text-xs font-mono overflow-x-auto leading-relaxed" dir="ltr">
+        {code}
+      </pre>
+      <button
+        onClick={onCopy}
+        className="absolute top-2 end-2 p-1.5 rounded-md bg-background border border-border opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted"
+      >
+        <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+      </button>
+    </div>
+  );
+}
 
 export default function ApiKeys() {
   const { data: keys, isLoading } = useListApiKeys();
@@ -57,6 +73,13 @@ export default function ApiKeys() {
     toast({ title: t('copied') });
   };
 
+  const curlExample = `curl -X POST https://your-app.replit.app/api/sessions/{SESSION_ID}/send/text \\
+  -H "X-API-Key: sk_xxxxxxxxxxxxxxxx" \\
+  -H "Content-Type: application/json" \\
+  -d '{"number": "{PHONE}", "message": "Hello from API!"}'`;
+
+  const headerExample = `X-API-Key: sk_xxxxxxxxxxxxxxxx`;
+
   return (
     <AppLayout>
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -89,7 +112,7 @@ export default function ApiKeys() {
                     <AlertDescription>{t('key_secret_warning')}</AlertDescription>
                   </Alert>
                   <div className="flex gap-2 items-center p-3 bg-muted rounded-lg font-mono text-sm border border-border">
-                    <code className="flex-1 break-all">{newSecret}</code>
+                    <code className="flex-1 break-all" dir="ltr">{newSecret}</code>
                     <Button variant="ghost" size="icon" onClick={() => copyToClipboard(newSecret)}>
                       <Copy className="h-4 w-4" />
                     </Button>
@@ -102,7 +125,7 @@ export default function ApiKeys() {
                     <FormField control={form.control} name="name" render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t('name')}</FormLabel>
-                        <FormControl><Input placeholder="e.g. Production Server" {...field} /></FormControl>
+                        <FormControl><Input placeholder={t('key_name_placeholder')} {...field} /></FormControl>
                         <FormMessage />
                       </FormItem>
                     )} />
@@ -134,9 +157,11 @@ export default function ApiKeys() {
                   <TableRow><TableCell colSpan={4} className="text-center py-8 text-muted-foreground">{t('key_empty')}</TableCell></TableRow>
                 ) : keys?.map(k => (
                   <TableRow key={k.id} className="hover:bg-muted/30">
-                    <TableCell className="font-medium flex items-center gap-3">
-                      <Key className="w-4 h-4 text-muted-foreground" />
-                      {k.name}
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-3">
+                        <Key className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        {k.name}
+                      </div>
                     </TableCell>
                     <TableCell className="font-mono text-sm text-muted-foreground" dir="ltr">{k.keyPrefix}••••••••</TableCell>
                     <TableCell className="text-muted-foreground">{new Date(k.createdAt).toLocaleDateString()}</TableCell>
@@ -159,6 +184,58 @@ export default function ApiKeys() {
                 ))}
               </TableBody>
             </Table>
+          </CardContent>
+        </Card>
+
+        {/* Usage Guide */}
+        <Card className="glass-card border-primary/20">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Terminal className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">{t('key_usage_title')}</CardTitle>
+                <CardDescription className="mt-0.5">{t('key_usage_desc')}</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            <div>
+              <p className="text-sm font-semibold text-muted-foreground mb-2 flex items-center gap-2">
+                <Code2 className="w-4 h-4" />
+                Header
+              </p>
+              <CodeBlock code={headerExample} onCopy={() => copyToClipboard(headerExample)} />
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-muted-foreground mb-2 flex items-center gap-2">
+                <Code2 className="w-4 h-4" />
+                {t('key_usage_example')}
+              </p>
+              <CodeBlock code={curlExample} onCopy={() => copyToClipboard(curlExample)} />
+              <p className="text-xs text-muted-foreground mt-2">{t('key_usage_note')}</p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-3 pt-2">
+              {[
+                { method: "GET", path: "/api/sessions", desc: language === 'ar' ? "جلب كل الجلسات" : "List all sessions" },
+                { method: "POST", path: "/api/sessions/:id/send/text", desc: language === 'ar' ? "إرسال رسالة نصية" : "Send text message" },
+                { method: "POST", path: "/api/sessions/:id/send/image", desc: language === 'ar' ? "إرسال صورة" : "Send image" },
+                { method: "POST", path: "/api/sessions/:id/send/file", desc: language === 'ar' ? "إرسال مستند" : "Send document" },
+              ].map(ep => (
+                <div key={ep.path} className="flex items-start gap-3 p-3 rounded-lg border border-border bg-muted/30">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-md font-mono flex-shrink-0 ${ep.method === 'GET' ? 'bg-blue-500/15 text-blue-600' : 'bg-green-500/15 text-green-600'}`} dir="ltr">
+                    {ep.method}
+                  </span>
+                  <div className="min-w-0">
+                    <code className="text-xs text-muted-foreground break-all" dir="ltr">{ep.path}</code>
+                    <p className="text-xs text-foreground mt-0.5">{ep.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>

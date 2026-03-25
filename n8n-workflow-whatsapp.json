@@ -1,0 +1,155 @@
+{
+  "name": "WhatsApp Bot - Receive & Reply",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-incoming",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "node-webhook",
+      "name": "Receive WhatsApp Message",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "whatsapp-incoming",
+      "notes": "Paste this URL in the session's Webhook URL field inside the WhatsApp Manager dashboard."
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "OK",
+        "options": {}
+      },
+      "id": "node-respond",
+      "name": "Respond 200 OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [460, 160],
+      "notes": "Immediately acknowledge receipt so the WhatsApp server doesn't retry."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-text",
+              "leftValue": "={{ $json.body.data.type }}",
+              "rightValue": "chat",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "node-if-text",
+      "name": "Is Text Message?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [460, 380],
+      "notes": "Branch: text messages go left, media/other go right."
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body.data.body || '';\nconst from = $json.body.data.from || '';\nconst sessionId = $json.body.sessionId || '';\n\n// Extract just the phone number (remove @c.us)\nconst phoneNumber = from.replace('@c.us', '');\n\n// Simple keyword detection\nconst lowerBody = body.toLowerCase();\nlet replyText = '';\n\nif (lowerBody.includes('hi') || lowerBody.includes('hello') || lowerBody.includes('مرحبا') || lowerBody.includes('هلا')) {\n  replyText = `Hello! 👋 How can I help you today?\\nمرحباً! 👋 كيف يمكنني مساعدتك اليوم؟`;\n} else if (lowerBody.includes('price') || lowerBody.includes('سعر') || lowerBody.includes('كم')) {\n  replyText = `Please contact our sales team for pricing.\\nيرجى التواصل مع فريق المبيعات للاستفسار عن الأسعار.`;\n} else {\n  replyText = `Thank you for your message! We'll get back to you soon.\\nشكراً لتواصلك! سنرد عليك قريباً.`;\n}\n\nreturn { phoneNumber, sessionId, replyText };"
+      },
+      "id": "node-process",
+      "name": "Process & Build Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 280],
+      "notes": "Customize the keyword logic and reply messages here."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://YOUR-APP-DOMAIN/api/sessions/{{ $json.sessionId }}/send/text",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.phoneNumber }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.replyText }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "node-send-reply",
+      "name": "Send WhatsApp Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 280],
+      "notes": "Replace YOUR-APP-DOMAIN with your actual server domain. Set the X-API-Key header in the HTTP Header Auth credential."
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json.body.data || {};\nconst sessionId = $json.body.sessionId || '';\nconsole.log('Non-text message received:', data.type, 'from session:', sessionId);\nreturn { handled: false, type: data.type, sessionId };"
+      },
+      "id": "node-media-log",
+      "name": "Log Media Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 500],
+      "notes": "Extend this node to handle image/video/audio messages as needed."
+    }
+  ],
+  "connections": {
+    "Receive WhatsApp Message": {
+      "main": [
+        [
+          { "node": "Respond 200 OK", "type": "main", "index": 0 },
+          { "node": "Is Text Message?", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Is Text Message?": {
+      "main": [
+        [
+          { "node": "Process & Build Reply", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "Log Media Message", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Process & Build Reply": {
+      "main": [
+        [
+          { "node": "Send WhatsApp Reply", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": ["whatsapp", "bot", "automation"],
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "whatsapp-manager"
+  }
+}

@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "eAriqkwqCK1tDlOLrpaPq"
+uri = "file://n8n-workflow-whatsapp.json"
+type = "unspecified"
+title = "n8n Workflow — WhatsApp Receive & Reply"

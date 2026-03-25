@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { QRCodeSVG } from "qrcode.react";
-import { Smartphone, RefreshCw, PowerOff, Settings, MessageSquare, Activity } from "lucide-react";
+import { Smartphone, RefreshCw, PowerOff, Settings, MessageSquare, Activity, BookOpen, Copy } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
@@ -316,17 +316,66 @@ export default function SessionDetail() {
                 <CardTitle>{t('sd_webhook_url')}</CardTitle>
                 <CardDescription>{t('sd_webhook_desc')}</CardDescription>
               </CardHeader>
-              <CardContent className="flex gap-3">
-                <Input 
-                  value={webhookUrl} 
-                  onChange={(e) => setWebhookUrl(e.target.value)} 
-                  placeholder="https://your-n8n.com/webhook/..."
-                  className="bg-background"
-                  dir="ltr"
-                />
-                <Button onClick={handleWebhookSave} disabled={updateWebhookMutation.isPending}>
-                  {t('save')}
-                </Button>
+              <CardContent className="space-y-5">
+                <div className="flex gap-3">
+                  <Input 
+                    value={webhookUrl} 
+                    onChange={(e) => setWebhookUrl(e.target.value)} 
+                    placeholder="https://your-n8n.com/webhook/..."
+                    className="bg-background"
+                    dir="ltr"
+                  />
+                  <Button onClick={handleWebhookSave} disabled={updateWebhookMutation.isPending}>
+                    {t('save')}
+                  </Button>
+                </div>
+
+                {/* Webhook setup guide */}
+                <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 space-y-4">
+                  <div className="flex items-center gap-2 text-primary font-semibold text-sm">
+                    <BookOpen className="w-4 h-4 flex-shrink-0" />
+                    {t('sd_webhook_guide_title')}
+                  </div>
+                  <ol className="space-y-2">
+                    {([
+                      t('sd_webhook_guide_step1'),
+                      t('sd_webhook_guide_step2'),
+                      t('sd_webhook_guide_step3'),
+                      t('sd_webhook_guide_step4'),
+                      t('sd_webhook_guide_step5'),
+                    ] as string[]).map((step, i) => (
+                      <li key={i} className="flex gap-3 text-sm">
+                        <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
+                        <span className="text-muted-foreground">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <p className="text-xs text-muted-foreground border-t border-primary/10 pt-3">{t('sd_webhook_note')}</p>
+                </div>
+
+                {/* Payload preview */}
+                <div>
+                  <p className="text-sm font-semibold text-muted-foreground mb-2">{t('sd_webhook_payload')}</p>
+                  <div className="relative group">
+                    <pre className="bg-muted/80 border border-border rounded-lg p-4 text-xs font-mono overflow-x-auto leading-relaxed" dir="ltr">{`{
+  "sessionId": "abc-123",
+  "event": "message",
+  "data": {
+    "from": "966501234567@c.us",
+    "body": "Hello!",
+    "type": "chat",
+    "timestamp": 1706000000,
+    "mediaUrl": null
+  }
+}`}</pre>
+                    <button
+                      onClick={() => { navigator.clipboard.writeText(`{"sessionId":"abc-123","event":"message","data":{"from":"966501234567@c.us","body":"Hello!","type":"chat","timestamp":1706000000,"mediaUrl":null}}`); toast({ title: t('copied') }); }}
+                      className="absolute top-2 end-2 p-1.5 rounded-md bg-background border border-border opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted"
+                    >
+                      <Copy className="w-3.5 h-3.5 text-muted-foreground" />
+                    </button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
