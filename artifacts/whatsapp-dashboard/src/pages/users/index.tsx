@@ -41,7 +41,7 @@ export default function Users() {
         form.reset();
         toast({ title: t('success') });
       },
-      onError: (e) => toast({ variant: "destructive", title: t('error'), description: "Failed to create" })
+      onError: (e) => toast({ variant: "destructive", title: t('error'), description: t('user_create_error') })
     }
   });
 
@@ -57,7 +57,7 @@ export default function Users() {
   });
 
   if (currentUser?.role !== 'admin') {
-    return <AppLayout><div className="p-8 text-center text-destructive font-bold text-xl">Access Denied</div></AppLayout>;
+    return <AppLayout><div className="p-8 text-center text-destructive font-bold text-xl">{t('access_denied')}</div></AppLayout>;
   }
 
   return (
@@ -65,8 +65,8 @@ export default function Users() {
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t('nav_users')}</h1>
-            <p className="text-muted-foreground mt-1">Manage system access and roles</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t('nav_users')}</h1>
+            <p className="text-muted-foreground mt-1">{t('user_subtitle')}</p>
           </div>
           
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -118,13 +118,13 @@ export default function Users() {
                 <TableRow>
                   <TableHead className="w-[250px]">{t('user_username')}</TableHead>
                   <TableHead>{t('user_role')}</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="text-right">{t('actions')}</TableHead>
+                  <TableHead>{t('created_at')}</TableHead>
+                  <TableHead className="text-end">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {isLoading ? (
-                  <TableRow><TableCell colSpan={4} className="text-center py-8">Loading...</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={4} className="text-center py-8">{t('loading')}</TableCell></TableRow>
                 ) : users?.map(u => (
                   <TableRow key={u.id} className="hover:bg-muted/30">
                     <TableCell className="font-medium flex items-center gap-3">
@@ -143,13 +143,13 @@ export default function Users() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground">{new Date(u.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-end">
                       <Button 
                         variant="ghost" 
                         size="icon" 
                         className="text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
                         onClick={() => {
-                          if (confirm("Are you sure?")) deleteMutation.mutate({ id: u.id });
+                          if (confirm(t('are_you_sure'))) deleteMutation.mutate({ id: u.id });
                         }}
                         disabled={deleteMutation.isPending || u.id === currentUser.id}
                       >

@@ -33,73 +33,73 @@ export default function Dashboard() {
     <AppLayout>
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t('nav_dashboard')}</h1>
-          <p className="text-muted-foreground mt-2 font-medium">Overview of all your WhatsApp instances</p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t('nav_dashboard')}</h1>
+          <p className="text-muted-foreground mt-2 font-medium">{t('dash_subtitle')}</p>
         </div>
 
         {isLoading ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4">
             {[1, 2, 3, 4].map(i => (
-              <Card key={i} className="h-32 animate-pulse bg-card/50" />
+              <Card key={i} className="h-28 animate-pulse bg-card/50" />
             ))}
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-4">
             <Card className="glass-card hover:-translate-y-1 transition-transform duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">{t('dash_total_sessions')}</CardTitle>
-                <Smartphone className="h-5 w-5 text-muted-foreground" />
+                <CardTitle className="text-xs sm:text-sm font-semibold">{t('dash_total_sessions')}</CardTitle>
+                <Smartphone className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground shrink-0" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold">{totalSessions}</div>
+                <div className="text-2xl sm:text-3xl font-bold">{totalSessions}</div>
               </CardContent>
             </Card>
             
-            <Card className="glass-card border-l-4 border-l-green-500 hover:-translate-y-1 transition-transform duration-300">
+            <Card className="glass-card border-s-4 border-s-green-500 hover:-translate-y-1 transition-transform duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">{t('dash_connected')}</CardTitle>
-                <Activity className="h-5 w-5 text-green-500" />
+                <CardTitle className="text-xs sm:text-sm font-semibold">{t('dash_connected')}</CardTitle>
+                <Activity className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 shrink-0" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-green-500">{connected}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-green-500">{connected}</div>
               </CardContent>
             </Card>
 
             <Card className="glass-card hover:-translate-y-1 transition-transform duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">{t('dash_sent')}</CardTitle>
-                <Send className="h-5 w-5 text-primary" />
+                <CardTitle className="text-xs sm:text-sm font-semibold">{t('dash_sent')}</CardTitle>
+                <Send className="h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-primary">{totalSent}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-primary">{totalSent}</div>
               </CardContent>
             </Card>
 
             <Card className="glass-card hover:-translate-y-1 transition-transform duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-semibold">{t('dash_received')}</CardTitle>
-                <MessageSquare className="h-5 w-5 text-accent" />
+                <CardTitle className="text-xs sm:text-sm font-semibold">{t('dash_received')}</CardTitle>
+                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-accent shrink-0" />
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-accent">{totalReceived}</div>
+                <div className="text-2xl sm:text-3xl font-bold text-accent">{totalReceived}</div>
               </CardContent>
             </Card>
           </div>
         )}
 
-        <Card className="glass-card mt-8">
+        <Card className="glass-card">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5" />
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
               {t('dash_message_volume')}
             </CardTitle>
           </CardHeader>
-          <CardContent className="h-[400px]">
+          <CardContent className="h-[280px] sm:h-[380px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={11} tickLine={false} axisLine={false} width={35} />
                 <Tooltip 
                   cursor={{fill: 'hsl(var(--muted)/0.5)'}}
                   contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}

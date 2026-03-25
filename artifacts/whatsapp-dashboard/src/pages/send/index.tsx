@@ -21,13 +21,8 @@ import { z } from "zod";
 import { Send, FileText, Image as ImageIcon, Video, Music, File } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-const messageTypes = [
-  { id: 'text', label: 'Text', icon: FileText },
-  { id: 'image', label: 'Image', icon: ImageIcon },
-  { id: 'video', label: 'Video', icon: Video },
-  { id: 'audio', label: 'Audio', icon: Music },
-  { id: 'file', label: 'Document', icon: File },
-] as const;
+const messageTypeIds = ['text', 'image', 'video', 'audio', 'file'] as const;
+const messageTypeIcons = { text: FileText, image: ImageIcon, video: Video, audio: Music, file: File };
 
 const sendSchema = z.object({
   sessionId: z.string().min(1, "Session is required"),
@@ -94,8 +89,8 @@ export default function SendMessage() {
     <AppLayout>
       <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-500">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{t('send_title')}</h1>
-          <p className="text-muted-foreground mt-1">Send messages via any connected instance</p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t('send_title')}</h1>
+          <p className="text-muted-foreground mt-1">{t('send_subtitle')}</p>
         </div>
 
         <Card className="glass-card border-border/50 shadow-xl">
@@ -107,7 +102,7 @@ export default function SendMessage() {
                     <FormItem>
                       <FormLabel>{t('send_select_session')}</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl><SelectTrigger className="h-12 bg-background"><SelectValue placeholder="Choose session" /></SelectTrigger></FormControl>
+                        <FormControl><SelectTrigger className="h-12 bg-background"><SelectValue placeholder={t('send_choose_session')} /></SelectTrigger></FormControl>
                         <SelectContent>
                           {sessions?.filter(s => s.status === 'connected').map(s => (
                             <SelectItem key={s.id} value={s.id}>{s.name} ({s.phoneNumber})</SelectItem>
@@ -130,18 +125,19 @@ export default function SendMessage() {
                 <FormField control={form.control} name="type" render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('send_type')}</FormLabel>
-                    <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-                      {messageTypes.map(t => {
-                        const Icon = t.icon;
-                        const isSelected = field.value === t.id;
+                    <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3">
+                      {messageTypeIds.map(typeId => {
+                        const Icon = messageTypeIcons[typeId];
+                        const isSelected = field.value === typeId;
+                        const labelKey = `msg_${typeId === 'file' ? 'document' : typeId}` as Parameters<typeof getTranslation>[1];
                         return (
                           <div 
-                            key={t.id} 
-                            onClick={() => field.onChange(t.id)}
-                            className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${isSelected ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-background hover:bg-muted'}`}
+                            key={typeId} 
+                            onClick={() => field.onChange(typeId)}
+                            className={`flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all ${isSelected ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-background hover:bg-muted'}`}
                           >
-                            <Icon className="w-6 h-6 mb-2" />
-                            <span className="text-xs font-semibold">{t.label}</span>
+                            <Icon className="w-5 h-5 sm:w-6 sm:h-6 mb-2" />
+                            <span className="text-xs font-semibold">{t(labelKey)}</span>
                           </div>
                         );
                       })}
@@ -175,7 +171,7 @@ export default function SendMessage() {
                       <FormLabel>{selectedType === 'text' ? t('send_content') : t('send_caption')}</FormLabel>
                       <FormControl>
                         <Textarea 
-                          placeholder="Type your message here..." 
+                          placeholder={t('send_placeholder')} 
                           {...field} 
                           className="min-h-[120px] bg-background resize-none" 
                         />

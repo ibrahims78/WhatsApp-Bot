@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Plus, Smartphone, Trash2, ArrowRight } from "lucide-react";
+import { Plus, Smartphone, Trash2, ArrowRight, ArrowLeft } from "lucide-react";
 import { Link } from "wouter";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
@@ -16,6 +16,7 @@ export default function Sessions() {
   const { data: sessions, isLoading } = useListSessions();
   const { language } = useAppStore();
   const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key);
+  const isRtl = language === 'ar';
   const queryClient = useQueryClient();
   const createMutation = useCreateSession({
     mutation: {
@@ -50,8 +51,8 @@ export default function Sessions() {
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t('nav_sessions')}</h1>
-            <p className="text-muted-foreground mt-1">Manage your WhatsApp bot instances</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t('nav_sessions')}</h1>
+            <p className="text-muted-foreground mt-1">{t('sess_subtitle')}</p>
           </div>
           
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -126,9 +127,12 @@ export default function Sessions() {
                 </CardContent>
                 <CardFooter className="pt-0 pb-4 px-6">
                   <Button asChild variant="secondary" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                    <Link href={`/sessions/${session.id}`}>
+                    <Link href={`/sessions/${session.id}`} className="flex items-center justify-center gap-2">
                       {t('sess_view')}
-                      <ArrowRight className="w-4 h-4 ms-2 group-hover:translate-x-1 transition-transform" />
+                      {isRtl
+                        ? <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                        : <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      }
                     </Link>
                   </Button>
                 </CardFooter>
@@ -137,8 +141,8 @@ export default function Sessions() {
             {sessions?.length === 0 && (
               <div className="col-span-full py-20 text-center bg-muted/20 rounded-2xl border border-dashed border-border">
                 <Smartphone className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                <h3 className="text-lg font-semibold">No sessions found</h3>
-                <p className="text-muted-foreground mt-1">Create your first WhatsApp session to get started.</p>
+                <h3 className="text-lg font-semibold">{t('sess_empty_title')}</h3>
+                <p className="text-muted-foreground mt-1">{t('sess_empty_desc')}</p>
               </div>
             )}
           </div>

@@ -20,6 +20,7 @@ export function AppSidebar() {
   const [location] = useLocation();
   const logoutMutation = useLogout();
   const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key);
+  const isRtl = language === 'ar';
 
   const handleLogout = () => {
     logoutMutation.mutate(undefined, {
@@ -38,20 +39,23 @@ export function AppSidebar() {
   ];
 
   return (
-    <Sidebar className="border-r border-sidebar-border bg-sidebar glass">
+    <Sidebar
+      side={isRtl ? 'right' : 'left'}
+      className="border-sidebar-border bg-sidebar glass"
+    >
       <SidebarContent>
         <div className="p-4 md:p-6 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/25">
+          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/25 shrink-0">
             <MessageSquare className="w-5 h-5 text-primary-foreground" />
           </div>
-          <h2 className="text-xl font-bold tracking-tight text-sidebar-foreground">
+          <h2 className="text-xl font-bold tracking-tight text-sidebar-foreground truncate">
             {t('app_name')}
           </h2>
         </div>
 
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-sidebar-foreground/50 uppercase tracking-wider px-6">
-            Menu
+            {t('nav_menu')}
           </SidebarGroupLabel>
           <SidebarGroupContent className="px-3 mt-2">
             <SidebarMenu>
@@ -61,8 +65,8 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild data-active={isActive} className="data-[active=true]:bg-primary/10 data-[active=true]:text-primary transition-all rounded-xl hover-elevate">
                       <Link href={item.url} className="flex items-center gap-3 py-3">
-                        <item.icon className="w-5 h-5" />
-                        <span className="font-medium">{item.title}</span>
+                        <item.icon className="w-5 h-5 shrink-0" />
+                        <span className="font-medium truncate">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -80,7 +84,7 @@ export function AppSidebar() {
               onClick={handleLogout} 
               className="text-destructive hover:text-destructive hover:bg-destructive/10 transition-colors rounded-xl"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-5 h-5 shrink-0" />
               <span className="font-medium">{t('nav_logout')}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

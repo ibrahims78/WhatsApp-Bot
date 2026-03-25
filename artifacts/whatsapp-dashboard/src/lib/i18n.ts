@@ -16,8 +16,16 @@ export const translations = {
     success: "Success",
     error: "Error",
     copied: "Copied to clipboard",
+    done: "Done",
+    are_you_sure: "Are you sure?",
+    are_you_sure_key: "Are you sure? This will break integrations using this key.",
+    access_denied: "Access Denied",
+    not_found: "Not Found",
+    created_at: "Created",
+    important: "Important!",
 
     // Nav
+    nav_menu: "Navigation",
     nav_dashboard: "Dashboard",
     nav_sessions: "Sessions",
     nav_users: "Users",
@@ -26,6 +34,7 @@ export const translations = {
     nav_logout: "Logout",
     
     // Dashboard
+    dash_subtitle: "Overview of all your WhatsApp instances",
     dash_total_sessions: "Total Sessions",
     dash_connected: "Connected",
     dash_disconnected: "Disconnected",
@@ -35,6 +44,7 @@ export const translations = {
     dash_message_volume: "Message Volume Over Time",
     
     // Sessions
+    sess_subtitle: "Manage your WhatsApp bot instances",
     sess_add_new: "Add New Session",
     sess_create_title: "Create Session",
     sess_name_placeholder: "e.g. Sales Team Line",
@@ -50,6 +60,9 @@ export const translations = {
     sess_no_number: "No Number Linked",
     sess_qr_generating: "Generating QR code, please wait...",
     sess_qr_refresh_hint: "QR code expires in 60 seconds. It refreshes automatically.",
+    sess_empty_title: "No sessions found",
+    sess_empty_desc: "Create your first WhatsApp session to get started.",
+    sess_not_found: "Session not found",
 
     // Session Details
     sd_overview: "Overview",
@@ -71,8 +84,13 @@ export const translations = {
     sd_session_info: "Session Info",
     sd_messages_desc: "Last 50 messages for this session",
     sd_no_messages: "No messages yet for this session.",
+    sd_connect_error: "Failed to connect",
+    sd_disconnect_error: "Failed to disconnect",
+    sd_webhook_updated: "Webhook updated",
+    sd_features_updated: "Features updated",
     
     // Users
+    user_subtitle: "Manage system access and roles",
     user_add_new: "Add User",
     user_username: "Username",
     user_role: "Role",
@@ -80,16 +98,22 @@ export const translations = {
     user_employee: "Employee",
     user_password: "Password",
     user_email: "Email",
+    user_create_error: "Failed to create user",
     
     // API Keys
+    key_subtitle: "Manage API keys for programmatic access",
     key_add_new: "Generate API Key",
     key_prefix: "Prefix",
     key_last_used: "Last Used",
     key_secret_warning: "Store this secret key safely. It will not be shown again!",
+    key_empty: "No API keys generated yet.",
+    key_name_placeholder: "e.g. Production Server",
     
     // Send
     send_title: "Send Campaign/Message",
+    send_subtitle: "Send messages via any connected instance",
     send_select_session: "Select Session",
+    send_choose_session: "Choose session",
     send_recipient: "Recipient Number (with country code)",
     send_type: "Message Type",
     send_content: "Message Content",
@@ -97,6 +121,14 @@ export const translations = {
     send_caption: "Caption (Optional)",
     send_file_name: "File Name",
     send_btn: "Send Message",
+    send_placeholder: "Type your message here...",
+
+    // Message types
+    msg_text: "Text",
+    msg_image: "Image",
+    msg_video: "Video",
+    msg_audio: "Audio",
+    msg_document: "Document",
     
     // Login
     login_title: "Welcome Back",
@@ -120,8 +152,16 @@ export const translations = {
     success: "نجاح",
     error: "خطأ",
     copied: "تم النسخ إلى الحافظة",
+    done: "تم",
+    are_you_sure: "هل أنت متأكد؟",
+    are_you_sure_key: "هل أنت متأكد؟ سيؤدي هذا إلى تعطيل التكاملات التي تستخدم هذا المفتاح.",
+    access_denied: "غير مصرح بالوصول",
+    not_found: "غير موجود",
+    created_at: "تاريخ الإنشاء",
+    important: "تنبيه!",
 
     // Nav
+    nav_menu: "التنقل",
     nav_dashboard: "لوحة القيادة",
     nav_sessions: "الجلسات",
     nav_users: "المستخدمين",
@@ -130,6 +170,7 @@ export const translations = {
     nav_logout: "تسجيل الخروج",
     
     // Dashboard
+    dash_subtitle: "نظرة عامة على جميع مثيلات واتساب",
     dash_total_sessions: "إجمالي الجلسات",
     dash_connected: "متصل",
     dash_disconnected: "مفصول",
@@ -139,6 +180,7 @@ export const translations = {
     dash_message_volume: "حجم الرسائل بمرور الوقت",
     
     // Sessions
+    sess_subtitle: "إدارة مثيلات بوت واتساب الخاصة بك",
     sess_add_new: "إضافة جلسة جديدة",
     sess_create_title: "إنشاء جلسة",
     sess_name_placeholder: "مثال: خط فريق المبيعات",
@@ -154,6 +196,9 @@ export const translations = {
     sess_no_number: "لا يوجد رقم مرتبط",
     sess_qr_generating: "جاري إنشاء رمز QR، يرجى الانتظار...",
     sess_qr_refresh_hint: "ينتهي صلاحية رمز QR بعد 60 ثانية. يتجدد تلقائياً.",
+    sess_empty_title: "لا توجد جلسات",
+    sess_empty_desc: "أنشئ أول جلسة واتساب للبدء.",
+    sess_not_found: "الجلسة غير موجودة",
 
     // Session Details
     sd_overview: "نظرة عامة",
@@ -175,8 +220,13 @@ export const translations = {
     sd_session_info: "معلومات الجلسة",
     sd_messages_desc: "آخر 50 رسالة لهذه الجلسة",
     sd_no_messages: "لا توجد رسائل لهذه الجلسة بعد.",
+    sd_connect_error: "فشل الاتصال",
+    sd_disconnect_error: "فشل قطع الاتصال",
+    sd_webhook_updated: "تم تحديث الـ Webhook",
+    sd_features_updated: "تم تحديث الميزات",
     
     // Users
+    user_subtitle: "إدارة صلاحيات الوصول والأدوار",
     user_add_new: "إضافة مستخدم",
     user_username: "اسم المستخدم",
     user_role: "الدور",
@@ -184,16 +234,22 @@ export const translations = {
     user_employee: "موظف",
     user_password: "كلمة المرور",
     user_email: "البريد الإلكتروني",
+    user_create_error: "فشل إنشاء المستخدم",
     
     // API Keys
+    key_subtitle: "إدارة مفاتيح API للوصول البرمجي",
     key_add_new: "إنشاء مفتاح API",
     key_prefix: "البادئة",
     key_last_used: "آخر استخدام",
     key_secret_warning: "احفظ هذا المفتاح السري بأمان. لن يتم عرضه مرة أخرى!",
+    key_empty: "لا توجد مفاتيح API بعد.",
+    key_name_placeholder: "مثال: خادم الإنتاج",
     
     // Send
     send_title: "إرسال حملة/رسالة",
+    send_subtitle: "إرسال رسائل عبر أي جلسة متصلة",
     send_select_session: "اختر الجلسة",
+    send_choose_session: "اختر جلسة",
     send_recipient: "رقم المستلم (مع رمز الدولة)",
     send_type: "نوع الرسالة",
     send_content: "محتوى الرسالة",
@@ -201,6 +257,14 @@ export const translations = {
     send_caption: "التعليق (اختياري)",
     send_file_name: "اسم الملف",
     send_btn: "إرسال الرسالة",
+    send_placeholder: "اكتب رسالتك هنا...",
+
+    // Message types
+    msg_text: "نص",
+    msg_image: "صورة",
+    msg_video: "فيديو",
+    msg_audio: "صوت",
+    msg_document: "مستند",
     
     // Login
     login_title: "مرحباً بعودتك",

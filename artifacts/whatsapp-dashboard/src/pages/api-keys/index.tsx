@@ -62,8 +62,8 @@ export default function ApiKeys() {
       <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t('nav_api_keys')}</h1>
-            <p className="text-muted-foreground mt-1">Manage API keys for programmatic access</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{t('nav_api_keys')}</h1>
+            <p className="text-muted-foreground mt-1">{t('key_subtitle')}</p>
           </div>
           
           <Dialog open={isOpen} onOpenChange={(open) => {
@@ -85,7 +85,7 @@ export default function ApiKeys() {
                 <div className="space-y-4 pt-4">
                   <Alert variant="destructive" className="bg-destructive/10 border-destructive/20 text-destructive">
                     <AlertTriangle className="h-4 w-4" />
-                    <AlertTitle>Important!</AlertTitle>
+                    <AlertTitle>{t('important')}</AlertTitle>
                     <AlertDescription>{t('key_secret_warning')}</AlertDescription>
                   </Alert>
                   <div className="flex gap-2 items-center p-3 bg-muted rounded-lg font-mono text-sm border border-border">
@@ -94,7 +94,7 @@ export default function ApiKeys() {
                       <Copy className="h-4 w-4" />
                     </Button>
                   </div>
-                  <Button className="w-full mt-4" onClick={() => setIsOpen(false)}>Done</Button>
+                  <Button className="w-full mt-4" onClick={() => setIsOpen(false)}>{t('done')}</Button>
                 </div>
               ) : (
                 <Form {...form}>
@@ -123,15 +123,15 @@ export default function ApiKeys() {
                 <TableRow>
                   <TableHead>{t('name')}</TableHead>
                   <TableHead>{t('key_prefix')}</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="text-right">{t('actions')}</TableHead>
+                  <TableHead>{t('created_at')}</TableHead>
+                  <TableHead className="text-end">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {isLoading ? (
-                  <TableRow><TableCell colSpan={4} className="text-center py-8">Loading...</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={4} className="text-center py-8">{t('loading')}</TableCell></TableRow>
                 ) : keys?.length === 0 ? (
-                  <TableRow><TableCell colSpan={4} className="text-center py-8 text-muted-foreground">No API keys generated yet.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={4} className="text-center py-8 text-muted-foreground">{t('key_empty')}</TableCell></TableRow>
                 ) : keys?.map(k => (
                   <TableRow key={k.id} className="hover:bg-muted/30">
                     <TableCell className="font-medium flex items-center gap-3">
@@ -140,13 +140,13 @@ export default function ApiKeys() {
                     </TableCell>
                     <TableCell className="font-mono text-sm text-muted-foreground">{k.keyPrefix}••••••••</TableCell>
                     <TableCell className="text-muted-foreground">{new Date(k.createdAt).toLocaleDateString()}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-end">
                       <Button 
                         variant="ghost" 
                         size="icon" 
                         className="text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
                         onClick={() => {
-                          if (confirm("Are you sure? This will break integrations using this key.")) {
+                          if (confirm(t('are_you_sure_key'))) {
                             deleteMutation.mutate({ id: k.id });
                           }
                         }}

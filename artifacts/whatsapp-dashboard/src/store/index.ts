@@ -17,7 +17,7 @@ interface AppState {
   setLanguage: (lang: SupportedLanguage) => void;
 }
 
-function applyTheme(theme: 'light' | 'dark') {
+export function applyTheme(theme: 'light' | 'dark') {
   if (theme === 'dark') {
     document.documentElement.classList.add('dark');
   } else {
@@ -25,10 +25,14 @@ function applyTheme(theme: 'light' | 'dark') {
   }
 }
 
-function applyLanguage(language: SupportedLanguage) {
+export function applyLanguage(language: SupportedLanguage) {
   document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
   document.documentElement.lang = language;
 }
+
+// Apply defaults immediately before hydration
+applyTheme('light');
+applyLanguage('ar');
 
 export const useAppStore = create<AppState>()(
   persist(

@@ -86,7 +86,7 @@ export default function SessionDetail() {
         setLiveQr(null);
         queryClient.invalidateQueries({ queryKey: getGetSessionQueryKey(id) });
       },
-      onError: () => toast({ variant: "destructive", title: t('error'), description: "Failed to connect" })
+      onError: () => toast({ variant: "destructive", title: t('error'), description: t('sd_connect_error') })
     }
   });
 
@@ -96,19 +96,19 @@ export default function SessionDetail() {
         setLiveQr(null);
         queryClient.invalidateQueries({ queryKey: getGetSessionQueryKey(id) });
       },
-      onError: () => toast({ variant: "destructive", title: t('error'), description: "Failed to disconnect" })
+      onError: () => toast({ variant: "destructive", title: t('error'), description: t('sd_disconnect_error') })
     }
   });
 
   const updateWebhookMutation = useUpdateSessionWebhook({
     mutation: {
-      onSuccess: () => toast({ title: t('success'), description: "Webhook updated" })
+      onSuccess: () => toast({ title: t('success'), description: t('sd_webhook_updated') })
     }
   });
 
   const updateFeaturesMutation = useUpdateSessionFeatures({
     mutation: {
-      onSuccess: () => toast({ title: t('success'), description: "Features updated" })
+      onSuccess: () => toast({ title: t('success'), description: t('sd_features_updated') })
     }
   });
 
@@ -135,7 +135,7 @@ export default function SessionDetail() {
   };
 
   if (isLoading) return <AppLayout><div className="p-8 text-center">{t('loading')}</div></AppLayout>;
-  if (!session) return <AppLayout><div className="p-8 text-center text-destructive">Session not found</div></AppLayout>;
+  if (!session) return <AppLayout><div className="p-8 text-center text-destructive">{t('sess_not_found')}</div></AppLayout>;
 
   const displayQr = liveQr || qrData?.qr || null;
 
