@@ -36,20 +36,13 @@ async function logMessage(sessionId: string, toNumber: string, messageType: stri
     .where(eq(whatsappSessionsTable.id, sessionId));
 }
 
-// POST /send/text
-router.post("/send/text", requireAuth, async (req, res): Promise<void> => {
-  const { sessionId, number, message } = req.body;
+async function sendText(sessionId: string, number: string, message: string, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !message) {
     res.status(400).json({ success: false, error: "sessionId, number, and message are required" });
     return;
   }
-
   const client = getClient(sessionId);
-  if (!client) {
-    res.status(503).json({ success: false, error: "Session not connected" });
-    return;
-  }
-
+  if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
     const result = await client.sendText(formatNumber(number), message);
     await logMessage(sessionId, number, "text", message);
@@ -58,22 +51,15 @@ router.post("/send/text", requireAuth, async (req, res): Promise<void> => {
     req.log.error({ sessionId, err: e }, "Failed to send text");
     res.status(500).json({ success: false, error: e.message });
   }
-});
+}
 
-// POST /send/image
-router.post("/send/image", requireAuth, async (req, res): Promise<void> => {
-  const { sessionId, number, imageUrl, caption } = req.body;
+async function sendImage(sessionId: string, number: string, imageUrl: string, caption: string | undefined, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !imageUrl) {
     res.status(400).json({ success: false, error: "sessionId, number, and imageUrl are required" });
     return;
   }
-
   const client = getClient(sessionId);
-  if (!client) {
-    res.status(503).json({ success: false, error: "Session not connected" });
-    return;
-  }
-
+  if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
     const result = await client.sendImage(formatNumber(number), imageUrl, "image", caption || "");
     await logMessage(sessionId, number, "image", caption, imageUrl, caption);
@@ -82,22 +68,15 @@ router.post("/send/image", requireAuth, async (req, res): Promise<void> => {
     req.log.error({ sessionId, err: e }, "Failed to send image");
     res.status(500).json({ success: false, error: e.message });
   }
-});
+}
 
-// POST /send/video
-router.post("/send/video", requireAuth, async (req, res): Promise<void> => {
-  const { sessionId, number, videoUrl, caption } = req.body;
+async function sendVideo(sessionId: string, number: string, videoUrl: string, caption: string | undefined, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !videoUrl) {
     res.status(400).json({ success: false, error: "sessionId, number, and videoUrl are required" });
     return;
   }
-
   const client = getClient(sessionId);
-  if (!client) {
-    res.status(503).json({ success: false, error: "Session not connected" });
-    return;
-  }
-
+  if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
     const result = await client.sendVideoAsGif(formatNumber(number), videoUrl, "video", caption || "");
     await logMessage(sessionId, number, "video", caption, videoUrl, caption);
@@ -106,22 +85,15 @@ router.post("/send/video", requireAuth, async (req, res): Promise<void> => {
     req.log.error({ sessionId, err: e }, "Failed to send video");
     res.status(500).json({ success: false, error: e.message });
   }
-});
+}
 
-// POST /send/audio
-router.post("/send/audio", requireAuth, async (req, res): Promise<void> => {
-  const { sessionId, number, audioUrl } = req.body;
+async function sendAudio(sessionId: string, number: string, audioUrl: string, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !audioUrl) {
     res.status(400).json({ success: false, error: "sessionId, number, and audioUrl are required" });
     return;
   }
-
   const client = getClient(sessionId);
-  if (!client) {
-    res.status(503).json({ success: false, error: "Session not connected" });
-    return;
-  }
-
+  if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
     const result = await client.sendVoice(formatNumber(number), audioUrl);
     await logMessage(sessionId, number, "audio", null, audioUrl);
@@ -130,22 +102,15 @@ router.post("/send/audio", requireAuth, async (req, res): Promise<void> => {
     req.log.error({ sessionId, err: e }, "Failed to send audio");
     res.status(500).json({ success: false, error: e.message });
   }
-});
+}
 
-// POST /send/file
-router.post("/send/file", requireAuth, async (req, res): Promise<void> => {
-  const { sessionId, number, fileUrl, fileName, caption } = req.body;
+async function sendFile(sessionId: string, number: string, fileUrl: string, fileName: string, caption: string | undefined, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !fileUrl || !fileName) {
     res.status(400).json({ success: false, error: "sessionId, number, fileUrl, and fileName are required" });
     return;
   }
-
   const client = getClient(sessionId);
-  if (!client) {
-    res.status(503).json({ success: false, error: "Session not connected" });
-    return;
-  }
-
+  if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
     const result = await client.sendFile(formatNumber(number), fileUrl, fileName, caption || "");
     await logMessage(sessionId, number, "file", caption, fileUrl, caption);
@@ -154,6 +119,20 @@ router.post("/send/file", requireAuth, async (req, res): Promise<void> => {
     req.log.error({ sessionId, err: e }, "Failed to send file");
     res.status(500).json({ success: false, error: e.message });
   }
-});
+}
+
+// Flat routes: POST /send/text  (sessionId in body)
+router.post("/send/text",  requireAuth, (req, res) => sendText(req.body.sessionId,  req.body.number, req.body.message,  req, res));
+router.post("/send/image", requireAuth, (req, res) => sendImage(req.body.sessionId, req.body.number, req.body.imageUrl, req.body.caption, req, res));
+router.post("/send/video", requireAuth, (req, res) => sendVideo(req.body.sessionId, req.body.number, req.body.videoUrl, req.body.caption, req, res));
+router.post("/send/audio", requireAuth, (req, res) => sendAudio(req.body.sessionId, req.body.number, req.body.audioUrl, req, res));
+router.post("/send/file",  requireAuth, (req, res) => sendFile(req.body.sessionId,  req.body.number, req.body.fileUrl, req.body.fileName, req.body.caption, req, res));
+
+// RESTful routes: POST /sessions/:id/send/text  (sessionId in URL — used by n8n workflow)
+router.post("/sessions/:id/send/text",  requireAuth, (req, res) => sendText(req.params.id,  req.body.number, req.body.message,  req, res));
+router.post("/sessions/:id/send/image", requireAuth, (req, res) => sendImage(req.params.id, req.body.number, req.body.imageUrl, req.body.caption, req, res));
+router.post("/sessions/:id/send/video", requireAuth, (req, res) => sendVideo(req.params.id, req.body.number, req.body.videoUrl, req.body.caption, req, res));
+router.post("/sessions/:id/send/audio", requireAuth, (req, res) => sendAudio(req.params.id, req.body.number, req.body.audioUrl, req, res));
+router.post("/sessions/:id/send/file",  requireAuth, (req, res) => sendFile(req.params.id,  req.body.number, req.body.fileUrl, req.body.fileName, req.body.caption, req, res));
 
 export default router;
