@@ -130,6 +130,10 @@ export const translations = {
     key_usage_desc: "Add this header to every API request instead of logging in each time:",
     key_usage_example: "Example — send a text message:",
     key_usage_note: "Replace {SESSION_ID} with the session ID from the Sessions page, and {PHONE} with the recipient's number including country code (e.g. 966501234567).",
+    key_n8n_title: "Download n8n Workflow",
+    key_n8n_desc: "Download a ready-to-import n8n workflow. Your server domain is pre-configured automatically — just add your API key credential in n8n after importing.",
+    key_n8n_download: "Download n8n Workflow",
+    key_n8n_guide: "View Documentation",
 
     // Send
     send_title: "Send Campaign/Message",
@@ -294,6 +298,10 @@ export const translations = {
     key_usage_desc: "أضف هذا الترويسة (Header) لكل طلب API بدلاً من تسجيل الدخول في كل مرة:",
     key_usage_example: "مثال — إرسال رسالة نصية:",
     key_usage_note: "استبدل {SESSION_ID} بمعرّف الجلسة من صفحة الجلسات، و{PHONE} برقم المستلم مع رمز الدولة (مثال: 966501234567).",
+    key_n8n_title: "تحميل ورك فلو n8n",
+    key_n8n_desc: "حمّل ورك فلو n8n جاهزاً للاستيراد. رابط خادمك يُحقن تلقائياً — فقط أضف بيانات اعتماد مفتاح الـ API في n8n بعد الاستيراد.",
+    key_n8n_download: "تحميل ورك فلو n8n",
+    key_n8n_guide: "عرض التوثيق",
 
     // Send
     send_title: "إرسال حملة/رسالة",

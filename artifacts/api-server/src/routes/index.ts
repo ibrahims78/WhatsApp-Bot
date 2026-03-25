@@ -5,6 +5,7 @@ import usersRouter from "./users";
 import apiKeysRouter from "./api-keys";
 import sessionsRouter from "./sessions";
 import sendRouter from "./send";
+import n8nWorkflowRouter from "./n8n-workflow";
 
 const router: IRouter = Router();
 
@@ -14,5 +15,6 @@ router.use(usersRouter);
 router.use(apiKeysRouter);
 router.use(sessionsRouter);
 router.use(sendRouter);
+router.use(n8nWorkflowRouter);
 
 export default router;

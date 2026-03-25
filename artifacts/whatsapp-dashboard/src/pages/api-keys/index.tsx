@@ -5,7 +5,7 @@ import { getTranslation } from "@/lib/i18n";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Trash2, Key, Copy, AlertTriangle, Code2, Terminal } from "lucide-react";
+import { Plus, Trash2, Key, Copy, AlertTriangle, Code2, Terminal, Download, BookOpen } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -43,8 +43,29 @@ export default function ApiKeys() {
   const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key);
   const [isOpen, setIsOpen] = useState(false);
   const [newSecret, setNewSecret] = useState<string | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
   const queryClient = useQueryClient();
   const { toast } = useToast();
+
+  const handleDownloadWorkflow = async () => {
+    setIsDownloading(true);
+    try {
+      const res = await fetch("/api/n8n-workflow/download", { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to download");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "n8n-workflow-whatsapp.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      toast({ title: t("success") });
+    } catch {
+      toast({ variant: "destructive", title: t("error") });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const createMutation = useCreateApiKey({
     mutation: {
@@ -235,6 +256,42 @@ export default function ApiKeys() {
                   </div>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* n8n Workflow Download */}
+        <Card className="glass-card border-green-500/20">
+          <CardHeader className="pb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-green-500/10">
+                <Download className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">{t('key_n8n_title')}</CardTitle>
+                <CardDescription className="mt-0.5">{t('key_n8n_desc')}</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                onClick={handleDownloadWorkflow}
+                disabled={isDownloading}
+                className="bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-500/20"
+              >
+                <Download className="w-4 h-4 me-2" />
+                {isDownloading ? t('loading') : t('key_n8n_download')}
+              </Button>
+              <Button
+                variant="outline"
+                asChild
+              >
+                <a href="/api/doc/n8n-workflow-guide" target="_blank" rel="noopener noreferrer">
+                  <BookOpen className="w-4 h-4 me-2" />
+                  {t('key_n8n_guide')}
+                </a>
+              </Button>
             </div>
           </CardContent>
         </Card>
