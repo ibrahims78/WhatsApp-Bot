@@ -2,7 +2,7 @@
   "name": "WhatsApp Bot - Receive & Reply",
   "nodes": [
     {
-      "parameters": {
+ ا     "parameters": {
         "httpMethod": "POST",
         "path": "whatsapp-incoming",
         "responseMode": "responseNode",
