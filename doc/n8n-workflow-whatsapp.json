@@ -12,9 +12,9 @@
       "name": "📥 Receive WhatsApp Message",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [200, 400],
+      "position": [200, 500],
       "webhookId": "whatsapp-incoming",
-      "notes": "URL to paste in session settings: https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+      "notes": "URL to paste in session settings: copy from n8n after activating"
     },
     {
       "parameters": {
@@ -26,18 +26,18 @@
       "name": "✅ Respond 200 OK",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [440, 200],
+      "position": [440, 280],
       "notes": "Acknowledge immediately so the server does not retry the request."
     },
     {
       "parameters": {
-        "jsCode": "// ─── Extract core fields from the incoming webhook payload ───\nconst payload  = $json.body || {};\nconst data     = payload.data || {};\n\nconst sessionId   = payload.sessionId || '';\nconst msgType     = data.type || 'chat';          // chat | image | video | audio | ptt | document\nconst from        = data.from || '';\nconst phoneNumber = from.replace('@c.us', '');\nconst body        = data.body || '';\nconst mediaUrl    = data.mediaUrl || null;\nconst fileName    = data.fileName || null;\nconst caption     = data.caption || '';\nconst mimeType    = data.mimetype || '';\n\n// Map wppconnect type to a cleaner category\nlet category = 'text';\nif (msgType === 'image')                       category = 'image';\nelse if (msgType === 'video')                  category = 'video';\nelse if (msgType === 'audio' || msgType === 'ptt') category = 'audio';\nelse if (msgType === 'document')               category = 'document';\nelse if (msgType === 'sticker')                category = 'sticker';\nelse if (msgType === 'location')               category = 'location';\n\nreturn {\n  sessionId,\n  phoneNumber,\n  category,\n  rawType: msgType,\n  body,\n  mediaUrl,\n  fileName,\n  caption,\n  mimeType\n};"
+        "jsCode": "// ─── Extract core fields from the incoming webhook payload ───\nconst payload  = $json.body || {};\nconst data     = payload.data || {};\n\nconst sessionId   = payload.sessionId || '';\nconst msgType     = data.type || 'chat';\nconst from        = data.from || '';\nconst phoneNumber = from.replace('@c.us', '');\nconst body        = data.body || '';\nconst mediaUrl    = data.mediaUrl || null;\nconst fileName    = data.fileName || null;\nconst caption     = data.caption || '';\nconst mimeType    = data.mimetype || '';\n\nlet category = 'text';\nif (msgType === 'image')                           category = 'image';\nelse if (msgType === 'video')                      category = 'video';\nelse if (msgType === 'audio' || msgType === 'ptt') category = 'audio';\nelse if (msgType === 'document')                   category = 'document';\nelse if (msgType === 'sticker')                    category = 'sticker';\nelse if (msgType === 'location')                   category = 'location';\n\nreturn {\n  sessionId,\n  phoneNumber,\n  category,\n  rawType: msgType,\n  body,\n  mediaUrl,\n  fileName,\n  caption,\n  mimeType\n};"
       },
       "id": "node-extract",
       "name": "🔍 Extract Message Fields",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [440, 480],
+      "position": [440, 580],
       "notes": "Normalises the payload and maps wppconnect types to clean categories."
     },
     {
@@ -46,13 +46,7 @@
           "values": [
             {
               "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "text",
-                    "operator": { "type": "string", "operation": "equals" }
-                  }
-                ],
+                "conditions": [{ "leftValue": "={{ $json.category }}", "rightValue": "text", "operator": { "type": "string", "operation": "equals" } }],
                 "combinator": "and"
               },
               "renameOutput": true,
@@ -60,13 +54,7 @@
             },
             {
               "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "image",
-                    "operator": { "type": "string", "operation": "equals" }
-                  }
-                ],
+                "conditions": [{ "leftValue": "={{ $json.category }}", "rightValue": "image", "operator": { "type": "string", "operation": "equals" } }],
                 "combinator": "and"
               },
               "renameOutput": true,
@@ -74,13 +62,7 @@
             },
             {
               "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "video",
-                    "operator": { "type": "string", "operation": "equals" }
-                  }
-                ],
+                "conditions": [{ "leftValue": "={{ $json.category }}", "rightValue": "video", "operator": { "type": "string", "operation": "equals" } }],
                 "combinator": "and"
               },
               "renameOutput": true,
@@ -88,13 +70,7 @@
             },
             {
               "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "audio",
-                    "operator": { "type": "string", "operation": "equals" }
-                  }
-                ],
+                "conditions": [{ "leftValue": "={{ $json.category }}", "rightValue": "audio", "operator": { "type": "string", "operation": "equals" } }],
                 "combinator": "and"
               },
               "renameOutput": true,
@@ -102,13 +78,7 @@
             },
             {
               "conditions": {
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.category }}",
-                    "rightValue": "document",
-                    "operator": { "type": "string", "operation": "equals" }
-                  }
-                ],
+                "conditions": [{ "leftValue": "={{ $json.category }}", "rightValue": "document", "operator": { "type": "string", "operation": "equals" } }],
                 "combinator": "and"
               },
               "renameOutput": true,
@@ -122,74 +92,134 @@
       "name": "🔀 Route by Message Type",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
-      "position": [680, 480],
-      "notes": "Routes to the correct handler: Text / Image / Video / Audio / Document. Unknown types go to the fallback (Other)."
+      "position": [680, 580],
+      "notes": "Routes to the correct handler based on incoming message type."
     },
     {
       "parameters": {
-        "jsCode": "// ─── Handle TEXT messages ───\nconst text       = ($json.body || '').toLowerCase();\nconst phone      = $json.phoneNumber;\nconst sessionId  = $json.sessionId;\n\nlet reply = 'شكراً لتواصلك! سنرد عليك قريباً.\\nThank you! We will reply soon.';\n\nif (text.includes('مرحبا') || text.includes('هلا') || text.includes('hello') || text.includes('hi')) {\n  reply = 'أهلاً وسهلاً! 👋 كيف يمكنني مساعدتك؟\\nHello! 👋 How can I help you?';\n} else if (text.includes('سعر') || text.includes('price') || text.includes('كم')) {\n  reply = 'يرجى التواصل مع فريق المبيعات للاستفسار عن الأسعار 📋\\nPlease contact our sales team for pricing info.';\n} else if (text.includes('وقت') || text.includes('دوام') || text.includes('hours') || text.includes('time')) {\n  reply = 'أوقات العمل: الأحد – الخميس 9 صباحاً – 6 مساءً 🕘\\nWorking hours: Sun–Thu 9 AM – 6 PM';\n}\n\nreturn { sessionId, phoneNumber: phone, replyText: reply, replyType: 'text' };"
+        "jsCode": "// ─── Handle TEXT messages ───\nconst text      = ($json.body || '').toLowerCase();\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\n\nlet reply = 'شكراً لتواصلك! سنرد عليك قريباً.\\nThank you! We will reply soon.';\n\nif (text.includes('مرحبا') || text.includes('هلا') || text.includes('hello') || text.includes('hi')) {\n  reply = 'أهلاً وسهلاً! 👋 كيف يمكنني مساعدتك؟\\nHello! 👋 How can I help you?';\n} else if (text.includes('سعر') || text.includes('price') || text.includes('كم')) {\n  reply = 'يرجى التواصل مع فريق المبيعات للاستفسار عن الأسعار 📋\\nPlease contact our sales team for pricing info.';\n} else if (text.includes('وقت') || text.includes('دوام') || text.includes('hours') || text.includes('time')) {\n  reply = 'أوقات العمل: الأحد – الخميس 9 صباحاً – 6 مساءً 🕘\\nWorking hours: Sun–Thu 9 AM – 6 PM';\n}\n\nreturn { sessionId, phoneNumber: phone, replyType: 'text', replyText: reply };"
       },
       "id": "node-handle-text",
       "name": "💬 Handle Text",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [920, 260],
-      "notes": "Keyword-based auto-reply for text messages. Customise the conditions freely."
+      "position": [920, 300],
+      "notes": "Keyword-based auto-reply. Customise the conditions freely."
     },
     {
       "parameters": {
-        "jsCode": "// ─── Handle IMAGE messages ───\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\nconst caption   = $json.caption || '';\nconst mediaUrl  = $json.mediaUrl || '';\n\n// Example: acknowledge the image\nconst reply = `تم استلام صورتك 📷${caption ? ' — ' + caption : ''}\\nImage received 📷${caption ? ' — ' + caption : ''}`;\n\nreturn { sessionId, phoneNumber: phone, replyText: reply, replyType: 'text', receivedMediaUrl: mediaUrl };"
+        "jsCode": "// ─── Handle IMAGE messages ───\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\nconst caption   = $json.caption || '';\nconst mediaUrl  = $json.mediaUrl || '';\n\nconst reply = `تم استلام صورتك 📷${caption ? ' — ' + caption : ''}\\nImage received 📷${caption ? ' — ' + caption : ''}`;\n\n// To reply with an image instead of text, change replyType to 'image'\n// and set replyImageUrl to a public image URL\nreturn {\n  sessionId,\n  phoneNumber: phone,\n  replyType: 'text',\n  replyText: reply,\n  receivedMediaUrl: mediaUrl\n};"
       },
       "id": "node-handle-image",
       "name": "🖼️ Handle Image",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [920, 400],
-      "notes": "Processes received images. You can save mediaUrl to a database or forward it."
+      "position": [920, 440],
+      "notes": "Processes received images. Change replyType to 'image' and set replyImageUrl to send an image back."
     },
     {
       "parameters": {
-        "jsCode": "// ─── Handle VIDEO messages ───\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\nconst caption   = $json.caption || '';\nconst mediaUrl  = $json.mediaUrl || '';\n\nconst reply = `تم استلام الفيديو 🎬${caption ? ' — ' + caption : ''}\\nVideo received 🎬${caption ? ' — ' + caption : ''}`;\n\nreturn { sessionId, phoneNumber: phone, replyText: reply, replyType: 'text', receivedMediaUrl: mediaUrl };"
+        "jsCode": "// ─── Handle VIDEO messages ───\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\nconst caption   = $json.caption || '';\nconst mediaUrl  = $json.mediaUrl || '';\n\nconst reply = `تم استلام الفيديو 🎬${caption ? ' — ' + caption : ''}\\nVideo received 🎬${caption ? ' — ' + caption : ''}`;\n\nreturn {\n  sessionId,\n  phoneNumber: phone,\n  replyType: 'text',\n  replyText: reply,\n  receivedMediaUrl: mediaUrl\n};"
       },
       "id": "node-handle-video",
       "name": "🎬 Handle Video",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [920, 520],
+      "position": [920, 580],
       "notes": "Processes received videos."
     },
     {
       "parameters": {
-        "jsCode": "// ─── Handle AUDIO / Voice Note messages ───\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\nconst mediaUrl  = $json.mediaUrl || '';\nconst isVoice   = $json.rawType === 'ptt';  // ptt = push-to-talk (voice note)\n\nconst reply = isVoice\n  ? 'تم استلام رسالتك الصوتية 🎙️\\nVoice note received 🎙️'\n  : 'تم استلام الملف الصوتي 🎵\\nAudio file received 🎵';\n\nreturn { sessionId, phoneNumber: phone, replyText: reply, replyType: 'text', receivedMediaUrl: mediaUrl };"
+        "jsCode": "// ─── Handle AUDIO / Voice Note messages ───\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\nconst mediaUrl  = $json.mediaUrl || '';\nconst isVoice   = $json.rawType === 'ptt';\n\nconst reply = isVoice\n  ? 'تم استلام رسالتك الصوتية 🎙️\\nVoice note received 🎙️'\n  : 'تم استلام الملف الصوتي 🎵\\nAudio file received 🎵';\n\n// To reply with an audio file, change replyType to 'audio' and set replyAudioUrl\nreturn {\n  sessionId,\n  phoneNumber: phone,\n  replyType: 'text',\n  replyText: reply,\n  receivedMediaUrl: mediaUrl\n};"
       },
       "id": "node-handle-audio",
       "name": "🎵 Handle Audio / Voice",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [920, 640],
-      "notes": "Handles both regular audio files and WhatsApp voice notes (ptt)."
+      "position": [920, 720],
+      "notes": "Handles audio files and voice notes. Change replyType to 'audio' and set replyAudioUrl to reply with audio."
     },
     {
       "parameters": {
-        "jsCode": "// ─── Handle DOCUMENT messages ───\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\nconst fileName  = $json.fileName || 'document';\nconst mediaUrl  = $json.mediaUrl || '';\nconst mimeType  = $json.mimeType || '';\n\nconst reply = `تم استلام الملف 📄: ${fileName}\\nDocument received 📄: ${fileName}`;\n\nreturn { sessionId, phoneNumber: phone, replyText: reply, replyType: 'text', receivedMediaUrl: mediaUrl, fileName, mimeType };"
+        "jsCode": "// ─── Handle DOCUMENT messages ───\nconst phone     = $json.phoneNumber;\nconst sessionId = $json.sessionId;\nconst fileName  = $json.fileName || 'document';\nconst mediaUrl  = $json.mediaUrl || '';\nconst mimeType  = $json.mimeType || '';\n\nconst reply = `تم استلام الملف 📄: ${fileName}\\nDocument received 📄: ${fileName}`;\n\n// To reply with a document, change replyType to 'document' and set replyFileUrl + replyFileName\nreturn {\n  sessionId,\n  phoneNumber: phone,\n  replyType: 'text',\n  replyText: reply,\n  receivedMediaUrl: mediaUrl,\n  fileName,\n  mimeType\n};"
       },
       "id": "node-handle-doc",
       "name": "📄 Handle Document",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [920, 760],
-      "notes": "Handles PDF, DOCX, XLSX, ZIP and other document types."
+      "position": [920, 860],
+      "notes": "Handles PDF, DOCX, XLSX, ZIP and other document types. Change replyType to 'document' to reply with a file."
     },
     {
       "parameters": {
-        "jsCode": "// ─── Merge all handler outputs into one stream ───\n// This node receives data from all 5 handlers above.\n// Pass everything through unchanged.\nreturn $json;"
+        "jsCode": "// ─── Merge all handler outputs ───\nreturn $json;"
       },
       "id": "node-merge",
       "name": "🔗 Merge All Replies",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1160, 520],
-      "notes": "Single merge point before sending the reply. All 5 type handlers connect here."
+      "position": [1160, 580],
+      "notes": "Single merge point. All 5 type handlers connect here."
+    },
+    {
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 2,
+        "unit": "seconds"
+      },
+      "id": "node-wait",
+      "name": "⏱️ Wait 2 Seconds",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1360, 580],
+      "notes": "2-second delay to avoid being flagged as a bot by WhatsApp."
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "conditions": [{ "leftValue": "={{ $json.replyType }}", "rightValue": "text", "operator": { "type": "string", "operation": "equals" } }],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "conditions": [{ "leftValue": "={{ $json.replyType }}", "rightValue": "image", "operator": { "type": "string", "operation": "equals" } }],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Image"
+            },
+            {
+              "conditions": {
+                "conditions": [{ "leftValue": "={{ $json.replyType }}", "rightValue": "audio", "operator": { "type": "string", "operation": "equals" } }],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "conditions": [{ "leftValue": "={{ $json.replyType }}", "rightValue": "document", "operator": { "type": "string", "operation": "equals" } }],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Document"
+            }
+          ]
+        },
+        "options": { "fallbackOutput": "extra" }
+      },
+      "id": "node-switch-reply",
+      "name": "🔀 Route by Reply Type",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [1560, 580],
+      "notes": "Routes the reply to the correct sender based on replyType field set by the handler."
     },
     {
       "parameters": {
@@ -206,14 +236,14 @@
       "name": "📤 Send Text Reply",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1400, 400],
+      "position": [1780, 420],
       "credentials": {
         "httpHeaderAuth": {
           "id": "cred-api-key",
           "name": "WhatsApp Manager API Key"
         }
       },
-      "notes": "Replace YOUR-APP-DOMAIN with your server URL. Create an HTTP Header Auth credential with name=X-API-Key and value=your_api_key."
+      "notes": "Sends a text reply. Credential: HTTP Header Auth — Name: X-API-Key, Value: your API key."
     },
     {
       "parameters": {
@@ -223,21 +253,45 @@
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{ $json.phoneNumber }}\",\n  \"imageUrl\": \"{{ $json.sendImageUrl }}\",\n  \"caption\": \"{{ $json.sendCaption }}\"\n}",
+        "jsonBody": "={\n  \"number\": \"{{ $json.phoneNumber }}\",\n  \"imageUrl\": \"{{ $json.replyImageUrl }}\",\n  \"caption\": \"{{ $json.replyCaption }}\"\n}",
         "options": {}
       },
       "id": "node-send-image",
-      "name": "🖼️ Send Image",
+      "name": "🖼️ Send Image Reply",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1400, 600],
+      "position": [1780, 580],
       "credentials": {
         "httpHeaderAuth": {
           "id": "cred-api-key",
           "name": "WhatsApp Manager API Key"
         }
       },
-      "notes": "Use this node when you want to proactively send an image. Set sendImageUrl and sendCaption in an earlier Code node."
+      "notes": "Sends an image reply. Set replyImageUrl (public URL) and optionally replyCaption in the handler."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://YOUR-APP-DOMAIN/api/sessions/{{ $json.sessionId }}/send/audio",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.phoneNumber }}\",\n  \"audioUrl\": \"{{ $json.replyAudioUrl }}\"\n}",
+        "options": {}
+      },
+      "id": "node-send-audio",
+      "name": "🎵 Send Audio Reply",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1780, 740],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "cred-api-key",
+          "name": "WhatsApp Manager API Key"
+        }
+      },
+      "notes": "Sends an audio file reply. Set replyAudioUrl (public URL) in the handler."
     },
     {
       "parameters": {
@@ -247,34 +301,21 @@
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{ $json.phoneNumber }}\",\n  \"fileUrl\": \"{{ $json.sendFileUrl }}\",\n  \"fileName\": \"{{ $json.sendFileName }}\",\n  \"caption\": \"{{ $json.sendCaption }}\"\n}",
+        "jsonBody": "={\n  \"number\": \"{{ $json.phoneNumber }}\",\n  \"fileUrl\": \"{{ $json.replyFileUrl }}\",\n  \"fileName\": \"{{ $json.replyFileName }}\",\n  \"caption\": \"{{ $json.replyCaption }}\"\n}",
         "options": {}
       },
       "id": "node-send-doc",
-      "name": "📄 Send Document",
+      "name": "📄 Send Document Reply",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1400, 760],
+      "position": [1780, 900],
       "credentials": {
         "httpHeaderAuth": {
           "id": "cred-api-key",
           "name": "WhatsApp Manager API Key"
         }
       },
-      "notes": "Use this node to send PDF, DOCX, or any document. Set sendFileUrl and sendFileName upstream."
-    },
-    {
-      "parameters": {
-        "resume": "timeInterval",
-        "amount": 2,
-        "unit": "seconds"
-      },
-      "id": "node-wait",
-      "name": "⏱️ Wait 2 Seconds",
-      "type": "n8n-nodes-base.wait",
-      "typeVersion": 1.1,
-      "position": [1280, 520],
-      "notes": "Adds a 2-second delay before sending the reply. Reduces the risk of being flagged as a bot by WhatsApp."
+      "notes": "Sends a document reply. Set replyFileUrl, replyFileName, and optionally replyCaption in the handler."
     }
   ],
   "connections": {
@@ -287,19 +328,15 @@
       ]
     },
     "🔍 Extract Message Fields": {
-      "main": [
-        [
-          { "node": "🔀 Route by Message Type", "type": "main", "index": 0 }
-        ]
-      ]
+      "main": [[{ "node": "🔀 Route by Message Type", "type": "main", "index": 0 }]]
     },
     "🔀 Route by Message Type": {
       "main": [
-        [{ "node": "💬 Handle Text",            "type": "main", "index": 0 }],
-        [{ "node": "🖼️ Handle Image",           "type": "main", "index": 0 }],
-        [{ "node": "🎬 Handle Video",            "type": "main", "index": 0 }],
-        [{ "node": "🎵 Handle Audio / Voice",   "type": "main", "index": 0 }],
-        [{ "node": "📄 Handle Document",        "type": "main", "index": 0 }]
+        [{ "node": "💬 Handle Text",          "type": "main", "index": 0 }],
+        [{ "node": "🖼️ Handle Image",         "type": "main", "index": 0 }],
+        [{ "node": "🎬 Handle Video",          "type": "main", "index": 0 }],
+        [{ "node": "🎵 Handle Audio / Voice", "type": "main", "index": 0 }],
+        [{ "node": "📄 Handle Document",      "type": "main", "index": 0 }]
       ]
     },
     "💬 Handle Text":          { "main": [[{ "node": "🔗 Merge All Replies", "type": "main", "index": 0 }]] },
@@ -308,17 +345,17 @@
     "🎵 Handle Audio / Voice": { "main": [[{ "node": "🔗 Merge All Replies", "type": "main", "index": 3 }]] },
     "📄 Handle Document":      { "main": [[{ "node": "🔗 Merge All Replies", "type": "main", "index": 4 }]] },
     "🔗 Merge All Replies": {
-      "main": [
-        [
-          { "node": "⏱️ Wait 2 Seconds", "type": "main", "index": 0 }
-        ]
-      ]
+      "main": [[{ "node": "⏱️ Wait 2 Seconds", "type": "main", "index": 0 }]]
     },
     "⏱️ Wait 2 Seconds": {
+      "main": [[{ "node": "🔀 Route by Reply Type", "type": "main", "index": 0 }]]
+    },
+    "🔀 Route by Reply Type": {
       "main": [
-        [
-          { "node": "📤 Send Text Reply", "type": "main", "index": 0 }
-        ]
+        [{ "node": "📤 Send Text Reply",     "type": "main", "index": 0 }],
+        [{ "node": "🖼️ Send Image Reply",    "type": "main", "index": 0 }],
+        [{ "node": "🎵 Send Audio Reply",    "type": "main", "index": 0 }],
+        [{ "node": "📄 Send Document Reply", "type": "main", "index": 0 }]
       ]
     }
   },
@@ -331,7 +368,6 @@
   "tags": ["whatsapp", "bot", "all-media", "automation"],
   "meta": {
     "templateCredsSetupCompleted": false,
-    "instanceId": "whatsapp-manager",
-    "n8nDomain": "https://n8ncourse.sidawin8n.cfd"
+    "instanceId": "whatsapp-manager"
   }
 }

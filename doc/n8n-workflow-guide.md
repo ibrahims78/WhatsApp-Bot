@@ -3,53 +3,116 @@
 ## ما هو هذا الورك فلو؟
 
 هذا ورك فلو جاهز لـ **n8n** يربط نظام **WhatsApp Manager** بأتمتة متكاملة.  
-بعد استيراده في n8n واحدة، سيصبح الذكاء الاصطناعي يستقبل كل رسائل الواتساب الواردة ويردّ عليها تلقائياً وفق نوعها.
+يستقبل كل أنواع رسائل الواتساب الواردة ويردّ عليها بالنوع المناسب (نص / صورة / صوت / مستند) تلقائياً.
 
 ---
 
-## العقد (Nodes) وما تفعله
+## مخطط التدفق الكامل
 
 ```
 📥 Receive WhatsApp Message
         │
-        ├──▶ ✅ Respond 200 OK          (يُرسل رد فوري للخادم)
+        ├──▶ ✅ Respond 200 OK
         │
-        └──▶ 🔍 Extract Message Fields  (يستخرج بيانات الرسالة)
+        └──▶ 🔍 Extract Message Fields
                     │
                     ▼
-            🔀 Route by Message Type
-            ┌────┬────┬────┬────┬────────┐
-            ▼    ▼    ▼    ▼    ▼        ▼
-          Text Image Video Audio Document Other
-            │    │    │    │    │
-            └────┴────┴────┴────┘
-                    │
-                    ▼
-            🔗 Merge All Replies
-                    │
-                    ▼
-            ⏱️ Wait 2 Seconds
-                    │
-                    ▼
-            📤 Send Text Reply
+            🔀 Route by Message Type (استقبال)
+        ┌───┬───┬───┬───┬────────┐
+        ▼   ▼   ▼   ▼   ▼       ▼
+      Text Img Vid Aud Doc    Other
+        │   │   │   │   │
+        └───┴───┴───┴───┘
+                │
+                ▼
+        🔗 Merge All Replies
+                │
+                ▼
+        ⏱️ Wait 2 Seconds
+                │
+                ▼
+        🔀 Route by Reply Type (إرسال)
+        ┌───┬───┬───┬────────┐
+        ▼   ▼   ▼   ▼
+      📤   🖼️  🎵  📄
+      Text Img Aud Doc
 ```
 
-### تفاصيل كل عقدة
+---
 
-| العقدة | النوع | المهمة |
-|--------|-------|---------|
-| 📥 Receive WhatsApp Message | Webhook | يستقبل الرسائل من الخادم عبر POST |
-| ✅ Respond 200 OK | Respond to Webhook | يُقرّ الاستلام فوراً لمنع إعادة المحاولة |
-| 🔍 Extract Message Fields | Code | يُعالج الـ payload ويصنّف نوع الرسالة |
-| 🔀 Route by Message Type | Switch | يوجّه التدفق حسب النوع: نص/صورة/فيديو/صوت/مستند |
-| 💬 Handle Text | Code | يردّ على الرسائل النصية بكلمات مفتاحية |
-| 🖼️ Handle Image | Code | يُقرّ استلام الصور |
-| 🎬 Handle Video | Code | يُقرّ استلام الفيديو |
-| 🎵 Handle Audio / Voice | Code | يُقرّ استلام الصوت والرسائل الصوتية |
-| 📄 Handle Document | Code | يُقرّ استلام المستندات (PDF، DOCX، ...) |
-| 🔗 Merge All Replies | Code | يجمع مخرجات كل المعالجات |
-| ⏱️ Wait 2 Seconds | Wait | تأخير 2 ثانية لتجنب الحظر من واتساب |
-| 📤 Send Text Reply | HTTP Request | يُرسل الرد عبر API الخادم |
+## العقد وما تفعله
+
+### جانب الاستقبال
+
+| العقدة | المهمة |
+|--------|--------|
+| 📥 Receive WhatsApp Message | يستقبل الرسائل الواردة عبر Webhook POST |
+| ✅ Respond 200 OK | يُقرّ الاستلام فوراً لمنع إعادة المحاولة |
+| 🔍 Extract Message Fields | يُعالج الـ payload ويستخرج الحقول |
+| 🔀 Route by Message Type | يوجّه حسب نوع الرسالة الواردة |
+| 💬 Handle Text | يعالج الرسائل النصية (يرد بكلمات مفتاحية) |
+| 🖼️ Handle Image | يعالج الصور الواردة |
+| 🎬 Handle Video | يعالج الفيديو الوارد |
+| 🎵 Handle Audio / Voice | يعالج الصوت والرسائل الصوتية |
+| 📄 Handle Document | يعالج المستندات (PDF, DOCX, ZIP...) |
+| 🔗 Merge All Replies | يجمع مخرجات كل المعالجات |
+| ⏱️ Wait 2 Seconds | تأخير 2 ثانية لتجنب الحظر من واتساب |
+
+### جانب الإرسال
+
+| العقدة | ما ترسله | الحقول المطلوبة |
+|--------|---------|-----------------|
+| 🔀 Route by Reply Type | يوجّه حسب `replyType` | — |
+| 📤 Send Text Reply | رسالة نصية | `replyText` |
+| 🖼️ Send Image Reply | صورة | `replyImageUrl` + `replyCaption` (اختياري) |
+| 🎵 Send Audio Reply | ملف صوتي | `replyAudioUrl` |
+| 📄 Send Document Reply | مستند/ملف | `replyFileUrl` + `replyFileName` + `replyCaption` (اختياري) |
+
+---
+
+## كيف تغيّر نوع الرد؟
+
+في كل عقدة Handle، حدّد `replyType` بالقيمة المناسبة وأضف الحقل المطلوب:
+
+### مثال: الرد على صورة بصورة أخرى
+
+في عقدة **🖼️ Handle Image**، عدّل الكود:
+```javascript
+return {
+  sessionId,
+  phoneNumber: phone,
+  replyType: 'image',                              // ← غيّر من 'text' إلى 'image'
+  replyImageUrl: 'https://example.com/reply.jpg', // ← أضف رابط الصورة
+  replyCaption: 'هذه صورة رد!',                   // ← اختياري
+  receivedMediaUrl: mediaUrl
+};
+```
+
+### مثال: الرد على مستند بمستند آخر
+
+في عقدة **📄 Handle Document**:
+```javascript
+return {
+  sessionId,
+  phoneNumber: phone,
+  replyType: 'document',
+  replyFileUrl: 'https://example.com/reply.pdf',
+  replyFileName: 'document.pdf',
+  replyCaption: 'إليك الملف المطلوب',
+  receivedMediaUrl: mediaUrl
+};
+```
+
+### مثال: الرد بملف صوتي
+
+```javascript
+return {
+  sessionId,
+  phoneNumber: phone,
+  replyType: 'audio',
+  replyAudioUrl: 'https://example.com/reply.mp3'
+};
+```
 
 ---
 
@@ -57,67 +120,45 @@
 
 ### 1. رابط Webhook
 
-بعد استيراد الورك فلو في n8n، افتح عقدة **📥 Receive WhatsApp Message** وانسخ رابط الـ Webhook الذي يُولّده n8n.  
+بعد استيراد الورك فلو في n8n وتفعيله، افتح عقدة **📥 Receive WhatsApp Message** وانسخ رابط الـ Webhook.  
 ثم اذهب إلى **إعدادات الجلسة** في لوحة التحكم والصق الرابط في حقل **Webhook URL**.
 
 ### 2. مفتاح API (Credential)
 
-في عقدة **📤 Send Text Reply**، هناك credential باسم **"WhatsApp Manager API Key"**.  
-اذهب إلى n8n → Credentials → New Credential → HTTP Header Auth:
+في أي عقدة إرسال (📤/🖼️/🎵/📄)، أضف credential من نوع **HTTP Header Auth**:
 - **Name**: `X-API-Key`
-- **Value**: مفتاح الـ API الذي تحصل عليه من صفحة **مفاتيح API** في لوحة التحكم
+- **Value**: مفتاح الـ API من صفحة **مفاتيح API** في لوحة التحكم
 
-### 3. رابط الخادم
-
-في ملف الورك فلو المُحمَّل، يتم حقن رابط خادمك تلقائياً. تأكد أن الرابط صحيح في عقدة:
-- 📤 Send Text Reply
-- 🖼️ Send Image *(إن استخدمتها)*
-- 📄 Send Document *(إن استخدمتها)*
+> الملف المُحمَّل يحتوي على رابط خادمك محقوناً تلقائياً. تأكد فقط من إضافة الـ credential.
 
 ---
 
 ## كيفية الاستيراد في n8n
 
-1. افتح n8n → قائمة Workflows
-2. اضغط على **Import from file**
+1. اذهب إلى n8n → قائمة **Workflows**
+2. اضغط **Import from file**
 3. اختر الملف `n8n-workflow-whatsapp.json`
-4. بعد الاستيراد أعد إعداد الـ credential كما شُرح أعلاه
+4. أضف الـ credential (مفتاح API) كما هو موضح أعلاه
 5. فعّل الورك فلو من زر التفعيل في أعلى اليمين
+6. انسخ رابط الـ Webhook والصقه في إعدادات الجلسة
 
 ---
 
-## منطق الردود التلقائية (Handle Text)
+## جدول أنواع الرسائل المدعومة
 
-الكود الموجود يدعم الردود الآتية:
-
-| الكلمات المفتاحية | الرد |
-|-------------------|------|
-| مرحبا / هلا / hello / hi | رد ترحيب |
-| سعر / price / كم | إحالة لفريق المبيعات |
-| وقت / دوام / hours / time | أوقات العمل |
-| أي كلمة أخرى | رد افتراضي |
-
-يمكنك تخصيص هذا الكود بالكامل من عقدة **💬 Handle Text**.
-
----
-
-## أنواع الرسائل المدعومة
-
-| النوع | القيمة في واتساب |
-|-------|-----------------|
-| نص | `chat` |
-| صورة | `image` |
-| فيديو | `video` |
-| صوت / رسالة صوتية | `audio` / `ptt` |
-| مستند | `document` |
-| ملصق | `sticker` |
-| موقع | `location` |
+| النوع | القيمة | الاستقبال | الإرسال |
+|-------|--------|-----------|---------|
+| نص | `chat` | ✅ | ✅ (`replyType: 'text'`) |
+| صورة | `image` | ✅ | ✅ (`replyType: 'image'`) |
+| فيديو | `video` | ✅ | ✅ (أرسله كـ document) |
+| صوت / رسالة صوتية | `audio` / `ptt` | ✅ | ✅ (`replyType: 'audio'`) |
+| مستند | `document` | ✅ | ✅ (`replyType: 'document'`) |
+| ملصق | `sticker` | ✅ (fallback) | — |
+| موقع | `location` | ✅ (fallback) | — |
 
 ---
 
 ## payload الرسائل الواردة
-
-هذا هو الشكل الحقيقي الذي يُرسله الخادم لـ n8n عند كل رسالة واردة:
 
 ```json
 {
@@ -140,11 +181,12 @@
 | الحقل | الوصف |
 |-------|-------|
 | `event` | دائماً `"message.received"` |
-| `sessionId` | معرّف الجلسة الذي أستقبل الرسالة |
+| `sessionId` | معرّف الجلسة التي استقبلت الرسالة |
 | `data.type` | نوع الرسالة: `chat` / `image` / `video` / `audio` / `ptt` / `document` |
 | `data.from` | رقم المُرسِل بصيغة `966501234567@c.us` |
-| `data.body` | نص الرسالة (فارغ للرسائل الوسائطية) |
+| `data.body` | نص الرسالة (فارغ للوسائط) |
 | `data.mediaUrl` | رابط الوسائط إن وُجدت |
+| `data.fileName` | اسم الملف للمستندات |
 | `data.caption` | تعليق الوسائط |
 | `data.mimetype` | نوع الملف (مثل `image/jpeg`) |
 
@@ -152,7 +194,7 @@
 
 ## ملاحظات مهمة
 
-- **عقدة Wait**: التأخير 2 ثانية مهم — يُقلّل من خطر حظر رقمك من واتساب.
+- **عقدة Wait**: التأخير 2 ثانية يُقلّل من خطر حظر رقمك من واتساب.
 - **Respond 200 OK**: يجب أن يكون أول رد للخادم، وإلا سيُعيد الخادم إرسال الرسالة.
-- كل جلسة واتساب لها Webhook منفصل، يمكنك توجيهها لورك فلوهات مختلفة.
-- الورك فلو المُحمَّل يحتوي على رابط خادمك محقوناً تلقائياً — ما عليك إلا إضافة مفتاح الـ API.
+- كل جلسة واتساب لها Webhook منفصل يمكنك توجيهها لورك فلوهات مختلفة.
+- لإرسال فيديو: استخدم `replyType: 'document'` مع رابط الفيديو واسم الملف — واتساب يُشغّله تلقائياً.
