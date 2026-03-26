@@ -4,7 +4,7 @@ import { eq, sql } from "drizzle-orm";
 import { logger } from "./logger";
 import type { Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
-import { execSync } from "child_process";
+import { execSync, spawnSync } from "child_process";
 import { existsSync, rmSync } from "fs";
 import path from "path";
 
@@ -26,152 +26,149 @@ function ensureChrome(): void {
   }
 }
 
-// Remove stale Chrome lock files after crash/restart
-function cleanChromeLock(sessionId: string): void {
+function cleanChromeLocks(sessionId: string): void {
   const tokensDir = path.join(process.cwd(), "tokens", sessionId);
-  for (const lockName of ["SingletonLock", "SingletonSocket", "SingletonCookie"]) {
-    const lockFile = path.join(tokensDir, lockName);
-    if (existsSync(lockFile)) {
-      try {
-        rmSync(lockFile, { force: true });
-        logger.info({ sessionId, lockName }, "Removed stale Chrome lock file");
-      } catch (e) {
-        logger.warn({ sessionId, lockName, err: e }, "Could not remove lock file");
-      }
+  for (const name of ["SingletonLock", "SingletonSocket", "SingletonCookie"]) {
+    const f = path.join(tokensDir, name);
+    if (existsSync(f)) {
+      try { rmSync(f, { force: true }); } catch { /* ignore */ }
     }
   }
 }
 
-// Force-kill any Chrome processes still using this session's profile directory
-function forceKillBrowser(sessionId: string): void {
+function forceKillChrome(sessionId: string): void {
   try {
-    execSync(`pkill -9 -f "tokens/${sessionId}" 2>/dev/null || true`, {
-      stdio: "pipe",
-      timeout: 5_000,
-    });
-  } catch {
-    // ignore
-  }
+    spawnSync("pkill", ["-9", "-f", `tokens/${sessionId}`], { timeout: 3_000 });
+  } catch { /* ignore */ }
 }
 
-// ── State maps ────────────────────────────────────────────────────────────────
-const clients         = new Map<string, any>();
-const activeBrowsers  = new Set<string>();
-const qrCodes         = new Map<string, string>();
-const keepaliveIntervals = new Map<string, ReturnType<typeof setInterval>>();
-const reconnectTimers    = new Map<string, ReturnType<typeof setTimeout>>();
-const reconnectAttempts  = new Map<string, number>();
-// Sessions that were intentionally stopped (do NOT auto-reconnect)
-const stoppedSessions    = new Set<string>();
-// Sessions that are in the process of being stopped (block concurrent connect)
-const stoppingSessions   = new Set<string>();
+// ── State ─────────────────────────────────────────────────────────────────────
+// Maps sessionId → WPPConnect client object
+const clients = new Map<string, any>();
+// Sessions currently launching a browser (prevent double-start)
+const launching = new Set<string>();
+// Sessions that were manually stopped (block auto-reconnect)
+const manuallyStopped = new Set<string>();
+// Sessions that are currently stopping (block concurrent connect)
+const stopping = new Set<string>();
+// QR codes
+const qrCodes = new Map<string, string>();
+// Keepalive timers
+const keepaliveTimers = new Map<string, ReturnType<typeof setInterval>>();
+// Reconnect timers
+const reconnectTimers = new Map<string, ReturnType<typeof setTimeout>>();
+// Reconnect attempt count (for backoff)
+const reconnectCount = new Map<string, number>();
+// Timestamp of last successful connection (to filter stale disconnect events)
+const lastConnectedAt = new Map<string, number>();
 
 let io: SocketServer;
 
-export function initSocketServer(httpServer: HttpServer) {
+// ── Socket server ─────────────────────────────────────────────────────────────
+export function initSocketServer(httpServer: HttpServer): SocketServer {
   io = new SocketServer(httpServer, {
     cors: { origin: "*" },
     path: "/socket.io",
   });
-
   io.on("connection", (socket) => {
     logger.info({ socketId: socket.id }, "WebSocket client connected");
-    socket.on("disconnect", () => {
-      logger.info({ socketId: socket.id }, "WebSocket client disconnected");
-    });
+    socket.on("disconnect", () =>
+      logger.info({ socketId: socket.id }, "WebSocket client disconnected")
+    );
   });
-
   startSelfPing();
   return io;
 }
 
-export function emitToAll(event: string, data: object) {
-  if (io) io.emit(event, data);
+export function emitToAll(event: string, data: object): void {
+  io?.emit(event, data);
 }
 
-// ── Self-ping: keeps Replit container alive ───────────────────────────────────
-function startSelfPing() {
+// ── Self-ping: prevents Replit container idle ─────────────────────────────────
+function startSelfPing(): void {
   const PORT = process.env.PORT || 8080;
   setInterval(async () => {
     try { await fetch(`http://localhost:${PORT}/`); } catch { /* ignore */ }
   }, 30_000);
 }
 
-// ── Keepalive: pings the WhatsApp connection every 45s ───────────────────────
-function startKeepalive(sessionId: string) {
+// ── Keepalive: verify WA connection every 45s ─────────────────────────────────
+function startKeepalive(sessionId: string): void {
   stopKeepalive(sessionId);
-  const interval = setInterval(async () => {
+  const t = setInterval(async () => {
     const client = clients.get(sessionId);
     if (!client) { stopKeepalive(sessionId); return; }
     try {
-      const connected = await client.isConnected();
-      if (!connected) {
-        logger.warn({ sessionId }, "Keepalive: session not connected — scheduling reconnect");
+      const ok = await client.isConnected();
+      if (!ok) {
+        logger.warn({ sessionId }, "Keepalive: not connected — reconnecting");
         stopKeepalive(sessionId);
         scheduleReconnect(sessionId);
-      } else {
-        logger.debug({ sessionId }, "Keepalive ping OK");
       }
-    } catch (e) {
-      logger.warn({ sessionId, err: e }, "Keepalive error — scheduling reconnect");
+    } catch {
+      logger.warn({ sessionId }, "Keepalive error — reconnecting");
       stopKeepalive(sessionId);
       scheduleReconnect(sessionId);
     }
   }, 45_000);
-  keepaliveIntervals.set(sessionId, interval);
-  logger.info({ sessionId }, "Keepalive started (45s interval)");
+  keepaliveTimers.set(sessionId, t);
 }
 
-function stopKeepalive(sessionId: string) {
-  const interval = keepaliveIntervals.get(sessionId);
-  if (interval) { clearInterval(interval); keepaliveIntervals.delete(sessionId); }
+function stopKeepalive(sessionId: string): void {
+  const t = keepaliveTimers.get(sessionId);
+  if (t) { clearInterval(t); keepaliveTimers.delete(sessionId); }
 }
 
-// ── Auto-reconnect with exponential backoff ───────────────────────────────────
-function scheduleReconnect(sessionId: string) {
-  if (stoppedSessions.has(sessionId)) {
-    logger.info({ sessionId }, "Session was manually stopped — skipping auto-reconnect");
-    return;
-  }
+// ── Auto-reconnect ────────────────────────────────────────────────────────────
+function cancelReconnect(sessionId: string): void {
+  const t = reconnectTimers.get(sessionId);
+  if (t) { clearTimeout(t); reconnectTimers.delete(sessionId); }
+}
 
-  const existing = reconnectTimers.get(sessionId);
-  if (existing) clearTimeout(existing);
+function scheduleReconnect(sessionId: string): void {
+  if (manuallyStopped.has(sessionId)) return;
+  cancelReconnect(sessionId);
 
-  const attempt = (reconnectAttempts.get(sessionId) || 0) + 1;
-  reconnectAttempts.set(sessionId, attempt);
-
+  const attempt = (reconnectCount.get(sessionId) ?? 0) + 1;
+  reconnectCount.set(sessionId, attempt);
   const delay = Math.min(5_000 * Math.pow(2, attempt - 1), 120_000);
-  logger.info({ sessionId, attempt, delayMs: delay }, "Scheduling auto-reconnect");
+
+  logger.info({ sessionId, attempt, delayMs: delay }, "Reconnect scheduled");
   emitToAll("status", { sessionId, status: "reconnecting", attempt });
 
-  const timer = setTimeout(async () => {
+  const t = setTimeout(async () => {
     reconnectTimers.delete(sessionId);
-    if (stoppedSessions.has(sessionId)) return;
+    if (manuallyStopped.has(sessionId)) return;
 
-    logger.info({ sessionId, attempt }, "Attempting auto-reconnect");
+    // Don't launch if something is already running for this session
+    if (clients.has(sessionId) || launching.has(sessionId)) {
+      logger.info({ sessionId }, "Reconnect skipped — session already active");
+      reconnectCount.delete(sessionId);
+      return;
+    }
+
+    logger.info({ sessionId, attempt }, "Auto-reconnect starting");
     try {
-      activeBrowsers.delete(sessionId);
-      clients.delete(sessionId);
       await startSession(sessionId);
-      reconnectAttempts.delete(sessionId);
-      logger.info({ sessionId }, "Auto-reconnect succeeded");
+      reconnectCount.delete(sessionId);
     } catch (e) {
-      logger.error({ sessionId, attempt, err: e }, "Auto-reconnect failed — will retry");
+      logger.error({ sessionId, attempt, err: e }, "Auto-reconnect failed");
       scheduleReconnect(sessionId);
     }
   }, delay);
 
-  reconnectTimers.set(sessionId, timer);
+  reconnectTimers.set(sessionId, t);
 }
 
 // ── Phone number fetch with retry ─────────────────────────────────────────────
-async function fetchPhoneNumber(client: any, sessionId: string, maxRetries = 8): Promise<void> {
+async function fetchPhoneNumber(sessionId: string, maxRetries = 10): Promise<void> {
   for (let i = 0; i < maxRetries; i++) {
-    // Wait before each attempt — connection needs to fully sync first
     await new Promise((r) => setTimeout(r, 3_000));
+    const client = clients.get(sessionId); // always fresh reference
+    if (!client) return; // session was stopped
     try {
       const info = await client.getHostDevice();
-      const phone = info?.wid?.user || null;
+      const phone: string | null = info?.wid?.user ?? null;
       if (phone) {
         await db
           .update(whatsappSessionsTable)
@@ -181,44 +178,46 @@ async function fetchPhoneNumber(client: any, sessionId: string, maxRetries = 8):
         logger.info({ sessionId, phone }, "Phone number saved");
         return;
       }
-    } catch (e) {
-      logger.debug({ sessionId, attempt: i + 1 }, "getHostDevice not ready yet — retrying");
+    } catch {
+      logger.debug({ sessionId, attempt: i + 1 }, "getHostDevice not ready — retrying");
     }
   }
-  logger.warn({ sessionId }, "Could not retrieve phone number after all retries");
+  logger.warn({ sessionId }, "Could not retrieve phone number after retries");
 }
 
-// ── Core: start session ───────────────────────────────────────────────────────
+// ── Start session ─────────────────────────────────────────────────────────────
 export async function startSession(sessionId: string): Promise<void> {
+  // Prevent double-launch
   if (clients.has(sessionId)) {
-    logger.info({ sessionId }, "Session already active");
+    logger.info({ sessionId }, "Session already connected");
     return;
   }
-
-  if (activeBrowsers.has(sessionId)) {
-    logger.info({ sessionId }, "Browser already running for this session");
+  if (launching.has(sessionId)) {
+    logger.info({ sessionId }, "Session already launching");
     return;
   }
-
-  // Block if still in the middle of stopping
-  if (stoppingSessions.has(sessionId)) {
-    logger.warn({ sessionId }, "Session is still stopping — waiting");
-    await new Promise((r) => setTimeout(r, 3_000));
+  if (stopping.has(sessionId)) {
+    logger.warn({ sessionId }, "Session still stopping — waiting 2s");
+    await new Promise((r) => setTimeout(r, 2_000));
+    if (stopping.has(sessionId)) {
+      logger.error({ sessionId }, "Session still stopping after wait — aborting");
+      return;
+    }
   }
 
-  // Mark as intentionally started (clear stopped flag)
-  stoppedSessions.delete(sessionId);
-  activeBrowsers.add(sessionId);
+  manuallyStopped.delete(sessionId);
+  launching.add(sessionId);
 
-  // Always clean lock files before launching to avoid "profile in use" errors
-  cleanChromeLock(sessionId);
+  // Clean up any leftover lock files and lingering Chrome
+  forceKillChrome(sessionId);
+  await new Promise((r) => setTimeout(r, 500)); // short pause after kill
+  cleanChromeLocks(sessionId);
   ensureChrome();
 
   await db
     .update(whatsappSessionsTable)
     .set({ status: "connecting" })
     .where(eq(whatsappSessionsTable.id, sessionId));
-
   emitToAll("status", { sessionId, status: "connecting" });
 
   try {
@@ -263,88 +262,81 @@ export async function startSession(sessionId: string): Promise<void> {
       },
 
       statusFind: async (status: string) => {
-        logger.info({ sessionId, status }, "Session status changed");
+        logger.info({ sessionId, status }, "WPPConnect status");
 
-        // ── Fully connected (QR scan) ──
-        if (status === "qrReadSuccess") {
+        // ── Connected via QR scan ──────────────────────────────────────────
+        if (status === "qrReadSuccess" || status === "isLogged") {
+          lastConnectedAt.set(sessionId, Date.now());
+          cancelReconnect(sessionId);        // cancel any pending reconnect!
+          reconnectCount.delete(sessionId);  // reset backoff counter
+
           await db
             .update(whatsappSessionsTable)
             .set({ status: "connected" })
             .where(eq(whatsappSessionsTable.id, sessionId));
-
           qrCodes.delete(sessionId);
-          reconnectAttempts.delete(sessionId);
           emitToAll("status", { sessionId, status: "connected" });
           startKeepalive(sessionId);
 
-          // Fetch phone number in background — wait for sync to complete
-          fetchPhoneNumber(client, sessionId).catch((e) =>
-            logger.warn({ sessionId, err: e }, "fetchPhoneNumber background error")
+          // NOTE: use fetchPhoneNumber(sessionId) — NOT (client, sessionId)
+          // because `client` may not be in scope yet (temporal dead zone).
+          // We always retrieve the client freshly inside fetchPhoneNumber.
+          fetchPhoneNumber(sessionId).catch((e) =>
+            logger.warn({ sessionId, err: e }, "fetchPhoneNumber error")
           );
         }
 
-        // ── Already logged in via saved token ──
-        else if (status === "isLogged") {
-          await db
-            .update(whatsappSessionsTable)
-            .set({ status: "connected" })
-            .where(eq(whatsappSessionsTable.id, sessionId));
-
-          qrCodes.delete(sessionId);
-          reconnectAttempts.delete(sessionId);
-          emitToAll("status", { sessionId, status: "connected" });
-          startKeepalive(sessionId);
-
-          fetchPhoneNumber(client, sessionId).catch((e) =>
-            logger.warn({ sessionId, err: e }, "fetchPhoneNumber background error")
-          );
-        }
-
-        // ── Browser fully closed ──
+        // ── Browser fully closed ───────────────────────────────────────────
         else if (status === "browserClose" || status === "autocloseCalled") {
           stopKeepalive(sessionId);
-          activeBrowsers.delete(sessionId);
           clients.delete(sessionId);
+          launching.delete(sessionId);
           qrCodes.delete(sessionId);
 
           await db
             .update(whatsappSessionsTable)
             .set({ status: "disconnected" })
             .where(eq(whatsappSessionsTable.id, sessionId));
-
           emitToAll("status", { sessionId, status: "disconnected" });
           scheduleReconnect(sessionId);
         }
 
-        // ── QR waiting ──
+        // ── QR waiting ─────────────────────────────────────────────────────
         else if (status === "notLogged") {
           await db
             .update(whatsappSessionsTable)
             .set({ status: "notLogged" })
             .where(eq(whatsappSessionsTable.id, sessionId));
-
           emitToAll("status", { sessionId, status: "notLogged" });
         }
 
-        // ── Phone disconnected from device side ──
+        // ── Phone-side disconnect ──────────────────────────────────────────
         else if (
-          status === "desconnectedMobile" ||
-          status === "disconnectedMobile"
+          status === "disconnectedMobile" ||
+          status === "desconnectedMobile"
         ) {
-          if (stoppedSessions.has(sessionId)) {
-            logger.info({ sessionId }, "disconnectedMobile — session was manually stopped, ignoring");
+          if (manuallyStopped.has(sessionId)) {
+            logger.info({ sessionId }, "disconnectedMobile — manually stopped, ignoring");
             return;
           }
-          logger.warn({ sessionId }, "Phone disconnected — scheduling reconnect");
+
+          // Ignore stale disconnect events fired within 30s of a fresh connect.
+          // WPPConnect fires these during the syncing phase — they are not real.
+          const connectedAt = lastConnectedAt.get(sessionId) ?? 0;
+          if (Date.now() - connectedAt < 30_000) {
+            logger.info({ sessionId }, "disconnectedMobile within 30s of connect — ignored (syncing artifact)");
+            return;
+          }
+
+          logger.warn({ sessionId }, "Phone disconnected — reconnecting");
           stopKeepalive(sessionId);
-          activeBrowsers.delete(sessionId);
           clients.delete(sessionId);
+          launching.delete(sessionId);
 
           await db
             .update(whatsappSessionsTable)
             .set({ status: "disconnected" })
             .where(eq(whatsappSessionsTable.id, sessionId));
-
           emitToAll("status", { sessionId, status: "disconnected" });
           scheduleReconnect(sessionId);
         }
@@ -352,14 +344,15 @@ export async function startSession(sessionId: string): Promise<void> {
       },
     });
 
+    // Store client AFTER create() resolves
     clients.set(sessionId, client);
+    launching.delete(sessionId);
 
-    // ── Incoming message listener ─────────────────────────────────────────────
+    // ── Incoming message listener ─────────────────────────────────────────
     client.onMessage(async (message: any) => {
       try {
-        if (message.fromMe === true) return;
-
-        const from: string = message.from || "";
+        if (message.fromMe) return;
+        const from: string = message.from ?? "";
         if (from === "status@broadcast" || from.endsWith("@newsletter")) return;
 
         const session = await db.query.whatsappSessionsTable.findFirst({
@@ -367,70 +360,59 @@ export async function startSession(sessionId: string): Promise<void> {
         });
         if (!session) return;
 
-        const stripSuffix = (n: string) =>
-          n?.replace(/@(c\.us|lid|g\.us)$/, "") || "";
-
+        const strip = (n: string) => n?.replace(/@(c\.us|lid|g\.us)$/, "") ?? "";
         await db.insert(messagesTable).values({
           sessionId,
-          direction: "inbound",
-          fromNumber: stripSuffix(message.from || ""),
-          toNumber:   stripSuffix(message.to   || ""),
-          messageType: message.type || "text",
-          content:   message.body  || null,
-          mediaUrl:  null,
-          caption:   message.caption || null,
-          status:    "delivered",
-          timestamp: new Date(message.timestamp * 1000),
+          direction:   "inbound",
+          fromNumber:  strip(message.from ?? ""),
+          toNumber:    strip(message.to   ?? ""),
+          messageType: message.type ?? "text",
+          content:     message.body ?? null,
+          mediaUrl:    null,
+          caption:     message.caption ?? null,
+          status:      "delivered",
+          timestamp:   new Date(message.timestamp * 1000),
         });
 
         await db
           .update(whatsappSessionsTable)
-          .set({
-            totalMessagesReceived:
-              sql`${whatsappSessionsTable.totalMessagesReceived} + 1`,
-          })
+          .set({ totalMessagesReceived: sql`${whatsappSessionsTable.totalMessagesReceived} + 1` })
           .where(eq(whatsappSessionsTable.id, sessionId));
 
         emitToAll("message", { sessionId, message });
 
         if (session.webhookUrl) {
           let events: string[] = [];
-          try {
-            events = session.webhookEvents ? JSON.parse(session.webhookEvents) : [];
-          } catch {
-            logger.warn({ sessionId }, "webhookEvents is invalid JSON");
-          }
+          try { events = session.webhookEvents ? JSON.parse(session.webhookEvents) : []; }
+          catch { /* invalid JSON */ }
 
           if (events.includes("message.received") || events.length === 0) {
-            const rawFrom  = message.from || "";
-            const phoneNumber = rawFrom.includes("@")
-              ? rawFrom.split("@")[0]
-              : rawFrom;
-
+            const rawFrom     = message.from ?? "";
+            const phoneNumber = rawFrom.includes("@") ? rawFrom.split("@")[0] : rawFrom;
             triggerWebhook(session.webhookUrl, {
               event: "message.received",
               sessionId,
               data: {
-                type:        message.type || "chat",
+                type:        message.type      ?? "chat",
                 from:        rawFrom,
                 phoneNumber,
-                to:          message.to   || "",
-                body:        message.body || "",
-                timestamp:   message.timestamp || Math.floor(Date.now() / 1000),
-                mediaUrl:    message.mediaUrl  || null,
-                fileName:    message.fileName  || null,
-                caption:     message.caption   || null,
-                mimetype:    message.mimetype  || null,
+                to:          message.to        ?? "",
+                body:        message.body      ?? "",
+                timestamp:   message.timestamp ?? Math.floor(Date.now() / 1000),
+                mediaUrl:    message.mediaUrl  ?? null,
+                fileName:    message.fileName  ?? null,
+                caption:     message.caption   ?? null,
+                mimetype:    message.mimetype  ?? null,
               },
             });
           }
         }
       } catch (e) {
-        logger.error({ sessionId, err: e }, "Error handling incoming message");
+        logger.error({ sessionId, err: e }, "Error processing incoming message");
       }
     });
   } catch (e) {
-    activeBrowsers.delete(sessionId);
+    launching.delete(sessionId);
     logger.error({ sessionId, err: e }, "Failed to start WhatsApp session");
     await db
       .update(whatsappSessionsTable)
@@ -441,81 +423,68 @@ export async function startSession(sessionId: string): Promise<void> {
   }
 }
 
-// ── Core: stop session ────────────────────────────────────────────────────────
+// ── Stop session ──────────────────────────────────────────────────────────────
 export async function stopSession(sessionId: string): Promise<void> {
-  stoppedSessions.add(sessionId);
-  stoppingSessions.add(sessionId);
+  manuallyStopped.add(sessionId);
+  stopping.add(sessionId);
 
-  // Cancel pending reconnect
-  const timer = reconnectTimers.get(sessionId);
-  if (timer) { clearTimeout(timer); reconnectTimers.delete(sessionId); }
-  reconnectAttempts.delete(sessionId);
-
+  cancelReconnect(sessionId);
+  reconnectCount.delete(sessionId);
   stopKeepalive(sessionId);
-  activeBrowsers.delete(sessionId);
+  launching.delete(sessionId);
 
   const client = clients.get(sessionId);
+  clients.delete(sessionId);
+  qrCodes.delete(sessionId);
+
   if (client) {
-    // 1. Try graceful close via WPPConnect
-    try { await client.close(); } catch (e) {
-      logger.warn({ sessionId, err: e }, "client.close() error (will force kill)");
-    }
-
-    // 2. Kill the underlying Puppeteer browser if it survived
+    // 1. Graceful WPPConnect close
+    try { await client.close(); } catch { /* ignore */ }
+    // 2. Kill underlying Puppeteer browser process
     try {
-      const browser = client.browser;
-      if (browser) {
-        const proc = browser.process?.();
-        if (proc) proc.kill("SIGKILL");
-        await browser.close().catch(() => {});
-      }
+      const proc = client.browser?.process?.();
+      if (proc) proc.kill("SIGKILL");
+      await client.browser?.close().catch(() => {});
     } catch { /* ignore */ }
-
-    clients.delete(sessionId);
   }
 
-  // 3. Force-kill any lingering Chrome processes for this session
-  forceKillBrowser(sessionId);
+  // 3. Force-kill any surviving Chrome processes for this session
+  forceKillChrome(sessionId);
+  await new Promise((r) => setTimeout(r, 500));
+  cleanChromeLocks(sessionId);
 
-  // 4. Clean up lock files so the next connect can launch cleanly
-  cleanChromeLock(sessionId);
-
-  qrCodes.delete(sessionId);
-  stoppingSessions.delete(sessionId);
+  stopping.delete(sessionId);
 
   await db
     .update(whatsappSessionsTable)
     .set({ status: "disconnected" })
     .where(eq(whatsappSessionsTable.id, sessionId));
-
   emitToAll("status", { sessionId, status: "disconnected" });
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-export function getClient(sessionId: string) {
-  return clients.get(sessionId) || null;
+// ── Public helpers ────────────────────────────────────────────────────────────
+export function getClient(sessionId: string): any | null {
+  return clients.get(sessionId) ?? null;
 }
 
 export function getQrCode(sessionId: string): string | null {
-  return qrCodes.get(sessionId) || null;
+  return qrCodes.get(sessionId) ?? null;
 }
 
 export function isBrowserActive(sessionId: string): boolean {
-  return activeBrowsers.has(sessionId) || clients.has(sessionId);
+  return clients.has(sessionId) || launching.has(sessionId);
 }
 
-function triggerWebhook(url: string, payload: object) {
+// ── Webhook fire-and-forget ───────────────────────────────────────────────────
+function triggerWebhook(url: string, payload: object): void {
   fetch(url, {
-    method: "POST",
+    method:  "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body:    JSON.stringify(payload),
   })
-    .then((res) => {
-      if (res.ok) {
-        logger.info({ url, status: res.status }, "Webhook delivered");
-      } else {
-        logger.warn({ url, status: res.status }, "Webhook returned non-OK status");
-      }
+    .then((r) => {
+      if (r.ok) logger.info({ url, status: r.status }, "Webhook delivered");
+      else      logger.warn({ url, status: r.status }, "Webhook non-OK");
     })
-    .catch((e) => logger.warn({ url, err: e }, "Webhook delivery failed"));
+    .catch((e) => logger.warn({ url, err: e }, "Webhook failed"));
 }

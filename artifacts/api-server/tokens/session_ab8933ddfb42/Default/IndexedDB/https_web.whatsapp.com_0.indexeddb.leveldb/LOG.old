@@ -1,0 +1,66 @@
+2026/03/26-17:37:44.163 1340 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_ab8933ddfb42/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/26-17:37:44.163 1340 Recovering log #578
+2026/03/26-17:37:44.170 1340 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_ab8933ddfb42/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000578.log 
+2026/03/26-17:37:44.171 1340 Delete type=2 #577
+2026/03/26-17:37:44.207 1348 Manual compaction at level-0 from '\x00D\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00E\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/03/26-17:37:44.235 1340 Level-0 table #583: started
+2026/03/26-17:37:44.241 1340 Level-0 table #583: 130917 bytes OK
+2026/03/26-17:37:44.245 1340 Delete type=0 #578
+2026/03/26-17:37:44.245 1340 Manual compaction at level-0 from '\x00H\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00I\x00\x00\x00' @ 0 : 0; will stop at '\x00L\x00\x00\xc8\x11\x00w\x00o\x00r\x00k\x00e\x00r\x00_\x00w\x00a\x00m\x00_\x00e\x00v\x00e\x00n\x00t\x00s' @ 3502237 : 1
+2026/03/26-17:37:44.245 1340 Compacting 1@0 + 1@1 files
+2026/03/26-17:37:44.317 1340 Generated table #584@0: 110598 keys, 948895 bytes
+2026/03/26-17:37:44.317 1340 Compacted 1@0 + 1@1 files => 948895 bytes
+2026/03/26-17:37:44.320 1340 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/26-17:37:44.320 1340 Delete type=2 #583
+2026/03/26-17:37:44.320 1340 Manual compaction at level-0 from '\x00L\x00\x00\xc8\x11\x00w\x00o\x00r\x00k\x00e\x00r\x00_\x00w\x00a\x00m\x00_\x00e\x00v\x00e\x00n\x00t\x00s' @ 3502237 : 1 .. '\x00I\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/03/26-17:37:44.321 1340 Level-0 table #586: started
+2026/03/26-17:37:44.323 1340 Level-0 table #586: 408 bytes OK
+2026/03/26-17:37:44.327 1340 Delete type=2 #580
+2026/03/26-17:37:44.327 1340 Delete type=0 #582
+2026/03/26-17:37:44.327 1340 Manual compaction at level-0 from '\x00I\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00J\x00\x00\x00' @ 0 : 0; will stop at '\x00I\x00\x00\xc8\x06\x00s\x00t\x00a\x00t\x00u\x00s' @ 3502356 : 0
+2026/03/26-17:37:44.328 1340 Compacting 1@0 + 1@1 files
+2026/03/26-17:37:44.426 1340 Generated table #587@0: 110582 keys, 948713 bytes
+2026/03/26-17:37:44.426 1340 Compacted 1@0 + 1@1 files => 948713 bytes
+2026/03/26-17:37:44.431 1340 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/26-17:37:44.431 1340 Delete type=2 #586
+2026/03/26-17:37:44.432 1340 Manual compaction at level-0 from '\x00I\x00\x00\xc8\x06\x00s\x00t\x00a\x00t\x00u\x00s' @ 3502356 : 0 .. '\x00J\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/03/26-17:37:44.433 1340 Level-0 table #589: started
+2026/03/26-17:37:44.435 1340 Level-0 table #589: 17281 bytes OK
+2026/03/26-17:37:44.440 1340 Delete type=2 #584
+2026/03/26-17:37:44.440 1340 Delete type=0 #585
+2026/03/26-17:37:44.441 1340 Manual compaction at level-0 from '\x00C\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00D\x00\x00\x00' @ 0 : 0; will stop at '\x00L\x06 \x03\x00\x00\x00\x00\x00\x80V@\x00\x01\x0b\x00I\x00d\x00T\x00t\x00l\x009\x000\x00D\x00a\x00y\x00s' @ 3502404 : 1
+2026/03/26-17:37:44.441 1340 Compacting 1@0 + 1@1 files
+2026/03/26-17:37:44.509 1340 Generated table #590@0: 109889 keys, 898498 bytes
+2026/03/26-17:37:44.509 1340 Compacted 1@0 + 1@1 files => 898498 bytes
+2026/03/26-17:37:44.514 1340 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/26-17:37:44.514 1340 Delete type=2 #589
+2026/03/26-17:37:44.514 1340 Manual compaction at level-0 from '\x00L\x06 \x03\x00\x00\x00\x00\x00\x80V@\x00\x01\x0b\x00I\x00d\x00T\x00t\x00l\x009\x000\x00D\x00a\x00y\x00s' @ 3502404 : 1 .. '\x00D\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/03/26-17:37:44.515 1349 Level-0 table #592: started
+2026/03/26-17:37:44.518 1349 Level-0 table #592: 597 bytes OK
+2026/03/26-17:37:44.537 1349 Delete type=2 #587
+2026/03/26-17:37:44.537 1349 Delete type=0 #588
+2026/03/26-17:37:44.538 1340 Manual compaction at level-0 from '\x00J\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00K\x00\x00\x00' @ 0 : 0; will stop at '\x00L\x04\x02\x01\x0e\x00w\x00h\x00a\x00t\x00s\x00a\x00p\x00p\x00-\x00m\x00u\x00t\x00e\x00x' @ 3503188 : 1
+2026/03/26-17:37:44.538 1340 Compacting 1@0 + 1@1 files
+2026/03/26-17:37:44.591 1340 Generated table #593@0: 109865 keys, 897943 bytes
+2026/03/26-17:37:44.591 1340 Compacted 1@0 + 1@1 files => 897943 bytes
+2026/03/26-17:37:44.594 1340 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/26-17:37:44.595 1340 Delete type=2 #592
+2026/03/26-17:37:44.595 1340 Manual compaction at level-0 from '\x00L\x04\x02\x01\x0e\x00w\x00h\x00a\x00t\x00s\x00a\x00p\x00p\x00-\x00m\x00u\x00t\x00e\x00x' @ 3503188 : 1 .. '\x00K\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/03/26-17:37:44.595 1340 Level-0 table #595: started
+2026/03/26-17:37:44.598 1340 Level-0 table #595: 500 bytes OK
+2026/03/26-17:37:44.601 1340 Delete type=2 #590
+2026/03/26-17:37:44.601 1340 Delete type=0 #591
+2026/03/26-17:37:44.602 1340 Manual compaction at level-0 from '\x00K\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00L\x00\x00\x00' @ 0 : 0; will stop at '\x00K\x00\x00\xc8\x0d\x00l\x00o\x00c\x00a\x00l\x00_\x00s\x00t\x00o\x00r\x00a\x00g\x00e' @ 3503244 : 0
+2026/03/26-17:37:44.602 1340 Compacting 1@0 + 1@1 files
+2026/03/26-17:37:44.655 1340 Generated table #596@0: 109844 keys, 897582 bytes
+2026/03/26-17:37:44.655 1340 Compacted 1@0 + 1@1 files => 897582 bytes
+2026/03/26-17:37:44.660 1340 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/03/26-17:37:44.660 1340 Delete type=2 #595
+2026/03/26-17:37:44.660 1340 Manual compaction at level-0 from '\x00K\x00\x00\xc8\x0d\x00l\x00o\x00c\x00a\x00l\x00_\x00s\x00t\x00o\x00r\x00a\x00g\x00e' @ 3503244 : 0 .. '\x00L\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/03/26-17:37:54.681 1340 Compacting 1@1 + 1@2 files
+2026/03/26-17:37:54.698 1340 Generated table #597@1: 420 keys, 8304 bytes
+2026/03/26-17:37:54.698 1340 Compacted 1@1 + 1@2 files => 8304 bytes
+2026/03/26-17:37:54.702 1340 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/03/26-17:37:54.702 1340 Delete type=2 #494
+2026/03/26-17:37:54.702 1340 Delete type=2 #593
+2026/03/26-17:37:54.702 1340 Delete type=2 #596
