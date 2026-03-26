@@ -102,7 +102,7 @@ async function sendVideo(sessionId: string, number: string, videoUrl: string, ca
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
-    const result = await client.sendVideoAsGif(formatNumber(number), videoUrl, "video", caption || "");
+    const result = await client.sendFile(formatNumber(number), videoUrl, "video.mp4", caption || "");
     await logMessage(sessionId, number, "video", caption, videoUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {

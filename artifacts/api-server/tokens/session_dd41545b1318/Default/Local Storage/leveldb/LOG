@@ -1,2 +1,6 @@
-2026/03/26-09:13:27.164 b18 Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_dd41545b1318/Default/Local Storage/leveldb since it was missing.
-2026/03/26-09:13:27.172 b18 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_dd41545b1318/Default/Local Storage/leveldb/MANIFEST-000001
+2026/03/26-09:58:39.778 7d8 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_dd41545b1318/Default/Local Storage/leveldb/MANIFEST-000001
+2026/03/26-09:58:39.780 7d8 Recovering log #4
+2026/03/26-09:58:39.780 7d8 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_dd41545b1318/Default/Local Storage/leveldb/000004.log 
+2026/03/26-10:00:40.043 7da Level-0 table #8: started
+2026/03/26-10:00:40.046 7da Level-0 table #8: 18935 bytes OK
+2026/03/26-10:00:40.050 7da Delete type=0 #4

@@ -195,11 +195,13 @@ export async function startSession(sessionId: string): Promise<void> {
 
     clients.set(sessionId, client);
 
-    // Setup message listener
+    // Setup message listener — only for INCOMING messages (fromMe === false)
     client.onMessage(async (message: any) => {
       try {
-        // Ignore messages from WhatsApp Channels/Newsletters — they are broadcast-only
-        // and it's impossible to reply to them; triggering the bot would only cause errors.
+        // Skip messages sent BY this session (outbound already logged in send routes)
+        if (message.fromMe === true) return;
+
+        // Ignore messages from WhatsApp Channels/Newsletters — broadcast-only
         const from: string = message.from || "";
         if (from.endsWith("@newsletter")) return;
 
@@ -234,6 +236,7 @@ export async function startSession(sessionId: string): Promise<void> {
         if (session.webhookUrl) {
           const events = session.webhookEvents ? JSON.parse(session.webhookEvents) : [];
           if (events.includes("message.received") || events.length === 0) {
+            logger.info({ sessionId, webhookUrl: session.webhookUrl, from: message.from }, "Firing webhook for incoming message");
             triggerWebhook(session.webhookUrl, {
               event: "message.received",
               sessionId,
@@ -250,6 +253,8 @@ export async function startSession(sessionId: string): Promise<void> {
               },
             });
           }
+        } else {
+          logger.debug({ sessionId }, "Incoming message received but no webhook URL configured");
         }
       } catch (e) {
         logger.error({ sessionId, err: e }, "Error handling incoming message");
@@ -305,5 +310,13 @@ function triggerWebhook(url: string, payload: object) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
-  }).catch((e) => logger.warn({ url, err: e }, "Webhook delivery failed"));
+  })
+    .then((res) => {
+      if (res.ok) {
+        logger.info({ url, status: res.status }, "Webhook delivered successfully");
+      } else {
+        logger.warn({ url, status: res.status }, "Webhook returned non-OK status");
+      }
+    })
+    .catch((e) => logger.warn({ url, err: e }, "Webhook delivery failed"));
 }
