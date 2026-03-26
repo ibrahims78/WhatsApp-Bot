@@ -4,20 +4,71 @@ import { eq, sql } from "drizzle-orm";
 import { requireAuth } from "../lib/auth";
 import { getClient } from "../lib/whatsapp-manager";
 import { logger } from "../lib/logger";
+import { writeFileSync, unlinkSync, existsSync } from "fs";
+import { join } from "path";
+import { randomUUID } from "crypto";
+import { tmpdir } from "os";
 
 const router: IRouter = Router();
 
 function formatNumber(number: string): string {
-  // If already formatted with a WhatsApp suffix (@c.us, @g.us, @lid, etc.), return as-is
   if (number.includes("@")) return number;
-  // Otherwise strip non-digits and append @c.us
   const clean = number.replace(/\D/g, "");
   return `${clean}@c.us`;
 }
 
 function isUnreachable(number: string): boolean {
-  // WhatsApp Channels/Newsletters are broadcast-only — you cannot send messages to them
   return number.endsWith("@newsletter");
+}
+
+// wppconnect cannot accept base64 Data URLs directly — it treats them as file paths.
+// This helper writes the base64 content to a temp file and returns the path.
+// The caller MUST call cleanupTempFile(path) after wppconnect finishes.
+function saveTempFile(dataUrl: string, fallbackExt: string): string | null {
+  if (!dataUrl.startsWith("data:")) return null;
+
+  try {
+    // Extract MIME type and base64 data from "data:<mime>;base64,<data>"
+    const matches = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+    if (!matches) return null;
+
+    const mime = matches[1];
+    const base64Data = matches[2];
+
+    // Determine file extension from MIME type
+    const extMap: Record<string, string> = {
+      "image/jpeg": "jpg",
+      "image/jpg": "jpg",
+      "image/png": "png",
+      "image/gif": "gif",
+      "image/webp": "webp",
+      "video/mp4": "mp4",
+      "video/quicktime": "mov",
+      "video/x-msvideo": "avi",
+      "audio/mpeg": "mp3",
+      "audio/mp3": "mp3",
+      "audio/ogg": "ogg",
+      "audio/wav": "wav",
+      "audio/x-m4a": "m4a",
+      "audio/mp4": "m4a",
+      "application/pdf": "pdf",
+    };
+
+    const ext = extMap[mime] || fallbackExt;
+    const tmpPath = join(tmpdir(), `wa_${randomUUID()}.${ext}`);
+
+    writeFileSync(tmpPath, Buffer.from(base64Data, "base64"));
+    return tmpPath;
+  } catch (e) {
+    logger.warn({ err: e }, "Failed to save temp file for media send");
+    return null;
+  }
+}
+
+function cleanupTempFile(path: string | null): void {
+  if (path && existsSync(path)) {
+    try { unlinkSync(path); } catch (_) { /* ignore */ }
+  }
 }
 
 async function logMessage(sessionId: string, toNumber: string, messageType: string, content?: string | null, mediaUrl?: string | null, caption?: string | null) {
@@ -79,8 +130,12 @@ async function sendImage(sessionId: string, number: string, imageUrl: string, ca
   }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
+
+  const tmpFile = saveTempFile(imageUrl, "jpg");
+  const filePath = tmpFile || imageUrl;
+
   try {
-    const result = await client.sendImage(formatNumber(number), imageUrl, "image", caption || "");
+    const result = await client.sendImage(formatNumber(number), filePath, "image", caption || "");
     await logMessage(sessionId, number, "image", caption, imageUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -91,6 +146,8 @@ async function sendImage(sessionId: string, number: string, imageUrl: string, ca
     }
     req.log.error({ sessionId, err: e }, "Failed to send image");
     res.status(500).json({ success: false, error: e.message });
+  } finally {
+    cleanupTempFile(tmpFile);
   }
 }
 
@@ -101,8 +158,12 @@ async function sendVideo(sessionId: string, number: string, videoUrl: string, ca
   }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
+
+  const tmpFile = saveTempFile(videoUrl, "mp4");
+  const filePath = tmpFile || videoUrl;
+
   try {
-    const result = await client.sendFile(formatNumber(number), videoUrl, "video.mp4", caption || "");
+    const result = await client.sendFile(formatNumber(number), filePath, "video.mp4", caption || "");
     await logMessage(sessionId, number, "video", caption, videoUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -113,6 +174,8 @@ async function sendVideo(sessionId: string, number: string, videoUrl: string, ca
     }
     req.log.error({ sessionId, err: e }, "Failed to send video");
     res.status(500).json({ success: false, error: e.message });
+  } finally {
+    cleanupTempFile(tmpFile);
   }
 }
 
@@ -123,8 +186,12 @@ async function sendAudio(sessionId: string, number: string, audioUrl: string, re
   }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
+
+  const tmpFile = saveTempFile(audioUrl, "mp3");
+  const filePath = tmpFile || audioUrl;
+
   try {
-    const result = await client.sendVoice(formatNumber(number), audioUrl);
+    const result = await client.sendVoice(formatNumber(number), filePath);
     await logMessage(sessionId, number, "audio", null, audioUrl);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -135,6 +202,8 @@ async function sendAudio(sessionId: string, number: string, audioUrl: string, re
     }
     req.log.error({ sessionId, err: e }, "Failed to send audio");
     res.status(500).json({ success: false, error: e.message });
+  } finally {
+    cleanupTempFile(tmpFile);
   }
 }
 
@@ -145,8 +214,13 @@ async function sendFile(sessionId: string, number: string, fileUrl: string, file
   }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
+
+  const ext = fileName.includes(".") ? fileName.split(".").pop() || "bin" : "bin";
+  const tmpFile = saveTempFile(fileUrl, ext);
+  const filePath = tmpFile || fileUrl;
+
   try {
-    const result = await client.sendFile(formatNumber(number), fileUrl, fileName, caption || "");
+    const result = await client.sendFile(formatNumber(number), filePath, fileName, caption || "");
     await logMessage(sessionId, number, "file", caption, fileUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -157,6 +231,8 @@ async function sendFile(sessionId: string, number: string, fileUrl: string, file
     }
     req.log.error({ sessionId, err: e }, "Failed to send file");
     res.status(500).json({ success: false, error: e.message });
+  } finally {
+    cleanupTempFile(tmpFile);
   }
 }
 
@@ -189,8 +265,12 @@ async function sendSticker(sessionId: string, number: string, stickerUrl: string
   }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
+
+  const tmpFile = saveTempFile(stickerUrl, "webp");
+  const filePath = tmpFile || stickerUrl;
+
   try {
-    const result = await client.sendImageAsStickerAuto(formatNumber(number), stickerUrl);
+    const result = await client.sendImageAsStickerAuto(formatNumber(number), filePath);
     await logMessage(sessionId, number, "sticker", null, stickerUrl);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -201,6 +281,8 @@ async function sendSticker(sessionId: string, number: string, stickerUrl: string
     }
     req.log.error({ sessionId, err: e }, "Failed to send sticker");
     res.status(500).json({ success: false, error: e.message });
+  } finally {
+    cleanupTempFile(tmpFile);
   }
 }
 

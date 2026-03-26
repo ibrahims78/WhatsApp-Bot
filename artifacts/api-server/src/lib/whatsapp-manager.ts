@@ -201,9 +201,9 @@ export async function startSession(sessionId: string): Promise<void> {
         // Skip messages sent BY this session (outbound already logged in send routes)
         if (message.fromMe === true) return;
 
-        // Ignore messages from WhatsApp Channels/Newsletters — broadcast-only
+        // Ignore status broadcasts and newsletter channels — not real person messages
         const from: string = message.from || "";
-        if (from.endsWith("@newsletter")) return;
+        if (from === "status@broadcast" || from.endsWith("@newsletter")) return;
 
         const session = await db.query.whatsappSessionsTable.findFirst({
           where: eq(whatsappSessionsTable.id, sessionId),
