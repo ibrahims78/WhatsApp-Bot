@@ -5,7 +5,8 @@ import { logger } from "./logger";
 import type { Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
 import { execSync } from "child_process";
-import { existsSync } from "fs";
+import { existsSync, rmSync } from "fs";
+import path from "path";
 
 // ── Resolve Chrome path — auto-download if missing ──────────────────────────
 const CHROME_PATH =
@@ -22,6 +23,21 @@ function ensureChrome(): void {
     logger.info("Chrome downloaded successfully");
   } catch (e) {
     logger.error({ err: e }, "Chrome download failed — sessions will not work");
+  }
+}
+
+// Remove stale Chrome profile lock files that prevent browser from launching
+// after a crash or hard restart (the "profile in use" error).
+function cleanChromeLock(sessionId: string): void {
+  const tokensDir = path.join(process.cwd(), "tokens", sessionId);
+  const lockFile = path.join(tokensDir, "SingletonLock");
+  if (existsSync(lockFile)) {
+    try {
+      rmSync(lockFile, { force: true });
+      logger.info({ sessionId }, "Removed stale Chrome SingletonLock");
+    } catch (e) {
+      logger.warn({ sessionId, err: e }, "Could not remove SingletonLock");
+    }
   }
 }
 
@@ -68,6 +84,9 @@ export async function startSession(sessionId: string): Promise<void> {
   }
 
   activeBrowsers.add(sessionId);
+
+  // Remove stale Chrome lock that can remain after a crash or restart
+  cleanChromeLock(sessionId);
 
   // Ensure Chrome is downloaded before launching
   ensureChrome();
