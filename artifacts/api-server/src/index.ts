@@ -1,7 +1,7 @@
 import http from "http";
 import app from "./app";
 import { logger } from "./lib/logger";
-import { initSocketServer } from "./lib/whatsapp-manager";
+import { initSocketServer, initializeSessions } from "./lib/whatsapp-manager";
 import { db, usersTable } from "@workspace/db";
 import { hashPassword } from "./lib/auth";
 
@@ -42,4 +42,13 @@ httpServer.listen(port, async () => {
   } catch (e) {
     logger.error({ err: e }, "Failed to seed admin user");
   }
+
+  // Auto-start all WhatsApp sessions saved in DB.
+  // This ensures sessions reconnect automatically after any server restart.
+  // Delay by 3s to let the server fully stabilize first.
+  setTimeout(() => {
+    initializeSessions().catch((e) =>
+      logger.error({ err: e }, "initializeSessions failed")
+    );
+  }, 3_000);
 });

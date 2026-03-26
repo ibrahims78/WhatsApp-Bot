@@ -1,2 +1,3 @@
-2026/03/26-19:21:49.375 2b4 Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_4084823d88e8/Default/Site Characteristics Database since it was missing.
-2026/03/26-19:21:49.416 2b4 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_4084823d88e8/Default/Site Characteristics Database/MANIFEST-000001
+2026/03/26-20:06:22.875 e0d Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_4084823d88e8/Default/Site Characteristics Database/MANIFEST-000001
+2026/03/26-20:06:22.876 e0d Recovering log #3
+2026/03/26-20:06:22.876 e0d Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_4084823d88e8/Default/Site Characteristics Database/000003.log 

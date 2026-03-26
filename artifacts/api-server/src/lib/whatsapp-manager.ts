@@ -119,17 +119,24 @@ function startKeepalive(sessionId: string): void {
     const client = clients.get(sessionId);
     if (!client) { stopKeepalive(sessionId); return; }
     try {
-      if (!(await client.isConnected())) {
-        logger.warn({ sessionId }, "Keepalive: disconnected — scheduling reconnect");
+      // Use getConnectionState for a more reliable check than isConnected()
+      const state = await client.getConnectionState().catch(() => null);
+      const connected = state === "CONNECTED" || (await client.isConnected().catch(() => false));
+      if (!connected) {
+        logger.warn({ sessionId, state }, "Keepalive: not connected — scheduling reconnect");
         stopKeepalive(sessionId);
+        clients.delete(sessionId);
         scheduleReconnect(sessionId);
+      } else {
+        logger.debug({ sessionId }, "Keepalive: OK");
       }
-    } catch {
-      logger.warn({ sessionId }, "Keepalive error — scheduling reconnect");
+    } catch (e) {
+      logger.warn({ sessionId, err: e }, "Keepalive error — scheduling reconnect");
       stopKeepalive(sessionId);
+      clients.delete(sessionId);
       scheduleReconnect(sessionId);
     }
-  }, 45_000);
+  }, 30_000); // every 30s (was 45s)
   keepaliveTimers.set(sessionId, t);
 }
 
@@ -313,7 +320,6 @@ export async function startSession(sessionId: string): Promise<void> {
           "--disable-gpu",
           "--no-first-run",
           "--no-zygote",
-          "--single-process",
           "--disable-extensions",
           "--disable-default-apps",
           "--no-default-browser-check",
@@ -323,10 +329,14 @@ export async function startSession(sessionId: string): Promise<void> {
           "--disable-ipc-flooding-protection",
           "--disable-hang-monitor",
           "--disable-popup-blocking",
+          "--disable-background-networking",
+          "--disable-sync",
+          "--metrics-recording-only",
           "--mute-audio",
           "--password-store=basic",
           "--use-mock-keychain",
           "--force-color-profile=srgb",
+          "--js-flags=--max-old-space-size=512",
         ],
       },
 
@@ -603,6 +613,45 @@ export function getQrCode(sessionId: string): string | null {
 
 export function isBrowserActive(sessionId: string): boolean {
   return clients.has(sessionId) || launching.has(sessionId);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Auto-start sessions on server boot
+// Reads all non-banned sessions from DB and starts them so they reconnect
+// automatically after a server restart — no manual intervention needed.
+// ─────────────────────────────────────────────────────────────────────────────
+export async function initializeSessions(): Promise<void> {
+  try {
+    const allSessions = await db
+      .select({ id: whatsappSessionsTable.id, status: whatsappSessionsTable.status })
+      .from(whatsappSessionsTable);
+
+    // Start all sessions except banned ones.
+    // wppconnect will use saved tokens to reconnect silently without showing QR.
+    const toStart = allSessions.filter((s) => s.status !== "banned");
+
+    if (toStart.length === 0) {
+      logger.info("No sessions found in DB — skipping auto-start");
+      return;
+    }
+
+    logger.info({ count: toStart.length }, "Auto-starting sessions on boot");
+
+    // Stagger starts by 4 seconds each to avoid Chrome resource contention
+    for (let i = 0; i < toStart.length; i++) {
+      const { id } = toStart[i];
+      setTimeout(async () => {
+        try {
+          logger.info({ sessionId: id, index: i }, "Auto-starting session");
+          await startSession(id);
+        } catch (e) {
+          logger.warn({ sessionId: id, err: e }, "Auto-start failed for session");
+        }
+      }, i * 4_000);
+    }
+  } catch (e) {
+    logger.error({ err: e }, "Failed to auto-start sessions on boot");
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
