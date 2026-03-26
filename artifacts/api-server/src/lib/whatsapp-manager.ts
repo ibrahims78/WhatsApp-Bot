@@ -47,6 +47,14 @@ const clients = new Map<string, any>();
 const activeBrowsers = new Set<string>();
 // Map of session ID to current QR code
 const qrCodes = new Map<string, string>();
+// Map of session ID to keepalive interval handle
+const keepaliveIntervals = new Map<string, ReturnType<typeof setInterval>>();
+// Map of session ID to reconnect timer handle
+const reconnectTimers = new Map<string, ReturnType<typeof setTimeout>>();
+// Map of session ID to reconnect attempt count (for backoff)
+const reconnectAttempts = new Map<string, number>();
+// Track sessions that were intentionally stopped (should NOT auto-reconnect)
+const stoppedSessions = new Set<string>();
 
 let io: SocketServer;
 
@@ -63,6 +71,9 @@ export function initSocketServer(httpServer: HttpServer) {
     });
   });
 
+  // Self-ping every 30 seconds to prevent Replit from idling the container
+  startSelfPing();
+
   return io;
 }
 
@@ -70,6 +81,98 @@ export function emitToAll(event: string, data: object) {
   if (io) {
     io.emit(event, data);
   }
+}
+
+// ── Self-ping: keeps Replit container alive ──────────────────────────────────
+function startSelfPing() {
+  const PORT = process.env.PORT || 8080;
+  setInterval(async () => {
+    try {
+      await fetch(`http://localhost:${PORT}/`);
+    } catch {
+      // ignore — server might not respond to /, that's fine
+    }
+  }, 30_000);
+}
+
+// ── Keepalive: pings the WhatsApp connection to prevent timeout ──────────────
+function startKeepalive(sessionId: string) {
+  stopKeepalive(sessionId);
+
+  const interval = setInterval(async () => {
+    const client = clients.get(sessionId);
+    if (!client) {
+      stopKeepalive(sessionId);
+      return;
+    }
+    try {
+      const connected = await client.isConnected();
+      if (connected) {
+        logger.debug({ sessionId }, "Keepalive ping OK");
+      } else {
+        logger.warn({ sessionId }, "Keepalive ping failed — session not connected, scheduling reconnect");
+        stopKeepalive(sessionId);
+        scheduleReconnect(sessionId);
+      }
+    } catch (e) {
+      logger.warn({ sessionId, err: e }, "Keepalive check threw error — scheduling reconnect");
+      stopKeepalive(sessionId);
+      scheduleReconnect(sessionId);
+    }
+  }, 45_000); // every 45 seconds
+
+  keepaliveIntervals.set(sessionId, interval);
+  logger.info({ sessionId }, "Keepalive started (45s interval)");
+}
+
+function stopKeepalive(sessionId: string) {
+  const interval = keepaliveIntervals.get(sessionId);
+  if (interval) {
+    clearInterval(interval);
+    keepaliveIntervals.delete(sessionId);
+  }
+}
+
+// ── Auto-reconnect with exponential backoff ───────────────────────────────────
+function scheduleReconnect(sessionId: string) {
+  if (stoppedSessions.has(sessionId)) {
+    logger.info({ sessionId }, "Session was manually stopped — skipping auto-reconnect");
+    return;
+  }
+
+  // Cancel any pending reconnect timer
+  const existing = reconnectTimers.get(sessionId);
+  if (existing) clearTimeout(existing);
+
+  const attempt = (reconnectAttempts.get(sessionId) || 0) + 1;
+  reconnectAttempts.set(sessionId, attempt);
+
+  // Exponential backoff: 5s, 10s, 20s, 40s … max 120s
+  const delay = Math.min(5_000 * Math.pow(2, attempt - 1), 120_000);
+
+  logger.info({ sessionId, attempt, delayMs: delay }, "Scheduling auto-reconnect");
+  emitToAll("status", { sessionId, status: "reconnecting", attempt });
+
+  const timer = setTimeout(async () => {
+    reconnectTimers.delete(sessionId);
+
+    if (stoppedSessions.has(sessionId)) return;
+
+    logger.info({ sessionId, attempt }, "Attempting auto-reconnect");
+    try {
+      // Clean up stale state before reconnecting
+      activeBrowsers.delete(sessionId);
+      clients.delete(sessionId);
+      await startSession(sessionId);
+      reconnectAttempts.delete(sessionId); // reset counter on success
+      logger.info({ sessionId }, "Auto-reconnect succeeded");
+    } catch (e) {
+      logger.error({ sessionId, attempt, err: e }, "Auto-reconnect failed — will retry");
+      scheduleReconnect(sessionId);
+    }
+  }, delay);
+
+  reconnectTimers.set(sessionId, timer);
 }
 
 export async function startSession(sessionId: string): Promise<void> {
@@ -82,6 +185,9 @@ export async function startSession(sessionId: string): Promise<void> {
     logger.info({ sessionId }, "Browser already running for this session");
     return;
   }
+
+  // Mark as intentionally started (clear stopped flag)
+  stoppedSessions.delete(sessionId);
 
   activeBrowsers.add(sessionId);
 
@@ -121,17 +227,11 @@ export async function startSession(sessionId: string): Promise<void> {
           "--disable-extensions",
           "--disable-default-apps",
           "--no-default-browser-check",
-          "--disable-background-networking",
-          "--disable-sync",
-          "--disable-translate",
-          "--disable-hang-monitor",
-          "--disable-ipc-flooding-protection",
-          "--disable-renderer-backgrounding",
           "--disable-background-timer-throttling",
           "--disable-backgrounding-occluded-windows",
-          "--disable-component-update",
-          "--disable-domain-reliability",
-          "--disable-client-side-phishing-detection",
+          "--disable-renderer-backgrounding",
+          "--disable-ipc-flooding-protection",
+          "--disable-hang-monitor",
           "--disable-popup-blocking",
           "--mute-audio",
           "--password-store=basic",
@@ -154,7 +254,11 @@ export async function startSession(sessionId: string): Promise<void> {
             .where(eq(whatsappSessionsTable.id, sessionId));
 
           qrCodes.delete(sessionId);
+          reconnectAttempts.delete(sessionId); // reset backoff on successful connect
           emitToAll("status", { sessionId, status: "connected" });
+
+          // Start keepalive to maintain the connection
+          startKeepalive(sessionId);
 
           // Get phone number
           try {
@@ -170,7 +274,8 @@ export async function startSession(sessionId: string): Promise<void> {
             logger.warn({ sessionId }, "Could not get phone number");
           }
         } else if (status === "browserClose" || status === "autocloseCalled") {
-          // Browser was fully closed — clean everything up
+          // Browser was fully closed — clean up and attempt reconnect
+          stopKeepalive(sessionId);
           activeBrowsers.delete(sessionId);
           clients.delete(sessionId);
           qrCodes.delete(sessionId);
@@ -181,6 +286,9 @@ export async function startSession(sessionId: string): Promise<void> {
             .where(eq(whatsappSessionsTable.id, sessionId));
 
           emitToAll("status", { sessionId, status: "disconnected" });
+
+          // Auto-reconnect unless manually stopped
+          scheduleReconnect(sessionId);
         } else if (status === "notLogged") {
           // QR is ready to scan — keep browser alive, just notify frontend
           await db
@@ -189,8 +297,20 @@ export async function startSession(sessionId: string): Promise<void> {
             .where(eq(whatsappSessionsTable.id, sessionId));
 
           emitToAll("status", { sessionId, status: "notLogged" });
+        } else if (status === "desconnectedMobile" || status === "disconnectedMobile") {
+          // Phone-side disconnect — attempt reconnect
+          logger.warn({ sessionId }, "Phone disconnected — will attempt reconnect");
+          stopKeepalive(sessionId);
+          emitToAll("status", { sessionId, status: "disconnected" });
+
+          await db
+            .update(whatsappSessionsTable)
+            .set({ status: "disconnected" })
+            .where(eq(whatsappSessionsTable.id, sessionId));
+
+          scheduleReconnect(sessionId);
         }
-        // disconnectedMobile, inChat, isLogin are intermediate states — do NOT clean up browser
+        // inChat, isLogin, chatsAvailable are intermediate states — do NOT clean up
       },
     });
 
@@ -245,7 +365,6 @@ export async function startSession(sessionId: string): Promise<void> {
           }
           if (events.includes("message.received") || events.length === 0) {
             logger.info({ sessionId, webhookUrl: session.webhookUrl, from: message.from }, "Firing webhook for incoming message");
-            // Extract clean phone number (strip @lid, @c.us, @g.us suffixes)
             const rawFrom: string = message.from || "";
             const phoneNumber = rawFrom.includes("@") ? rawFrom.split("@")[0] : rawFrom;
 
@@ -286,6 +405,20 @@ export async function startSession(sessionId: string): Promise<void> {
 }
 
 export async function stopSession(sessionId: string): Promise<void> {
+  // Mark as intentionally stopped so auto-reconnect does NOT trigger
+  stoppedSessions.add(sessionId);
+
+  // Cancel any pending reconnect
+  const timer = reconnectTimers.get(sessionId);
+  if (timer) {
+    clearTimeout(timer);
+    reconnectTimers.delete(sessionId);
+  }
+  reconnectAttempts.delete(sessionId);
+
+  // Stop keepalive
+  stopKeepalive(sessionId);
+
   activeBrowsers.delete(sessionId);
   const client = clients.get(sessionId);
   if (client) {
