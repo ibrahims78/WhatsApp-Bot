@@ -43,6 +43,8 @@ export default function SessionDetail() {
   const [liveQr, setLiveQr] = useState<string | null>(null);
   // Optimistic connect state — show QR spinner immediately after clicking Connect
   const [connectingOptimistic, setConnectingOptimistic] = useState(false);
+  // Elapsed seconds counter shown while waiting for QR
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   // Initialize WebSocket (polling fallback is automatic in socket.io)
   useWebSocket();
@@ -86,6 +88,18 @@ export default function SessionDetail() {
       setLiveQr(qrData.qr);
     }
   }, [session?.status, qrData?.qr, connectingOptimistic]);
+
+  // Elapsed timer — runs while waiting for QR, stops when QR arrives
+  const waitingForQrOnly = isWaitingForQr && !displayQr;
+  useEffect(() => {
+    if (!waitingForQrOnly) {
+      setElapsedSeconds(0);
+      return;
+    }
+    setElapsedSeconds(0);
+    const interval = setInterval(() => setElapsedSeconds(s => s + 1), 1000);
+    return () => clearInterval(interval);
+  }, [waitingForQrOnly]);
 
   const { data: messages } = useGetSessionMessages(id, { limit: 50 }, { query: { enabled: !!session } });
 
@@ -209,10 +223,28 @@ export default function SessionDetail() {
                 ) : (
                   <div className="w-64 h-64 flex flex-col items-center justify-center gap-4 bg-muted/10 rounded-xl">
                     <RefreshCw className="w-10 h-10 text-primary animate-spin" />
-                    <p className="text-sm text-muted-foreground font-medium">{t('sess_qr_generating')}</p>
+                    <p className="text-sm text-muted-foreground font-medium text-center px-4">{t('sess_qr_generating')}</p>
                   </div>
                 )}
               </div>
+
+              {/* Progress bar + timer while waiting for QR */}
+              {!displayQr && (
+                <div className="w-full max-w-xs mt-6 space-y-2">
+                  <div className="flex justify-between items-center text-xs text-muted-foreground">
+                    <span>{t('sess_qr_wait_hint')}</span>
+                    <span className="font-mono font-semibold text-primary shrink-0 ms-2">
+                      {elapsedSeconds}{t('sess_qr_seconds')}
+                    </span>
+                  </div>
+                  <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-primary rounded-full transition-all duration-1000"
+                      style={{ width: `${Math.min(95, (elapsedSeconds / 40) * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              )}
 
               {displayQr && (
                 <p className="mt-6 text-sm text-muted-foreground">
