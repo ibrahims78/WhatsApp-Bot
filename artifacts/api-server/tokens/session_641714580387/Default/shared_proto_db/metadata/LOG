@@ -1,2 +1,3 @@
-2026/03/26-11:03:01.917 acb Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_641714580387/Default/shared_proto_db/metadata since it was missing.
-2026/03/26-11:03:01.947 acb Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_641714580387/Default/shared_proto_db/metadata/MANIFEST-000001
+2026/03/26-11:11:13.279 f96 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_641714580387/Default/shared_proto_db/metadata/MANIFEST-000001
+2026/03/26-11:11:13.280 f96 Recovering log #3
+2026/03/26-11:11:13.280 f96 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_641714580387/Default/shared_proto_db/metadata/000003.log 

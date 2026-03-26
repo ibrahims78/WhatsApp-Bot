@@ -103,7 +103,7 @@ export async function startSession(sessionId: string): Promise<void> {
     const client = await create({
       session: sessionId,
       headless: true,
-      autoClose: false,
+      autoClose: 0,
       disableWelcome: true,
       logQR: false,
       executablePath: CHROME_PATH,
