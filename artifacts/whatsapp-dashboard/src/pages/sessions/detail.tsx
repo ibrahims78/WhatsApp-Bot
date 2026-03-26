@@ -89,6 +89,9 @@ export default function SessionDetail() {
     }
   }, [session?.status, qrData?.qr, connectingOptimistic]);
 
+  // Derive the QR to display (WebSocket takes priority, polling as fallback)
+  const displayQr = liveQr || qrData?.qr || null;
+
   // Elapsed timer — runs while waiting for QR, stops when QR arrives
   const waitingForQrOnly = isWaitingForQr && !displayQr;
   useEffect(() => {
@@ -165,8 +168,6 @@ export default function SessionDetail() {
 
   if (isLoading) return <AppLayout><div className="p-8 text-center">{t('loading')}</div></AppLayout>;
   if (!session) return <AppLayout><div className="p-8 text-center text-destructive">{t('sess_not_found')}</div></AppLayout>;
-
-  const displayQr = liveQr || qrData?.qr || null;
 
   return (
     <AppLayout>
