@@ -234,7 +234,14 @@ export async function startSession(sessionId: string): Promise<void> {
         emitToAll("message", { sessionId, message });
 
         if (session.webhookUrl) {
-          const events = session.webhookEvents ? JSON.parse(session.webhookEvents) : [];
+          let events: string[] = [];
+          if (session.webhookEvents) {
+            try {
+              events = JSON.parse(session.webhookEvents);
+            } catch {
+              logger.warn({ sessionId }, "webhookEvents is not valid JSON — treating as empty (fire all)");
+            }
+          }
           if (events.includes("message.received") || events.length === 0) {
             logger.info({ sessionId, webhookUrl: session.webhookUrl, from: message.from }, "Firing webhook for incoming message");
             triggerWebhook(session.webhookUrl, {
