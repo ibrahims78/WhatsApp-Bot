@@ -179,6 +179,11 @@ export async function startSession(sessionId: string): Promise<void> {
     // Setup message listener
     client.onMessage(async (message: any) => {
       try {
+        // Ignore messages from WhatsApp Channels/Newsletters — they are broadcast-only
+        // and it's impossible to reply to them; triggering the bot would only cause errors.
+        const from: string = message.from || "";
+        if (from.endsWith("@newsletter")) return;
+
         const session = await db.query.whatsappSessionsTable.findFirst({
           where: eq(whatsappSessionsTable.id, sessionId),
         });

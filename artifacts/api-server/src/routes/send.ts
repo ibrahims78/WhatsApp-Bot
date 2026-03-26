@@ -15,6 +15,11 @@ function formatNumber(number: string): string {
   return `${clean}@c.us`;
 }
 
+function isUnreachable(number: string): boolean {
+  // WhatsApp Channels/Newsletters are broadcast-only — you cannot send messages to them
+  return number.endsWith("@newsletter");
+}
+
 async function logMessage(sessionId: string, toNumber: string, messageType: string, content?: string | null, mediaUrl?: string | null, caption?: string | null) {
   const [session] = await db.select().from(whatsappSessionsTable).where(eq(whatsappSessionsTable.id, sessionId));
   if (!session) return;
