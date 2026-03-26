@@ -1,3 +1,3 @@
-2026/03/26-11:11:13.329 f7c Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_641714580387/Default/Session Storage/MANIFEST-000001
-2026/03/26-11:11:13.329 f7c Recovering log #3
-2026/03/26-11:11:13.329 f7c Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_641714580387/Default/Session Storage/000003.log 
+2026/03/26-11:23:54.152 1203 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_641714580387/Default/Session Storage/MANIFEST-000001
+2026/03/26-11:23:54.152 1203 Recovering log #3
+2026/03/26-11:23:54.153 1203 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_641714580387/Default/Session Storage/000003.log 

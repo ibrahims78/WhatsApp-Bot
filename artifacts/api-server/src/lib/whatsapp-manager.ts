@@ -104,6 +104,7 @@ export async function startSession(sessionId: string): Promise<void> {
       session: sessionId,
       headless: true,
       autoClose: 0,
+      deviceSyncTimeout: 0,
       disableWelcome: true,
       logQR: false,
       executablePath: CHROME_PATH,
