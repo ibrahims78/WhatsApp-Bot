@@ -38,9 +38,9 @@ app.use(cookieParser());
 app.use(express.json({ limit: "100mb" }));
 app.use(express.urlencoded({ extended: true, limit: "100mb" }));
 
-app.use("/api", router);
+// Static files served BEFORE the API router so /api/files/* is matched first
+app.use("/api/files", express.static(path.join(process.cwd(), "public")));
 
-// Serve test files and any static public assets
-app.use("/files", express.static(path.join(process.cwd(), "public")));
+app.use("/api", router);
 
 export default app;
