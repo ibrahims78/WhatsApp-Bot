@@ -1,5 +1,5 @@
 {
-  "name": "WhatsApp Bot - Full Coverage",
+  "name": "WhatsApp Bot - Full AI Integration",
   "nodes": [
     {
       "parameters": {
@@ -8,14 +8,11 @@
         "responseMode": "responseNode",
         "options": {}
       },
-      "id": "node-webhook",
+      "id": "7537e4c7-9f04-4461-82a6-defbb649ccd0",
       "name": "📥 Receive WhatsApp Message",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [
-        200,
-        500
-      ],
+      "position": [200, 500],
       "webhookId": "whatsapp-incoming",
       "notes": "انسخ Production URL وضعه في إعدادات الجلسة → Webhook URL"
     },
@@ -25,29 +22,75 @@
         "responseBody": "OK",
         "options": {}
       },
-      "id": "node-respond",
+      "id": "4d279148-1ced-4297-b63a-e9087bff9c26",
       "name": "✅ Respond 200 OK",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [
-        440,
-        340
-      ],
+      "position": [440, 340],
       "notes": "يُقرّ الاستلام فوراً لمنع إعادة الإرسال"
     },
     {
       "parameters": {
-        "jsCode": "// ════════════════════════════════════════════\n// WhatsApp Bot — Process All Message Types\n// ════════════════════════════════════════════\nconst payload     = $json.body || {};\nconst data        = payload.data || {};\nconst sessionId   = payload.sessionId || '';\nconst msgType     = (data.type || 'chat').toLowerCase();\nconst from        = data.from || '';\nconst phoneNumber = from.replace('@c.us', '');\nconst body        = data.body || '';\nconst mediaUrl    = data.mediaUrl || null;\nconst fileName    = data.fileName || null;\nconst caption     = data.caption || '';\nconst lat         = data.lat || null;\nconst lng         = data.lng || null;\nconst loc         = data.loc || '';\n\nfunction text(msg) {\n  return { sessionId, phoneNumber, endpoint: 'text',\n           requestBody: JSON.stringify({ number: phoneNumber, message: msg }) };\n}\n\n// ── Echo / Ping mode ──────────────────────────────────\nif (msgType === 'chat') {\n  const lower = body.toLowerCase();\n  const isEchoAr = body.startsWith('صدى');\n  const isEchoEn = lower.startsWith('echo');\n\n  if (isEchoAr || isEchoEn) {\n    const prefix  = isEchoAr ? 'صدى' : 'Echo';\n    const content = body.replace(/^(صدى|echo)\\s*/i, '').trim() || '(رسالة فارغة)';\n    return [text(`🔁 ${prefix}: ${content}`)];\n  }\n\n  // Keyword matching\n  let reply;\n  const kw = lower;\n  if (['مرحبا','هلا','hello','hi','السلام','اهلا','سلام'].some(w => kw.includes(w))) {\n    reply = 'أهلاً وسهلاً! 👋 كيف يمكنني مساعدتك؟';\n  } else if (['سعر','price','كم تكلف','تكلفة','أسعار'].some(w => kw.includes(w))) {\n    reply = 'يرجى التواصل مع فريق المبيعات للاستفسار عن الأسعار 📋';\n  } else if (['وقت','دوام','hours','ساعات','متى تفتح'].some(w => kw.includes(w))) {\n    reply = 'أوقات العمل: الأحد – الخميس 9 صباحاً – 6 مساءً 🕘';\n  } else if (['مساعدة','help','مساعده'].some(w => kw.includes(w))) {\n    reply = 'يمكنني مساعدتك! 🤝\\nأرسل \"صدى <رسالة>\" لاختبار البوت.';\n  } else {\n    reply = 'شكراً لتواصلك! سنرد عليك قريباً. 🙏';\n  }\n  return [text(reply)];\n}\n\n// ── Image ─────────────────────────────────────────────\nif (msgType === 'image') {\n  const msg = caption\n    ? `تم استلام صورتك 📷 — ${caption}`\n    : 'تم استلام صورتك 📷\\nImage received 📷';\n  return [text(msg)];\n}\n\n// ── Video ─────────────────────────────────────────────\nif (msgType === 'video') {\n  const msg = caption\n    ? `تم استلام الفيديو 🎬 — ${caption}`\n    : 'تم استلام الفيديو 🎬\\nVideo received 🎬';\n  return [text(msg)];\n}\n\n// ── Audio / Voice ─────────────────────────────────────\nif (msgType === 'audio' || msgType === 'ptt') {\n  const msg = msgType === 'ptt'\n    ? 'تم استلام رسالتك الصوتية 🎙️\\nVoice message received 🎙️'\n    : 'تم استلام الملف الصوتي 🎵\\nAudio file received 🎵';\n  return [text(msg)];\n}\n\n// ── Document ──────────────────────────────────────────\nif (msgType === 'document') {\n  const name = fileName || 'document';\n  return [text(`تم استلام الملف 📄: ${name}\\nDocument received 📄: ${name}`)];\n}\n\n// ── Sticker ───────────────────────────────────────────\nif (msgType === 'sticker') {\n  return [text('تم استلام الملصق 🎯\\nSticker received 🎯')];\n}\n\n// ── Location ──────────────────────────────────────────\nif (msgType === 'location') {\n  const maps = `https://maps.google.com/?q=${lat},${lng}`;\n  const desc = loc ? ` — ${loc}` : '';\n  return [text(`تم استلام موقعك 📍${desc}\\n${maps}\\nLocation received 📍`)];\n}\n\n// ── Fallback ──────────────────────────────────────────\nreturn [text('تم استلام رسالتك ✅')];"
+        "jsCode": "const payload = $json.body || {};\nconst data = payload.data || {};\nconst sessionId = payload.sessionId || '';\nconst msgType = (data.type || 'chat').toLowerCase();\nconst from = data.from || '';\nconst phoneNumber = from.replace('@c.us', '');\nconst body = data.body || '';\nconst fileName = data.fileName || null;\nconst caption = data.caption || '';\nconst lat = data.lat || null;\nconst lng = data.lng || null;\n\n// تحويل نوع الرسالة إلى نص يفهمه الذكاء الاصطناعي\nlet aiPrompt = body;\nif (msgType === 'image') {\n  aiPrompt = `[ملاحظة من النظام: المستخدم أرسل صورة. الوصف المرفق معها: ${caption || 'لا يوجد وصف'}]`;\n} else if (msgType === 'video') {\n  aiPrompt = `[ملاحظة من النظام: المستخدم أرسل مقطع فيديو. الوصف المرفق معه: ${caption || 'لا يوجد وصف'}]`;\n} else if (msgType === 'audio' || msgType === 'ptt') {\n  aiPrompt = `[ملاحظة من النظام: المستخدم أرسل رسالة صوتية/مقطع صوتي]`;\n} else if (msgType === 'document') {\n  aiPrompt = `[ملاحظة من النظام: المستخدم أرسل ملف. اسم الملف: ${fileName || 'غير معروف'}]`;\n} else if (msgType === 'location') {\n  aiPrompt = `[ملاحظة من النظام: المستخدم أرسل موقع جغرافي. الإحداثيات: ${lat}, ${lng}]`;\n} else if (msgType === 'sticker') {\n  aiPrompt = `[ملاحظة من النظام: المستخدم أرسل ملصق (Sticker)]`;\n} else if (msgType === 'vcard') {\n  aiPrompt = `[ملاحظة من النظام: المستخدم أرسل بطاقة اتصال (vCard)]`;\n}\n\nreturn {\n  sessionId,\n  phoneNumber,\n  aiPrompt,\n  rawType: msgType\n};"
       },
-      "id": "node-process",
-      "name": "🧠 Process & Build Reply",
+      "id": "1540108d-925e-449e-bd78-1240c12fa8ef",
+      "name": "🔍 Extract Message Fields",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        440,
-        620
-      ],
-      "notes": "يعالج جميع أنواع الرسائل ويبني طلب الإرسال المناسب"
+      "position": [440, 620],
+      "notes": "يستخرج بيانات الرسالة ويحوّل الوسائط إلى prompt مفهوم للذكاء الاصطناعي"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.aiPrompt }}",
+        "options": {
+          "systemMessage": "أنت مساعد ذكي ولطيف لخدمة عملاء عبر واتساب. أجب بإيجاز ووضوح وباللغة التي يتحدث بها العميل. إذا رأيت [ملاحظة من النظام] تفيد بأن المستخدم أرسل وسائط (صورة، صوت، ملف، موقع)، قم بالرد بلطف لتأكيد استلامها ومساعدته بناءً على ذلك."
+        }
+      },
+      "id": "fe31206b-ac23-4341-9cb8-b6c31ddffc34",
+      "name": "🤖 AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.6,
+      "position": [700, 620],
+      "notes": "يعالج الرسالة ويولّد الرد باستخدام Gemini مع ذاكرة المحادثة"
+    },
+    {
+      "parameters": {},
+      "id": "f3e2f7c8-a570-496e-9e5e-472e6ea56c70",
+      "name": "📝 Conversation Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [700, 820],
+      "notes": "يحفظ سياق المحادثة لكل مستخدم"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [560, 820],
+      "id": "d18b5ab5-6bfc-48de-b9e1-1cb08fab7201",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Hxp1njnkn8szDJPn",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "notes": "نموذج الذكاء الاصطناعي — قم بإضافة بيانات اعتماد Gemini API"
+    },
+    {
+      "parameters": {
+        "jsCode": "const originalData = $('🔍 Extract Message Fields').item.json;\nconst aiResponse = $json.output || 'عذراً، لم أتمكن من معالجة طلبك حالياً.';\n\nreturn {\n  sessionId: originalData.sessionId,\n  phoneNumber: originalData.phoneNumber,\n  replyText: aiResponse\n};"
+      },
+      "id": "5adaf834-7ff2-4048-966d-c6c415661bc0",
+      "name": "⚙️ Format AI Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 620],
+      "notes": "يُنسّق رد الذكاء الاصطناعي للإرسال"
     },
     {
       "parameters": {
@@ -55,25 +98,22 @@
         "amount": 2,
         "unit": "seconds"
       },
-      "id": "node-wait",
+      "id": "node-wait-ai",
       "name": "⏱️ Wait 2 Seconds",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [
-        680,
-        620
-      ],
+      "position": [1200, 620],
       "notes": "تأخير 2 ثانية لتجنب حظر واتساب"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://YOUR-APP-DOMAIN/api/sessions/{{ $json.sessionId }}/send/{{ $json.endpoint }}",
+        "url": "=https://YOUR-APP-DOMAIN/api/sessions/{{ $json.sessionId }}/send/text",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
-        "specifyBody": "string",
-        "body": "={{ $json.requestBody }}",
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.phoneNumber }}\",\n  \"message\": \"{{ $json.replyText }}\"\n}",
         "options": {
           "response": {
             "response": {
@@ -82,32 +122,27 @@
           }
         }
       },
-      "id": "node-send",
-      "name": "📤 Send Reply",
+      "id": "b7eede5d-54b6-4b54-8d28-db7342ae32b9",
+      "name": "📤 Send Text Reply",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [
-        920,
-        620
-      ],
+      "position": [1440, 620],
       "onError": "continueErrorOutput",
-      "notes": "يرسل الرد — النوع محدد تلقائياً من endpoint"
+      "notes": "يرسل رد الذكاء الاصطناعي إلى العميل عبر واتساب"
     },
     {
       "parameters": {
-        "jsCode": "// ── Error Logger ──\nconst err    = $json || {};\nconst status = err.statusCode || err.status || 'unknown';\nconst msg    = JSON.stringify(err.body || err.message || err);\nconsole.error('[WhatsApp Bot] Send failed — HTTP ' + status + ': ' + msg);\nreturn [{ error: true, status, message: msg }];"
+        "jsCode": "const err = $json || {};\nconst status = err.statusCode || err.status || 'unknown';\nconst body = JSON.stringify(err.body || err.message || err);\nconsole.error(`[WhatsApp Bot] Send failed — HTTP ${status}: ${body}`);\nreturn { error: true, status, body };"
       },
-      "id": "node-error",
+      "id": "505d8e27-d9a6-43e0-bbb2-6c02c6381a9f",
       "name": "⚠️ Log Send Error",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [
-        1160,
-        780
-      ],
+      "position": [1680, 780],
       "notes": "يسجّل أخطاء الإرسال — متصل بـ error output من عقدة الإرسال"
     }
   ],
+  "pinData": {},
   "connections": {
     "📥 Receive WhatsApp Message": {
       "main": [
@@ -118,14 +153,58 @@
             "index": 0
           },
           {
-            "node": "🧠 Process & Build Reply",
+            "node": "🔍 Extract Message Fields",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "🧠 Process & Build Reply": {
+    "🔍 Extract Message Fields": {
+      "main": [
+        [
+          {
+            "node": "🤖 AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🤖 AI Agent": {
+      "main": [
+        [
+          {
+            "node": "⚙️ Format AI Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📝 Conversation Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "🤖 AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🤖 AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ Format AI Output": {
       "main": [
         [
           {
@@ -140,14 +219,14 @@
       "main": [
         [
           {
-            "node": "📤 Send Reply",
+            "node": "📤 Send Text Reply",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "📤 Send Reply": {
+    "📤 Send Text Reply": {
       "main": [],
       "error": [
         [
@@ -161,11 +240,13 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
   },
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
   "updatedAt": "2024-01-01T00:00:00.000Z",
-  "versionId": "1"
+  "versionId": "2"
 }
