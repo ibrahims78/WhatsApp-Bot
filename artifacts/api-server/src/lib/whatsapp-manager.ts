@@ -178,59 +178,82 @@ function scheduleReconnect(sessionId: string): void {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Phone-number fetch — retries AFTER create() resolves (client is in the map)
-// Uses multiple WPPConnect methods as fallbacks.
+// Phone-number fetch — waits for create() to resolve, then tries multiple
+// WPPConnect methods with full response logging so we can debug failures.
 // ─────────────────────────────────────────────────────────────────────────────
 async function fetchPhoneNumber(sessionId: string): Promise<void> {
-  // Give create() time to resolve and store the client
-  await new Promise((r) => setTimeout(r, 5_000));
+  // Wait for create() to resolve and store the client in the map.
+  // MAIN NORMAL state is reached ~8s after qrReadSuccess — give it 12s.
+  await new Promise((r) => setTimeout(r, 12_000));
 
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 20; i++) {
     const client = clients.get(sessionId);
     if (!client) {
       logger.warn({ sessionId }, "fetchPhoneNumber: client gone — aborting");
       return;
     }
 
+    // ── Method 1: getWid() — returns "966501234567@c.us" directly ──────────
     try {
-      // Method 1: getHostDevice()
-      const info = await client.getHostDevice();
-      const phone: string | null = info?.wid?.user ?? info?.id?.user ?? null;
-      if (phone) {
-        await db
-          .update(whatsappSessionsTable)
-          .set({ phoneNumber: phone })
-          .where(eq(whatsappSessionsTable.id, sessionId));
-        emitToAll("phoneNumber", { sessionId, phoneNumber: phone });
-        logger.info({ sessionId, phone }, "Phone number saved via getHostDevice");
+      const wid: string | null = await client.getWid();
+      logger.debug({ sessionId, attempt: i + 1, wid }, "getWid response");
+      if (wid && typeof wid === "string" && wid.includes("@")) {
+        const phone = wid.split("@")[0];
+        if (phone && /^\d{5,15}$/.test(phone)) {
+          await savePhoneNumber(sessionId, phone, "getWid");
+          return;
+        }
+      }
+    } catch (e: any) {
+      logger.debug({ sessionId, attempt: i + 1, err: e?.message }, "getWid threw");
+    }
+
+    // ── Method 2: getHostDevice() — returns { id: { user, server, ... } } ──
+    try {
+      const host = await client.getHostDevice();
+      logger.debug({ sessionId, attempt: i + 1, host: JSON.stringify(host) }, "getHostDevice response");
+      const phone: string | null =
+        host?.id?.user    ??
+        host?.wid?.user   ??
+        host?.me?.user    ??
+        null;
+      if (phone && /^\d{5,15}$/.test(phone)) {
+        await savePhoneNumber(sessionId, phone, "getHostDevice");
         return;
       }
     } catch (e: any) {
-      logger.debug({ sessionId, attempt: i + 1, err: e?.message }, "getHostDevice failed");
+      logger.debug({ sessionId, attempt: i + 1, err: e?.message }, "getHostDevice threw");
     }
 
+    // ── Method 3: getMe() — returns { id: { user, server } } ───────────────
     try {
-      // Method 2: getMe()
       const me = await client.getMe();
-      const phone: string | null = me?.id?.user ?? me?.wid?.user ?? null;
-      if (phone) {
-        await db
-          .update(whatsappSessionsTable)
-          .set({ phoneNumber: phone })
-          .where(eq(whatsappSessionsTable.id, sessionId));
-        emitToAll("phoneNumber", { sessionId, phoneNumber: phone });
-        logger.info({ sessionId, phone }, "Phone number saved via getMe");
+      logger.debug({ sessionId, attempt: i + 1, me: JSON.stringify(me) }, "getMe response");
+      const phone: string | null =
+        me?.id?.user  ??
+        me?.wid?.user ??
+        null;
+      if (phone && /^\d{5,15}$/.test(phone)) {
+        await savePhoneNumber(sessionId, phone, "getMe");
         return;
       }
     } catch (e: any) {
-      logger.debug({ sessionId, attempt: i + 1, err: e?.message }, "getMe failed");
+      logger.debug({ sessionId, attempt: i + 1, err: e?.message }, "getMe threw");
     }
 
-    // Wait between retries
-    await new Promise((r) => setTimeout(r, 4_000));
+    await new Promise((r) => setTimeout(r, 5_000));
   }
 
   logger.warn({ sessionId }, "Could not retrieve phone number after all retries");
+}
+
+async function savePhoneNumber(sessionId: string, phone: string, via: string): Promise<void> {
+  await db
+    .update(whatsappSessionsTable)
+    .set({ phoneNumber: phone })
+    .where(eq(whatsappSessionsTable.id, sessionId));
+  emitToAll("phoneNumber", { sessionId, phoneNumber: phone });
+  logger.info({ sessionId, phone, via }, "Phone number saved");
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -373,11 +396,18 @@ export async function startSession(sessionId: string): Promise<void> {
           // IGNORE if manually stopped
           if (manuallyStopped.has(sessionId)) return;
 
-          // IGNORE if QR is currently visible — this is a WPPConnect artifact
-          // fired when the old saved token is rejected (Session Unpaired) and
-          // the new session starts. It is NOT a real disconnect.
+          // IGNORE if this session has NEVER successfully connected.
+          // WPPConnect fires disconnectedMobile when it tries an old (invalid)
+          // saved token and WhatsApp rejects it ("Session Unpaired"). This is
+          // not a real phone disconnect — it just means we need to scan QR.
+          if (!lastConnectedAt.has(sessionId)) {
+            logger.info({ sessionId }, "disconnectedMobile before first connect — ignored (startup token rejection)");
+            return;
+          }
+
+          // IGNORE if QR is currently visible — still a startup artifact
           if (waitingForQR.has(sessionId)) {
-            logger.info({ sessionId }, "disconnectedMobile while QR visible — ignored (token rejection artifact)");
+            logger.info({ sessionId }, "disconnectedMobile while QR visible — ignored");
             return;
           }
 
