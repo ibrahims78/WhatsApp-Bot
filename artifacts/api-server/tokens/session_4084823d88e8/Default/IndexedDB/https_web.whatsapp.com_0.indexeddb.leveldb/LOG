@@ -1,3 +1,23 @@
 2026/03/26-20:06:24.594 e04 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_4084823d88e8/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
 2026/03/26-20:06:24.597 e04 Recovering log #184
 2026/03/26-20:06:24.711 e04 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_4084823d88e8/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000184.log 
+2026/03/26-20:07:20.558 e07 Level-0 table #192: started
+2026/03/26-20:07:20.637 e07 Level-0 table #192: 1082959 bytes OK
+2026/03/26-20:07:20.652 e07 Delete type=0 #184
+2026/03/26-20:07:31.707 e07 Compacting 1@1 + 7@2 files
+2026/03/26-20:07:31.898 e07 Generated table #193@1: 43634 keys, 2206706 bytes
+2026/03/26-20:07:32.058 e07 Generated table #194@1: 56072 keys, 2223740 bytes
+2026/03/26-20:07:32.108 e07 Generated table #195@1: 1876 keys, 2152564 bytes
+2026/03/26-20:07:32.327 e07 Generated table #196@1: 16109 keys, 2218023 bytes
+2026/03/26-20:07:32.403 e07 Generated table #197@1: 52149 keys, 2216660 bytes
+2026/03/26-20:07:32.435 e07 Generated table #198@1: 33569 keys, 828704 bytes
+2026/03/26-20:07:32.436 e07 Compacted 1@1 + 7@2 files => 11846397 bytes
+2026/03/26-20:07:32.441 e07 compacted to: files[ 0 0 6 0 0 0 0 ]
+2026/03/26-20:07:32.442 e07 Delete type=2 #181
+2026/03/26-20:07:32.442 e07 Delete type=2 #182
+2026/03/26-20:07:32.442 e07 Delete type=2 #183
+2026/03/26-20:07:32.442 e07 Delete type=2 #186
+2026/03/26-20:07:32.442 e07 Delete type=2 #187
+2026/03/26-20:07:32.442 e07 Delete type=2 #188
+2026/03/26-20:07:32.442 e07 Delete type=2 #189
+2026/03/26-20:07:32.442 e07 Delete type=2 #192

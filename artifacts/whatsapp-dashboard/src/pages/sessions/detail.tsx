@@ -31,6 +31,11 @@ const featureList = [
   'receiveText', 'receiveImage', 'receiveVideo', 'receiveAudio', 'receiveFile'
 ];
 
+// All features are ENABLED by default — user unchecks to disable
+const defaultFeatures: Record<string, boolean> = Object.fromEntries(
+  featureList.map((f) => [f, true])
+);
+
 export default function SessionDetail() {
   const [, params] = useRoute("/sessions/:id");
   const id = params?.id || "";
@@ -145,14 +150,20 @@ export default function SessionDetail() {
   });
 
   const [webhookUrl, setWebhookUrl] = useState("");
-  const [features, setFeatures] = useState<Record<string, boolean>>({});
+  const [features, setFeatures] = useState<Record<string, boolean>>(defaultFeatures);
 
   useEffect(() => {
     if (session) {
       setWebhookUrl(session.webhookUrl || "");
       try {
-        if (session.features) setFeatures(JSON.parse(session.features));
-      } catch (e) {}
+        const saved: Record<string, boolean> = session.features
+          ? JSON.parse(session.features)
+          : {};
+        // Merge: default all to true, then apply whatever is explicitly saved
+        setFeatures({ ...defaultFeatures, ...saved });
+      } catch {
+        setFeatures(defaultFeatures);
+      }
     }
   }, [session]);
 
@@ -442,7 +453,7 @@ export default function SessionDetail() {
                     <div key={feat} className="flex items-center gap-3 p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors">
                       <Checkbox 
                         id={feat} 
-                        checked={features[feat] || false}
+                        checked={features[feat] ?? true}
                         onCheckedChange={(checked) => handleFeatureToggle(feat, checked as boolean)}
                       />
                       <label htmlFor={feat} className="text-sm font-medium leading-none cursor-pointer capitalize">
