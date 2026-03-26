@@ -4,6 +4,26 @@ import { eq, sql } from "drizzle-orm";
 import { logger } from "./logger";
 import type { Server as HttpServer } from "http";
 import { Server as SocketServer } from "socket.io";
+import { execSync } from "child_process";
+import { existsSync } from "fs";
+
+// ── Resolve Chrome path — auto-download if missing ──────────────────────────
+const CHROME_PATH =
+  "/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome";
+
+function ensureChrome(): void {
+  if (existsSync(CHROME_PATH)) return;
+  logger.info("Chrome not found — downloading (this may take 1-2 minutes)...");
+  try {
+    execSync("npx --yes puppeteer@24.40.0 browsers install chrome", {
+      stdio: "pipe",
+      timeout: 180_000,
+    });
+    logger.info("Chrome downloaded successfully");
+  } catch (e) {
+    logger.error({ err: e }, "Chrome download failed — sessions will not work");
+  }
+}
 
 // Map of session ID to WPPConnect client (only set after create() resolves)
 const clients = new Map<string, any>();
@@ -49,6 +69,9 @@ export async function startSession(sessionId: string): Promise<void> {
 
   activeBrowsers.add(sessionId);
 
+  // Ensure Chrome is downloaded before launching
+  ensureChrome();
+
   // Update status to connecting
   await db
     .update(whatsappSessionsTable)
@@ -64,7 +87,7 @@ export async function startSession(sessionId: string): Promise<void> {
       autoClose: false,
       disableWelcome: true,
       logQR: false,
-      executablePath: "/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome",
+      executablePath: CHROME_PATH,
       puppeteerOptions: {
         args: [
           "--no-sandbox",
