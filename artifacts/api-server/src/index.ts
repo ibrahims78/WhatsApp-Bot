@@ -3,6 +3,7 @@ import app from "./app";
 import { logger } from "./lib/logger";
 import { initSocketServer, initializeSessions } from "./lib/whatsapp-manager";
 import { db, usersTable } from "@workspace/db";
+import { eq } from "drizzle-orm";
 import { hashPassword } from "./lib/auth";
 
 const rawPort = process.env["PORT"];
@@ -25,19 +26,30 @@ initSocketServer(httpServer);
 httpServer.listen(port, async () => {
   logger.info({ port }, "Server listening");
 
-  // Seed default admin user if none exists
+  // Ensure default admin user always exists with the fixed credentials on every startup
   try {
-    const existing = await db.select().from(usersTable).limit(1);
-    if (existing.length === 0) {
-      const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+    const adminPassword = "123456";
+    const passwordHash = hashPassword(adminPassword);
+    const [existing] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.username, "admin"));
+
+    if (!existing) {
       await db.insert(usersTable).values({
         username: "admin",
         email: "admin@example.com",
-        passwordHash: hashPassword(adminPassword),
+        passwordHash,
         role: "admin",
         isActive: true,
       });
-      logger.info("Default admin user created: admin / admin123");
+      logger.info("Default admin user created: admin / 123456");
+    } else {
+      await db
+        .update(usersTable)
+        .set({ passwordHash, role: "admin", isActive: true })
+        .where(eq(usersTable.username, "admin"));
+      logger.info("Default admin user ensured: admin / 123456");
     }
   } catch (e) {
     logger.error({ err: e }, "Failed to seed admin user");
