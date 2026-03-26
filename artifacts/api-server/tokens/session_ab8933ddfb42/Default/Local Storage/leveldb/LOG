@@ -1,0 +1,5 @@
+2026/03/26-17:24:18.039 eb8 Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_ab8933ddfb42/Default/Local Storage/leveldb since it was missing.
+2026/03/26-17:24:18.175 eb8 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_ab8933ddfb42/Default/Local Storage/leveldb/MANIFEST-000001
+2026/03/26-17:29:18.691 eb1 Level-0 table #5: started
+2026/03/26-17:29:18.735 eb1 Level-0 table #5: 19169 bytes OK
+2026/03/26-17:29:18.738 eb1 Delete type=0 #3
