@@ -12,7 +12,14 @@ import { tmpdir } from "os";
 const router: IRouter = Router();
 
 function formatNumber(number: string): string {
-  if (number.includes("@")) return number;
+  // Already a valid WhatsApp chat ID — pass through unchanged
+  if (number.endsWith("@c.us") || number.endsWith("@g.us")) return number;
+  // @lid is a Linked Device ID used in newer multi-device accounts.
+  // Convert it to @c.us so wppconnect can resolve the actual chat.
+  if (number.includes("@")) {
+    const digits = number.split("@")[0];
+    return `${digits}@c.us`;
+  }
   const clean = number.replace(/\D/g, "");
   return `${clean}@c.us`;
 }

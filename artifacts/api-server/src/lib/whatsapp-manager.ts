@@ -244,12 +244,17 @@ export async function startSession(sessionId: string): Promise<void> {
           }
           if (events.includes("message.received") || events.length === 0) {
             logger.info({ sessionId, webhookUrl: session.webhookUrl, from: message.from }, "Firing webhook for incoming message");
+            // Extract clean phone number (strip @lid, @c.us, @g.us suffixes)
+            const rawFrom: string = message.from || "";
+            const phoneNumber = rawFrom.includes("@") ? rawFrom.split("@")[0] : rawFrom;
+
             triggerWebhook(session.webhookUrl, {
               event: "message.received",
               sessionId,
               data: {
                 type: message.type || "chat",
-                from: message.from || "",
+                from: rawFrom,
+                phoneNumber,
                 to: message.to || "",
                 body: message.body || "",
                 timestamp: message.timestamp || Math.floor(Date.now() / 1000),
