@@ -12,7 +12,10 @@
       "name": "📥 Receive WhatsApp Message",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [200, 500],
+      "position": [
+        200,
+        500
+      ],
       "webhookId": "whatsapp-incoming",
       "notes": "انسخ Production URL وضعه في إعدادات الجلسة → Webhook URL"
     },
@@ -26,7 +29,10 @@
       "name": "✅ Respond 200 OK",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [440, 340],
+      "position": [
+        440,
+        340
+      ],
       "notes": "يُقرّ الاستلام فوراً لمنع إعادة الإرسال"
     },
     {
@@ -37,7 +43,10 @@
       "name": "🔍 Extract Message Fields",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [440, 620],
+      "position": [
+        440,
+        620
+      ],
       "notes": "يستخرج بيانات الرسالة ويحوّل الوسائط إلى prompt مفهوم للذكاء الاصطناعي"
     },
     {
@@ -52,7 +61,10 @@
       "name": "🤖 AI Agent",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.6,
-      "position": [700, 620],
+      "position": [
+        700,
+        620
+      ],
       "notes": "يعالج الرسالة ويولّد الرد باستخدام Gemini مع ذاكرة المحادثة"
     },
     {
@@ -61,7 +73,10 @@
       "name": "📝 Conversation Memory",
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.2,
-      "position": [700, 820],
+      "position": [
+        700,
+        820
+      ],
       "notes": "يحفظ سياق المحادثة لكل مستخدم"
     },
     {
@@ -70,7 +85,10 @@
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
-      "position": [560, 820],
+      "position": [
+        560,
+        820
+      ],
       "id": "d18b5ab5-6bfc-48de-b9e1-1cb08fab7201",
       "name": "Google Gemini Chat Model",
       "credentials": {
@@ -89,7 +107,10 @@
       "name": "⚙️ Format AI Output",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [960, 620],
+      "position": [
+        960,
+        620
+      ],
       "notes": "يُنسّق رد الذكاء الاصطناعي للإرسال"
     },
     {
@@ -102,7 +123,10 @@
       "name": "⏱️ Wait 2 Seconds",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
-      "position": [1200, 620],
+      "position": [
+        1200,
+        620
+      ],
       "notes": "تأخير 2 ثانية لتجنب حظر واتساب"
     },
     {
@@ -120,21 +144,35 @@
           ]
         },
         "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"number\": \"{{ $json.phoneNumber }}\",\n  \"message\": \"{{ $json.replyText }}\"\n}",
+        "specifyBody": "keypair",
         "options": {
           "response": {
             "response": {
               "fullResponse": false
             }
           }
+        },
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $json.phoneNumber }}"
+            },
+            {
+              "name": "message",
+              "value": "={{ $json.replyText }}"
+            }
+          ]
         }
       },
       "id": "b7eede5d-54b6-4b54-8d28-db7342ae32b9",
       "name": "📤 Send Text Reply",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [1440, 620],
+      "position": [
+        1440,
+        620
+      ],
       "onError": "continueErrorOutput",
       "notes": "يرسل رد الذكاء الاصطناعي إلى العميل عبر واتساب"
     },
@@ -146,7 +184,10 @@
       "name": "⚠️ Log Send Error",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1680, 780],
+      "position": [
+        1680,
+        780
+      ],
       "notes": "يسجّل أخطاء الإرسال — متصل بـ error output من عقدة الإرسال"
     }
   ],
