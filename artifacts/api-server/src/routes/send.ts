@@ -38,6 +38,13 @@ async function logMessage(sessionId: string, toNumber: string, messageType: stri
     .where(eq(whatsappSessionsTable.id, sessionId));
 }
 
+// wppconnect throws msg_not_found when it can't retrieve the sent message by ID after sending.
+// This happens with @lid contacts (newer WhatsApp accounts). The message IS delivered,
+// so we treat this error as a success.
+function isMsgNotFound(e: any): boolean {
+  return e?.code === "msg_not_found" || (typeof e?.message === "string" && e.message.includes("not found"));
+}
+
 async function sendText(sessionId: string, number: string, message: string, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !message) {
     res.status(400).json({ success: false, error: "sessionId, number, and message are required" });
@@ -50,6 +57,11 @@ async function sendText(sessionId: string, number: string, message: string, req:
     await logMessage(sessionId, number, "text", message);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
+    if (isMsgNotFound(e)) {
+      await logMessage(sessionId, number, "text", message);
+      res.json({ success: true, messageId: null });
+      return;
+    }
     req.log.error({ sessionId, err: e }, "Failed to send text");
     res.status(500).json({ success: false, error: e.message });
   }
@@ -67,6 +79,11 @@ async function sendImage(sessionId: string, number: string, imageUrl: string, ca
     await logMessage(sessionId, number, "image", caption, imageUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
+    if (isMsgNotFound(e)) {
+      await logMessage(sessionId, number, "image", caption, imageUrl, caption);
+      res.json({ success: true, messageId: null });
+      return;
+    }
     req.log.error({ sessionId, err: e }, "Failed to send image");
     res.status(500).json({ success: false, error: e.message });
   }
@@ -84,6 +101,11 @@ async function sendVideo(sessionId: string, number: string, videoUrl: string, ca
     await logMessage(sessionId, number, "video", caption, videoUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
+    if (isMsgNotFound(e)) {
+      await logMessage(sessionId, number, "video", caption, videoUrl, caption);
+      res.json({ success: true, messageId: null });
+      return;
+    }
     req.log.error({ sessionId, err: e }, "Failed to send video");
     res.status(500).json({ success: false, error: e.message });
   }
@@ -101,6 +123,11 @@ async function sendAudio(sessionId: string, number: string, audioUrl: string, re
     await logMessage(sessionId, number, "audio", null, audioUrl);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
+    if (isMsgNotFound(e)) {
+      await logMessage(sessionId, number, "audio", null, audioUrl);
+      res.json({ success: true, messageId: null });
+      return;
+    }
     req.log.error({ sessionId, err: e }, "Failed to send audio");
     res.status(500).json({ success: false, error: e.message });
   }
@@ -118,6 +145,11 @@ async function sendFile(sessionId: string, number: string, fileUrl: string, file
     await logMessage(sessionId, number, "file", caption, fileUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
+    if (isMsgNotFound(e)) {
+      await logMessage(sessionId, number, "file", caption, fileUrl, caption);
+      res.json({ success: true, messageId: null });
+      return;
+    }
     req.log.error({ sessionId, err: e }, "Failed to send file");
     res.status(500).json({ success: false, error: e.message });
   }
@@ -135,6 +167,11 @@ async function sendLocation(sessionId: string, number: string, lat: number, lng:
     await logMessage(sessionId, number, "location", description || `${lat},${lng}`);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
+    if (isMsgNotFound(e)) {
+      await logMessage(sessionId, number, "location", description || `${lat},${lng}`);
+      res.json({ success: true, messageId: null });
+      return;
+    }
     req.log.error({ sessionId, err: e }, "Failed to send location");
     res.status(500).json({ success: false, error: e.message });
   }
@@ -152,6 +189,11 @@ async function sendSticker(sessionId: string, number: string, stickerUrl: string
     await logMessage(sessionId, number, "sticker", null, stickerUrl);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
+    if (isMsgNotFound(e)) {
+      await logMessage(sessionId, number, "sticker", null, stickerUrl);
+      res.json({ success: true, messageId: null });
+      return;
+    }
     req.log.error({ sessionId, err: e }, "Failed to send sticker");
     res.status(500).json({ success: false, error: e.message });
   }
