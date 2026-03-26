@@ -1,2 +1,3 @@
-2026/03/26-07:57:55.295 49d Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_2c1255ee0fc6/Default/Extension State since it was missing.
-2026/03/26-07:57:55.309 49d Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_2c1255ee0fc6/Default/Extension State/MANIFEST-000001
+2026/03/26-08:18:10.495 896 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_2c1255ee0fc6/Default/Extension State/MANIFEST-000001
+2026/03/26-08:18:10.496 896 Recovering log #3
+2026/03/26-08:18:10.496 896 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_2c1255ee0fc6/Default/Extension State/000003.log 

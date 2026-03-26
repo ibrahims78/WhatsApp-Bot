@@ -185,11 +185,13 @@ export async function startSession(sessionId: string): Promise<void> {
 
         if (!session) return;
 
+        // Strip all WhatsApp suffixes (@c.us, @lid, @g.us) for storage
+        const stripSuffix = (n: string) => n?.replace(/@(c\.us|lid|g\.us)$/, "") || "";
         await db.insert(messagesTable).values({
           sessionId,
           direction: "inbound",
-          fromNumber: message.from?.replace("@c.us", "") || "",
-          toNumber: message.to?.replace("@c.us", "") || "",
+          fromNumber: stripSuffix(message.from || ""),
+          toNumber: stripSuffix(message.to || ""),
           messageType: message.type || "text",
           content: message.body || null,
           mediaUrl: null,
