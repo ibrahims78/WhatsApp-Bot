@@ -1,96 +1,143 @@
-# Workspace
+# WhatsApp Manager — مدير واتساب
 
 ## Overview
 
-pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+A professional full-stack WhatsApp session management platform. Users can connect multiple WhatsApp accounts via QR code, send and receive all message types (text, image, video, audio, document), monitor real-time statistics, manage users and API keys, and integrate with external workflows (n8n, Zapier, etc.) via webhooks.
 
-## Stack
+## Tech Stack
 
-- **Monorepo tool**: pnpm workspaces
-- **Node.js version**: 24
-- **Package manager**: pnpm
-- **TypeScript version**: 5.9
-- **API framework**: Express 5
-- **Database**: PostgreSQL + Drizzle ORM
-- **Validation**: Zod (`zod/v4`), `drizzle-zod`
-- **API codegen**: Orval (from OpenAPI spec)
-- **Build**: esbuild (CJS bundle)
+| Layer | Technology |
+|-------|-----------|
+| Monorepo | pnpm workspaces |
+| Runtime | Node.js 24, TypeScript 5.9 |
+| Backend | Express.js v5 + Socket.IO 4 |
+| WhatsApp | `@wppconnect-team/wppconnect` (Puppeteer-based) |
+| Database | PostgreSQL + Drizzle ORM |
+| Authentication | JWT + bcryptjs (cookies + Bearer token + X-API-Key) |
+| Frontend | React 19 + Vite 7 |
+| UI | Shadcn UI + Tailwind CSS v4 (glassmorphism) |
+| State | Zustand (with persist) |
+| Data Fetching | TanStack Query v5 |
+| Routing | wouter |
+| i18n | Custom bilingual store (Arabic/English, RTL/LTR) |
+| Build | esbuild (API server), Vite (dashboard) |
+| Codegen | Orval (React Query hooks + Zod schemas from OpenAPI) |
 
-## Structure
+## Project Structure
 
-```text
-artifacts-monorepo/
-├── artifacts/              # Deployable applications
-│   └── api-server/         # Express API server
-├── lib/                    # Shared libraries
-│   ├── api-spec/           # OpenAPI spec + Orval codegen config
-│   ├── api-client-react/   # Generated React Query hooks
-│   ├── api-zod/            # Generated Zod schemas from OpenAPI
-│   └── db/                 # Drizzle ORM schema + DB connection
-├── scripts/                # Utility scripts (single workspace package)
-│   └── src/                # Individual .ts scripts, run via `pnpm --filter @workspace/scripts run <script>`
-├── pnpm-workspace.yaml     # pnpm workspace (artifacts/*, lib/*, lib/integrations/*, scripts)
-├── tsconfig.base.json      # Shared TS options (composite, bundler resolution, es2022)
-├── tsconfig.json           # Root TS project references
-└── package.json            # Root package with hoisted devDeps
+```
+workspace/
+├── artifacts/
+│   ├── api-server/          # Express API + Socket.IO server (PORT=8080)
+│   └── whatsapp-dashboard/  # React + Vite dashboard (PORT=5000)
+├── lib/
+│   ├── db/                  # Drizzle ORM schema + PostgreSQL client
+│   ├── api-spec/            # OpenAPI 3.1 spec (single source of truth)
+│   ├── api-zod/             # Generated Zod validation schemas
+│   └── api-client-react/    # Generated React Query hooks
+└── scripts/                 # Utility scripts
 ```
 
-## TypeScript & Composite Projects
+## Running the App
 
-Every package extends `tsconfig.base.json` which sets `composite: true`. The root `tsconfig.json` lists all packages as project references. This means:
+Two workflows run in parallel:
+- **API Server**: `PORT=8080 pnpm --filter @workspace/api-server run dev`
+- **Dashboard**: `PORT=5000 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev`
 
-- **Always typecheck from the root** — run `pnpm run typecheck` (which runs `tsc --build --emitDeclarationOnly`). This builds the full dependency graph so that cross-package imports resolve correctly. Running `tsc` inside a single package will fail if its dependencies haven't been built yet.
-- **`emitDeclarationOnly`** — we only emit `.d.ts` files during typecheck; actual JS bundling is handled by esbuild/tsx/vite...etc, not `tsc`.
-- **Project references** — when package A depends on package B, A's `tsconfig.json` must list B in its `references` array. `tsc --build` uses this to determine build order and skip up-to-date packages.
+The dashboard proxies `/api` and `/socket.io` requests to the API server at `localhost:8080`.
 
-## Root Scripts
+## Default Admin Credentials
 
-- `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
-- `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
+Every time the server starts, it ensures a default admin user exists:
+- **Username**: `admin`
+- **Password**: `123456`
 
-## Packages
+This is enforced on every restart (upsert logic in `artifacts/api-server/src/index.ts`).
 
-### `artifacts/api-server` (`@workspace/api-server`)
+## Environment Variables
 
-Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` for request and response validation and `@workspace/db` for persistence.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | ✅ | PostgreSQL connection string (auto-set by Replit) |
+| `PORT` | ✅ | Server port (8080 for API, 5000 for dashboard) |
+| `BASE_PATH` | ✅ | Vite base path for dashboard (`/`) |
+| `JWT_SECRET` | ⚠️ | JWT signing secret — set a strong value in production |
 
-- Entry: `src/index.ts` — reads `PORT`, starts Express
-- App setup: `src/app.ts` — mounts CORS, JSON/urlencoded parsing, routes at `/api`
-- Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health` (full path: `/api/health`)
-- Depends on: `@workspace/db`, `@workspace/api-zod`
-- `pnpm --filter @workspace/api-server run dev` — run the dev server
-- `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
-- Build bundles an allowlist of deps (express, cors, pg, drizzle-orm, zod, etc.) and externalizes the rest
+## Database
 
-### `lib/db` (`@workspace/db`)
+Schema managed by Drizzle ORM. Tables:
+- `whatsapp_sessions` — session config, status, message counters
+- `messages` — full message log (inbound/outbound) with timestamps
+- `users` — user accounts with roles (admin/employee)
+- `api_keys` — hashed API keys linked to users
 
-Database layer using Drizzle ORM with PostgreSQL. Exports a Drizzle client instance and schema models.
+Apply schema: `pnpm --filter @workspace/db push`
 
-- `src/index.ts` — creates a `Pool` + Drizzle instance, exports schema
-- `src/schema/index.ts` — barrel re-export of all models
-- `src/schema/<modelname>.ts` — table definitions with `drizzle-zod` insert schemas (no models definitions exist right now)
-- `drizzle.config.ts` — Drizzle Kit config (requires `DATABASE_URL`, automatically provided by Replit)
-- Exports: `.` (pool, db, schema), `./schema` (schema only)
+## API Endpoints
 
-Production migrations are handled by Replit when publishing. In development, we just use `pnpm --filter @workspace/db run push`, and we fallback to `pnpm --filter @workspace/db run push-force`.
+All endpoints are prefixed with `/api` and require either:
+- `Authorization: Bearer <jwt>` header
+- `X-API-Key: <key>` header
 
-### `lib/api-spec` (`@workspace/api-spec`)
+Key endpoints:
+```
+POST   /api/auth/login                    Login → JWT
+GET    /api/auth/me                       Current user
+GET    /api/sessions                      List sessions
+POST   /api/sessions                      Create session
+DELETE /api/sessions/:id                  Delete session
+POST   /api/sessions/:id/connect          Start QR connection
+POST   /api/sessions/:id/disconnect       Disconnect session
+GET    /api/sessions/:id/qr               Get QR code
+GET    /api/sessions/:id/messages         Message history
+PATCH  /api/sessions/:id/webhook          Update webhook
+PATCH  /api/sessions/:id/features         Update features
+GET    /api/sessions/:id/stats            Session stats
+POST   /api/sessions/:id/send/text        Send text message
+POST   /api/sessions/:id/send/image       Send image
+POST   /api/sessions/:id/send/video       Send video
+POST   /api/sessions/:id/send/audio       Send audio
+POST   /api/sessions/:id/send/file        Send document
+GET    /api/dashboard/stats               Dashboard overview (last 7 days)
+GET    /api/users                         List users (admin only)
+POST   /api/users                         Create user (admin only)
+GET    /api/api-keys                      List API keys
+POST   /api/api-keys                      Create API key
+DELETE /api/api-keys/:id                  Delete API key
+```
 
-Owns the OpenAPI 3.1 spec (`openapi.yaml`) and the Orval config (`orval.config.ts`). Running codegen produces output into two sibling packages:
+## WebSocket Events (Socket.IO)
 
-1. `lib/api-client-react/src/generated/` — React Query hooks + fetch client
-2. `lib/api-zod/src/generated/` — Zod schemas
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `qr` | `{ sessionId, qr }` | Live QR code for scanning |
+| `session_status` | `{ sessionId, status }` | Session status change |
+| `message` | `{ sessionId, ...messageData }` | Incoming message |
 
-Run codegen: `pnpm --filter @workspace/api-spec run codegen`
+## Dashboard Pages
 
-### `lib/api-zod` (`@workspace/api-zod`)
+| Page | Route | Description |
+|------|-------|-------------|
+| Login | `/login` | JWT authentication |
+| Dashboard | `/` | Live stats cards + 7-day message chart |
+| Sessions | `/sessions` | List and manage WhatsApp sessions |
+| Session Detail | `/sessions/:id` | QR scan, stats, messages, webhook, features |
+| Send Message | `/send` | Send text/image/video/audio/document |
+| Users | `/users` | Admin-only user management |
+| API Keys | `/api-keys` | Generate, view, and revoke API keys |
 
-Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used by `api-server` for response validation.
+## Key Implementation Notes
 
-### `lib/api-client-react` (`@workspace/api-client-react`)
+- **Admin upsert on startup**: `index.ts` always ensures `admin/123456` exists on every server start, creating or updating the record.
+- **Real-time chart**: `/api/dashboard/stats` aggregates the last 7 days of messages from the `messages` table, refreshed every 30 seconds in the UI.
+- **QR via WebSocket**: Puppeteer launches a headless Chrome per session; QR codes are streamed live to the dashboard.
+- **Message logging**: Every inbound and outbound message is stored in the `messages` table with direction, type, and timestamp.
+- **Webhook forwarding**: Incoming WhatsApp events are POST-ed to the session's configured webhook URL in real time.
+- **RTL support**: The entire UI flips direction when Arabic is selected, using CSS logical properties (`ms-`, `ps-`, etc.).
 
-Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
+## TypeScript Notes
 
-### `scripts` (`@workspace/scripts`)
-
-Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.
+- Every package extends `tsconfig.base.json` (composite: true).
+- Always typecheck from root: `pnpm run typecheck`.
+- esbuild handles JS bundling; `tsc` only emits `.d.ts` declaration files.
+- Cross-package imports use project references — run `tsc --build` if they fail.
