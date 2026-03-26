@@ -101,11 +101,30 @@ async function logMessage(sessionId: string, toNumber: string, messageType: stri
     .where(eq(whatsappSessionsTable.id, sessionId));
 }
 
-// wppconnect throws msg_not_found when it can't retrieve the sent message by ID after sending.
-// This happens with @lid contacts (newer WhatsApp accounts). The message IS delivered,
-// so we treat this error as a success.
 function isMsgNotFound(e: any): boolean {
   return e?.code === "msg_not_found" || (typeof e?.message === "string" && e.message.includes("not found"));
+}
+
+// Try sending with @c.us format first; if wppconnect throws msg_not_found (chat not found),
+// retry with @lid format. @lid contacts are newer multi-device WhatsApp accounts.
+// If @lid also throws msg_not_found, the message WAS delivered but wppconnect
+// couldn't retrieve the sent ID — treat as success.
+async function trySend<T>(number: string, fn: (chatId: string) => Promise<T>): Promise<T> {
+  const primaryId = formatNumber(number);
+  try {
+    return await fn(primaryId);
+  } catch (e: any) {
+    if (isMsgNotFound(e) && primaryId.endsWith("@c.us")) {
+      const lidId = primaryId.replace("@c.us", "@lid");
+      try {
+        return await fn(lidId);
+      } catch (_e2: any) {
+        // @lid also failed — throw original error to let caller decide
+        throw e;
+      }
+    }
+    throw e;
+  }
 }
 
 async function sendText(sessionId: string, number: string, message: string, req: any, res: any): Promise<void> {
@@ -116,7 +135,7 @@ async function sendText(sessionId: string, number: string, message: string, req:
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
-    const result = await client.sendText(formatNumber(number), message);
+    const result = await trySend(number, (chatId) => client.sendText(chatId, message));
     await logMessage(sessionId, number, "text", message);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -142,7 +161,7 @@ async function sendImage(sessionId: string, number: string, imageUrl: string, ca
   const filePath = tmpFile || imageUrl;
 
   try {
-    const result = await client.sendImage(formatNumber(number), filePath, "image", caption || "");
+    const result = await trySend(number, (chatId) => client.sendImage(chatId, filePath, "image", caption || ""));
     await logMessage(sessionId, number, "image", caption, imageUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -170,7 +189,7 @@ async function sendVideo(sessionId: string, number: string, videoUrl: string, ca
   const filePath = tmpFile || videoUrl;
 
   try {
-    const result = await client.sendFile(formatNumber(number), filePath, "video.mp4", caption || "");
+    const result = await trySend(number, (chatId) => client.sendFile(chatId, filePath, "video.mp4", caption || ""));
     await logMessage(sessionId, number, "video", caption, videoUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -198,7 +217,7 @@ async function sendAudio(sessionId: string, number: string, audioUrl: string, re
   const filePath = tmpFile || audioUrl;
 
   try {
-    const result = await client.sendVoice(formatNumber(number), filePath);
+    const result = await trySend(number, (chatId) => client.sendVoice(chatId, filePath));
     await logMessage(sessionId, number, "audio", null, audioUrl);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -227,7 +246,7 @@ async function sendFile(sessionId: string, number: string, fileUrl: string, file
   const filePath = tmpFile || fileUrl;
 
   try {
-    const result = await client.sendFile(formatNumber(number), filePath, fileName, caption || "");
+    const result = await trySend(number, (chatId) => client.sendFile(chatId, filePath, fileName, caption || ""));
     await logMessage(sessionId, number, "file", caption, fileUrl, caption);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -251,7 +270,7 @@ async function sendLocation(sessionId: string, number: string, lat: number, lng:
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
-    const result = await client.sendLocation(formatNumber(number), lat, lng, description || "");
+    const result = await trySend(number, (chatId) => client.sendLocation(chatId, lat, lng, description || ""));
     await logMessage(sessionId, number, "location", description || `${lat},${lng}`);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
@@ -277,7 +296,7 @@ async function sendSticker(sessionId: string, number: string, stickerUrl: string
   const filePath = tmpFile || stickerUrl;
 
   try {
-    const result = await client.sendImageAsStickerAuto(formatNumber(number), filePath);
+    const result = await trySend(number, (chatId) => client.sendImageAsStickerAuto(chatId, filePath));
     await logMessage(sessionId, number, "sticker", null, stickerUrl);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
