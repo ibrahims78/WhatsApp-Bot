@@ -1,32 +1,57 @@
 import { AppLayout } from "@/components/layout/app-layout";
-import { useListSessions } from "@workspace/api-client-react";
 import { useAppStore } from "@/store";
 import { getTranslation } from "@/lib/i18n";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageSquare, Smartphone, Activity, BarChart3, Send } from "lucide-react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { useQuery } from "@tanstack/react-query";
+
+interface DashboardStats {
+  totalSessions: number;
+  connected: number;
+  totalSent: number;
+  totalReceived: number;
+  chartData: { date: string; sent: number; received: number }[];
+}
+
+async function fetchDashboardStats(token: string | null): Promise<DashboardStats> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+  const res = await fetch("/api/dashboard/stats", { headers });
+  if (!res.ok) throw new Error("Failed to fetch dashboard stats");
+  return res.json();
+}
+
+function formatDateLabel(dateStr: string, language: string): string {
+  const date = new Date(dateStr + "T12:00:00Z");
+  const dayNames: Record<string, string[]> = {
+    en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    ar: ["أحد", "إثن", "ثلا", "أرب", "خمي", "جمع", "سبت"],
+  };
+  const names = dayNames[language] ?? dayNames["en"];
+  return names[date.getUTCDay()];
+}
 
 export default function Dashboard() {
-  const { data: sessions, isLoading } = useListSessions();
-  const { language } = useAppStore();
+  const { language, token } = useAppStore();
   const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key);
 
-  const totalSessions = sessions?.length || 0;
-  const connected = sessions?.filter(s => s.status === 'connected').length || 0;
-  const disconnected = sessions?.filter(s => s.status === 'disconnected' || s.status === 'banned').length || 0;
-  
-  const totalSent = sessions?.reduce((acc, curr) => acc + (curr.totalMessagesSent || 0), 0) || 0;
-  const totalReceived = sessions?.reduce((acc, curr) => acc + (curr.totalMessagesReceived || 0), 0) || 0;
+  const { data, isLoading } = useQuery<DashboardStats>({
+    queryKey: ["dashboard-stats"],
+    queryFn: () => fetchDashboardStats(token),
+    refetchInterval: 30_000,
+  });
 
-  const chartData = [
-    { name: t('day_mon'), sent: 120, received: 98 },
-    { name: t('day_tue'), sent: 230, received: 150 },
-    { name: t('day_wed'), sent: 340, received: 210 },
-    { name: t('day_thu'), sent: 290, received: 180 },
-    { name: t('day_fri'), sent: 450, received: 320 },
-    { name: t('day_sat'), sent: 180, received: 140 },
-    { name: t('day_sun'), sent: 100, received: 80 },
-  ];
+  const totalSessions = data?.totalSessions ?? 0;
+  const connected = data?.connected ?? 0;
+  const totalSent = data?.totalSent ?? 0;
+  const totalReceived = data?.totalReceived ?? 0;
+
+  const chartData = (data?.chartData ?? []).map((row) => ({
+    name: formatDateLabel(row.date, language),
+    sent: row.sent,
+    received: row.received,
+  }));
 
   return (
     <AppLayout>
@@ -53,7 +78,7 @@ export default function Dashboard() {
                 <div className="text-2xl sm:text-3xl font-bold">{totalSessions}</div>
               </CardContent>
             </Card>
-            
+
             <Card className="glass-card border-s-4 border-s-green-500 hover:-translate-y-1 transition-transform duration-300">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-xs sm:text-sm font-semibold">{t('dash_connected')}</CardTitle>
@@ -94,19 +119,27 @@ export default function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent className="h-[280px] sm:h-[380px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={11} tickLine={false} axisLine={false} width={35} />
-                <Tooltip 
-                  cursor={{fill: 'hsl(var(--muted)/0.5)'}}
-                  contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
-                />
-                <Bar dataKey="sent" name={t('dash_sent')} fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} maxBarSize={40} />
-                <Bar dataKey="received" name={t('dash_received')} fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} maxBarSize={40} />
-              </BarChart>
-            </ResponsiveContainer>
+            {isLoading ? (
+              <div className="h-full animate-pulse bg-muted/40 rounded-lg" />
+            ) : chartData.length === 0 || chartData.every(d => d.sent === 0 && d.received === 0) ? (
+              <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
+                {language === "ar" ? "لا توجد رسائل في آخر 7 أيام" : "No messages in the last 7 days"}
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+                  <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={11} tickLine={false} axisLine={false} />
+                  <YAxis stroke="hsl(var(--muted-foreground))" fontSize={11} tickLine={false} axisLine={false} width={35} allowDecimals={false} />
+                  <Tooltip
+                    cursor={{ fill: 'hsl(var(--muted)/0.5)' }}
+                    contentStyle={{ backgroundColor: 'hsl(var(--card))', borderColor: 'hsl(var(--border))', borderRadius: '8px' }}
+                  />
+                  <Bar dataKey="sent" name={t('dash_sent')} fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                  <Bar dataKey="received" name={t('dash_received')} fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} maxBarSize={40} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </CardContent>
         </Card>
       </div>
