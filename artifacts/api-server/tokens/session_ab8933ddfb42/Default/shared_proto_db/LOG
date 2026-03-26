@@ -1,2 +1,3 @@
-2026/03/26-17:51:02.005 1965 Creating DB /home/runner/workspace/artifacts/api-server/tokens/session_ab8933ddfb42/Default/shared_proto_db since it was missing.
-2026/03/26-17:51:02.067 1965 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_ab8933ddfb42/Default/shared_proto_db/MANIFEST-000001
+2026/03/26-17:58:31.787 1bc4 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_ab8933ddfb42/Default/shared_proto_db/MANIFEST-000001
+2026/03/26-17:58:31.787 1bc4 Recovering log #3
+2026/03/26-17:58:31.789 1bc4 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_ab8933ddfb42/Default/shared_proto_db/000003.log 
