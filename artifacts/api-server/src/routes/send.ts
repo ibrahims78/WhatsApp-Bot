@@ -105,15 +105,36 @@ function isMsgNotFound(e: any): boolean {
   return e?.code === "msg_not_found" || (typeof e?.message === "string" && e.message.includes("not found"));
 }
 
+function isNoLidError(e: any): boolean {
+  const msg: string = e?.message ?? "";
+  return msg.includes("No LID for user") || msg.includes("no lid") || msg.includes("LID");
+}
+
 // Try sending with @c.us format first; if wppconnect throws msg_not_found (chat not found),
 // retry with @lid format. @lid contacts are newer multi-device WhatsApp accounts.
-// If @lid also throws msg_not_found, the message WAS delivered but wppconnect
-// couldn't retrieve the sent ID — treat as success.
+// If wppconnect throws "No LID for user" (multi-device LID cache miss), retry once
+// after a short delay — this is usually a transient resolution failure.
 async function trySend<T>(number: string, fn: (chatId: string) => Promise<T>): Promise<T> {
   const primaryId = formatNumber(number);
   try {
     return await fn(primaryId);
   } catch (e: any) {
+    // "No LID for user" — wppconnect couldn't resolve the linked-device ID.
+    // Retry after 1.5 s; this is almost always a transient cache miss.
+    if (isNoLidError(e)) {
+      await new Promise(r => setTimeout(r, 1500));
+      try {
+        return await fn(primaryId);
+      } catch (e2: any) {
+        // Still failing — try the @lid form as a last resort
+        if (primaryId.endsWith("@c.us")) {
+          try {
+            return await fn(primaryId.replace("@c.us", "@lid"));
+          } catch { /* ignore — throw original */ }
+        }
+        throw new Error(`Failed to deliver message (LID resolution error): ${e2.message || e.message}`);
+      }
+    }
     if (isMsgNotFound(e) && primaryId.endsWith("@c.us")) {
       const lidId = primaryId.replace("@c.us", "@lid");
       try {
@@ -215,9 +236,20 @@ async function sendAudio(sessionId: string, number: string, audioUrl: string, re
 
   const tmpFile = saveTempFile(audioUrl, "mp3");
   const filePath = tmpFile || audioUrl;
+  const audioExt = tmpFile ? (tmpFile.split(".").pop() || "mp3") : "mp3";
+  const audioFileName = `audio.${audioExt}`;
 
   try {
-    const result = await trySend(number, (chatId) => client.sendVoice(chatId, filePath));
+    let result: any;
+    try {
+      // Try as a voice note (PTT) first — works best with OGG/OPUS format
+      result = await trySend(number, (chatId) => client.sendVoice(chatId, filePath));
+    } catch (voiceErr: any) {
+      // sendVoice failed (e.g., unsupported format or wppconnect issue)
+      // Fall back to sending as a regular audio file attachment
+      req.log.warn({ sessionId, err: voiceErr }, "sendVoice failed — falling back to sendFile for audio");
+      result = await trySend(number, (chatId) => client.sendFile(chatId, filePath, audioFileName, ""));
+    }
     await logMessage(sessionId, number, "audio", null, audioUrl);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {

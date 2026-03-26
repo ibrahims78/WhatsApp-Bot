@@ -115,7 +115,7 @@ export default function SendMessage() {
     const commonOpts = {
       onSuccess: () => {
         toast({ title: t('success') });
-        form.reset({ type: values.type, content: "", mediaData: "", fileName: "" });
+        form.reset({ type: values.type, sessionId: values.sessionId, number: values.number, content: "", mediaData: "", fileName: "" });
         clearFile();
       },
       onError: (e: any) => toast({ variant: "destructive", title: t('error'), description: e?.data?.error || e?.message || "Failed" })
