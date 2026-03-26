@@ -118,7 +118,7 @@ export default function SendMessage() {
         form.reset({ type: values.type, content: "", mediaData: "", fileName: "" });
         clearFile();
       },
-      onError: (e: any) => toast({ variant: "destructive", title: t('error'), description: e.error || "Failed" })
+      onError: (e: any) => toast({ variant: "destructive", title: t('error'), description: e?.data?.error || e?.message || "Failed" })
     };
 
     if (values.type === 'text') {

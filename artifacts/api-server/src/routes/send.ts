@@ -8,6 +8,9 @@ import { logger } from "../lib/logger";
 const router: IRouter = Router();
 
 function formatNumber(number: string): string {
+  // If already formatted with a WhatsApp suffix (@c.us, @g.us, @lid, etc.), return as-is
+  if (number.includes("@")) return number;
+  // Otherwise strip non-digits and append @c.us
   const clean = number.replace(/\D/g, "");
   return `${clean}@c.us`;
 }

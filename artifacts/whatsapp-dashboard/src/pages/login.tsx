@@ -45,7 +45,7 @@ export default function Login() {
         toast({
           variant: "destructive",
           title: t('error'),
-          description: error.error || "Login failed",
+          description: (error as any)?.data?.error || (error as any)?.message || "Login failed",
         });
       }
     }
