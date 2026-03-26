@@ -450,6 +450,28 @@ export async function startSession(sessionId: string): Promise<void> {
         });
         if (!session) return;
 
+        // ── Receive feature-flag enforcement ─────────────────────────────────
+        const msgType = (message.type ?? "chat").toLowerCase();
+        const receiveFeatureMap: Record<string, string> = {
+          chat:     "receiveText",
+          text:     "receiveText",
+          image:    "receiveImage",
+          video:    "receiveVideo",
+          audio:    "receiveAudio",
+          ptt:      "receiveAudio",
+          document: "receiveFile",
+        };
+        const receiveFeature = receiveFeatureMap[msgType];
+        if (receiveFeature && session.features) {
+          try {
+            const feats: Record<string, boolean> = JSON.parse(session.features);
+            if (Object.keys(feats).length > 0 && feats[receiveFeature] === false) {
+              logger.info({ sessionId, msgType, receiveFeature }, "Message blocked by feature flag");
+              return;
+            }
+          } catch { /* bad JSON — allow */ }
+        }
+
         const strip = (n: string) => n?.replace(/@(c\.us|lid|g\.us)$/, "") ?? "";
         await db.insert(messagesTable).values({
           sessionId,

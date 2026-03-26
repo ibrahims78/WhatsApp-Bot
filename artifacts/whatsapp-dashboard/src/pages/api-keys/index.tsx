@@ -41,6 +41,7 @@ export default function ApiKeys() {
   const { data: keys, isLoading } = useListApiKeys();
   const { language } = useAppStore();
   const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key);
+  const isRTL = language === "ar";
   const [isOpen, setIsOpen] = useState(false);
   const [newSecret, setNewSecret] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -51,6 +52,17 @@ export default function ApiKeys() {
     setIsDownloading(true);
     try {
       const res = await fetch("/api/n8n-workflow/download", { credentials: "include" });
+      if (res.status === 403) {
+        const body = await res.json().catch(() => ({}));
+        toast({
+          variant: "destructive",
+          title: isRTL ? "مفتاح API مطلوب" : "API Key Required",
+          description: body.message ?? (isRTL
+            ? "يجب إنشاء مفتاح API أولاً قبل تحميل الـ workflow."
+            : "You must create an API key before downloading the workflow."),
+        });
+        return;
+      }
       if (!res.ok) throw new Error("Failed to download");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);

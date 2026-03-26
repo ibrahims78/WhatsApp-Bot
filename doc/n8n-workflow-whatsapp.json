@@ -109,8 +109,16 @@
       "parameters": {
         "method": "POST",
         "url": "=https://YOUR-APP-DOMAIN/api/sessions/{{ $json.sessionId }}/send/text",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "WHATSAPP_MANAGER_API_KEY_PLACEHOLDER"
+            }
+          ]
+        },
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={\n  \"number\": \"{{ $json.phoneNumber }}\",\n  \"message\": \"{{ $json.replyText }}\"\n}",

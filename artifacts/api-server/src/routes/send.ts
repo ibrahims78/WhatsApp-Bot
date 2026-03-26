@@ -101,6 +101,27 @@ async function logMessage(sessionId: string, toNumber: string, messageType: stri
     .where(eq(whatsappSessionsTable.id, sessionId));
 }
 
+// ── Feature-flag check ────────────────────────────────────────────────────────
+// Returns false (blocked) only when the session has features configured AND
+// the specific feature is explicitly set to false.
+// No features configured → all allowed.
+async function isFeatureAllowed(sessionId: string, feature: string): Promise<boolean> {
+  const [session] = await db
+    .select({ features: whatsappSessionsTable.features })
+    .from(whatsappSessionsTable)
+    .where(eq(whatsappSessionsTable.id, sessionId));
+  if (!session) return true;
+  if (!session.features) return true;
+  try {
+    const feats: Record<string, boolean> = JSON.parse(session.features);
+    if (Object.keys(feats).length === 0) return true;
+    // If key not present → default allow; blocked only when explicitly false
+    return feats[feature] !== false;
+  } catch {
+    return true;
+  }
+}
+
 function isMsgNotFound(e: any): boolean {
   return e?.code === "msg_not_found" || (typeof e?.message === "string" && e.message.includes("not found"));
 }
@@ -153,6 +174,10 @@ async function sendText(sessionId: string, number: string, message: string, req:
     res.status(400).json({ success: false, error: "sessionId, number, and message are required" });
     return;
   }
+  if (!await isFeatureAllowed(sessionId, "sendText")) {
+    res.status(403).json({ success: false, error: "sendText is disabled for this session" });
+    return;
+  }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
@@ -173,6 +198,10 @@ async function sendText(sessionId: string, number: string, message: string, req:
 async function sendImage(sessionId: string, number: string, imageUrl: string, caption: string | undefined, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !imageUrl) {
     res.status(400).json({ success: false, error: "sessionId, number, and imageUrl are required" });
+    return;
+  }
+  if (!await isFeatureAllowed(sessionId, "sendImage")) {
+    res.status(403).json({ success: false, error: "sendImage is disabled for this session" });
     return;
   }
   const client = getClient(sessionId);
@@ -203,6 +232,10 @@ async function sendVideo(sessionId: string, number: string, videoUrl: string, ca
     res.status(400).json({ success: false, error: "sessionId, number, and videoUrl are required" });
     return;
   }
+  if (!await isFeatureAllowed(sessionId, "sendVideo")) {
+    res.status(403).json({ success: false, error: "sendVideo is disabled for this session" });
+    return;
+  }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
 
@@ -229,6 +262,10 @@ async function sendVideo(sessionId: string, number: string, videoUrl: string, ca
 async function sendAudio(sessionId: string, number: string, audioUrl: string, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !audioUrl) {
     res.status(400).json({ success: false, error: "sessionId, number, and audioUrl are required" });
+    return;
+  }
+  if (!await isFeatureAllowed(sessionId, "sendAudio")) {
+    res.status(403).json({ success: false, error: "sendAudio is disabled for this session" });
     return;
   }
   const client = getClient(sessionId);
@@ -268,6 +305,10 @@ async function sendAudio(sessionId: string, number: string, audioUrl: string, re
 async function sendFile(sessionId: string, number: string, fileUrl: string, fileName: string, caption: string | undefined, req: any, res: any): Promise<void> {
   if (!sessionId || !number || !fileUrl || !fileName) {
     res.status(400).json({ success: false, error: "sessionId, number, fileUrl, and fileName are required" });
+    return;
+  }
+  if (!await isFeatureAllowed(sessionId, "sendFile")) {
+    res.status(403).json({ success: false, error: "sendFile is disabled for this session" });
     return;
   }
   const client = getClient(sessionId);
