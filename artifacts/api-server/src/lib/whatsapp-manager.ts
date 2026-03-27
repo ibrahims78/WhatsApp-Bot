@@ -7,11 +7,14 @@ import { Server as SocketServer } from "socket.io";
 import { execSync, spawnSync } from "child_process";
 import { existsSync, rmSync, readdirSync } from "fs";
 import path from "path";
+import { createHmac } from "crypto";
+import { verifyToken } from "./auth";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Chrome path — the binary downloaded by Puppeteer
+// Chrome path — can be overridden via CHROME_PATH env variable
 // ─────────────────────────────────────────────────────────────────────────────
 const CHROME_PATH =
+  process.env.CHROME_PATH ||
   "/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome";
 
 const TOKENS_DIR = path.join(process.cwd(), "tokens");
@@ -85,15 +88,47 @@ let io: SocketServer;
 // ─────────────────────────────────────────────────────────────────────────────
 export function initSocketServer(httpServer: HttpServer): SocketServer {
   io = new SocketServer(httpServer, {
-    cors: { origin: "*" },
+    cors: {
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (origin.includes(".replit.dev") || origin.includes(".repl.co") || origin.includes(".replit.app")) {
+          return callback(null, true);
+        }
+        return callback(null, true); // allow all for now; tighten in prod via ALLOWED_ORIGINS
+      },
+      credentials: true,
+    },
     path: "/socket.io",
   });
+
+  // ── Socket.IO authentication middleware ────────────────────────────────────
+  io.use((socket, next) => {
+    const token = socket.handshake.auth?.token as string | undefined;
+
+    // If no token provided, allow connection but mark as unauthenticated
+    // (supports legacy clients and health monitors)
+    if (!token) {
+      (socket as any).authenticated = false;
+      return next();
+    }
+
+    const payload = verifyToken(token);
+    if (!payload) {
+      return next(new Error("Authentication failed: invalid token"));
+    }
+    (socket as any).authenticated = true;
+    (socket as any).userId = payload.userId;
+    next();
+  });
+
   io.on("connection", (socket) => {
-    logger.info({ socketId: socket.id }, "WebSocket client connected");
+    const authed = (socket as any).authenticated;
+    logger.info({ socketId: socket.id, authenticated: authed }, "WebSocket client connected");
     socket.on("disconnect", () =>
       logger.info({ socketId: socket.id }, "WebSocket client disconnected")
     );
   });
+
   startSelfPing();
   return io;
 }
@@ -529,7 +564,7 @@ export async function startSession(sessionId: string): Promise<void> {
                 caption:   message.caption   ?? null,
                 mimetype:  message.mimetype  ?? null,
               },
-            });
+            }, session.webhookSecret ?? null);
           }
         }
       } catch (e) {
@@ -678,18 +713,88 @@ export async function initializeSessions(): Promise<void> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Webhook fire-and-forget
+// Webhook fire-and-forget — with SSRF protection, timeout, retry, and HMAC
 // ─────────────────────────────────────────────────────────────────────────────
-function triggerWebhook(url: string, payload: object): void {
-  fetch(url, {
-    method:  "POST",
-    headers: { "Content-Type": "application/json" },
-    body:    JSON.stringify(payload),
-  })
-    .then((r) =>
-      r.ok
-        ? logger.info({ url, status: r.status }, "Webhook delivered")
-        : logger.warn({ url, status: r.status }, "Webhook non-OK")
-    )
-    .catch((e) => logger.warn({ url, err: e }, "Webhook failed"));
+
+/** Block private/loopback IP ranges to prevent SSRF attacks */
+function isPrivateUrl(urlStr: string): boolean {
+  try {
+    const { hostname } = new URL(urlStr);
+    if (hostname === "localhost") return true;
+    // IPv4 private/loopback ranges
+    if (/^127\./.test(hostname)) return true;
+    if (/^10\./.test(hostname)) return true;
+    if (/^192\.168\./.test(hostname)) return true;
+    if (/^172\.(1[6-9]|2\d|3[01])\./.test(hostname)) return true;
+    if (hostname === "0.0.0.0") return true;
+    // IPv6 loopback
+    if (hostname === "::1" || hostname === "[::1]") return true;
+    // Link-local (169.254.x.x) — AWS metadata service
+    if (/^169\.254\./.test(hostname)) return true;
+    return false;
+  } catch {
+    return true; // malformed URL → block
+  }
+}
+
+async function doWebhookRequest(
+  url: string,
+  body: string,
+  headers: Record<string, string>,
+): Promise<void> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10_000); // 10s timeout
+  try {
+    const r = await fetch(url, {
+      method: "POST",
+      headers,
+      body,
+      signal: controller.signal,
+    });
+    if (r.ok) {
+      logger.info({ url, status: r.status }, "Webhook delivered");
+    } else {
+      logger.warn({ url, status: r.status }, "Webhook non-OK response");
+      throw new Error(`HTTP ${r.status}`);
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function triggerWebhook(url: string, payload: object, secret?: string | null): void {
+  if (isPrivateUrl(url)) {
+    logger.warn({ url }, "Webhook blocked: private/loopback URL (SSRF protection)");
+    return;
+  }
+
+  const body = JSON.stringify(payload);
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "User-Agent": "WhatsApp-Manager-Webhook/1.0",
+  };
+
+  // Add HMAC-SHA256 signature when a secret is configured
+  if (secret) {
+    const sig = createHmac("sha256", secret).update(body).digest("hex");
+    headers["X-Webhook-Signature"] = `sha256=${sig}`;
+  }
+
+  // Retry up to 2 additional attempts (3 total) with 2s delay between each
+  const MAX_ATTEMPTS = 3;
+  const attempt = async (n: number): Promise<void> => {
+    try {
+      await doWebhookRequest(url, body, headers);
+    } catch (e: any) {
+      if (n < MAX_ATTEMPTS) {
+        logger.warn({ url, attempt: n, err: e?.message }, `Webhook failed — retrying (${n}/${MAX_ATTEMPTS})`);
+        await new Promise((r) => setTimeout(r, 2_000 * n));
+        return attempt(n + 1);
+      }
+      logger.warn({ url, err: e?.message }, "Webhook permanently failed after all retries");
+    }
+  };
+
+  attempt(1).catch(() => {});
 }

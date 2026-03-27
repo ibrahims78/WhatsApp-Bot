@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { db, messagesTable, whatsappSessionsTable } from "@workspace/db";
-import { eq, gte, sql, and } from "drizzle-orm";
+import { gte, sql } from "drizzle-orm";
 import { requireAuth } from "../lib/auth";
 
 const router: IRouter = Router();
@@ -52,14 +52,23 @@ router.get("/dashboard/stats", requireAuth, async (req, res): Promise<void> => {
     received: counts.received,
   }));
 
-  // Total sessions counts
-  const sessions = await db.select().from(whatsappSessionsTable);
-  const totalSessions = sessions.length;
-  const connected = sessions.filter((s) => s.status === "connected").length;
-  const totalSent = sessions.reduce((acc, s) => acc + s.totalMessagesSent, 0);
-  const totalReceived = sessions.reduce((acc, s) => acc + s.totalMessagesReceived, 0);
+  // ── Use SQL aggregates instead of loading all sessions into memory ──────────
+  const [sessionStats] = await db
+    .select({
+      totalSessions: sql<number>`count(*)::int`,
+      connected: sql<number>`count(*) filter (where status = 'connected')::int`,
+      totalSent: sql<number>`coalesce(sum(total_messages_sent), 0)::int`,
+      totalReceived: sql<number>`coalesce(sum(total_messages_received), 0)::int`,
+    })
+    .from(whatsappSessionsTable);
 
-  res.json({ chartData, totalSessions, connected, totalSent, totalReceived });
+  res.json({
+    chartData,
+    totalSessions: sessionStats?.totalSessions ?? 0,
+    connected: sessionStats?.connected ?? 0,
+    totalSent: sessionStats?.totalSent ?? 0,
+    totalReceived: sessionStats?.totalReceived ?? 0,
+  });
 });
 
 export default router;

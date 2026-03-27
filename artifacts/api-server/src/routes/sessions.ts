@@ -386,11 +386,15 @@ router.patch("/sessions/:id/webhook", requireAuth, async (req, res): Promise<voi
     }
   }
 
-  const { webhookUrl, webhookEvents } = req.body;
+  const { webhookUrl, webhookEvents, webhookSecret } = req.body;
 
   const [session] = await db
     .update(whatsappSessionsTable)
-    .set({ webhookUrl: webhookUrl ?? null, webhookEvents: webhookEvents ?? null })
+    .set({
+      webhookUrl: webhookUrl ?? null,
+      webhookEvents: webhookEvents ?? null,
+      webhookSecret: webhookSecret ?? null,
+    })
     .where(eq(whatsappSessionsTable.id, id))
     .returning();
 

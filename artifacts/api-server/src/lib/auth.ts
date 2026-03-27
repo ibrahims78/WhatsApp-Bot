@@ -5,7 +5,11 @@ import { db, usersTable, apiKeysTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { logger } from "./logger";
 
-const JWT_SECRET = process.env.JWT_SECRET || "whatsapp_dashboard_secret_key_change_in_prod";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required. Set it to a long random string.");
+}
+
 const TOKEN_EXPIRY = "7d";
 
 export function hashPassword(password: string): string {
@@ -17,12 +21,12 @@ export function verifyPassword(password: string, hash: string): boolean {
 }
 
 export function generateToken(userId: number, role: string): string {
-  return jwt.sign({ userId, role }, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
+  return jwt.sign({ userId, role }, JWT_SECRET!, { expiresIn: TOKEN_EXPIRY });
 }
 
 export function verifyToken(token: string): { userId: number; role: string } | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as { userId: number; role: string };
+    return jwt.verify(token, JWT_SECRET!) as { userId: number; role: string };
   } catch {
     return null;
   }
@@ -55,7 +59,6 @@ export function hasPermission(user: any, action: string): boolean {
   if (user.role === "admin") return true;
   const perms = parsePermissions(user.permissions);
   if (!perms || Object.keys(perms).length === 0) return true;
-  // If the key is missing → default allow; blocked only when explicitly false
   return perms[action] !== false;
 }
 
@@ -100,16 +103,21 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   const apiKey = req.headers["x-api-key"] as string | undefined;
   if (apiKey && !token) {
     try {
-      const allKeys = await db.select().from(apiKeysTable);
-      for (const keyRecord of allKeys) {
+      // ── Optimized API key lookup ──────────────────────────────────────────
+      // Use the first 8 characters of the API key as a prefix to pre-filter,
+      // then bcrypt-compare only against matching rows instead of all keys.
+      const prefix = apiKey.substring(0, 8);
+      const candidateKeys = await db
+        .select()
+        .from(apiKeysTable)
+        .where(eq(apiKeysTable.keyPrefix, prefix));
+
+      for (const keyRecord of candidateKeys) {
         if (bcrypt.compareSync(apiKey, keyRecord.keyHash)) {
-          // Update last used
           await db.update(apiKeysTable).set({ lastUsedAt: new Date() }).where(eq(apiKeysTable.id, keyRecord.id));
-          // Load user
           const [user] = await db.select().from(usersTable).where(eq(usersTable.id, keyRecord.userId));
           if (user && user.isActive) {
             (req as any).user = user;
-            // Attach the API key record so routes can check session restrictions
             (req as any).apiKeyRecord = keyRecord;
             next();
             return;
@@ -148,6 +156,32 @@ export function requireAdmin(req: Request, res: Response, next: NextFunction): v
   const user = (req as any).user;
   if (!user || user.role !== "admin") {
     res.status(403).json({ error: "Admin access required" });
+    return;
+  }
+  next();
+}
+
+/**
+ * Middleware: block all API endpoints (except auth & password change) when
+ * mustChangePassword is true so users are forced to set a new password first.
+ */
+export function requirePasswordChange(req: Request, res: Response, next: NextFunction): void {
+  const user = (req as any).user;
+  if (!user) { next(); return; }
+
+  // Allow these paths even with mustChangePassword
+  const allowedPaths = [
+    "/api/auth/logout",
+    "/api/auth/me",
+  ];
+  // Allow PATCH /users/:id so the user can change their password
+  const isUserPatch = req.method === "PATCH" && /^\/api\/users\/\d+$/.test(req.path);
+
+  if (user.mustChangePassword && !allowedPaths.includes(req.path) && !isUserPatch) {
+    res.status(403).json({
+      error: "must_change_password",
+      message: "You must change your password before continuing.",
+    });
     return;
   }
   next();

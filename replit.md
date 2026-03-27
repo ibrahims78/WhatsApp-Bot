@@ -28,7 +28,7 @@ A professional full-stack TypeScript monorepo for managing multiple WhatsApp ses
 
 ## Database Schema (PostgreSQL, Drizzle ORM)
 - `users` — id, username, email, passwordHash, role, permissions (JSON), maxSessions, isActive, mustChangePassword
-- `whatsapp_sessions` — id, userId, name, phoneNumber, status, autoReconnect, webhookUrl, webhookEvents, features, totalMessagesSent, totalMessagesReceived
+- `whatsapp_sessions` — id, userId, name, phoneNumber, status, autoReconnect, webhookUrl, webhookEvents, webhookSecret, features, totalMessagesSent, totalMessagesReceived
 - `messages` — id, sessionId, direction, fromNumber, toNumber, messageType, content, mediaUrl, caption, status, timestamp
 - `api_keys` — id, userId, name, keyHash, keyPrefix, allowedSessionIds, createdAt, lastUsedAt
 - `audit_logs` — id, userId, username, action, sessionId, details, ipAddress, timestamp
@@ -58,12 +58,17 @@ All routes prefixed with `/api/`:
 
 ## Security
 - Passwords: bcrypt (10 rounds)
-- JWT: 7-day expiry, HS256
-- API keys: hashed with bcrypt, only prefix stored in plaintext
+- JWT: 7-day expiry, HS256, cryptographically generated secret via env var `JWT_SECRET`
+- API keys: hashed with bcrypt; `keyPrefix` (first 8 chars) enables O(1) pre-filter before bcrypt comparison
+- Rate limiting: login endpoint 20 req/15min, all API routes 300 req/min (via `express-rate-limit`)
 - Employees can only access their own sessions (ownership check on all routes)
 - Granular permissions: 11 action keys, explicitly false = blocked, missing = allowed
 - API key session restrictions: JSON array of allowed session IDs
-- `mustChangePassword` flag for first-time login
+- `mustChangePassword` flag: global middleware blocks all API calls (except login/logout/me and own PATCH) until password is changed
+- Socket.IO: JWT auth middleware on connection — unauthenticated sockets are marked but not connected
+- Webhook SSRF protection: `isPrivateUrl()` blocks localhost/private IPs; 10s timeout via AbortController; up to 3 retry attempts; `X-Webhook-Signature: sha256=HMAC` header when `webhookSecret` is set
+- `webhookSecret` stored per session (set via `PATCH /sessions/:id/webhook`)
+- Chrome path configurable via `CHROME_PATH` env var
 - Audit log for session create/delete actions with IP
 
 ## Running

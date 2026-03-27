@@ -10,6 +10,7 @@ export const whatsappSessionsTable = pgTable("whatsapp_sessions", {
   status: text("status").notNull().default("disconnected"), // disconnected | connecting | connected | banned | notLogged
   autoReconnect: boolean("auto_reconnect").notNull().default(true), // false = manually stopped, skip on boot
   webhookUrl: text("webhook_url"),
+  webhookSecret: text("webhook_secret"), // HMAC secret for signing webhook payloads
   webhookEvents: text("webhook_events"), // JSON array of event names
   features: text("features"), // JSON object of feature flags
   totalMessagesSent: integer("total_messages_sent").notNull().default(0),

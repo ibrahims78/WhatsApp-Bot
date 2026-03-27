@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
 import { getListSessionsQueryKey, getGetSessionQueryKey, getGetSessionMessagesQueryKey } from '@workspace/api-client-react';
+import { useAppStore } from '@/store';
 
 interface WsEvents {
   qr: { sessionId: string; qr: string };
@@ -17,6 +18,7 @@ export function useWebSocket() {
   const [connected, setConnected] = useState(false);
   const socketRef = useRef<Socket | null>(null);
   const queryClient = useQueryClient();
+  const token = useAppStore((s) => s.token);
 
   useEffect(() => {
     const socket = io('/', {
@@ -24,6 +26,8 @@ export function useWebSocket() {
       // Use polling first — more reliable through Replit's mTLS proxy
       transports: ['polling', 'websocket'],
       upgrade: true,
+      // Send JWT token in handshake for server-side authentication
+      auth: token ? { token } : {},
     });
 
     socket.on('connect', () => setConnected(true));
@@ -48,7 +52,7 @@ export function useWebSocket() {
     return () => {
       socket.disconnect();
     };
-  }, [queryClient]);
+  }, [queryClient, token]);
 
   return { connected, socket: socketRef.current };
 }

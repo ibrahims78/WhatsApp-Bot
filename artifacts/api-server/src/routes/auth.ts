@@ -7,11 +7,12 @@ import {
   generateToken,
   requireAuth,
 } from "../lib/auth";
+import { loginRateLimiter } from "../lib/rate-limit";
 
 const router: IRouter = Router();
 
-// POST /auth/login
-router.post("/auth/login", async (req, res): Promise<void> => {
+// POST /auth/login — rate limited (brute-force protection)
+router.post("/auth/login", loginRateLimiter, async (req, res): Promise<void> => {
   const { username, password } = req.body;
   if (!username || !password) {
     res.status(400).json({ error: "Username and password required" });
@@ -41,7 +42,7 @@ router.post("/auth/login", async (req, res): Promise<void> => {
   const { passwordHash: _, ...safeUser } = user;
   res.json({
     token,
-    user: safeUser,
+    user: { ...safeUser, mustChangePassword: user.mustChangePassword },
   });
 });
 
@@ -55,7 +56,7 @@ router.post("/auth/logout", requireAuth, async (req, res): Promise<void> => {
 router.get("/auth/me", requireAuth, async (req, res): Promise<void> => {
   const user = (req as any).user;
   const { passwordHash: _, ...safeUser } = user;
-  res.json(safeUser);
+  res.json({ ...safeUser, mustChangePassword: user.mustChangePassword });
 });
 
 export default router;
