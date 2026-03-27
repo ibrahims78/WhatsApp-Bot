@@ -1,143 +1,78 @@
 # WhatsApp Manager — مدير واتساب
 
-## Overview
+## Project Overview
+A professional full-stack TypeScript monorepo for managing multiple WhatsApp sessions. Features a bilingual (Arabic/English) RTL-ready dashboard, REST API with WebSocket real-time updates, role-based access control, granular permissions, and n8n workflow integration.
 
-A professional full-stack WhatsApp session management platform. Users can connect multiple WhatsApp accounts via QR code, send and receive all message types (text, image, video, audio, document), monitor real-time statistics, manage users and API keys, and integrate with external workflows (n8n, Zapier, etc.) via webhooks.
+## Architecture
+- **Monorepo**: pnpm workspaces
+- **Backend**: `artifacts/api-server` — Express 5 + TypeScript, built with esbuild, WebSocket via Socket.IO
+- **Frontend**: `artifacts/whatsapp-dashboard` — React 18 + Vite + TailwindCSS + shadcn/ui
+- **Database**: `lib/db` — PostgreSQL via Drizzle ORM (pushed schema, no migrations)
+- **WhatsApp Engine**: `@wppconnect-team/wppconnect` + Puppeteer/Chrome headless
 
-## Tech Stack
+## Key Features
+- Multi-session WhatsApp management (connect/disconnect/delete)
+- Auto-reconnect on server restart (only for non-manually-stopped sessions via `autoReconnect` flag)
+- Bilingual UI: Arabic (RTL) + English
+- JWT auth + HTTP-only cookies + API key auth (X-API-Key header)
+- Role-based access: Admin (full access) / Employee (restricted to own sessions)
+- Granular permissions per employee (11 permission keys)
+- Max sessions limit per employee
+- API key session restrictions (allowedSessionIds)
+- Audit logging for create/delete session actions
+- n8n workflow download with auto-injected API key and server URL
+- Webhook support per session with event filtering
+- Feature flags per session (send/receive by type)
+- Real-time QR code display via WebSocket
+- Dashboard with 7-day message volume chart
 
-| Layer | Technology |
-|-------|-----------|
-| Monorepo | pnpm workspaces |
-| Runtime | Node.js 24, TypeScript 5.9 |
-| Backend | Express.js v5 + Socket.IO 4 |
-| WhatsApp | `@wppconnect-team/wppconnect` (Puppeteer-based) |
-| Database | PostgreSQL + Drizzle ORM |
-| Authentication | JWT + bcryptjs (cookies + Bearer token + X-API-Key) |
-| Frontend | React 19 + Vite 7 |
-| UI | Shadcn UI + Tailwind CSS v4 (glassmorphism) |
-| State | Zustand (with persist) |
-| Data Fetching | TanStack Query v5 |
-| Routing | wouter |
-| i18n | Custom bilingual store (Arabic/English, RTL/LTR) |
-| Build | esbuild (API server), Vite (dashboard) |
-| Codegen | Orval (React Query hooks + Zod schemas from OpenAPI) |
-
-## Project Structure
-
-```
-workspace/
-├── artifacts/
-│   ├── api-server/          # Express API + Socket.IO server (PORT=8080)
-│   └── whatsapp-dashboard/  # React + Vite dashboard (PORT=5000)
-├── lib/
-│   ├── db/                  # Drizzle ORM schema + PostgreSQL client
-│   ├── api-spec/            # OpenAPI 3.1 spec (single source of truth)
-│   ├── api-zod/             # Generated Zod validation schemas
-│   └── api-client-react/    # Generated React Query hooks
-└── scripts/                 # Utility scripts
-```
-
-## Running the App
-
-Two workflows run in parallel:
-- **API Server**: `PORT=8080 pnpm --filter @workspace/api-server run dev`
-- **Dashboard**: `PORT=5000 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev`
-
-The dashboard proxies `/api` and `/socket.io` requests to the API server at `localhost:8080`.
-
-## Default Admin Credentials
-
-Every time the server starts, it ensures a default admin user exists:
-- **Username**: `admin`
-- **Password**: `123456`
-
-This is enforced on every restart (upsert logic in `artifacts/api-server/src/index.ts`).
-
-## Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | ✅ | PostgreSQL connection string (auto-set by Replit) |
-| `PORT` | ✅ | Server port (8080 for API, 5000 for dashboard) |
-| `BASE_PATH` | ✅ | Vite base path for dashboard (`/`) |
-| `JWT_SECRET` | ⚠️ | JWT signing secret — set a strong value in production |
-
-## Database
-
-Schema managed by Drizzle ORM. Tables:
-- `whatsapp_sessions` — session config, status, message counters
-- `messages` — full message log (inbound/outbound) with timestamps
-- `users` — user accounts with roles (admin/employee)
-- `api_keys` — hashed API keys linked to users
-
-Apply schema: `pnpm --filter @workspace/db push`
+## Database Schema (PostgreSQL, Drizzle ORM)
+- `users` — id, username, email, passwordHash, role, permissions (JSON), maxSessions, isActive, mustChangePassword
+- `whatsapp_sessions` — id, userId, name, phoneNumber, status, autoReconnect, webhookUrl, webhookEvents, features, totalMessagesSent, totalMessagesReceived
+- `messages` — id, sessionId, direction, fromNumber, toNumber, messageType, content, mediaUrl, caption, status, timestamp
+- `api_keys` — id, userId, name, keyHash, keyPrefix, allowedSessionIds, createdAt, lastUsedAt
+- `audit_logs` — id, userId, username, action, sessionId, details, ipAddress, timestamp
 
 ## API Endpoints
+All routes prefixed with `/api/`:
+- `POST /auth/login`, `POST /auth/logout`, `GET /auth/me`
+- `GET /sessions`, `POST /sessions`, `GET /sessions/:id`, `DELETE /sessions/:id`
+- `POST /sessions/:id/connect`, `POST /sessions/:id/disconnect`
+- `GET /sessions/:id/qr`, `GET /sessions/:id/stats`, `GET /sessions/:id/messages`
+- `PATCH /sessions/:id/webhook`, `PATCH /sessions/:id/features`
+- `POST /send/text|image|video|audio|file|location|sticker`
+- `POST /sessions/:id/send/text|image|video|audio|file|location|sticker`
+- `GET /users`, `POST /users`, `GET /users/:id`, `PATCH /users/:id`, `DELETE /users/:id`
+- `GET /api-keys`, `POST /api-keys`, `PATCH /api-keys/:id`, `DELETE /api-keys/:id`
+- `GET /audit-logs` (admin only)
+- `GET /dashboard/stats`
+- `GET /n8n-workflow/download`
 
-All endpoints are prefixed with `/api` and require either:
-- `Authorization: Bearer <jwt>` header
-- `X-API-Key: <key>` header
+## Frontend Pages
+- `/` — Dashboard (live stats + 7-day chart)
+- `/sessions` — Session list with delete button
+- `/sessions/:id` — Session detail (QR, stats, messages, webhook, features tabs)
+- `/users` — User management with permissions + maxSessions (admin only)
+- `/api-keys` — API key management with session restriction (admin sees all users' keys)
+- `/send` — Send message UI (all types + file upload)
 
-Key endpoints:
-```
-POST   /api/auth/login                    Login → JWT
-GET    /api/auth/me                       Current user
-GET    /api/sessions                      List sessions
-POST   /api/sessions                      Create session
-DELETE /api/sessions/:id                  Delete session
-POST   /api/sessions/:id/connect          Start QR connection
-POST   /api/sessions/:id/disconnect       Disconnect session
-GET    /api/sessions/:id/qr               Get QR code
-GET    /api/sessions/:id/messages         Message history
-PATCH  /api/sessions/:id/webhook          Update webhook
-PATCH  /api/sessions/:id/features         Update features
-GET    /api/sessions/:id/stats            Session stats
-POST   /api/sessions/:id/send/text        Send text message
-POST   /api/sessions/:id/send/image       Send image
-POST   /api/sessions/:id/send/video       Send video
-POST   /api/sessions/:id/send/audio       Send audio
-POST   /api/sessions/:id/send/file        Send document
-GET    /api/dashboard/stats               Dashboard overview (last 7 days)
-GET    /api/users                         List users (admin only)
-POST   /api/users                         Create user (admin only)
-GET    /api/api-keys                      List API keys
-POST   /api/api-keys                      Create API key
-DELETE /api/api-keys/:id                  Delete API key
-```
+## Security
+- Passwords: bcrypt (10 rounds)
+- JWT: 7-day expiry, HS256
+- API keys: hashed with bcrypt, only prefix stored in plaintext
+- Employees can only access their own sessions (ownership check on all routes)
+- Granular permissions: 11 action keys, explicitly false = blocked, missing = allowed
+- API key session restrictions: JSON array of allowed session IDs
+- `mustChangePassword` flag for first-time login
+- Audit log for session create/delete actions with IP
 
-## WebSocket Events (Socket.IO)
+## Running
+- API server: `PORT=8080 pnpm --filter @workspace/api-server run dev` (port 8080)
+- Dashboard: `PORT=5000 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev` (port 5000)
+- Default admin: `admin` / `123456` (forced to change on first login)
 
-| Event | Payload | Description |
-|-------|---------|-------------|
-| `qr` | `{ sessionId, qr }` | Live QR code for scanning |
-| `session_status` | `{ sessionId, status }` | Session status change |
-| `message` | `{ sessionId, ...messageData }` | Incoming message |
+## Dependencies (Backend Key)
+- express 5, @wppconnect-team/wppconnect 1.41, socket.io 4.8, drizzle-orm, bcryptjs, jsonwebtoken, pino, sharp, uuid
 
-## Dashboard Pages
-
-| Page | Route | Description |
-|------|-------|-------------|
-| Login | `/login` | JWT authentication |
-| Dashboard | `/` | Live stats cards + 7-day message chart |
-| Sessions | `/sessions` | List and manage WhatsApp sessions |
-| Session Detail | `/sessions/:id` | QR scan, stats, messages, webhook, features |
-| Send Message | `/send` | Send text/image/video/audio/document |
-| Users | `/users` | Admin-only user management |
-| API Keys | `/api-keys` | Generate, view, and revoke API keys |
-
-## Key Implementation Notes
-
-- **Admin upsert on startup**: `index.ts` always ensures `admin/123456` exists on every server start, creating or updating the record.
-- **Real-time chart**: `/api/dashboard/stats` aggregates the last 7 days of messages from the `messages` table, refreshed every 30 seconds in the UI.
-- **QR via WebSocket**: Puppeteer launches a headless Chrome per session; QR codes are streamed live to the dashboard.
-- **Message logging**: Every inbound and outbound message is stored in the `messages` table with direction, type, and timestamp.
-- **Webhook forwarding**: Incoming WhatsApp events are POST-ed to the session's configured webhook URL in real time.
-- **RTL support**: The entire UI flips direction when Arabic is selected, using CSS logical properties (`ms-`, `ps-`, etc.).
-
-## TypeScript Notes
-
-- Every package extends `tsconfig.base.json` (composite: true).
-- Always typecheck from root: `pnpm run typecheck`.
-- esbuild handles JS bundling; `tsc` only emits `.d.ts` declaration files.
-- Cross-package imports use project references — run `tsc --build` if they fail.
+## Dependencies (Frontend Key)
+- React 18, Vite, TailwindCSS, shadcn/ui (Radix UI), TanStack Query, react-hook-form, zod, recharts, framer-motion, qrcode.react, wouter, date-fns, lucide-react

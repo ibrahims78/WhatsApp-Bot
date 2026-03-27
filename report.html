@@ -1,0 +1,235 @@
+</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🔄 دورة حياة الجلسة</div>
+      <div class="card-body">
+        <ol style="padding-right:16px">
+          <li style="margin-bottom:6px"><strong>startSession()</strong> — تشغيل Chrome headless + WPPConnect</li>
+          <li style="margin-bottom:6px"><strong>catchQR</strong> — إرسال QR عبر WebSocket فوراً</li>
+          <li style="margin-bottom:6px"><strong>statusFind</strong> — متابعة جميع حالات WPPConnect</li>
+          <li style="margin-bottom:6px"><strong>qrReadSuccess / isLogged</strong> — autoReconnect=true + جلب رقم الهاتف</li>
+          <li style="margin-bottom:6px"><strong>startKeepalive()</strong> — فحص كل 30 ثانية</li>
+          <li><strong>scheduleReconnect()</strong> — Exponential Backoff حتى 2 دقيقة</li>
+        </ol>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🧠 منطق إعادة الاتصال الذكية</div>
+      <div class="card-body">
+        <div class="table-wrap" style="margin-bottom:0">
+          <table>
+            <thead><tr><th>الحالة</th><th>السلوك</th></tr></thead>
+            <tbody>
+              <tr><td>إعادة تشغيل السيرفر</td><td class="text-green">يعيد الاتصال تلقائياً (autoReconnect=true)</td></tr>
+              <tr><td>انقطاع الإنترنت</td><td class="text-green">Exponential Backoff (5s → 120s)</td></tr>
+              <tr><td>قطع يدوي بالبرنامج</td><td class="text-orange">autoReconnect=false — لا إعادة اتصال</td></tr>
+              <tr><td>تسجيل خروج من الهاتف</td><td class="text-blue">يطلب QR جديد</td></tr>
+              <tr><td>حذف الجلسة</td><td class="text-red">حذف الملفات + لا إعادة اتصال أبداً</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📩 جلب رقم الهاتف</div>
+    <div class="card-body">
+      <p>بعد الاتصال الناجح، يحاول النظام جلب رقم الهاتف عبر 3 طرق متتالية (<code class="font-mono">getWid()</code>، <code class="font-mono">getHostDevice()</code>، <code class="font-mono">getMe()</code>) مع 20 محاولة كل 5 ثوانٍ لضمان استعادة الرقم حتى مع بطء الشبكة.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚮 تنظيف عند الحذف <code class="font-mono">deleteSessionFiles()</code></div>
+    <div class="card-body">
+      <ul class="check-list">
+        <li><span class="check">✓</span> إيقاف المتصفح + قتل عملية Chrome</li>
+        <li><span class="check">✓</span> تعيين autoReconnect=false في DB</li>
+        <li><span class="check">✓</span> حذف مجلد التوكن من القرص (<code class="font-mono">tokens/SESSION_ID/</code>)</li>
+        <li><span class="check">✓</span> حذف سجل الجلسة من قاعدة البيانات</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: REALTIME -->
+<section id="realtime">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(14,116,144,0.12)">⚡</div>
+    <div>
+      <h2>التحديثات الفورية</h2>
+      <p>WebSocket عبر Socket.IO للتحديثات اللحظية</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">📡 الأحداث المُبثّة (Server → Client)</div>
+      <div class="card-body">
+        <ul>
+          <li><code class="font-mono">status</code> — تغيير حالة جلسة (connecting, connected, disconnected, reconnecting)</li>
+          <li><code class="font-mono">qr</code> — رمز QR جديد (base64) لعرضه فوراً</li>
+          <li><code class="font-mono">message</code> — رسالة واردة جديدة</li>
+          <li><code class="font-mono">phoneNumber</code> — رقم الهاتف بعد الربط</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔁 Polling كاحتياط</div>
+      <div class="card-body">
+        <p>الواجهة تستخدم WebSocket أولاً للـ QR، ولكن تتضمن أيضاً:</p>
+        <ul>
+          <li>Polling كل 3 ثوانٍ على <code class="font-mono">GET /sessions/:id/qr</code></li>
+          <li>Polling كل 2 ثانية على <code class="font-mono">GET /sessions/:id</code></li>
+        </ul>
+        <p style="margin-top:8px">هذا يضمن عمل QR حتى لو فشل WebSocket (خلف Proxy).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: N8N -->
+<section id="n8n">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(35,134,54,0.12)">🤖</div>
+    <div>
+      <h2>تكامل n8n</h2>
+      <p>ورك فلو جاهز مع دعم الذكاء الاصطناعي</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📥 تحميل الورك فلو <span class="font-mono">GET /api/n8n-workflow/download</span></div>
+    <div class="card-body">
+      <ul class="check-list">
+        <li><span class="check">✓</span> يشترط وجود مفتاح API واحد على الأقل للمستخدم</li>
+        <li><span class="check">✓</span> يُنشئ مفتاح API خاص بـ n8n تلقائياً</li>
+        <li><span class="check">✓</span> يحقن عنوان السيرفر الحقيقي + المفتاح داخل ملف JSON</li>
+        <li><span class="check">✓</span> يُرسل الملف كـ attachment جاهز للاستيراد في n8n</li>
+      </ul>
+      <p style="margin-top:10px">الورك فلو يتضمن: <strong>Webhook لاستقبال الرسائل</strong> + <strong>رد تلقائي بالذكاء الاصطناعي</strong> + <strong>إرسال الرد عبر API</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: QUALITY -->
+<section id="quality">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(255,166,87,0.12)">✅</div>
+    <div>
+      <h2>جودة الكود</h2>
+      <p>تحليل شامل لجودة التصميم والتنفيذ</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">💪 نقاط القوة</div>
+      <div class="card-body">
+        <ul class="check-list">
+          <li><span class="check">✓</span> TypeScript صارم في Frontend وBackend</li>
+          <li><span class="check">✓</span> فصل واضح للمسؤوليات (SoC)</li>
+          <li><span class="check">✓</span> Drizzle ORM — استعلامات type-safe</li>
+          <li><span class="check">✓</span> كل route محمي بـ middleware مستقل</li>
+          <li><span class="check">✓</span> error handling في جميع المسارات</li>
+          <li><span class="check">✓</span> Pino logger منظم (JSON) في Backend</li>
+          <li><span class="check">✓</span> Exponential Backoff صحيح للـ reconnect</li>
+          <li><span class="check">✓</span> مسح قفل Chrome (SingletonLock) تلقائياً</li>
+          <li><span class="check">✓</span> base64 data URL → temp file بشكل صحيح</li>
+          <li><span class="check">✓</span> عزل بيانات الموظفين عن بعضها</li>
+          <li><span class="check">✓</span> TanStack Query لإدارة cache ذكية</li>
+          <li><span class="check">✓</span> Hot Module Replacement في التطوير</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚠️ ملاحظات وتوصيات للتطوير</div>
+      <div class="card-body">
+        <ul class="check-list">
+          <li><span class="warn">⚠</span> كلمة مرور admin الافتراضية <code class="font-mono">123456</code> — مُجبر على تغييرها لكن الأفضل إزالتها من الكود</li>
+          <li><span class="warn">⚠</span> البحث في API keys بـ bcrypt.compareSync loop — بطيء مع وجود آلاف المفاتيح (يُنصح بإضافة keyPrefix index)</li>
+          <li><span class="warn">⚠</span> لا توجد rate limiting على login — يُنصح بإضافة express-rate-limit</li>
+          <li><span class="warn">⚠</span> لا يوجد helmet.js لأمان HTTP headers</li>
+          <li><span class="warn">⚠</span> ملفات الوسائط المرفوعة تُحذف بعد الإرسال — لا تخزين دائم للـ media</li>
+          <li><span class="warn">⚠</span> الإحصائيات في لوحة القيادة لا تفلتر حسب userId للموظفين</li>
+          <li><span class="warn">⚠</span> لا توجد pagination على جدول audit_logs في الواجهة</li>
+          <li><span class="warn">⚠</span> bundle الـ backend (3MB) — يمكن تحسينه بـ tree-shaking أفضل</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: ISSUES -->
+<section id="issues">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(248,81,73,0.12)">🗺️</div>
+    <div>
+      <h2>خارطة التطوير المقترحة</h2>
+      <p>ميزات يمكن إضافتها مستقبلاً</p>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">🔒 أمان إضافي</div>
+      <div class="card-body">
+        <ul>
+          <li>Rate limiting على تسجيل الدخول</li>
+          <li>helmet.js لـ HTTP security headers</li>
+          <li>2FA (رمز TOTP)</li>
+          <li>تشفير allowedSessionIds في DB</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 تحليلات متقدمة</div>
+      <div class="card-body">
+        <ul>
+          <li>فصل إحصائيات الموظفين</li>
+          <li>تقرير يومي/أسبوعي قابل للتصدير</li>
+          <li>صفحة audit-logs في الواجهة</li>
+          <li>رسم بياني لمعدل الاستجابة</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">💬 ميزات الرسائل</div>
+      <div class="card-body">
+        <ul>
+          <li>إرسال رسائل جماعية (Bulk Send)</li>
+          <li>الردود التلقائية (Auto-reply)</li>
+          <li>القوالب (Message Templates)</li>
+          <li>جدولة الرسائل</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚀 خلاصة التقييم الإجمالي</div>
+    <div class="card-body">
+      <p>
+        المشروع في حالة <strong>إنتاجية جيدة</strong>. البنية المعمارية سليمة، ونظام الأمان متعدد الطبقات، والكود منظم وقابل للتوسع.
+        أبرز الإنجازات هي <strong>نظام الصلاحيات التفصيلية</strong> المبني بشكل صحيح، و<strong>إعادة الاتصال الذكية</strong> القائمة على
+        <code class="font-mono">autoReconnect</code> في DB بدلاً من الذاكرة، مما يضمن استمرارية العمل بعد إعادة التشغيل.
+        التوصية الفورية هي إضافة <strong>rate limiting</strong> و<strong>helmet.js</strong> قبل النشر على نطاق واسع.
+      </p>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>📄 تقرير تقني شامل — مدير واتساب | WhatsApp Manager</p>
+  <p style="margin-top:6px">تم إنشاؤه بتاريخ مارس 2026 | TypeScript Monorepo — Express + React + PostgreSQL</p>
+</div>
+
+</body>
+</html>
