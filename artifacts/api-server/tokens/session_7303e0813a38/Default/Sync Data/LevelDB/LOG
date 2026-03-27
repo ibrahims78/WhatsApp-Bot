@@ -1,3 +1,3 @@
-2026/03/27-17:04:31.526 22ec Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/Sync Data/LevelDB/MANIFEST-000001
-2026/03/27-17:04:31.527 22ec Recovering log #3
-2026/03/27-17:04:31.527 22ec Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/Sync Data/LevelDB/000003.log 
+2026/03/27-17:07:06.391 280e Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/Sync Data/LevelDB/MANIFEST-000001
+2026/03/27-17:07:06.393 280e Recovering log #3
+2026/03/27-17:07:06.394 280e Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/Sync Data/LevelDB/000003.log 

@@ -1,3 +1,6 @@
-2026/03/27-17:04:31.609 2322 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/Local Storage/leveldb/MANIFEST-000001
-2026/03/27-17:04:31.614 2322 Recovering log #3
-2026/03/27-17:04:31.616 2322 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/Local Storage/leveldb/000003.log 
+2026/03/27-17:07:06.501 2844 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/Local Storage/leveldb/MANIFEST-000001
+2026/03/27-17:07:06.514 2844 Recovering log #3
+2026/03/27-17:07:06.519 2844 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/Local Storage/leveldb/000003.log 
+2026/03/27-17:08:06.528 2846 Level-0 table #5: started
+2026/03/27-17:08:06.542 2846 Level-0 table #5: 17031 bytes OK
+2026/03/27-17:08:06.547 2846 Delete type=0 #3

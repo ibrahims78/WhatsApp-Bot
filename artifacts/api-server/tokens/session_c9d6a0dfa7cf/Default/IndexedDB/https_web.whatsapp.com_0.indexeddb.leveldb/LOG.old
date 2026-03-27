@@ -1,28 +1,37 @@
-2026/03/27-17:00:22.290 1f88 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_c9d6a0dfa7cf/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/03/27-17:00:22.301 1f88 Recovering log #843
-2026/03/27-17:00:22.337 1f88 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_c9d6a0dfa7cf/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000843.log 
-2026/03/27-17:00:22.732 1f88 Compacting 1@1 + 10@2 files
-2026/03/27-17:00:22.799 1f88 Generated table #848@1: 57149 keys, 2229420 bytes
-2026/03/27-17:00:22.884 1f88 Generated table #849@1: 39323 keys, 2196878 bytes
-2026/03/27-17:00:22.959 1f88 Generated table #850@1: 58285 keys, 2227664 bytes
-2026/03/27-17:00:23.003 1f88 Generated table #851@1: 12177 keys, 2159723 bytes
-2026/03/27-17:00:23.039 1f88 Generated table #852@1: 1221 keys, 2145225 bytes
-2026/03/27-17:00:23.068 1f88 Generated table #853@1: 1662 keys, 2143335 bytes
-2026/03/27-17:00:23.112 1f88 Generated table #854@1: 2067 keys, 2140854 bytes
-2026/03/27-17:00:23.181 1f88 Generated table #855@1: 23819 keys, 2242866 bytes
-2026/03/27-17:00:23.258 1f88 Generated table #856@1: 33301 keys, 2225532 bytes
-2026/03/27-17:00:23.323 1f88 Generated table #857@1: 14005 keys, 2226253 bytes
-2026/03/27-17:00:23.335 1f88 Generated table #858@1: 326 keys, 140885 bytes
-2026/03/27-17:00:23.335 1f88 Compacted 1@1 + 10@2 files => 22078635 bytes
-2026/03/27-17:00:23.339 1f88 compacted to: files[ 0 1 20 0 0 0 0 ]
-2026/03/27-17:00:23.340 1f88 Delete type=2 #829
-2026/03/27-17:00:23.340 1f88 Delete type=2 #830
-2026/03/27-17:00:23.340 1f88 Delete type=2 #831
-2026/03/27-17:00:23.340 1f88 Delete type=2 #832
-2026/03/27-17:00:23.340 1f88 Delete type=2 #833
-2026/03/27-17:00:23.340 1f88 Delete type=2 #834
-2026/03/27-17:00:23.340 1f88 Delete type=2 #835
-2026/03/27-17:00:23.341 1f88 Delete type=2 #836
-2026/03/27-17:00:23.341 1f88 Delete type=2 #837
-2026/03/27-17:00:23.341 1f88 Delete type=2 #838
-2026/03/27-17:00:23.341 1f88 Delete type=2 #845
+2026/03/27-17:04:29.663 223c Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_c9d6a0dfa7cf/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/27-17:04:29.664 223c Recovering log #843
+2026/03/27-17:04:29.693 223c Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_c9d6a0dfa7cf/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000843.log 
+2026/03/27-17:04:45.607 223c Level-0 table #861: started
+2026/03/27-17:04:45.887 223c Level-0 table #861: 1083156 bytes OK
+2026/03/27-17:04:45.928 223c Delete type=0 #843
+2026/03/27-17:05:10.773 2241 Compacting 1@0 + 1@1 files
+2026/03/27-17:05:10.814 2241 Generated table #862@0: 27228 keys, 541187 bytes
+2026/03/27-17:05:10.816 2241 Generated table #863@0: 62 keys, 4424 bytes
+2026/03/27-17:05:10.816 2241 Compacted 1@0 + 1@1 files => 545611 bytes
+2026/03/27-17:05:10.819 2241 compacted to: files[ 0 2 20 0 0 0 0 ]
+2026/03/27-17:05:10.820 2241 Delete type=2 #846
+2026/03/27-17:05:10.820 2241 Delete type=2 #861
+2026/03/27-17:05:11.116 223c Compacting 1@1 + 10@2 files
+2026/03/27-17:05:11.197 223c Generated table #864@1: 59421 keys, 2231658 bytes
+2026/03/27-17:05:11.264 223c Generated table #865@1: 39470 keys, 2196265 bytes
+2026/03/27-17:05:11.328 223c Generated table #866@1: 58081 keys, 2227196 bytes
+2026/03/27-17:05:11.724 223c Generated table #867@1: 11718 keys, 2160818 bytes
+2026/03/27-17:05:11.762 223c Generated table #868@1: 1214 keys, 2141157 bytes
+2026/03/27-17:05:11.808 223c Generated table #869@1: 1666 keys, 2142180 bytes
+2026/03/27-17:05:11.855 223c Generated table #870@1: 2062 keys, 2143036 bytes
+2026/03/27-17:05:11.927 223c Generated table #871@1: 24058 keys, 2243707 bytes
+2026/03/27-17:05:11.989 223c Generated table #872@1: 33398 keys, 2225717 bytes
+2026/03/27-17:05:12.041 223c Generated table #873@1: 13659 keys, 2202368 bytes
+2026/03/27-17:05:12.041 223c Compacted 1@1 + 10@2 files => 21914102 bytes
+2026/03/27-17:05:12.044 223c compacted to: files[ 0 1 20 0 0 0 0 ]
+2026/03/27-17:05:12.044 223c Delete type=2 #848
+2026/03/27-17:05:12.045 223c Delete type=2 #849
+2026/03/27-17:05:12.045 223c Delete type=2 #850
+2026/03/27-17:05:12.045 223c Delete type=2 #851
+2026/03/27-17:05:12.045 223c Delete type=2 #852
+2026/03/27-17:05:12.045 223c Delete type=2 #853
+2026/03/27-17:05:12.045 223c Delete type=2 #854
+2026/03/27-17:05:12.045 223c Delete type=2 #855
+2026/03/27-17:05:12.045 223c Delete type=2 #856
+2026/03/27-17:05:12.046 223c Delete type=2 #857
+2026/03/27-17:05:12.046 223c Delete type=2 #862
