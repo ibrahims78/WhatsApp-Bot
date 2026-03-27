@@ -1,3 +1,38 @@
 2026/03/27-17:07:04.145 274c Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_c9d6a0dfa7cf/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
 2026/03/27-17:07:04.146 274c Recovering log #860
 2026/03/27-17:07:04.149 274c Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_c9d6a0dfa7cf/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000860.log 
+2026/03/27-17:16:37.939 274e Level-0 table #876: started
+2026/03/27-17:16:37.975 274e Level-0 table #876: 1148153 bytes OK
+2026/03/27-17:16:37.980 274e Delete type=0 #860
+2026/03/27-17:18:14.574 274e Compacting 1@0 + 1@1 files
+2026/03/27-17:18:14.760 274e Generated table #877@0: 23539 keys, 578314 bytes
+2026/03/27-17:18:14.780 274e Generated table #878@0: 99 keys, 9691 bytes
+2026/03/27-17:18:14.781 274e Compacted 1@0 + 1@1 files => 588005 bytes
+2026/03/27-17:18:14.796 274e compacted to: files[ 0 2 20 0 0 0 0 ]
+2026/03/27-17:18:14.797 274e Delete type=2 #863
+2026/03/27-17:18:14.797 274e Delete type=2 #876
+2026/03/27-17:18:59.588 274e Compacting 1@1 + 10@2 files
+2026/03/27-17:18:59.795 274e Generated table #879@1: 61876 keys, 2232325 bytes
+2026/03/27-17:18:59.851 274e Generated table #880@1: 37463 keys, 2196089 bytes
+2026/03/27-17:18:59.919 274e Generated table #881@1: 59430 keys, 2228855 bytes
+2026/03/27-17:18:59.958 274e Generated table #882@1: 14740 keys, 2162587 bytes
+2026/03/27-17:18:59.987 274e Generated table #883@1: 1261 keys, 2145066 bytes
+2026/03/27-17:19:00.012 274e Generated table #884@1: 1613 keys, 2142303 bytes
+2026/03/27-17:19:00.039 274e Generated table #885@1: 2060 keys, 2143070 bytes
+2026/03/27-17:19:00.094 274e Generated table #886@1: 22332 keys, 2234679 bytes
+2026/03/27-17:19:00.149 274e Generated table #887@1: 32540 keys, 2226331 bytes
+2026/03/27-17:19:00.198 274e Generated table #888@1: 15889 keys, 2233851 bytes
+2026/03/27-17:19:00.415 274e Generated table #889@1: 475 keys, 140155 bytes
+2026/03/27-17:19:00.415 274e Compacted 1@1 + 10@2 files => 22085311 bytes
+2026/03/27-17:19:00.430 274e compacted to: files[ 0 1 21 0 0 0 0 ]
+2026/03/27-17:19:00.431 274e Delete type=2 #864
+2026/03/27-17:19:00.431 274e Delete type=2 #865
+2026/03/27-17:19:00.431 274e Delete type=2 #866
+2026/03/27-17:19:00.431 274e Delete type=2 #867
+2026/03/27-17:19:00.431 274e Delete type=2 #868
+2026/03/27-17:19:00.431 274e Delete type=2 #869
+2026/03/27-17:19:00.431 274e Delete type=2 #870
+2026/03/27-17:19:00.431 274e Delete type=2 #871
+2026/03/27-17:19:00.431 274e Delete type=2 #872
+2026/03/27-17:19:00.431 274e Delete type=2 #873
+2026/03/27-17:19:00.431 274e Delete type=2 #877
