@@ -371,15 +371,26 @@ async function sendLocation(sessionId: string, number: string, lat: number, lng:
   }
   const phoneErr = validatePhoneNumber(number);
   if (phoneErr) { res.status(400).json({ success: false, error: phoneErr }); return; }
+  // Validate coordinates are finite numbers within standard GPS ranges
+  const latNum = Number(lat);
+  const lngNum = Number(lng);
+  if (!Number.isFinite(latNum) || latNum < -90 || latNum > 90) {
+    res.status(400).json({ success: false, error: "lat must be a number between -90 and 90" });
+    return;
+  }
+  if (!Number.isFinite(lngNum) || lngNum < -180 || lngNum > 180) {
+    res.status(400).json({ success: false, error: "lng must be a number between -180 and 180" });
+    return;
+  }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
-    const result = await trySend(number, (chatId) => client.sendLocation(chatId, lat, lng, description || ""));
-    await logMessage(sessionId, number, "location", description || `${lat},${lng}`);
+    const result = await trySend(number, (chatId) => client.sendLocation(chatId, latNum, lngNum, description || ""));
+    await logMessage(sessionId, number, "location", description || `${latNum},${lngNum}`);
     res.json({ success: true, messageId: result?.id?.id || null });
   } catch (e: any) {
     if (isMsgNotFound(e)) {
-      await logMessage(sessionId, number, "location", description || `${lat},${lng}`);
+      await logMessage(sessionId, number, "location", description || `${latNum},${lngNum}`);
       res.json({ success: true, messageId: null });
       return;
     }

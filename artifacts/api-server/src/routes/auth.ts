@@ -32,9 +32,14 @@ router.post("/auth/login", loginRateLimiter, async (req, res): Promise<void> => 
 
   const token = generateToken(user.id, user.role);
 
+  // Mark secure whenever running on Replit (both dev and production)
+  // or in any production deployment. Replit always serves over HTTPS,
+  // so the cookie must be flagged secure to prevent downgrade attacks.
+  const isSecureContext =
+    process.env.NODE_ENV === "production" || !!process.env.REPLIT_DEV_DOMAIN;
   res.cookie("session_token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isSecureContext,
     sameSite: "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });

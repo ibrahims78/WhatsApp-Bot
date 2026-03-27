@@ -63,8 +63,12 @@ All routes prefixed with `/api/`:
 - Rate limiting: login endpoint 20 req/15min, all API routes 300 req/min (via `express-rate-limit`)
 - CORS: restricted to Replit domains + explicit `ALLOWED_ORIGINS` env var; all other origins blocked with proper error
 - Trust proxy: `app.set("trust proxy", 1)` ensures correct real client IP behind Replit's mTLS proxy
+- HTTP security headers: `helmet` middleware sets X-Frame-Options, X-Content-Type-Options, Strict-Transport-Security, Referrer-Policy, etc. (CSP disabled — JSON API only)
+- Cookie security: `session_token` marked `secure: true` on Replit (checks `REPLIT_DEV_DOMAIN`) and in production; always `httpOnly`
 - Request body limit: 50MB (reduced from 100MB to limit DoS surface; enough for base64-encoded media)
 - Phone number validation: all send endpoints validate E.164 format (7–15 digits) before processing
+- GPS coordinate validation: lat must be -90..90, lng must be -180..180; rejects NaN, Infinity, and out-of-range values
+- Health check: `GET /` returns `{status:"ok"}` — silences noisy 404s from Replit's 30-second health pings
 - Employees can only access their own sessions (ownership check on all routes)
 - Granular permissions: 11 action keys, explicitly false = blocked, missing = allowed
 - API key session restrictions: JSON array of allowed session IDs

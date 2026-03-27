@@ -1,5 +1,6 @@
 import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
+import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import pinoHttp from "pino-http";
 import path from "path";
@@ -16,6 +17,18 @@ const app: Express = express();
 // Without this, req.ip returns the internal proxy address instead of the
 // real client IP, which breaks rate limiting and audit log accuracy.
 app.set("trust proxy", 1);
+
+// ── HTTP Security Headers (Helmet) ───────────────────────────────────────────
+// This is a JSON API — disable CSP and document-oriented headers that are
+// irrelevant for API responses, and keep headers that protect all HTTP traffic.
+app.use(
+  helmet({
+    contentSecurityPolicy: false,      // API — no HTML pages served here
+    crossOriginEmbedderPolicy: false,  // Not needed for API responses
+    crossOriginOpenerPolicy: false,    // Not needed for API responses
+    crossOriginResourcePolicy: false,  // Static files via /api/files need cross-origin access
+  }),
+);
 
 // ── CORS ─────────────────────────────────────────────────────────────────────
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
@@ -108,6 +121,13 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
   } catch { /* DB error — let the route handle auth */ }
 
   next();
+});
+
+// ── Health check ─────────────────────────────────────────────────────────────
+// Replit (and load balancers) ping GET / every ~30s. Without this handler,
+// the request falls through to 404 and creates noisy log entries.
+app.get("/", (_req: Request, res: Response) => {
+  res.json({ status: "ok", service: "whatsapp-api" });
 });
 
 // Static files served BEFORE the API router
