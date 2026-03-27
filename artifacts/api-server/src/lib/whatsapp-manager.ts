@@ -12,11 +12,38 @@ import { promises as dnsPromises } from "dns";
 import { verifyToken } from "./auth";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Chrome path — can be overridden via CHROME_PATH env variable
+// Chrome path — resolved dynamically so we never need to update a hardcoded
+// version string when Puppeteer downloads a newer Chrome build.
+// Resolution order:
+//   1. CHROME_PATH environment variable (explicit override)
+//   2. Scan Puppeteer cache dir for newest installed Chrome build
+//   3. Fallback to the well-known Replit cache path for Linux x64
 // ─────────────────────────────────────────────────────────────────────────────
-const CHROME_PATH =
-  process.env.CHROME_PATH ||
-  "/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome";
+function resolveChromePath(): string {
+  // 1. Explicit override via environment variable
+  if (process.env.CHROME_PATH) return process.env.CHROME_PATH;
+
+  // 2. Scan the Puppeteer cache directory for any installed Chrome binary.
+  //    Sorts versions descending so the newest installed build is picked first.
+  const cacheBase = "/home/runner/.cache/puppeteer/chrome";
+  if (existsSync(cacheBase)) {
+    try {
+      const versions = readdirSync(cacheBase).sort().reverse();
+      for (const ver of versions) {
+        const candidate = path.join(cacheBase, ver, "chrome-linux64", "chrome");
+        if (existsSync(candidate)) {
+          logger.debug({ chromePath: candidate }, "Chrome path resolved from cache scan");
+          return candidate;
+        }
+      }
+    } catch { /* ignore scan errors */ }
+  }
+
+  // 3. Last-resort fallback — ensureChrome() will attempt a download if missing
+  return "/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome";
+}
+
+const CHROME_PATH = resolveChromePath();
 
 const TOKENS_DIR = path.join(process.cwd(), "tokens");
 

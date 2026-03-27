@@ -12,6 +12,24 @@ import { tmpdir } from "os";
 
 const router: IRouter = Router();
 
+/**
+ * Validate that a phone number string contains enough digits to be a real number.
+ * Returns an error message string if invalid, or null if valid.
+ * Minimum 7 digits (shortest international numbers e.g. Niue +683 XXXXX).
+ * Maximum 15 digits (E.164 standard).
+ */
+function validatePhoneNumber(number: string): string | null {
+  if (!number || typeof number !== "string") return "Phone number is required";
+  const trimmed = number.trim();
+  if (!trimmed) return "Phone number is required";
+  // Already a WhatsApp ID — pass through basic checks
+  if (trimmed.endsWith("@c.us") || trimmed.endsWith("@g.us") || trimmed.endsWith("@lid")) return null;
+  const digits = trimmed.replace(/\D/g, "");
+  if (digits.length < 7) return `Phone number too short: '${trimmed}' (minimum 7 digits)`;
+  if (digits.length > 15) return `Phone number too long: '${trimmed}' (maximum 15 digits per E.164)`;
+  return null;
+}
+
 function formatNumber(number: string): string {
   // Already a valid WhatsApp chat ID — pass through unchanged
   if (number.endsWith("@c.us") || number.endsWith("@g.us")) return number;
@@ -175,6 +193,8 @@ async function sendText(sessionId: string, number: string, message: string, req:
     res.status(400).json({ success: false, error: "sessionId, number, and message are required" });
     return;
   }
+  const phoneErr = validatePhoneNumber(number);
+  if (phoneErr) { res.status(400).json({ success: false, error: phoneErr }); return; }
   if (!await isFeatureAllowed(sessionId, "sendText")) {
     res.status(403).json({ success: false, error: "sendText is disabled for this session" });
     return;
@@ -201,6 +221,8 @@ async function sendImage(sessionId: string, number: string, imageUrl: string, ca
     res.status(400).json({ success: false, error: "sessionId, number, and imageUrl are required" });
     return;
   }
+  const phoneErr = validatePhoneNumber(number);
+  if (phoneErr) { res.status(400).json({ success: false, error: phoneErr }); return; }
   if (!await isFeatureAllowed(sessionId, "sendImage")) {
     res.status(403).json({ success: false, error: "sendImage is disabled for this session" });
     return;
@@ -233,6 +255,8 @@ async function sendVideo(sessionId: string, number: string, videoUrl: string, ca
     res.status(400).json({ success: false, error: "sessionId, number, and videoUrl are required" });
     return;
   }
+  const phoneErr = validatePhoneNumber(number);
+  if (phoneErr) { res.status(400).json({ success: false, error: phoneErr }); return; }
   if (!await isFeatureAllowed(sessionId, "sendVideo")) {
     res.status(403).json({ success: false, error: "sendVideo is disabled for this session" });
     return;
@@ -265,6 +289,8 @@ async function sendAudio(sessionId: string, number: string, audioUrl: string, re
     res.status(400).json({ success: false, error: "sessionId, number, and audioUrl are required" });
     return;
   }
+  const phoneErr = validatePhoneNumber(number);
+  if (phoneErr) { res.status(400).json({ success: false, error: phoneErr }); return; }
   if (!await isFeatureAllowed(sessionId, "sendAudio")) {
     res.status(403).json({ success: false, error: "sendAudio is disabled for this session" });
     return;
@@ -308,6 +334,8 @@ async function sendFile(sessionId: string, number: string, fileUrl: string, file
     res.status(400).json({ success: false, error: "sessionId, number, fileUrl, and fileName are required" });
     return;
   }
+  const phoneErr = validatePhoneNumber(number);
+  if (phoneErr) { res.status(400).json({ success: false, error: phoneErr }); return; }
   if (!await isFeatureAllowed(sessionId, "sendFile")) {
     res.status(403).json({ success: false, error: "sendFile is disabled for this session" });
     return;
@@ -341,6 +369,8 @@ async function sendLocation(sessionId: string, number: string, lat: number, lng:
     res.status(400).json({ success: false, error: "sessionId, number, lat, and lng are required" });
     return;
   }
+  const phoneErr = validatePhoneNumber(number);
+  if (phoneErr) { res.status(400).json({ success: false, error: phoneErr }); return; }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
   try {
@@ -363,6 +393,8 @@ async function sendSticker(sessionId: string, number: string, stickerUrl: string
     res.status(400).json({ success: false, error: "sessionId, number, and stickerUrl are required" });
     return;
   }
+  const phoneErr = validatePhoneNumber(number);
+  if (phoneErr) { res.status(400).json({ success: false, error: phoneErr }); return; }
   const client = getClient(sessionId);
   if (!client) { res.status(503).json({ success: false, error: "Session not connected" }); return; }
 

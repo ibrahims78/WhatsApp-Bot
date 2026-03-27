@@ -12,6 +12,11 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+// ── Trust proxy — required for correct req.ip behind Replit's mTLS proxy ─────
+// Without this, req.ip returns the internal proxy address instead of the
+// real client IP, which breaks rate limiting and audit log accuracy.
+app.set("trust proxy", 1);
+
 // ── CORS ─────────────────────────────────────────────────────────────────────
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
   .split(",")
@@ -21,14 +26,23 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
 app.use(
   cors({
     origin: (origin, callback) => {
+      // Same-origin requests (server-to-server, curl, etc.) have no Origin header
       if (!origin) return callback(null, true);
-      if (origin.includes(".replit.dev") || origin.endsWith(".repl.co") || origin.endsWith(".replit.app")) {
+      // Always allow Replit preview and production domains
+      if (
+        origin.includes(".replit.dev") ||
+        origin.endsWith(".repl.co") ||
+        origin.endsWith(".replit.app")
+      ) {
         return callback(null, true);
       }
+      // Allow any additional origins configured via environment variable
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
-      return callback(null, true); // Fallback: allow. Tighten via ALLOWED_ORIGINS in production.
+      // Block all other origins in production
+      logger.warn({ origin }, "CORS: request blocked from unlisted origin");
+      return callback(new Error(`CORS: origin '${origin}' is not allowed`));
     },
     credentials: true,
   }),
@@ -49,8 +63,11 @@ app.use(
 );
 
 app.use(cookieParser());
-app.use(express.json({ limit: "100mb" }));
-app.use(express.urlencoded({ extended: true, limit: "100mb" }));
+// 50MB limit: enough for base64-encoded media (video/audio/image).
+// Base64 adds ~33% overhead, so 50MB covers ~37MB of raw binary.
+// Keeping it well below 100MB reduces DoS attack surface.
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 // Apply general rate limiting to all requests
 app.use(apiRateLimiter);

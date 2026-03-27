@@ -61,6 +61,10 @@ All routes prefixed with `/api/`:
 - JWT: 7-day expiry, HS256, cryptographically generated secret via env var `JWT_SECRET`
 - API keys: hashed with bcrypt; `keyPrefix` (first 8 chars) enables O(1) pre-filter before bcrypt comparison
 - Rate limiting: login endpoint 20 req/15min, all API routes 300 req/min (via `express-rate-limit`)
+- CORS: restricted to Replit domains + explicit `ALLOWED_ORIGINS` env var; all other origins blocked with proper error
+- Trust proxy: `app.set("trust proxy", 1)` ensures correct real client IP behind Replit's mTLS proxy
+- Request body limit: 50MB (reduced from 100MB to limit DoS surface; enough for base64-encoded media)
+- Phone number validation: all send endpoints validate E.164 format (7–15 digits) before processing
 - Employees can only access their own sessions (ownership check on all routes)
 - Granular permissions: 11 action keys, explicitly false = blocked, missing = allowed
 - API key session restrictions: JSON array of allowed session IDs
@@ -68,7 +72,7 @@ All routes prefixed with `/api/`:
 - Socket.IO: JWT auth middleware on connection — unauthenticated sockets are marked but not connected
 - Webhook SSRF protection: `isPrivateUrl()` blocks localhost/private IPs; 10s timeout via AbortController; up to 3 retry attempts; `X-Webhook-Signature: sha256=HMAC` header when `webhookSecret` is set
 - `webhookSecret` stored per session (set via `PATCH /sessions/:id/webhook`)
-- Chrome path configurable via `CHROME_PATH` env var
+- Chrome path: resolved dynamically (cache scan → CHROME_PATH env var → fallback); no hardcoded version string
 - Audit log for session create/delete actions with IP
 
 ## Running
