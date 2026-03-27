@@ -1,0 +1,53 @@
+services:
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-wauser}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-wapassword123}
+      - POSTGRES_DB=${POSTGRES_DB:-whatsapp_manager_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wauser} -d ${POSTGRES_DB:-whatsapp_manager_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker-setup/Dockerfile.api
+    image: whatsapp-manager-api:latest
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER:-wauser}:${POSTGRES_PASSWORD:-wapassword123}@db:5432/${POSTGRES_DB:-whatsapp_manager_db}
+      - PORT=8080
+      - JWT_SECRET=${JWT_SECRET}
+      - NODE_ENV=production
+    volumes:
+      - wa_tokens:/app/artifacts/api-server/tokens
+      - wa_public:/app/artifacts/api-server/public
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: ..
+      dockerfile: docker-setup/Dockerfile.dashboard
+    image: whatsapp-manager-dashboard:latest
+    ports:
+      - "${APP_PORT:-5000}:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  wa_tokens:
+    driver: local
+  wa_public:
+    driver: local
