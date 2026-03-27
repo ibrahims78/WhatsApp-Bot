@@ -26,16 +26,17 @@ initSocketServer(httpServer);
 httpServer.listen(port, async () => {
   logger.info({ port }, "Server listening");
 
-  // Ensure default admin user always exists with the fixed credentials on every startup
+  // Create a default admin user only if no admin users exist in the database.
+  // This ensures user changes (username, password) are preserved across restarts.
   try {
-    const adminPassword = "123456";
-    const passwordHash = hashPassword(adminPassword);
-    const [existing] = await db
+    const adminUsers = await db
       .select()
       .from(usersTable)
-      .where(eq(usersTable.username, "admin"));
+      .where(eq(usersTable.role, "admin"));
 
-    if (!existing) {
+    if (adminUsers.length === 0) {
+      const adminPassword = "123456";
+      const passwordHash = hashPassword(adminPassword);
       await db.insert(usersTable).values({
         username: "admin",
         email: "admin@example.com",
@@ -46,21 +47,7 @@ httpServer.listen(port, async () => {
       });
       logger.info("Default admin user created: admin / 123456");
     } else {
-      // If admin still uses the default password, force them to change it
-      const stillHasDefaultPassword = verifyPassword(adminPassword, existing.passwordHash);
-      if (stillHasDefaultPassword && !existing.mustChangePassword) {
-        await db
-          .update(usersTable)
-          .set({ mustChangePassword: true, role: "admin", isActive: true })
-          .where(eq(usersTable.username, "admin"));
-        logger.info("Admin still using default password — mustChangePassword set to true");
-      } else {
-        await db
-          .update(usersTable)
-          .set({ role: "admin", isActive: true })
-          .where(eq(usersTable.username, "admin"));
-        logger.info("Default admin user ensured: admin / 123456");
-      }
+      logger.info(`Admin user(s) already exist — skipping seed`);
     }
   } catch (e) {
     logger.error({ err: e }, "Failed to seed admin user");

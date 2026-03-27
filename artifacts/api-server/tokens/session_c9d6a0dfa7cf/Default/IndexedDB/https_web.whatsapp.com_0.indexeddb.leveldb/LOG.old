@@ -1,0 +1,40 @@
+2026/03/27-16:50:59.814 1556 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_c9d6a0dfa7cf/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/27-16:50:59.815 1556 Recovering log #794
+2026/03/27-16:50:59.869 1556 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_c9d6a0dfa7cf/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000794.log 
+2026/03/27-16:51:06.332 1556 Level-0 table #811: started
+2026/03/27-16:51:06.477 1556 Level-0 table #811: 1019076 bytes OK
+2026/03/27-16:51:07.303 1556 Delete type=0 #794
+2026/03/27-16:51:07.326 1558 Compacting 1@0 + 1@1 files
+2026/03/27-16:51:07.386 1558 Generated table #812@0: 19029 keys, 509704 bytes
+2026/03/27-16:51:07.397 1558 Generated table #813@0: 5752 keys, 138028 bytes
+2026/03/27-16:51:07.397 1558 Compacted 1@0 + 1@1 files => 647732 bytes
+2026/03/27-16:51:07.401 1558 compacted to: files[ 0 2 18 0 0 0 0 ]
+2026/03/27-16:51:07.405 1558 Compacting 1@1 + 10@2 files
+2026/03/27-16:51:07.615 1558 Generated table #814@1: 55123 keys, 2226740 bytes
+2026/03/27-16:51:07.723 1558 Generated table #815@1: 42757 keys, 2199198 bytes
+2026/03/27-16:51:07.821 1558 Generated table #816@1: 56004 keys, 2225700 bytes
+2026/03/27-16:51:07.859 1558 Generated table #817@1: 7955 keys, 2151350 bytes
+2026/03/27-16:51:07.900 1558 Generated table #818@1: 1257 keys, 2141228 bytes
+2026/03/27-16:51:07.952 1558 Generated table #819@1: 1642 keys, 2145667 bytes
+2026/03/27-16:51:07.991 1558 Generated table #820@1: 2033 keys, 2144057 bytes
+2026/03/27-16:51:08.076 1558 Generated table #821@1: 26262 keys, 2256681 bytes
+2026/03/27-16:51:08.153 1558 Generated table #822@1: 33550 keys, 2233146 bytes
+2026/03/27-16:51:08.213 1558 Generated table #823@1: 11571 keys, 2196853 bytes
+2026/03/27-16:51:08.213 1558 Compacted 1@1 + 10@2 files => 21920620 bytes
+2026/03/27-16:51:08.218 1558 compacted to: files[ 0 1 18 0 0 0 0 ]
+2026/03/27-16:51:08.218 1558 Delete type=2 #797
+2026/03/27-16:51:08.218 1558 Delete type=2 #798
+2026/03/27-16:51:08.218 1558 Delete type=2 #799
+2026/03/27-16:51:08.218 1558 Delete type=2 #800
+2026/03/27-16:51:08.218 1558 Delete type=2 #801
+2026/03/27-16:51:08.218 1558 Delete type=2 #802
+2026/03/27-16:51:08.218 1558 Delete type=2 #803
+2026/03/27-16:51:08.219 1558 Delete type=2 #804
+2026/03/27-16:51:08.219 1558 Delete type=2 #805
+2026/03/27-16:51:08.219 1558 Delete type=2 #806
+2026/03/27-16:51:08.219 1558 Delete type=2 #807
+2026/03/27-16:51:08.219 1558 Delete type=2 #811
+2026/03/27-16:51:08.219 1558 Delete type=2 #812
+2026/03/27-16:55:25.007 1556 Level-0 table #825: started
+2026/03/27-16:55:25.036 1556 Level-0 table #825: 871468 bytes OK
+2026/03/27-16:55:25.041 1556 Delete type=0 #810
