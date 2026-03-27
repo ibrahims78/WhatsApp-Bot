@@ -4,7 +4,7 @@ import { logger } from "./lib/logger";
 import { initSocketServer, initializeSessions } from "./lib/whatsapp-manager";
 import { db, usersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
-import { hashPassword } from "./lib/auth";
+import { hashPassword, verifyPassword } from "./lib/auth";
 
 const rawPort = process.env["PORT"];
 
@@ -42,14 +42,25 @@ httpServer.listen(port, async () => {
         passwordHash,
         role: "admin",
         isActive: true,
+        mustChangePassword: true,
       });
       logger.info("Default admin user created: admin / 123456");
     } else {
-      await db
-        .update(usersTable)
-        .set({ passwordHash, role: "admin", isActive: true })
-        .where(eq(usersTable.username, "admin"));
-      logger.info("Default admin user ensured: admin / 123456");
+      // If admin still uses the default password, force them to change it
+      const stillHasDefaultPassword = verifyPassword(adminPassword, existing.passwordHash);
+      if (stillHasDefaultPassword && !existing.mustChangePassword) {
+        await db
+          .update(usersTable)
+          .set({ mustChangePassword: true, role: "admin", isActive: true })
+          .where(eq(usersTable.username, "admin"));
+        logger.info("Admin still using default password — mustChangePassword set to true");
+      } else {
+        await db
+          .update(usersTable)
+          .set({ role: "admin", isActive: true })
+          .where(eq(usersTable.username, "admin"));
+        logger.info("Default admin user ensured: admin / 123456");
+      }
     }
   } catch (e) {
     logger.error({ err: e }, "Failed to seed admin user");

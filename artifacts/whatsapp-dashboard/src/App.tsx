@@ -9,6 +9,7 @@ import { useAppStore } from "@/store";
 
 // Pages
 import Login from "@/pages/login";
+import { ForceChangePassword } from "@/components/force-change-password";
 import Dashboard from "@/pages/dashboard";
 import Sessions from "@/pages/sessions/index";
 import SessionDetail from "@/pages/sessions/detail";
@@ -84,6 +85,7 @@ function App() {
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
             <Router />
           </WouterRouter>
+          <ForceChangePassword />
         </AuthInit>
         <Toaster />
       </TooltipProvider>

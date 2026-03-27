@@ -7,8 +7,10 @@ interface AppState {
   // Auth
   token: string | null;
   user: User | null;
-  setAuth: (token: string, user: User) => void;
+  mustChangePassword: boolean;
+  setAuth: (token: string, user: User & { mustChangePassword?: boolean }) => void;
   clearAuth: () => void;
+  setMustChangePassword: (v: boolean) => void;
   
   // Theme & Lang
   theme: 'light' | 'dark';
@@ -39,8 +41,13 @@ export const useAppStore = create<AppState>()(
     (set) => ({
       token: null,
       user: null,
-      setAuth: (token, user) => set({ token, user }),
-      clearAuth: () => set({ token: null, user: null }),
+      mustChangePassword: false,
+      setAuth: (token, user) => {
+        const { mustChangePassword: mcp, ...safeUser } = user as any;
+        set({ token, user: safeUser, mustChangePassword: !!mcp });
+      },
+      clearAuth: () => set({ token: null, user: null, mustChangePassword: false }),
+      setMustChangePassword: (v) => set({ mustChangePassword: v }),
       
       theme: 'light',
       setTheme: (theme) => {

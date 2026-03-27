@@ -5,6 +5,14 @@ import { requireAuth, requireAdmin, hashPassword } from "../lib/auth";
 
 const router: IRouter = Router();
 
+function validatePasswordComplexity(password: string): string | null {
+  if (password.length < 6) return "Password must be at least 6 characters";
+  if (!/[A-Z]/.test(password)) return "Password must contain at least one uppercase letter";
+  if (!/[a-z]/.test(password)) return "Password must contain at least one lowercase letter";
+  if (!/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) return "Password must contain at least one digit or special character";
+  return null;
+}
+
 // GET /users
 router.get("/users", requireAuth, requireAdmin, async (req, res): Promise<void> => {
   const users = await db.select().from(usersTable).orderBy(usersTable.createdAt);
@@ -17,6 +25,12 @@ router.post("/users", requireAuth, requireAdmin, async (req, res): Promise<void>
   const { username, email, password, role, permissions } = req.body;
   if (!username || !password || !role) {
     res.status(400).json({ error: "Username, password, and role are required" });
+    return;
+  }
+
+  const complexityError = validatePasswordComplexity(password);
+  if (complexityError) {
+    res.status(400).json({ error: complexityError });
     return;
   }
 
@@ -36,7 +50,6 @@ router.get("/users/:id", requireAuth, async (req, res): Promise<void> => {
   const id = parseInt(rawId, 10);
 
   const currentUser = (req as any).user;
-  // Employees can only see their own profile
   if (currentUser.role !== "admin" && currentUser.id !== id) {
     res.status(403).json({ error: "Forbidden" });
     return;
@@ -62,7 +75,15 @@ router.patch("/users/:id", requireAuth, requireAdmin, async (req, res): Promise<
 
   if (username !== undefined) updates.username = username;
   if (email !== undefined) updates.email = email;
-  if (password) updates.passwordHash = hashPassword(password);
+  if (password) {
+    const complexityError = validatePasswordComplexity(password);
+    if (complexityError) {
+      res.status(400).json({ error: complexityError });
+      return;
+    }
+    updates.passwordHash = hashPassword(password);
+    updates.mustChangePassword = false;
+  }
   if (role !== undefined) updates.role = role;
   if (permissions !== undefined) updates.permissions = permissions;
   if (isActive !== undefined) updates.isActive = isActive;
