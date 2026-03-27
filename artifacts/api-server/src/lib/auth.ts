@@ -12,6 +12,11 @@ if (!JWT_SECRET) {
 
 const TOKEN_EXPIRY = "7d";
 
+// Records the exact second this server process started.
+// Any JWT token issued before this moment (iat < SERVER_START_TIME) is
+// treated as expired, forcing users to re-login after every server restart.
+const SERVER_START_TIME = Math.floor(Date.now() / 1000);
+
 export function hashPassword(password: string): string {
   return bcrypt.hashSync(password, 10);
 }
@@ -26,7 +31,12 @@ export function generateToken(userId: number, role: string): string {
 
 export function verifyToken(token: string): { userId: number; role: string } | null {
   try {
-    return jwt.verify(token, JWT_SECRET!) as { userId: number; role: string };
+    const payload = jwt.verify(token, JWT_SECRET!) as { userId: number; role: string; iat?: number };
+    // Reject tokens issued before this server started — forces re-login after restart.
+    if (!payload.iat || payload.iat < SERVER_START_TIME) {
+      return null;
+    }
+    return payload;
   } catch {
     return null;
   }

@@ -1,22 +1,3 @@
-2026/03/27-17:00:18.995 1ec7 Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/03/27-17:00:18.995 1ec7 Recovering log #220
-2026/03/27-17:00:19.044 1ec7 Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000220.log 
-2026/03/27-17:00:19.575 1ec9 Level-0 table #230: started
-2026/03/27-17:00:19.615 1ec9 Level-0 table #230: 1089610 bytes OK
-2026/03/27-17:00:19.622 1ec9 Delete type=0 #220
-2026/03/27-17:00:22.351 1ec9 Compacting 1@1 + 6@2 files
-2026/03/27-17:00:22.419 1ec9 Generated table #231@1: 65477 keys, 2212403 bytes
-2026/03/27-17:00:22.496 1ec9 Generated table #232@1: 58835 keys, 2213767 bytes
-2026/03/27-17:00:22.573 1ec9 Generated table #233@1: 55126 keys, 2220597 bytes
-2026/03/27-17:00:22.626 1ec9 Generated table #234@1: 1886 keys, 2151449 bytes
-2026/03/27-17:00:22.693 1ec9 Generated table #235@1: 16516 keys, 2221466 bytes
-2026/03/27-17:00:22.736 1ec9 Generated table #236@1: 20012 keys, 1152304 bytes
-2026/03/27-17:00:22.736 1ec9 Compacted 1@1 + 6@2 files => 12171986 bytes
-2026/03/27-17:00:22.740 1ec9 compacted to: files[ 0 0 6 0 0 0 0 ]
-2026/03/27-17:00:22.740 1ec9 Delete type=2 #222
-2026/03/27-17:00:22.740 1ec9 Delete type=2 #223
-2026/03/27-17:00:22.741 1ec9 Delete type=2 #224
-2026/03/27-17:00:22.741 1ec9 Delete type=2 #225
-2026/03/27-17:00:22.741 1ec9 Delete type=2 #226
-2026/03/27-17:00:22.742 1ec9 Delete type=2 #227
-2026/03/27-17:00:22.742 1ec9 Delete type=2 #230
+2026/03/27-17:04:33.520 22ee Reusing MANIFEST /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/03/27-17:04:33.520 22ee Recovering log #229
+2026/03/27-17:04:33.557 22ee Reusing old log /home/runner/workspace/artifacts/api-server/tokens/session_7303e0813a38/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000229.log 
