@@ -33,7 +33,7 @@ if /i not "%confirm%"=="YES" (
 
 echo.
 echo Stopping and removing containers and volumes...
-cd /d "C:\whatsapp-manager\docker-setup"
+cd /d "C:\whatsapp-manager"
 docker-compose -p whatsapp_manager_v1 down -v
 
 echo.

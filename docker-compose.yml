@@ -17,8 +17,8 @@ services:
 
   api:
     build:
-      context: ..
-      dockerfile: docker-setup/Dockerfile.api
+      context: .
+      dockerfile: Dockerfile.api
     image: whatsapp-manager-api:latest
     environment:
       - DATABASE_URL=postgres://${POSTGRES_USER:-wauser}:${POSTGRES_PASSWORD:-wapassword123}@db:5432/${POSTGRES_DB:-whatsapp_manager_db}
@@ -35,11 +35,11 @@ services:
 
   dashboard:
     build:
-      context: ..
-      dockerfile: docker-setup/Dockerfile.dashboard
+      context: .
+      dockerfile: Dockerfile.dashboard
     image: whatsapp-manager-dashboard:latest
     ports:
-      - "${APP_PORT:-5000}:80"
+      - "${APP_PORT:-5005}:80"
     depends_on:
       - api
     restart: unless-stopped

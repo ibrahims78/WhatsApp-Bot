@@ -9,7 +9,7 @@ set "shortcutPath=%USERPROFILE%\Desktop\WhatsApp_Manager.lnk"
 
 :: Create Desktop Shortcut if it doesn't exist
 if not exist "%shortcutPath%" (
-    powershell -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%shortcutPath%'); $s.TargetPath='%installDir%\docker-setup\run_wa.bat'; $s.WorkingDirectory='%installDir%\docker-setup'; $s.Description='WhatsApp Manager'; $s.Save()"
+    powershell -NoProfile -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%shortcutPath%'); $s.TargetPath='%installDir%\run_wa.bat'; $s.WorkingDirectory='%installDir%'; $s.Description='WhatsApp Manager'; $s.Save()"
 )
 
 :: Check Docker Status
@@ -26,7 +26,7 @@ if %errorlevel% neq 0 (
 )
 
 :: Start containers
-cd /d "%installDir%\docker-setup"
+cd /d "%installDir%"
 docker-compose -p whatsapp_manager_v1 up -d
 
 timeout /t 10 /nobreak >nul

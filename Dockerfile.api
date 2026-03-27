@@ -66,7 +66,7 @@ RUN pnpm --filter @workspace/api-server run build
 RUN mkdir -p /app/artifacts/api-server/tokens /app/artifacts/api-server/public
 
 # Copy the startup script and make it executable
-COPY docker-setup/entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080

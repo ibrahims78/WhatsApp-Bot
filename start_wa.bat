@@ -21,7 +21,7 @@ TITLE WhatsApp Manager - Setup
 
 set "installDir=C:\whatsapp-manager"
 set "repoUrl=https://github.com/ibrahims78/WhatsApp-Bot"
-set "envFile=%installDir%\docker-setup\.env"
+set "envFile=%installDir%\.env"
 
 echo ============================================
 echo    WhatsApp Manager - Automated Setup
@@ -91,7 +91,6 @@ set "needsEnv=1"
 if exist "%envFile%" (
     findstr /C:"GENERATED_AUTOMATICALLY" "%envFile%" >nul 2>&1
     if %errorlevel% neq 0 (
-        :: JWT_SECRET is real (placeholder not found) - keep existing .env
         set "needsEnv=0"
         echo Configuration already exists with a real secret. Keeping it.
     )
@@ -113,7 +112,7 @@ if "%needsEnv%"=="1" (
 :: ─── STEP 5: Build and Start Docker Containers ──────────────────────────────
 echo.
 echo [5/5] Building and starting containers (5-15 minutes on first run)...
-cd /d "%installDir%\docker-setup"
+cd /d "%installDir%"
 
 docker-compose -p whatsapp_manager_v1 build --no-cache
 if %errorlevel% neq 0 (
@@ -132,7 +131,7 @@ if %errorlevel% neq 0 (
 :: Create Desktop Shortcut
 set "shortcutPath=%USERPROFILE%\Desktop\WhatsApp_Manager.lnk"
 if not exist "%shortcutPath%" (
-    powershell -NoProfile -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%shortcutPath%'); $s.TargetPath='%installDir%\docker-setup\run_wa.bat'; $s.WorkingDirectory='%installDir%\docker-setup'; $s.Description='WhatsApp Manager'; $s.Save()"
+    powershell -NoProfile -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%shortcutPath%'); $s.TargetPath='%installDir%\run_wa.bat'; $s.WorkingDirectory='%installDir%'; $s.Description='WhatsApp Manager'; $s.Save()"
     echo Desktop shortcut created.
 )
 

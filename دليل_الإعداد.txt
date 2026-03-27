@@ -142,7 +142,7 @@
 6. الأوامر اليدوية (للمتقدمين)
 -----------------------------------------------------------
 
-من مجلد C:\whatsapp-manager\docker-setup :
+من مجلد C:\whatsapp-manager :
 
   حالة الحاويات:
     docker-compose -p whatsapp_manager_v1 ps
