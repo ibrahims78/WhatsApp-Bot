@@ -104,7 +104,7 @@ if "%needsEnv%"=="1" (
         echo POSTGRES_PASSWORD=wapassword123
         echo POSTGRES_DB=whatsapp_manager_db
         echo JWT_SECRET=%JWT_GENERATED%
-        echo APP_PORT=5000
+        echo APP_PORT=5005
         echo NODE_ENV=production
     ) > "%envFile%"
     echo Configuration written successfully.
@@ -145,7 +145,7 @@ echo ============================================
 echo   Setup complete!
 echo ============================================
 echo.
-echo   Application URL:   http://localhost:5000
+echo   Application URL:   http://localhost:5005
 echo   Default Username:  admin
 echo   Default Password:  123456
 echo.
@@ -153,6 +153,6 @@ echo   *** Change your password immediately after first login! ***
 echo.
 echo   For daily use: double-click WhatsApp_Manager on the desktop.
 echo.
-start http://localhost:5000
+start http://localhost:5005
 pause
 exit

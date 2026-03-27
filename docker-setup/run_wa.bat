@@ -30,5 +30,5 @@ cd /d "%installDir%\docker-setup"
 docker-compose -p whatsapp_manager_v1 up -d
 
 timeout /t 10 /nobreak >nul
-start http://localhost:5000
+start http://localhost:5005
 exit
