@@ -8,6 +8,7 @@ import { execSync, spawnSync } from "child_process";
 import { existsSync, rmSync, readdirSync } from "fs";
 import path from "path";
 import { createHmac } from "crypto";
+import { promises as dnsPromises } from "dns";
 import { verifyToken } from "./auth";
 
 // ─────────────────────────────────────────────────────────────────────────────

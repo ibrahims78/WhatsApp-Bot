@@ -35,7 +35,6 @@ router.post("/users", requireAuth, requireAdmin, async (req, res): Promise<void>
     return;
   }
 
-  // Serialize permissions
   let permissionsJson: string | null = null;
   if (permissions && typeof permissions === "object") {
     permissionsJson = JSON.stringify(permissions);
@@ -86,11 +85,49 @@ router.get("/users/:id", requireAuth, async (req, res): Promise<void> => {
 });
 
 // PATCH /users/:id
-// Supports: username, email, password, role, permissions, maxSessions, isActive
-router.patch("/users/:id", requireAuth, requireAdmin, async (req, res): Promise<void> => {
+// Admin: can update any field for any user
+// Employee: can only update their OWN password (for mustChangePassword flow)
+router.patch("/users/:id", requireAuth, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(rawId, 10);
+  const currentUser = (req as any).user;
 
+  // ── Non-admin path: self-service password change only ─────────────────────
+  if (currentUser.role !== "admin") {
+    if (currentUser.id !== id) {
+      res.status(403).json({ error: "You can only update your own account" });
+      return;
+    }
+
+    const { password } = req.body;
+    if (!password) {
+      res.status(400).json({ error: "Password is required" });
+      return;
+    }
+
+    const complexityError = validatePasswordComplexity(password);
+    if (complexityError) {
+      res.status(400).json({ error: complexityError });
+      return;
+    }
+
+    const [user] = await db
+      .update(usersTable)
+      .set({ passwordHash: hashPassword(password), mustChangePassword: false })
+      .where(eq(usersTable.id, id))
+      .returning();
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const { passwordHash: _, ...safeUser } = user;
+    res.json(safeUser);
+    return;
+  }
+
+  // ── Admin path: full update ───────────────────────────────────────────────
   const { username, email, password, role, permissions, maxSessions, isActive } = req.body;
   const updates: any = {};
 

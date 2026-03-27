@@ -10,10 +10,20 @@ import { writeAuditLog } from "../lib/audit";
 
 const router: IRouter = Router();
 
+// ── Security: strip webhookSecret from every session object sent to clients ──
+// The secret is write-only: users set it, but it should never be returned.
+// We expose a boolean `webhookSecretConfigured` so the UI can show status.
+function sanitizeSession(session: any) {
+  const { webhookSecret, ...rest } = session;
+  return {
+    ...rest,
+    webhookSecretConfigured: webhookSecret !== null && webhookSecret !== undefined,
+  };
+}
+
 /** Check if an employee owns a session (or is admin). Returns 403 if not. */
 function canAccessSession(user: any, session: any, res: any): boolean {
   if (user.role === "admin") return true;
-  // Employees can only access sessions they own
   if (session.userId !== user.id) {
     res.status(403).json({ error: "Access denied: this session belongs to another user" });
     return false;
@@ -24,7 +34,7 @@ function canAccessSession(user: any, session: any, res: any): boolean {
 /** Check if API key allows access to a session. Returns 403 if not. */
 function canApiKeyAccessSession(req: any, sessionId: string, res: any): boolean {
   const apiKeyRecord = (req as any).apiKeyRecord;
-  if (!apiKeyRecord) return true; // not API key auth
+  if (!apiKeyRecord) return true;
   if (!apiKeyAllowsSession(apiKeyRecord, sessionId)) {
     res.status(403).json({ error: "This API key is not authorized to access this session" });
     return false;
@@ -44,7 +54,6 @@ router.get("/sessions", requireAuth, async (req, res): Promise<void> => {
       .from(whatsappSessionsTable)
       .orderBy(whatsappSessionsTable.createdAt);
   } else {
-    // Employee: only their own sessions
     sessions = await db
       .select()
       .from(whatsappSessionsTable)
@@ -52,7 +61,6 @@ router.get("/sessions", requireAuth, async (req, res): Promise<void> => {
       .orderBy(whatsappSessionsTable.createdAt);
   }
 
-  // If API key has session restrictions, filter further
   if (apiKeyRecord?.allowedSessionIds) {
     try {
       const allowed: string[] = JSON.parse(apiKeyRecord.allowedSessionIds);
@@ -62,7 +70,7 @@ router.get("/sessions", requireAuth, async (req, res): Promise<void> => {
     } catch { /* ignore */ }
   }
 
-  res.json(sessions);
+  res.json(sessions.map(sanitizeSession));
 });
 
 // POST /sessions
@@ -74,16 +82,13 @@ router.post("/sessions", requireAuth, async (req, res): Promise<void> => {
     return;
   }
 
-  // Check permission
   if (user.role !== "admin") {
-    // Check granular permission: createSession
     const perms = user.permissions ? (() => { try { return JSON.parse(user.permissions); } catch { return null; } })() : null;
     if (perms && Object.keys(perms).length > 0 && perms["createSession"] === false) {
       res.status(403).json({ error: "You do not have permission to create sessions" });
       return;
     }
 
-    // Check maxSessions limit
     if (user.maxSessions !== null && user.maxSessions !== undefined) {
       const [{ value: currentCount }] = await db
         .select({ value: count() })
@@ -118,7 +123,7 @@ router.post("/sessions", requireAuth, async (req, res): Promise<void> => {
     ipAddress: req.ip,
   });
 
-  res.status(201).json(session);
+  res.status(201).json(sanitizeSession(session));
 });
 
 // GET /sessions/:id
@@ -139,7 +144,7 @@ router.get("/sessions/:id", requireAuth, async (req, res): Promise<void> => {
   if (!canAccessSession(user, session, res)) return;
   if (!canApiKeyAccessSession(req, id, res)) return;
 
-  res.json(session);
+  res.json(sanitizeSession(session));
 });
 
 // DELETE /sessions/:id
@@ -155,7 +160,6 @@ router.delete("/sessions/:id", requireAuth, async (req, res): Promise<void> => {
 
   if (!canAccessSession(user, existing, res)) return;
 
-  // Check granular permission: deleteSession
   if (user.role !== "admin") {
     const perms = user.permissions ? (() => { try { return JSON.parse(user.permissions); } catch { return null; } })() : null;
     if (perms && Object.keys(perms).length > 0 && perms["deleteSession"] === false) {
@@ -164,7 +168,6 @@ router.delete("/sessions/:id", requireAuth, async (req, res): Promise<void> => {
     }
   }
 
-  // Full cleanup: stop browser + delete token files from disk
   try {
     await deleteSessionFiles(id);
   } catch (e) {
@@ -341,7 +344,6 @@ router.get("/sessions/:id/messages", requireAuth, async (req, res): Promise<void
 
   if (!canAccessSession(user, session, res)) return;
 
-  // Check granular permission: viewMessages
   if (user.role !== "admin") {
     const perms = user.permissions ? (() => { try { return JSON.parse(user.permissions); } catch { return null; } })() : null;
     if (perms && Object.keys(perms).length > 0 && perms["viewMessages"] === false) {
@@ -350,8 +352,9 @@ router.get("/sessions/:id/messages", requireAuth, async (req, res): Promise<void
     }
   }
 
-  const limit = parseInt((req.query.limit as string) || "50", 10);
-  const offset = parseInt((req.query.offset as string) || "0", 10);
+  // Cap limit at 500 to prevent large data dumps in a single request
+  const limit = Math.min(parseInt((req.query.limit as string) || "50", 10), 500);
+  const offset = Math.max(parseInt((req.query.offset as string) || "0", 10), 0);
 
   const messages = await db
     .select()
@@ -377,7 +380,6 @@ router.patch("/sessions/:id/webhook", requireAuth, async (req, res): Promise<voi
 
   if (!canAccessSession(user, existing, res)) return;
 
-  // Check granular permission: manageWebhook
   if (user.role !== "admin") {
     const perms = user.permissions ? (() => { try { return JSON.parse(user.permissions); } catch { return null; } })() : null;
     if (perms && Object.keys(perms).length > 0 && perms["manageWebhook"] === false) {
@@ -387,6 +389,20 @@ router.patch("/sessions/:id/webhook", requireAuth, async (req, res): Promise<voi
   }
 
   const { webhookUrl, webhookEvents, webhookSecret } = req.body;
+
+  // Validate URL format if provided
+  if (webhookUrl) {
+    try {
+      const parsed = new URL(webhookUrl);
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+        res.status(400).json({ error: "Webhook URL must use http:// or https://" });
+        return;
+      }
+    } catch {
+      res.status(400).json({ error: "Invalid webhook URL format" });
+      return;
+    }
+  }
 
   const [session] = await db
     .update(whatsappSessionsTable)
@@ -403,7 +419,7 @@ router.patch("/sessions/:id/webhook", requireAuth, async (req, res): Promise<voi
     return;
   }
 
-  res.json(session);
+  res.json(sanitizeSession(session));
 });
 
 // PATCH /sessions/:id/features
@@ -432,7 +448,7 @@ router.patch("/sessions/:id/features", requireAuth, async (req, res): Promise<vo
     return;
   }
 
-  res.json(session);
+  res.json(sanitizeSession(session));
 });
 
 export default router;
