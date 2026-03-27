@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "export NODE_ENV=development && pnpm run chrome:ensure && pnpm run build && pnpm run start",
-    "chrome:ensure": "node -e \"const{existsSync}=require('fs');const p='/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome';if(!existsSync(p)){const{execSync}=require('child_process');console.log('Downloading Chrome...');execSync('/home/runner/workspace/node_modules/.pnpm/node_modules/.bin/puppeteer browsers install chrome',{stdio:'inherit',timeout:180000});console.log('Chrome ready');}else{console.log('Chrome already cached');}\"",
+    "chrome:ensure": "node -e \"const{existsSync}=require('fs');const{execSync}=require('child_process');const p='/home/runner/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome';if(!existsSync(p)){console.log('Downloading Chrome...');const puppeteerBin=execSync('find /home/runner/workspace/node_modules/.pnpm -name puppeteer -maxdepth 5 -type d 2>/dev/null | head -1',{encoding:'utf8'}).trim()+'/lib/esm/puppeteer/node/install.js';execSync('node '+puppeteerBin,{stdio:'inherit',timeout:180000});console.log('Chrome ready');}else{console.log('Chrome already cached');}\"",
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
