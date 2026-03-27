@@ -1,0 +1,20 @@
+FROM node:20-alpine
+
+RUN npm install -g pnpm@10
+
+WORKDIR /app
+
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./
+COPY lib/ ./lib/
+COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/
+
+# Install all dependencies including devDependencies
+RUN pnpm install --frozen-lockfile
+
+ENV BASE_PATH=/
+ENV PORT=5000
+ENV NODE_ENV=development
+
+EXPOSE 5000
+
+CMD ["pnpm", "--filter", "@workspace/whatsapp-dashboard", "run", "dev"]

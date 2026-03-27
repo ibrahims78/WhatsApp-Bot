@@ -165,7 +165,110 @@
     docker exec -i whatsapp_manager_v1-db-1 psql -U wauser whatsapp_manager_db < backup.sql
 
 -----------------------------------------------------------
-7. استكشاف الأخطاء
+7. وضع التطوير (Development Mode)
+-----------------------------------------------------------
+
+وضع التطوير يختلف عن الإنتاج بما يلي:
+  - لوحة التحكم تعمل بخادم Vite مع HMR (تحديث فوري بدون رفرشة)
+  - API يعمل بـ NODE_ENV=development (رسائل خطأ مفصلة)
+  - الكود المصدري مرتبط مباشرة بالحاوية (تعديل الملفات يظهر فوراً)
+  - قاعدة بيانات وـ Volumes منفصلة عن الإنتاج (لا تداخل)
+
+أ. تثبيت وضع التطوير (أول مرة):
+   - انقر بزر الأيمن على start_dev.bat → تشغيل كمسؤول
+   - انتظر 5-15 دقيقة للبناء
+
+ب. تشغيل يومي لوضع التطوير:
+   - استخدم اختصار "WhatsApp Manager Dev" على سطح المكتب
+   - أو شغّل run_dev.bat مباشرة
+
+ج. كيف تعمل HMR للوحة التحكم:
+   - عدّل أي ملف في artifacts/whatsapp-dashboard/src/
+   - التغييرات تظهر في المتصفح فوراً بدون إعادة تشغيل
+
+د. كيف تحدّث API بعد تعديل كوده:
+   - شغّل هذا الأمر لإعادة بناء وتشغيل API:
+     docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev restart api
+
+   - أو لإعادة البناء الكاملة:
+     cd C:\whatsapp-manager
+     docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev up -d --build api
+
+هـ. أوامر وضع التطوير:
+   من مجلد C:\whatsapp-manager :
+
+   حالة الحاويات:
+     docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev ps
+
+   سجلات حية:
+     docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev logs -f
+
+   سجلات dashboard فقط (HMR):
+     docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev logs -f dashboard
+
+   إيقاف وضع التطوير:
+     docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev stop
+
+-----------------------------------------------------------
+8. تحديث البرنامج من GitHub
+-----------------------------------------------------------
+
+عند نشر تحديث جديد على GitHub، اتبع إحدى الطريقتين:
+
+الطريقة الأولى: تلقائية (الأسهل)
+   - انقر نقراً مزدوجاً على ملف update_wa.bat
+   - اختر ما تريد تحديثه: إنتاج / تطوير / كلاهما
+   - انتظر اكتمال البناء ويفتح المتصفح تلقائياً
+
+الطريقة الثانية: يدوية (للمتقدمين)
+   - افتح موجه الأوامر وانتقل إلى C:\whatsapp-manager
+   - نزّل التحديثات من GitHub:
+       git pull origin main
+
+   - لتحديث الإنتاج:
+       docker-compose -p whatsapp_manager_v1 build --no-cache
+       docker-compose -p whatsapp_manager_v1 up -d
+
+   - لتحديث التطوير:
+       docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev build --no-cache
+       docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev up -d
+
+ملاحظات مهمة عند التحديث:
+  - بيانات قاعدة البيانات (جلسات، مستخدمون) تُحفظ تلقائياً في Volumes
+  - لا حاجة لإعادة مسح QR كود بعد التحديث في الغالب
+  - JWT_SECRET يبقى كما هو (المستخدمون لا يُجبرون على إعادة تسجيل الدخول)
+  - إذا كان التحديث يحتوي تغييرات في قاعدة البيانات،
+    entrypoint.sh يُطبّقها تلقائياً عند بدء التشغيل
+
+-----------------------------------------------------------
+9. ملخص الملفات الكاملة
+-----------------------------------------------------------
+
+ملفات الإنتاج:
+  Dockerfile.api          صورة API مع Chromium (إنتاج)
+  Dockerfile.dashboard    صورة Dashboard + nginx (إنتاج)
+  docker-compose.yml      تشغيل الإنتاج
+  entrypoint.sh           migration + تشغيل API (إنتاج)
+  nginx.conf              proxy + static files
+  start_wa.bat            تثبيت إنتاج أول مرة
+  run_wa.bat              تشغيل يومي إنتاج
+
+ملفات التطوير:
+  Dockerfile.api.dev      صورة API مع Chromium (تطوير)
+  Dockerfile.dashboard.dev صورة Dashboard + Vite dev server
+  docker-compose.dev.yml  تشغيل التطوير مع HMR
+  entrypoint.dev.sh       migration + build + تشغيل API (تطوير)
+  start_dev.bat           تثبيت تطوير أول مرة
+  run_dev.bat             تشغيل يومي تطوير
+
+مشترك:
+  .env                    يُنشأ تلقائياً بـ JWT_SECRET عشوائي
+  .dockerignore           استبعاد ملفات غير ضرورية من البناء
+  update_wa.bat           تحديث من GitHub (إنتاج + تطوير)
+  دليل_الإعداد.txt        هذا الملف
+
+-----------------------------------------------------------
+10. استكشاف الأخطاء
 -----------------------------------------------------------
 
 مشكلة: الصفحة لا تفتح بعد التثبيت
@@ -178,15 +281,20 @@
   → تأكد من وجود مساحة كافية على القرص C
 
 مشكلة: المنفذ 5005 مشغول
-  → افتح .env وغيّر APP_PORT=5001
+  → افتح .env وغيّر APP_PORT إلى منفذ آخر (مثل 5006)
   → أعد تشغيل: docker-compose -p whatsapp_manager_v1 up -d
 
 مشكلة: واتساب لا يُعيد الاتصال
   → الـ Volumes تحفظ جلسات واتساب، لكن إذا مرّ وقت طويل قد تنتهي
   → افتح لوحة التحكم وامسح QR كود مجدداً
 
+مشكلة: HMR لا يعمل في وضع التطوير
+  → تأكد أن الملفات التي تعدّلها داخل artifacts/whatsapp-dashboard/src/
+  → أعد تشغيل حاوية dashboard:
+      docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev restart dashboard
+
 -----------------------------------------------------------
-8. الأمان
+11. الأمان
 -----------------------------------------------------------
 
   - JWT_SECRET يُولَّد تلقائياً بشكل عشوائي آمن عند أول تثبيت
