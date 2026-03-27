@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, boolean, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -8,7 +8,8 @@ export const usersTable = pgTable("users", {
   email: text("email"),
   passwordHash: text("password_hash").notNull(),
   role: text("role").notNull().default("employee"), // admin | employee
-  permissions: text("permissions"), // JSON string of allowed permissions
+  permissions: text("permissions"), // JSON string of granular permissions per action
+  maxSessions: integer("max_sessions"), // null = unlimited, set by admin for employees
   isActive: boolean("is_active").notNull().default(true),
   mustChangePassword: boolean("must_change_password").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

@@ -21,8 +21,9 @@ router.get("/users", requireAuth, requireAdmin, async (req, res): Promise<void> 
 });
 
 // POST /users
+// Body: { username, email?, password, role, permissions?, maxSessions? }
 router.post("/users", requireAuth, requireAdmin, async (req, res): Promise<void> => {
-  const { username, email, password, role, permissions } = req.body;
+  const { username, email, password, role, permissions, maxSessions } = req.body;
   if (!username || !password || !role) {
     res.status(400).json({ error: "Username, password, and role are required" });
     return;
@@ -34,10 +35,29 @@ router.post("/users", requireAuth, requireAdmin, async (req, res): Promise<void>
     return;
   }
 
+  // Serialize permissions
+  let permissionsJson: string | null = null;
+  if (permissions && typeof permissions === "object") {
+    permissionsJson = JSON.stringify(permissions);
+  } else if (typeof permissions === "string") {
+    permissionsJson = permissions;
+  }
+
+  const maxSessionsVal = maxSessions !== undefined && maxSessions !== null && maxSessions !== ""
+    ? parseInt(String(maxSessions), 10)
+    : null;
+
   const passwordHash = hashPassword(password);
   const [user] = await db
     .insert(usersTable)
-    .values({ username, email: email || null, passwordHash, role, permissions: permissions || null })
+    .values({
+      username,
+      email: email || null,
+      passwordHash,
+      role,
+      permissions: permissionsJson,
+      maxSessions: isNaN(maxSessionsVal as any) ? null : maxSessionsVal,
+    })
     .returning();
 
   const { passwordHash: _, ...safeUser } = user;
@@ -66,11 +86,12 @@ router.get("/users/:id", requireAuth, async (req, res): Promise<void> => {
 });
 
 // PATCH /users/:id
+// Supports: username, email, password, role, permissions, maxSessions, isActive
 router.patch("/users/:id", requireAuth, requireAdmin, async (req, res): Promise<void> => {
   const rawId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(rawId, 10);
 
-  const { username, email, password, role, permissions, isActive } = req.body;
+  const { username, email, password, role, permissions, maxSessions, isActive } = req.body;
   const updates: any = {};
 
   if (username !== undefined) updates.username = username;
@@ -85,7 +106,23 @@ router.patch("/users/:id", requireAuth, requireAdmin, async (req, res): Promise<
     updates.mustChangePassword = false;
   }
   if (role !== undefined) updates.role = role;
-  if (permissions !== undefined) updates.permissions = permissions;
+  if (permissions !== undefined) {
+    if (permissions === null) {
+      updates.permissions = null;
+    } else if (typeof permissions === "object") {
+      updates.permissions = JSON.stringify(permissions);
+    } else {
+      updates.permissions = permissions;
+    }
+  }
+  if (maxSessions !== undefined) {
+    if (maxSessions === null || maxSessions === "" || maxSessions === 0) {
+      updates.maxSessions = null;
+    } else {
+      const val = parseInt(String(maxSessions), 10);
+      updates.maxSessions = isNaN(val) ? null : val;
+    }
+  }
   if (isActive !== undefined) updates.isActive = isActive;
 
   const [user] = await db

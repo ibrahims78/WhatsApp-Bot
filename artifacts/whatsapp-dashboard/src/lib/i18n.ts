@@ -23,6 +23,12 @@ export const translations = {
     not_found: "Not Found",
     created_at: "Created",
     important: "Important!",
+    unlimited: "Unlimited",
+    owner: "Owner",
+    none: "None",
+    all_sessions: "All Sessions",
+    restrict: "Restrict",
+    session_restrictions: "Session Restrictions",
 
     // Nav
     nav_menu: "Navigation",
@@ -111,7 +117,7 @@ export const translations = {
     sd_webhook_payload: "What n8n receives for each message",
     
     // Users
-    user_subtitle: "Manage system access and roles",
+    user_subtitle: "Manage system access, roles, and permissions",
     user_add_new: "Add User",
     user_username: "Username",
     user_role: "Role",
@@ -136,6 +142,23 @@ export const translations = {
     force_change_mismatch: "Passwords do not match",
     force_change_btn: "Update Password",
     force_change_success: "Password updated successfully",
+    // User permissions
+    user_max_sessions: "Max Sessions",
+    user_max_sessions_hint: "Maximum number of WhatsApp sessions this user can create (leave empty for unlimited)",
+    user_permissions_title: "Granular Permissions",
+    user_permissions_hint: "Control exactly what this user can do. Leave all unchecked to allow everything.",
+    user_perm_sendText: "Send Text Messages",
+    user_perm_sendImage: "Send Images",
+    user_perm_sendVideo: "Send Videos",
+    user_perm_sendAudio: "Send Audio",
+    user_perm_sendFile: "Send Files",
+    user_perm_sendLocation: "Send Location",
+    user_perm_sendSticker: "Send Stickers",
+    user_perm_createSession: "Create Sessions",
+    user_perm_deleteSession: "Delete Sessions",
+    user_perm_viewMessages: "View Message History",
+    user_perm_manageWebhook: "Manage Webhooks",
+    user_sessions_count: "Sessions",
     
     // API Keys
     key_subtitle: "Manage API keys for programmatic access",
@@ -153,6 +176,14 @@ export const translations = {
     key_n8n_desc: "Download a ready-to-import n8n workflow with AI reply support. Your server URL is pre-configured — just add your API key credential in n8n after importing.",
     key_n8n_download: "Download n8n Workflow",
     key_n8n_guide: "View Setup Guide",
+    key_owner: "Owner",
+    key_sessions: "Sessions",
+    key_sessions_all: "All Sessions",
+    key_sessions_restricted: "Restricted",
+    key_restrict_title: "Restrict API Key to Sessions",
+    key_restrict_desc: "Select which sessions this API key is allowed to access. Leave all unselected to allow access to all sessions.",
+    key_restrict_save: "Save Restrictions",
+    key_for_user: "For User",
 
     // Send
     send_title: "Send Message",
@@ -210,6 +241,12 @@ export const translations = {
     not_found: "غير موجود",
     created_at: "تاريخ الإنشاء",
     important: "تنبيه!",
+    unlimited: "غير محدود",
+    owner: "المالك",
+    none: "لا شيء",
+    all_sessions: "كل الجلسات",
+    restrict: "تقييد",
+    session_restrictions: "تقييد الجلسات",
 
     // Nav
     nav_menu: "التنقل",
@@ -298,7 +335,7 @@ export const translations = {
     sd_webhook_payload: "ما يستقبله n8n عند كل رسالة",
     
     // Users
-    user_subtitle: "إدارة صلاحيات الوصول والأدوار",
+    user_subtitle: "إدارة صلاحيات الوصول والأدوار والتصاريح",
     user_add_new: "إضافة مستخدم",
     user_username: "اسم المستخدم",
     user_role: "الدور",
@@ -323,6 +360,23 @@ export const translations = {
     force_change_mismatch: "كلمتا المرور غير متطابقتين",
     force_change_btn: "تحديث كلمة المرور",
     force_change_success: "تم تحديث كلمة المرور بنجاح",
+    // User permissions
+    user_max_sessions: "الحد الأقصى للجلسات",
+    user_max_sessions_hint: "الحد الأقصى لعدد جلسات واتساب التي يمكن للمستخدم إنشاؤها (اتركه فارغاً لعدم التحديد)",
+    user_permissions_title: "الصلاحيات التفصيلية",
+    user_permissions_hint: "تحكم بما يمكن للمستخدم فعله بالضبط. اتركها جميعاً غير محددة للسماح بكل شيء.",
+    user_perm_sendText: "إرسال رسائل نصية",
+    user_perm_sendImage: "إرسال صور",
+    user_perm_sendVideo: "إرسال مقاطع فيديو",
+    user_perm_sendAudio: "إرسال مقاطع صوتية",
+    user_perm_sendFile: "إرسال ملفات",
+    user_perm_sendLocation: "إرسال الموقع",
+    user_perm_sendSticker: "إرسال ملصقات",
+    user_perm_createSession: "إنشاء جلسات",
+    user_perm_deleteSession: "حذف جلسات",
+    user_perm_viewMessages: "عرض سجل الرسائل",
+    user_perm_manageWebhook: "إدارة الـ Webhook",
+    user_sessions_count: "الجلسات",
     
     // API Keys
     key_subtitle: "إدارة مفاتيح API للوصول البرمجي",
@@ -340,6 +394,14 @@ export const translations = {
     key_n8n_desc: "حمّل ورك فلو n8n جاهزاً للاستيراد مع دعم الرد بالذكاء الاصطناعي. رابط خادمك محقون تلقائياً — فقط أضف بيانات اعتماد مفتاح الـ API في n8n بعد الاستيراد.",
     key_n8n_download: "تحميل ورك فلو n8n",
     key_n8n_guide: "عرض دليل الإعداد",
+    key_owner: "المالك",
+    key_sessions: "الجلسات",
+    key_sessions_all: "كل الجلسات",
+    key_sessions_restricted: "مقيّد",
+    key_restrict_title: "تقييد مفتاح API بجلسات محددة",
+    key_restrict_desc: "اختر الجلسات التي يُسمح لهذا المفتاح بالوصول إليها. اتركها جميعاً غير محددة للسماح بالوصول لكل الجلسات.",
+    key_restrict_save: "حفظ التقييد",
+    key_for_user: "لمستخدم",
 
     // Send
     send_title: "إرسال رسالة",

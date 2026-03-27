@@ -4,6 +4,7 @@ import { z } from "zod/v4";
 
 export const whatsappSessionsTable = pgTable("whatsapp_sessions", {
   id: text("id").primaryKey(), // e.g. "session_001"
+  userId: integer("user_id"), // owner of the session (null = admin-owned / legacy)
   name: text("name").notNull(),
   phoneNumber: text("phone_number"),
   status: text("status").notNull().default("disconnected"), // disconnected | connecting | connected | banned

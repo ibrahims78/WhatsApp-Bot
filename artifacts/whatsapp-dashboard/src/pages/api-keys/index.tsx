@@ -1,14 +1,16 @@
 import { AppLayout } from "@/components/layout/app-layout";
-import { useListApiKeys, useCreateApiKey, useDeleteApiKey, getListApiKeysQueryKey } from "@workspace/api-client-react";
+import { useListApiKeys, useCreateApiKey, useDeleteApiKey, getListApiKeysQueryKey, useListSessions } from "@workspace/api-client-react";
 import { useAppStore } from "@/store";
 import { getTranslation } from "@/lib/i18n";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Trash2, Key, Copy, AlertTriangle, Code2, Terminal, Download, BookOpen } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Trash2, Key, Copy, AlertTriangle, Code2, Terminal, Download, BookOpen, Settings2, Shield } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -37,14 +39,33 @@ function CodeBlock({ code, onCopy }: { code: string; onCopy: () => void }) {
   );
 }
 
+type ApiKeyRow = {
+  id: number;
+  userId: number;
+  name: string;
+  keyPrefix: string;
+  allowedSessionIds?: string | null;
+  ownerUsername?: string;
+  createdAt: string;
+  lastUsedAt?: string | null;
+};
+
 export default function ApiKeys() {
   const { data: keys, isLoading } = useListApiKeys();
-  const { language } = useAppStore();
+  const { data: sessions } = useListSessions();
+  const { language, user: currentUser } = useAppStore();
   const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key);
   const isRTL = language === "ar";
+  const isAdmin = currentUser?.role === "admin";
+
   const [isOpen, setIsOpen] = useState(false);
   const [newSecret, setNewSecret] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  // Restrict sessions dialog
+  const [restrictingKey, setRestrictingKey] = useState<ApiKeyRow | null>(null);
+  const [selectedSessions, setSelectedSessions] = useState<string[]>([]);
+
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -83,7 +104,7 @@ export default function ApiKeys() {
     mutation: {
       onSuccess: (data) => {
         queryClient.invalidateQueries({ queryKey: getListApiKeysQueryKey() });
-        setNewSecret(data.secret);
+        setNewSecret((data as any).secret);
         form.reset();
       },
       onError: () => toast({ variant: "destructive", title: t('error') })
@@ -105,6 +126,53 @@ export default function ApiKeys() {
     navigator.clipboard.writeText(text);
     toast({ title: t('copied') });
   };
+
+  // Open restrict sessions dialog for a key
+  function openRestrict(key: ApiKeyRow) {
+    setRestrictingKey(key);
+    try {
+      const current = key.allowedSessionIds ? JSON.parse(key.allowedSessionIds) : [];
+      setSelectedSessions(Array.isArray(current) ? current : []);
+    } catch {
+      setSelectedSessions([]);
+    }
+  }
+
+  async function saveRestrictions() {
+    if (!restrictingKey) return;
+    try {
+      await fetch(`/api/api-keys/${restrictingKey.id}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ allowedSessionIds: selectedSessions }),
+      });
+      queryClient.invalidateQueries({ queryKey: getListApiKeysQueryKey() });
+      toast({ title: t("success") });
+      setRestrictingKey(null);
+    } catch {
+      toast({ variant: "destructive", title: t("error") });
+    }
+  }
+
+  function getAllowedLabel(key: ApiKeyRow): React.ReactNode {
+    if (!key.allowedSessionIds) return <span className="text-xs text-muted-foreground">{t("key_sessions_all")}</span>;
+    try {
+      const ids: string[] = JSON.parse(key.allowedSessionIds);
+      if (ids.length === 0) return <span className="text-xs text-muted-foreground">{t("key_sessions_all")}</span>;
+      const names = ids.map((id) => {
+        const sess = (sessions as any[])?.find((s: any) => s.id === id);
+        return sess?.name || id;
+      });
+      return (
+        <Badge variant="outline" className="text-xs max-w-[160px] truncate" title={names.join(", ")}>
+          {names.length === 1 ? names[0] : `${names.length} ${t("key_sessions")}`}
+        </Badge>
+      );
+    } catch {
+      return <span className="text-xs text-muted-foreground">{t("key_sessions_all")}</span>;
+    }
+  }
 
   const curlExample = `curl -X POST https://your-app.replit.app/api/sessions/{SESSION_ID}/send/text \\
   -H "X-API-Key: sk_xxxxxxxxxxxxxxxx" \\
@@ -172,6 +240,46 @@ export default function ApiKeys() {
           </Dialog>
         </div>
 
+        {/* Restrict Sessions Dialog (Admin only) */}
+        <Dialog open={!!restrictingKey} onOpenChange={(open) => { if (!open) setRestrictingKey(null); }}>
+          <DialogContent className="glass-card sm:max-w-[420px]">
+            <DialogHeader>
+              <DialogTitle>{t("key_restrict_title")}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 pt-2">
+              <p className="text-sm text-muted-foreground">{t("key_restrict_desc")}</p>
+              {restrictingKey && (
+                <div className="text-sm font-medium text-muted-foreground mb-1">
+                  {t("key_for_user")}: <span className="text-foreground font-semibold">{restrictingKey.ownerUsername}</span>
+                </div>
+              )}
+              <div className="space-y-2 max-h-56 overflow-y-auto">
+                {(sessions as any[])?.length === 0 && (
+                  <p className="text-xs text-muted-foreground">{t("none")}</p>
+                )}
+                {(sessions as any[])?.map((sess: any) => (
+                  <label key={sess.id} className="flex items-center gap-2.5 cursor-pointer text-sm hover:text-foreground">
+                    <Checkbox
+                      checked={selectedSessions.includes(sess.id)}
+                      onCheckedChange={(checked) => {
+                        setSelectedSessions((prev) =>
+                          checked ? [...prev, sess.id] : prev.filter((id) => id !== sess.id)
+                        );
+                      }}
+                    />
+                    <span>{sess.name}</span>
+                    <span className="text-xs text-muted-foreground font-mono ms-auto" dir="ltr">{sess.id.slice(0, 14)}…</span>
+                  </label>
+                ))}
+              </div>
+              <div className="flex gap-2 pt-2">
+                <Button variant="outline" className="flex-1" onClick={() => setRestrictingKey(null)}>{t("cancel")}</Button>
+                <Button className="flex-1" onClick={saveRestrictions}>{t("key_restrict_save")}</Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         <Card className="glass-card">
           <CardContent className="p-0">
             <Table>
@@ -179,16 +287,18 @@ export default function ApiKeys() {
                 <TableRow>
                   <TableHead>{t('name')}</TableHead>
                   <TableHead>{t('key_prefix')}</TableHead>
+                  {isAdmin && <TableHead>{t('key_owner')}</TableHead>}
+                  {isAdmin && <TableHead>{t('key_sessions')}</TableHead>}
                   <TableHead>{t('created_at')}</TableHead>
                   <TableHead className="text-end">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {isLoading ? (
-                  <TableRow><TableCell colSpan={4} className="text-center py-8">{t('loading')}</TableCell></TableRow>
-                ) : keys?.length === 0 ? (
-                  <TableRow><TableCell colSpan={4} className="text-center py-8 text-muted-foreground">{t('key_empty')}</TableCell></TableRow>
-                ) : keys?.map(k => (
+                  <TableRow><TableCell colSpan={isAdmin ? 6 : 4} className="text-center py-8">{t('loading')}</TableCell></TableRow>
+                ) : (keys as ApiKeyRow[] | undefined)?.length === 0 ? (
+                  <TableRow><TableCell colSpan={isAdmin ? 6 : 4} className="text-center py-8 text-muted-foreground">{t('key_empty')}</TableCell></TableRow>
+                ) : (keys as ApiKeyRow[] | undefined)?.map(k => (
                   <TableRow key={k.id} className="hover:bg-muted/30">
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-3">
@@ -197,21 +307,56 @@ export default function ApiKeys() {
                       </div>
                     </TableCell>
                     <TableCell className="font-mono text-sm text-muted-foreground" dir="ltr">{k.keyPrefix}••••••••</TableCell>
+                    {isAdmin && (
+                      <TableCell>
+                        <div className="flex items-center gap-1.5 text-sm">
+                          <Shield className="w-3.5 h-3.5 text-muted-foreground" />
+                          {k.ownerUsername || "—"}
+                        </div>
+                      </TableCell>
+                    )}
+                    {isAdmin && (
+                      <TableCell>{getAllowedLabel(k)}</TableCell>
+                    )}
                     <TableCell className="text-muted-foreground">{new Date(k.createdAt).toLocaleDateString()}</TableCell>
                     <TableCell className="text-end">
-                      <Button 
-                        variant="ghost" 
-                        size="icon" 
-                        className="text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
-                        onClick={() => {
-                          if (confirm(t('are_you_sure_key'))) {
-                            deleteMutation.mutate({ id: k.id });
-                          }
-                        }}
-                        disabled={deleteMutation.isPending}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                      <div className="flex items-center justify-end gap-1">
+                        {/* Copy prefix to clipboard */}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="rounded-full"
+                          title={t("copied")}
+                          onClick={() => copyToClipboard(k.keyPrefix)}
+                        >
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                        {/* Restrict to sessions (admin only) */}
+                        {isAdmin && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="rounded-full"
+                            title={t("restrict")}
+                            onClick={() => openRestrict(k)}
+                          >
+                            <Settings2 className="w-4 h-4" />
+                          </Button>
+                        )}
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="text-destructive hover:text-destructive hover:bg-destructive/10 rounded-full"
+                          onClick={() => {
+                            if (confirm(t('are_you_sure_key'))) {
+                              deleteMutation.mutate({ id: k.id });
+                            }
+                          }}
+                          disabled={deleteMutation.isPending}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

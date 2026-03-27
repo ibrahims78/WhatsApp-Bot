@@ -1,9 +1,10 @@
 import { Router, type IRouter } from "express";
 import { db, whatsappSessionsTable, messagesTable } from "@workspace/db";
 import { eq, sql } from "drizzle-orm";
-import { requireAuth } from "../lib/auth";
+import { requireAuth, hasPermission, apiKeyAllowsSession } from "../lib/auth";
 import { getClient } from "../lib/whatsapp-manager";
 import { logger } from "../lib/logger";
+import { writeAuditLog } from "../lib/audit";
 import { writeFileSync, unlinkSync, existsSync } from "fs";
 import { join } from "path";
 import { randomUUID } from "crypto";
@@ -385,22 +386,57 @@ async function sendSticker(sessionId: string, number: string, stickerUrl: string
   }
 }
 
+/**
+ * Check that the user has permission for a send action and that their API key
+ * (if used) allows access to the target session.
+ * Returns true if access is granted, false if the response was already sent.
+ */
+async function checkSendAccess(req: any, res: any, sessionId: string, action: string): Promise<boolean> {
+  const user = req.user;
+  const apiKeyRecord = req.apiKeyRecord;
+
+  // 1. Check if API key allows this session
+  if (apiKeyRecord && !apiKeyAllowsSession(apiKeyRecord, sessionId)) {
+    res.status(403).json({ success: false, error: "This API key is not authorized to access this session" });
+    return false;
+  }
+
+  // 2. Check employee session ownership (employees can only send via their own sessions)
+  if (user.role !== "admin") {
+    const [session] = await db.select({ userId: whatsappSessionsTable.userId })
+      .from(whatsappSessionsTable)
+      .where(eq(whatsappSessionsTable.id, sessionId));
+    if (session && session.userId !== null && session.userId !== user.id) {
+      res.status(403).json({ success: false, error: "Access denied: this session belongs to another user" });
+      return false;
+    }
+  }
+
+  // 3. Check granular user permission for this action
+  if (!hasPermission(user, action)) {
+    res.status(403).json({ success: false, error: `You do not have permission to perform: ${action}` });
+    return false;
+  }
+
+  return true;
+}
+
 // Flat routes: POST /send/*  (sessionId in body)
-router.post("/send/text",     requireAuth, (req, res) => sendText(req.body.sessionId,     req.body.number, req.body.message,  req, res));
-router.post("/send/image",    requireAuth, (req, res) => sendImage(req.body.sessionId,    req.body.number, req.body.imageUrl, req.body.caption, req, res));
-router.post("/send/video",    requireAuth, (req, res) => sendVideo(req.body.sessionId,    req.body.number, req.body.videoUrl, req.body.caption, req, res));
-router.post("/send/audio",    requireAuth, (req, res) => sendAudio(req.body.sessionId,    req.body.number, req.body.audioUrl, req, res));
-router.post("/send/file",     requireAuth, (req, res) => sendFile(req.body.sessionId,     req.body.number, req.body.fileUrl, req.body.fileName, req.body.caption, req, res));
-router.post("/send/location", requireAuth, (req, res) => sendLocation(req.body.sessionId, req.body.number, req.body.lat, req.body.lng, req.body.description, req, res));
-router.post("/send/sticker",  requireAuth, (req, res) => sendSticker(req.body.sessionId,  req.body.number, req.body.stickerUrl, req, res));
+router.post("/send/text",     requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.body.sessionId, "sendText"))     return; sendText(req.body.sessionId,     req.body.number, req.body.message,  req, res); });
+router.post("/send/image",    requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.body.sessionId, "sendImage"))    return; sendImage(req.body.sessionId,    req.body.number, req.body.imageUrl, req.body.caption, req, res); });
+router.post("/send/video",    requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.body.sessionId, "sendVideo"))    return; sendVideo(req.body.sessionId,    req.body.number, req.body.videoUrl, req.body.caption, req, res); });
+router.post("/send/audio",    requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.body.sessionId, "sendAudio"))    return; sendAudio(req.body.sessionId,    req.body.number, req.body.audioUrl, req, res); });
+router.post("/send/file",     requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.body.sessionId, "sendFile"))     return; sendFile(req.body.sessionId,     req.body.number, req.body.fileUrl, req.body.fileName, req.body.caption, req, res); });
+router.post("/send/location", requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.body.sessionId, "sendLocation")) return; sendLocation(req.body.sessionId, req.body.number, req.body.lat, req.body.lng, req.body.description, req, res); });
+router.post("/send/sticker",  requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.body.sessionId, "sendSticker"))  return; sendSticker(req.body.sessionId,  req.body.number, req.body.stickerUrl, req, res); });
 
 // RESTful routes: POST /sessions/:id/send/*  (sessionId in URL — used by n8n workflow)
-router.post("/sessions/:id/send/text",     requireAuth, (req, res) => sendText(req.params.id,     req.body.number, req.body.message,  req, res));
-router.post("/sessions/:id/send/image",    requireAuth, (req, res) => sendImage(req.params.id,    req.body.number, req.body.imageUrl, req.body.caption, req, res));
-router.post("/sessions/:id/send/video",    requireAuth, (req, res) => sendVideo(req.params.id,    req.body.number, req.body.videoUrl, req.body.caption, req, res));
-router.post("/sessions/:id/send/audio",    requireAuth, (req, res) => sendAudio(req.params.id,    req.body.number, req.body.audioUrl, req, res));
-router.post("/sessions/:id/send/file",     requireAuth, (req, res) => sendFile(req.params.id,     req.body.number, req.body.fileUrl, req.body.fileName, req.body.caption, req, res));
-router.post("/sessions/:id/send/location", requireAuth, (req, res) => sendLocation(req.params.id, req.body.number, req.body.lat, req.body.lng, req.body.description, req, res));
-router.post("/sessions/:id/send/sticker",  requireAuth, (req, res) => sendSticker(req.params.id,  req.body.number, req.body.stickerUrl, req, res));
+router.post("/sessions/:id/send/text",     requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.params.id, "sendText"))     return; sendText(req.params.id,     req.body.number, req.body.message,  req, res); });
+router.post("/sessions/:id/send/image",    requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.params.id, "sendImage"))    return; sendImage(req.params.id,    req.body.number, req.body.imageUrl, req.body.caption, req, res); });
+router.post("/sessions/:id/send/video",    requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.params.id, "sendVideo"))    return; sendVideo(req.params.id,    req.body.number, req.body.videoUrl, req.body.caption, req, res); });
+router.post("/sessions/:id/send/audio",    requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.params.id, "sendAudio"))    return; sendAudio(req.params.id,    req.body.number, req.body.audioUrl, req, res); });
+router.post("/sessions/:id/send/file",     requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.params.id, "sendFile"))     return; sendFile(req.params.id,     req.body.number, req.body.fileUrl, req.body.fileName, req.body.caption, req, res); });
+router.post("/sessions/:id/send/location", requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.params.id, "sendLocation")) return; sendLocation(req.params.id, req.body.number, req.body.lat, req.body.lng, req.body.description, req, res); });
+router.post("/sessions/:id/send/sticker",  requireAuth, async (req, res) => { if (!await checkSendAccess(req, res, req.params.id, "sendSticker"))  return; sendSticker(req.params.id,  req.body.number, req.body.stickerUrl, req, res); });
 
 export default router;

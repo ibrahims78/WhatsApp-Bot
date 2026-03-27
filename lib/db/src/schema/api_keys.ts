@@ -8,6 +8,7 @@ export const apiKeysTable = pgTable("api_keys", {
   name: text("name").notNull(),
   keyHash: text("key_hash").notNull().unique(),
   keyPrefix: text("key_prefix").notNull(),
+  allowedSessionIds: text("allowed_session_ids"), // JSON array of session IDs, null = all sessions allowed
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   lastUsedAt: timestamp("last_used_at", { withTimezone: true }),
 });

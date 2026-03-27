@@ -7,6 +7,7 @@ import sessionsRouter from "./sessions";
 import sendRouter from "./send";
 import n8nWorkflowRouter from "./n8n-workflow";
 import dashboardRouter from "./dashboard";
+import auditLogsRouter from "./audit-logs";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(sessionsRouter);
 router.use(sendRouter);
 router.use(n8nWorkflowRouter);
 router.use(dashboardRouter);
+router.use(auditLogsRouter);
 
 export default router;

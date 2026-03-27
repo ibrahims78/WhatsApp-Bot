@@ -28,6 +28,63 @@ export function verifyToken(token: string): { userId: number; role: string } | n
   }
 }
 
+/**
+ * Parse the user's granular permissions JSON.
+ * Returns null if no permissions set (means all allowed).
+ */
+export function parsePermissions(permissionsJson: string | null | undefined): Record<string, boolean> | null {
+  if (!permissionsJson) return null;
+  try {
+    const parsed = JSON.parse(permissionsJson);
+    if (typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)) {
+      return parsed as Record<string, boolean>;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Check if a user has permission for a specific action.
+ * Admins always have full access.
+ * If no permissions set for the user, all actions are allowed.
+ * If permissions set, the action must be explicitly true (or not present = allowed).
+ */
+export function hasPermission(user: any, action: string): boolean {
+  if (user.role === "admin") return true;
+  const perms = parsePermissions(user.permissions);
+  if (!perms || Object.keys(perms).length === 0) return true;
+  // If the key is missing → default allow; blocked only when explicitly false
+  return perms[action] !== false;
+}
+
+/**
+ * Parse allowed session IDs from API key record.
+ * Returns null if no restriction (all sessions allowed).
+ */
+export function parseAllowedSessionIds(json: string | null | undefined): string[] | null {
+  if (!json) return null;
+  try {
+    const parsed = JSON.parse(json);
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed as string[];
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Check if an API key allows access to a specific session.
+ * If no restriction set on the key → all sessions allowed.
+ */
+export function apiKeyAllowsSession(apiKeyRecord: any, sessionId: string): boolean {
+  if (!apiKeyRecord) return true;
+  const allowed = parseAllowedSessionIds(apiKeyRecord.allowedSessionIds);
+  if (!allowed) return true;
+  return allowed.includes(sessionId);
+}
+
 export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
   // Check Authorization header first (Bearer token)
   const authHeader = req.headers.authorization;
@@ -52,6 +109,8 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
           const [user] = await db.select().from(usersTable).where(eq(usersTable.id, keyRecord.userId));
           if (user && user.isActive) {
             (req as any).user = user;
+            // Attach the API key record so routes can check session restrictions
+            (req as any).apiKeyRecord = keyRecord;
             next();
             return;
           }
