@@ -1,5 +1,5 @@
 import { AppLayout } from "@/components/layout/app-layout";
-import { useListSessions, useCreateSession, getListSessionsQueryKey } from "@workspace/api-client-react";
+import { useListSessions, useCreateSession, useDeleteSession, getListSessionsQueryKey } from "@workspace/api-client-react";
 import { useAppStore } from "@/store";
 import { getTranslation } from "@/lib/i18n";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +10,9 @@ import { Plus, Smartphone, Trash2, ArrowRight, ArrowLeft } from "lucide-react";
 import { Link } from "wouter";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Sessions() {
   const { data: sessions, isLoading } = useListSessions();
@@ -18,18 +20,35 @@ export default function Sessions() {
   const t = (key: Parameters<typeof getTranslation>[1]) => getTranslation(language, key);
   const isRtl = language === 'ar';
   const queryClient = useQueryClient();
+  const { toast } = useToast();
+
   const createMutation = useCreateSession({
     mutation: {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getListSessionsQueryKey() });
         setIsOpen(false);
         setNewName("");
+      },
+      onError: (e: any) => {
+        toast({ variant: "destructive", title: t('error'), description: e?.response?.data?.error ?? t('error') });
       }
+    }
+  });
+
+  const deleteMutation = useDeleteSession({
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: getListSessionsQueryKey() });
+        setDeletingSessionId(null);
+        toast({ title: t('success') });
+      },
+      onError: () => toast({ variant: "destructive", title: t('error') })
     }
   });
 
   const [isOpen, setIsOpen] = useState(false);
   const [newName, setNewName] = useState("");
+  const [deletingSessionId, setDeletingSessionId] = useState<string | null>(null);
 
   const handleCreate = () => {
     if (newName.trim()) {
@@ -39,11 +58,17 @@ export default function Sessions() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'connected': return 'bg-green-500/10 text-green-500 border-green-500/20';
-      case 'connecting': return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
-      case 'banned': return 'bg-red-500/10 text-red-500 border-red-500/20';
-      default: return 'bg-muted text-muted-foreground border-border';
+      case 'connected':    return 'bg-green-500/10 text-green-500 border-green-500/20';
+      case 'connecting':   return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
+      case 'reconnecting': return 'bg-blue-500/10 text-blue-500 border-blue-500/20';
+      case 'banned':       return 'bg-red-500/10 text-red-500 border-red-500/20';
+      default:             return 'bg-muted text-muted-foreground border-border';
     }
+  };
+
+  const getStatusLabel = (status: string) => {
+    const key = `sess_status_${status}` as Parameters<typeof getTranslation>[1];
+    return getTranslation(language, key) || status;
   };
 
   return (
@@ -71,7 +96,9 @@ export default function Sessions() {
                   placeholder={t('sess_name_placeholder')}
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleCreate()}
                   className="bg-background"
+                  autoFocus
                 />
               </div>
               <DialogFooter>
@@ -84,6 +111,36 @@ export default function Sessions() {
           </Dialog>
         </div>
 
+        {/* Delete Confirmation */}
+        <AlertDialog
+          open={deletingSessionId !== null}
+          onOpenChange={(open) => { if (!open) setDeletingSessionId(null); }}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t('are_you_sure')}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {language === 'ar'
+                  ? 'سيتم حذف الجلسة نهائياً وقطع اتصال واتساب. لا يمكن التراجع عن هذا الإجراء.'
+                  : 'This session will be permanently deleted and WhatsApp disconnected. This action cannot be undone.'}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
+                onClick={() => {
+                  if (deletingSessionId) {
+                    deleteMutation.mutate({ id: deletingSessionId });
+                  }
+                }}
+              >
+                {t('delete')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
         {isLoading ? (
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {[1, 2, 3].map(i => <Card key={i} className="h-48 animate-pulse bg-card/50" />)}
@@ -94,24 +151,38 @@ export default function Sessions() {
               <Card key={session.id} className="glass-card group overflow-hidden flex flex-col hover:border-primary/50 transition-colors duration-300">
                 <CardHeader className="pb-4 border-b border-border/50 bg-muted/20">
                   <div className="flex justify-between items-start">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <Smartphone className="w-5 h-5 text-primary" />
                       </div>
-                      <div>
-                        <CardTitle className="text-lg">{session.name}</CardTitle>
-                        <p className="text-sm text-muted-foreground mt-0.5 font-mono">
+                      <div className="min-w-0">
+                        <CardTitle className="text-lg truncate">{session.name}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-0.5 font-mono truncate">
                           {session.phoneNumber || t('sess_no_number')}
                         </p>
                       </div>
                     </div>
+                    {/* Delete button */}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-destructive/60 hover:text-destructive hover:bg-destructive/10 rounded-full flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setDeletingSessionId(session.id);
+                      }}
+                      disabled={deleteMutation.isPending}
+                      title={t('delete')}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6 flex-1">
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-sm font-medium text-muted-foreground">{t('status')}</span>
                     <Badge variant="outline" className={`${getStatusColor(session.status)} px-3 py-1`}>
-                      {t(`sess_status_${session.status}` as Parameters<typeof getTranslation>[1]) || session.status}
+                      {getStatusLabel(session.status)}
                     </Badge>
                   </div>
                   <div className="grid grid-cols-2 gap-4 mt-6">

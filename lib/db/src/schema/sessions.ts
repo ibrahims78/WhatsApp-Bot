@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -7,7 +7,8 @@ export const whatsappSessionsTable = pgTable("whatsapp_sessions", {
   userId: integer("user_id"), // owner of the session (null = admin-owned / legacy)
   name: text("name").notNull(),
   phoneNumber: text("phone_number"),
-  status: text("status").notNull().default("disconnected"), // disconnected | connecting | connected | banned
+  status: text("status").notNull().default("disconnected"), // disconnected | connecting | connected | banned | notLogged
+  autoReconnect: boolean("auto_reconnect").notNull().default(true), // false = manually stopped, skip on boot
   webhookUrl: text("webhook_url"),
   webhookEvents: text("webhook_events"), // JSON array of event names
   features: text("features"), // JSON object of feature flags

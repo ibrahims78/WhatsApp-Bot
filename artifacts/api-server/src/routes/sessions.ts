@@ -3,7 +3,7 @@ import { db, whatsappSessionsTable, messagesTable } from "@workspace/db";
 import { eq, desc, and, gte, sql, count } from "drizzle-orm";
 import { requireAuth } from "../lib/auth";
 import { apiKeyAllowsSession } from "../lib/auth";
-import { startSession, stopSession, getQrCode, isBrowserActive } from "../lib/whatsapp-manager";
+import { startSession, stopSession, deleteSessionFiles, getQrCode, isBrowserActive } from "../lib/whatsapp-manager";
 import { v4 as uuidv4 } from "uuid";
 import { logger } from "../lib/logger";
 import { writeAuditLog } from "../lib/audit";
@@ -164,10 +164,11 @@ router.delete("/sessions/:id", requireAuth, async (req, res): Promise<void> => {
     }
   }
 
+  // Full cleanup: stop browser + delete token files from disk
   try {
-    await stopSession(id);
+    await deleteSessionFiles(id);
   } catch (e) {
-    logger.warn({ sessionId: id, err: e }, "Error stopping session during delete");
+    logger.warn({ sessionId: id, err: e }, "Error during session file cleanup");
   }
 
   const [session] = await db

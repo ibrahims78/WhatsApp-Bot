@@ -294,9 +294,10 @@ export async function startSession(sessionId: string): Promise<void> {
   cleanChromeLocks(sessionId);
   ensureChrome();
 
+  // Mark autoReconnect=true so server restarts will reconnect this session
   await db
     .update(whatsappSessionsTable)
-    .set({ status: "connecting" })
+    .set({ status: "connecting", autoReconnect: true })
     .where(eq(whatsappSessionsTable.id, sessionId));
   emitToAll("status", { sessionId, status: "connecting" });
 
@@ -562,7 +563,7 @@ export async function startSession(sessionId: string): Promise<void> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Stop session
+// Stop session  (manual disconnect — marks autoReconnect=false in DB)
 // ─────────────────────────────────────────────────────────────────────────────
 export async function stopSession(sessionId: string): Promise<void> {
   manuallyStopped.add(sessionId);
@@ -593,11 +594,32 @@ export async function stopSession(sessionId: string): Promise<void> {
 
   stopping.delete(sessionId);
 
+  // Mark autoReconnect=false so the session is NOT restarted on server reboot
   await db
     .update(whatsappSessionsTable)
-    .set({ status: "disconnected" })
+    .set({ status: "disconnected", autoReconnect: false })
     .where(eq(whatsappSessionsTable.id, sessionId));
   emitToAll("status", { sessionId, status: "disconnected" });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Delete session — full cleanup: stop browser + remove token files from disk
+// Called before deleting the DB record so the session never auto-starts again.
+// ─────────────────────────────────────────────────────────────────────────────
+export async function deleteSessionFiles(sessionId: string): Promise<void> {
+  // First stop the browser (also marks manuallyStopped so no reconnect fires)
+  await stopSession(sessionId);
+
+  // Remove the token folder from disk so wppconnect can't reuse old credentials
+  const tokenDir = path.join(TOKENS_DIR, sessionId);
+  if (existsSync(tokenDir)) {
+    try {
+      rmSync(tokenDir, { recursive: true, force: true });
+      logger.info({ sessionId }, "Token folder deleted");
+    } catch (e) {
+      logger.warn({ sessionId, err: e }, "Could not delete token folder");
+    }
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -623,12 +645,13 @@ export function isBrowserActive(sessionId: string): boolean {
 export async function initializeSessions(): Promise<void> {
   try {
     const allSessions = await db
-      .select({ id: whatsappSessionsTable.id, status: whatsappSessionsTable.status })
+      .select({ id: whatsappSessionsTable.id, status: whatsappSessionsTable.status, autoReconnect: whatsappSessionsTable.autoReconnect })
       .from(whatsappSessionsTable);
 
-    // Start all sessions except banned ones.
-    // wppconnect will use saved tokens to reconnect silently without showing QR.
-    const toStart = allSessions.filter((s) => s.status !== "banned");
+    // Only start sessions that have autoReconnect=true (i.e. NOT manually stopped by user).
+    // Banned sessions are also excluded.
+    // wppconnect uses saved tokens to reconnect silently without showing QR.
+    const toStart = allSessions.filter((s) => s.autoReconnect && s.status !== "banned");
 
     if (toStart.length === 0) {
       logger.info("No sessions found in DB — skipping auto-start");
