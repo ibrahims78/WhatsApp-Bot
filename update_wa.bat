@@ -21,12 +21,8 @@ set /p mode=Enter choice (1/2):
 echo.
 echo [1/4] Pulling latest code from GitHub...
 cd /d "%installDir%"
-git pull origin main 2>nul || git pull origin master 2>nul
-if %errorlevel% neq 0 (
-    echo ERROR: Failed to pull from GitHub. Check your connection.
-    pause
-    exit /B 1
-)
+git pull origin main 2>nul
+if %errorlevel% neq 0 git pull origin master 2>nul
 echo Code updated.
 
 :: Stop the OTHER environment first to free port 5005
