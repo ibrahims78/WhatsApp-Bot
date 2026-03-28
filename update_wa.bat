@@ -37,38 +37,32 @@ echo Code updated.
 :: Stop the OTHER environment first to free port 5005
 echo.
 echo [2/3] Stopping the other environment to free port 5005...
-if "%mode%"=="1" (
-    docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev down 2>nul
-)
-if "%mode%"=="2" (
-    docker-compose -p whatsapp_manager_v1 down 2>nul
-)
+if "%mode%"=="1" docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev down 2>nul
+if "%mode%"=="2" docker-compose -p whatsapp_manager_v1 down 2>nul
 echo Done.
 
 :: Apply update based on chosen type
 echo.
-if "%updateType%"=="1" (
-    echo [3/3] Fast update: restarting containers only...
-    if "%mode%"=="1" (
-        docker-compose -p whatsapp_manager_v1 restart
-    )
-    if "%mode%"=="2" (
-        docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev restart
-    )
-    echo Containers restarted.
-) else (
-    echo [3/3] Full rebuild: rebuilding Docker image (no cache)...
-    if "%mode%"=="1" (
-        docker-compose -p whatsapp_manager_v1 build --no-cache
-        docker-compose -p whatsapp_manager_v1 up -d
-    )
-    if "%mode%"=="2" (
-        docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev build --no-cache
-        docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev up -d
-    )
-    echo Rebuild complete and containers started.
-)
+if "%updateType%"=="1" goto :fast_update
+goto :full_rebuild
 
+:fast_update
+echo [3/3] Fast update: restarting containers only...
+if "%mode%"=="1" docker-compose -p whatsapp_manager_v1 restart
+if "%mode%"=="2" docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev restart
+echo Containers restarted.
+goto :done
+
+:full_rebuild
+echo [3/3] Full rebuild: rebuilding Docker image (no cache)...
+if "%mode%"=="1" docker-compose -p whatsapp_manager_v1 build --no-cache
+if "%mode%"=="1" docker-compose -p whatsapp_manager_v1 up -d
+if "%mode%"=="2" docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev build --no-cache
+if "%mode%"=="2" docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev up -d
+echo Rebuild complete and containers started.
+goto :done
+
+:done
 echo.
 echo ============================================
 echo   Update complete!
