@@ -1,0 +1,158 @@
+C:\Users\admin\Downloads>start_wa.bat
+============================================
+   WhatsApp Manager - Automated Setup
+============================================
+
+[1/5] Checking Git installation...
+Git found. OK.
+
+[2/5] Checking Docker status...
+Docker is running. OK.
+
+[3/5] Setting up project from GitHub...
+Cloning from GitHub...
+Cloning into 'C:\whatsapp-manager'...
+remote: Enumerating objects: 5216, done.
+remote: Counting objects: 100% (192/192), done.
+remote: Compressing objects: 100% (130/130), done.
+remote: Total 5216 (delta 127), reused 87 (delta 62), pack-reused 5024 (from 3)
+Receiving objects: 100% (5216/5216), 676.55 MiB | 370.00 KiB/s, done.
+Resolving deltas: 100% (2981/2981), done.
+Updating files: 100% (2643/2643), done.
+Project cloned successfully.
+
+[4/5] Generating secure configuration...
+Writing new configuration with generated JWT secret...
+Configuration written successfully.
+
+[5/5] Building and starting containers (5-15 minutes on first run)...
+[+] Building 664.8s (20/32)
+ => [internal] load local bake definitions                                                                                                  0.0s
+ => => reading from stdin 1.02kB                                                                                                            0.0s
+ => [dashboard internal] load build definition from Dockerfile.dashboard                                                                    0.1s
+ => => transferring dockerfile: 685B                                                                                                        0.0s
+ => [api internal] load build definition from Dockerfile.api                                                                                0.1s
+ => => transferring dockerfile: 1.90kB                                                                                                      0.0s
+ => [dashboard internal] load metadata for docker.io/library/nginx:1.25-alpine                                                              5.4s
+ => [api internal] load metadata for docker.io/library/node:20-bullseye-slim                                                                5.2s
+ => [dashboard internal] load metadata for docker.io/library/node:20-alpine                                                                 5.2s
+ => [dashboard internal] load .dockerignore                                                                                                 0.0s
+ => => transferring context: 355B                                                                                                           0.0s
+ => [api  1/12] FROM docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cdd93f68ccda9adc1a9      335.8s
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cdd93f68ccda9adc1a9              0.0s
+ => => sha256:542a9a005065939d28ca772f61a7a9c40821f148c3f70c7fda5fe19c8a3d0a88 447B / 447B                                                  0.7s
+ => => sha256:1593335663b1316324516b466f70802c79d57fb1bcc3fa0b9a23e52d9772ae1a 41.45MB / 41.45MB                                          334.0s
+ => => sha256:2cf1891b911fbf19b104af73e1017820b2d0b4a2f7b4efa36e979c87c3bd4ce0 1.74MB / 1.74MB                                             24.6s
+ => => sha256:2bbc621cf69daea5b93c365a8ed82c460cf01bdfbcf4977638237adcb8284a1b 4.07kB / 4.07kB                                              2.2s
+ => => sha256:2def39ba61d018877eab029bb49f5312188fcf3f564be382981f921d932f625f 30.26MB / 30.26MB                                          270.8s
+ => => extracting sha256:2def39ba61d018877eab029bb49f5312188fcf3f564be382981f921d932f625f                                                   1.4s
+ => => extracting sha256:2bbc621cf69daea5b93c365a8ed82c460cf01bdfbcf4977638237adcb8284a1b                                                   0.0s
+ => => extracting sha256:1593335663b1316324516b466f70802c79d57fb1bcc3fa0b9a23e52d9772ae1a                                                   1.4s
+ => => extracting sha256:2cf1891b911fbf19b104af73e1017820b2d0b4a2f7b4efa36e979c87c3bd4ce0                                                   0.1s
+ => => extracting sha256:542a9a005065939d28ca772f61a7a9c40821f148c3f70c7fda5fe19c8a3d0a88                                                   0.0s
+ => [api internal] load build context                                                                                                       0.2s
+ => => transferring context: 646.08kB                                                                                                       0.1s
+ => [dashboard builder 1/8] FROM docker.io/library/node:20-alpine@sha256:f598378b5240225e6beab68fa9f356db1fb8efe55173e6d4d8153113bb8f333  369.1s
+ => => resolve docker.io/library/node:20-alpine@sha256:f598378b5240225e6beab68fa9f356db1fb8efe55173e6d4d8153113bb8f333c                     0.1s
+ => => sha256:c7734204880fafbd6297ce1844e07c137d82ee814ac8b5fa6ac1a3659101d503 446B / 446B                                                  1.7s
+ => => sha256:62e0e1181d88da8ed0e2fda221e9446ad0f09a004a375193ad7a38e31ec4eab4 1.26MB / 1.26MB                                             21.9s
+ => => sha256:d7f6aca05b78f475975eeac3898b7ef0a618937174c469650e05e81cbf8c5f46 43.23MB / 43.23MB                                          342.9s
+ => => extracting sha256:d7f6aca05b78f475975eeac3898b7ef0a618937174c469650e05e81cbf8c5f46                                                   1.4s
+ => => extracting sha256:62e0e1181d88da8ed0e2fda221e9446ad0f09a004a375193ad7a38e31ec4eab4                                                   0.1s
+ => => extracting sha256:c7734204880fafbd6297ce1844e07c137d82ee814ac8b5fa6ac1a3659101d503                                                   0.0s
+ => [dashboard stage-1 1/3] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e464b422  225.5s
+ => => resolve docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e464b4221a00                  0.1s
+ => => sha256:0d0c16747d2c6b6c26c064652afcb964c15f1b1e596ec052b2aa19b83948ae27 13.04MB / 13.04MB                                          109.9s
+ => => sha256:8a3742a9529dc5c00974dfcf5e465be9f1606ff8a1911527b3928cf86ad57465 1.40kB / 1.40kB                                              1.5s
+ => => sha256:5406ed7b06d9a94b5bd15843d2a1c7e38796a3ec5dc7f40f16f70cc1d045f453 1.21kB / 1.21kB                                              0.9s
+ => => sha256:d4bca490e609acaaf54ca73363442d31a31fd136a47a20a12370cf2025f0a10b 393B / 393B                                                  0.8s
+ => => sha256:13fcfbc94648785b918ecc1af675ac5187cdfc30f4fdaf9afa8bd2e9dedf548b 954B / 954B                                                  0.9s
+ => => sha256:e6ef242c157026935bf8a69e6cf19f8f6635e44507c813daf0cc644f2e22396b 629B / 629B                                                  0.9s
+ => => sha256:fc21a1d387f514f53589abea6d67cd6b329dfd3c9059bc96a552af3b3c97b413 3.99MB / 3.99MB                                             40.0s
+ => => sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8 3.41MB / 3.41MB                                             43.8s
+ => => extracting sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8                                                   0.2s
+ => => extracting sha256:fc21a1d387f514f53589abea6d67cd6b329dfd3c9059bc96a552af3b3c97b413                                                   0.3s
+ => => extracting sha256:e6ef242c157026935bf8a69e6cf19f8f6635e44507c813daf0cc644f2e22396b                                                   0.0s
+ => => extracting sha256:13fcfbc94648785b918ecc1af675ac5187cdfc30f4fdaf9afa8bd2e9dedf548b                                                   0.0s
+ => => extracting sha256:d4bca490e609acaaf54ca73363442d31a31fd136a47a20a12370cf2025f0a10b                                                   0.0s
+ => => extracting sha256:5406ed7b06d9a94b5bd15843d2a1c7e38796a3ec5dc7f40f16f70cc1d045f453                                                   0.0s
+ => => extracting sha256:8a3742a9529dc5c00974dfcf5e465be9f1606ff8a1911527b3928cf86ad57465                                                   0.0s
+ => => extracting sha256:0d0c16747d2c6b6c26c064652afcb964c15f1b1e596ec052b2aa19b83948ae27                                                   0.4s
+ => [dashboard internal] load build context                                                                                                 0.2s
+ => => transferring context: 1.98MB                                                                                                         0.2s
+ => CANCELED [api  2/12] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificates     fonts-lib  323.1s
+ => [dashboard builder 2/8] RUN npm install -g pnpm@10                                                                                     29.2s
+ => [dashboard builder 3/8] WORKDIR /app                                                                                                    0.1s
+ => [dashboard builder 4/8] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./                        0.1s
+ => [dashboard builder 5/8] COPY lib/ ./lib/                                                                                                0.1s
+ => [dashboard builder 6/8] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/                                              0.1s
+ => [dashboard builder 7/8] RUN pnpm install --frozen-lockfile                                                                            258.4s
+ => ERROR [dashboard builder 8/8] RUN pnpm --filter @workspace/whatsapp-dashboard run build                                                 1.7s
+------
+ > [dashboard builder 8/8] RUN pnpm --filter @workspace/whatsapp-dashboard run build:
+1.338
+1.338 > @workspace/whatsapp-dashboard@0.0.0 build /app/artifacts/whatsapp-dashboard
+1.338 > vite build --config vite.config.ts
+1.338
+1.542 /app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:115
+1.542           throw new Error(
+1.542                 ^
+1.542
+1.542 Error: Cannot find module @rollup/rollup-linux-x64-musl. npm has a bug related to optional dependencies (https://github.com/npm/cli/issues/4828). Please try `npm i` again after removing both package-lock.json and node_modules directory.
+1.542     at requireWithFriendlyError (/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:115:9)
+1.542     at Object.<anonymous> (/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:124:76)
+1.542     ... 3 lines matching cause stack trace ...
+1.542     at Module._load (node:internal/modules/cjs/loader:1091:12)
+1.542     at cjsLoader (node:internal/modules/esm/translators:298:15)
+1.542     at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:240:7)
+1.542     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+1.542     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24) {
+1.542   [cause]: Error: Cannot find module '@rollup/rollup-linux-x64-musl'
+1.542   Require stack:
+1.542   - /app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js
+1.542       at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+1.542       at Module._load (node:internal/modules/cjs/loader:1038:27)
+1.542       at Module.require (node:internal/modules/cjs/loader:1289:19)
+1.542       at require (node:internal/modules/helpers:182:18)
+1.542       at requireWithFriendlyError (/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:97:10)
+1.542       at Object.<anonymous> (/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:124:76)
+1.542       at Module._compile (node:internal/modules/cjs/loader:1521:14)
+1.542       at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+1.542       at Module.load (node:internal/modules/cjs/loader:1266:32)
+1.542       at Module._load (node:internal/modules/cjs/loader:1091:12) {
+1.542     code: 'MODULE_NOT_FOUND',
+1.542     requireStack: [
+1.542       '/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js'
+1.542     ]
+1.542   }
+1.542 }
+1.542
+1.542 Node.js v20.20.2
+1.597 /app/artifacts/whatsapp-dashboard:
+1.597  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 build: `vite build --config vite.config.ts`
+1.597 Exit status 1
+------
+Dockerfile.dashboard:19
+
+--------------------
+
+  17 |     ENV NODE_ENV=production
+
+  18 |
+
+  19 | >>> RUN pnpm --filter @workspace/whatsapp-dashboard run build
+
+  20 |
+
+  21 |     FROM nginx:1.25-alpine
+
+--------------------
+
+target dashboard: failed to solve: process "/bin/sh -c pnpm --filter @workspace/whatsapp-dashboard run build" did not complete successfully: exit code: 1
+
+
+
+View build details: docker-desktop://dashboard/build/default/default/sj9rz2kc4racrqre7lc6o4hqd
+
+ERROR: Docker build failed. See output above for details.
+Press any key to continue . . .
