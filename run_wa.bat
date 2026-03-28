@@ -28,8 +28,12 @@ if %errorlevel% neq 0 goto waiting_loop
 
 :docker_ready
 
-:: Start containers
+:: Stop dev containers to free port 5005
+echo Stopping development containers (if running)...
 cd /d "%installDir%"
+docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev down 2>nul
+
+:: Start production containers
 docker-compose -p whatsapp_manager_v1 up -d
 
 timeout /t 10 /nobreak >nul

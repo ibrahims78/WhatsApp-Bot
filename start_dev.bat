@@ -29,7 +29,7 @@ echo ============================================
 echo.
 
 :: ─── STEP 1: Check Git ──────────────────────────────────────────────────────
-echo [1/5] Checking Git installation...
+echo [1/6] Checking Git installation...
 git --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo ERROR: Git not found. Install from: https://git-scm.com/download/win
@@ -40,7 +40,7 @@ echo Git found. OK.
 
 :: ─── STEP 2: Check Docker ───────────────────────────────────────────────────
 echo.
-echo [2/5] Checking Docker status...
+echo [2/6] Checking Docker status...
 docker info >nul 2>&1
 if %errorlevel% equ 0 goto docker_ready
 
@@ -60,9 +60,16 @@ echo Docker is running. OK.
 
 :docker_done
 
-:: ─── STEP 3: Clone or Update Project from GitHub ────────────────────────────
+:: ─── STEP 3: Stop production containers to free port 5005 ───────────────────
 echo.
-echo [3/5] Setting up project from GitHub...
+echo [3/6] Stopping production containers (if running) to free port 5005...
+cd /d "%installDir%"
+docker-compose -p whatsapp_manager_v1 down 2>nul
+echo Done.
+
+:: ─── STEP 4: Clone or Update Project from GitHub ────────────────────────────
+echo.
+echo [4/6] Setting up project from GitHub...
 
 if exist "%installDir%\.git" (
     echo Project found. Pulling latest changes...
@@ -84,9 +91,9 @@ echo Cloned successfully.
 
 :clone_done
 
-:: ─── STEP 4: Generate secure .env ───────────────────────────────────────────
+:: ─── STEP 5: Generate secure .env ───────────────────────────────────────────
 echo.
-echo [4/5] Generating secure configuration...
+echo [5/6] Generating secure configuration...
 
 for /f %%i in ('powershell -NoProfile -Command "[System.BitConverter]::ToString([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(48)).Replace('-','').ToLower()"') do set "JWT_GENERATED=%%i"
 
@@ -116,9 +123,9 @@ if "%needsEnv%"=="1" (
 
 :env_done
 
-:: ─── STEP 5: Build and Start in Development Mode ────────────────────────────
+:: ─── STEP 6: Build and Start in Development Mode ────────────────────────────
 echo.
-echo [5/5] Building and starting DEV containers (5-15 minutes first time)...
+echo [6/6] Building and starting DEV containers (5-15 minutes first time)...
 cd /d "%installDir%"
 
 docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev build --no-cache
