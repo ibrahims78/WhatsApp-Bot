@@ -42,18 +42,23 @@ echo Git found. OK.
 echo.
 echo [2/5] Checking Docker status...
 docker info >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Starting Docker Desktop...
-    start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
-    echo Waiting for Docker (up to 90 seconds)...
-    :docker_wait_loop
-    timeout /t 5 /nobreak >nul
-    docker info >nul 2>&1
-    if %errorlevel% neq 0 goto docker_wait_loop
-    echo Docker is ready.
-) else (
-    echo Docker is running. OK.
-)
+if %errorlevel% equ 0 goto docker_ready
+
+echo Starting Docker Desktop...
+start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+echo Waiting for Docker (up to 90 seconds)...
+
+:docker_wait_loop
+timeout /t 5 /nobreak >nul
+docker info >nul 2>&1
+if %errorlevel% neq 0 goto docker_wait_loop
+echo Docker is ready.
+goto docker_done
+
+:docker_ready
+echo Docker is running. OK.
+
+:docker_done
 
 :: ─── STEP 3: Clone or Update Project from GitHub ────────────────────────────
 echo.
@@ -64,17 +69,20 @@ if exist "%installDir%\.git" (
     cd /d "%installDir%"
     git pull origin main 2>nul || git pull origin master 2>nul
     echo Updated.
-) else (
-    if exist "%installDir%" rmdir /s /q "%installDir%"
-    echo Cloning from GitHub...
-    git clone "%repoUrl%" "%installDir%"
-    if %errorlevel% neq 0 (
-        echo ERROR: Clone failed. Check internet connection.
-        pause
-        exit /B 1
-    )
-    echo Cloned successfully.
+    goto clone_done
 )
+
+if exist "%installDir%" rmdir /s /q "%installDir%"
+echo Cloning from GitHub...
+git clone "%repoUrl%" "%installDir%"
+if %errorlevel% neq 0 (
+    echo ERROR: Clone failed. Check internet connection.
+    pause
+    exit /B 1
+)
+echo Cloned successfully.
+
+:clone_done
 
 :: ─── STEP 4: Generate secure .env ───────────────────────────────────────────
 echo.
@@ -83,14 +91,16 @@ echo [4/5] Generating secure configuration...
 for /f %%i in ('powershell -NoProfile -Command "[System.BitConverter]::ToString([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(48)).Replace('-','').ToLower()"') do set "JWT_GENERATED=%%i"
 
 set "needsEnv=1"
-if exist "%envFile%" (
-    findstr /C:"GENERATED_AUTOMATICALLY" "%envFile%" >nul 2>&1
-    if %errorlevel% neq 0 (
-        set "needsEnv=0"
-        echo Configuration already exists. Keeping it.
-    )
+if not exist "%envFile%" goto write_env
+
+findstr /C:"GENERATED_AUTOMATICALLY" "%envFile%" >nul 2>&1
+if %errorlevel% neq 0 (
+    set "needsEnv=0"
+    echo Configuration already exists. Keeping it.
+    goto env_done
 )
 
+:write_env
 if "%needsEnv%"=="1" (
     echo Writing configuration...
     (
@@ -103,6 +113,8 @@ if "%needsEnv%"=="1" (
     ) > "%envFile%"
     echo Configuration written.
 )
+
+:env_done
 
 :: ─── STEP 5: Build and Start in Development Mode ────────────────────────────
 echo.

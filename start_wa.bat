@@ -44,18 +44,23 @@ echo Git found. OK.
 echo.
 echo [2/5] Checking Docker status...
 docker info >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Docker Desktop is not running. Attempting to start...
-    start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
-    echo Waiting for Docker to start (up to 90 seconds)...
-    :docker_wait_loop
-    timeout /t 5 /nobreak >nul
-    docker info >nul 2>&1
-    if %errorlevel% neq 0 goto docker_wait_loop
-    echo Docker is ready.
-) else (
-    echo Docker is running. OK.
-)
+if %errorlevel% equ 0 goto docker_ready
+
+echo Docker Desktop is not running. Attempting to start...
+start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+echo Waiting for Docker to start (up to 90 seconds)...
+
+:docker_wait_loop
+timeout /t 5 /nobreak >nul
+docker info >nul 2>&1
+if %errorlevel% neq 0 goto docker_wait_loop
+echo Docker is ready.
+goto docker_done
+
+:docker_ready
+echo Docker is running. OK.
+
+:docker_done
 
 :: ─── STEP 3: Clone or Update Project from GitHub ────────────────────────────
 echo.
@@ -66,18 +71,21 @@ if exist "%installDir%\.git" (
     cd /d "%installDir%"
     git pull origin main 2>nul || git pull origin master 2>nul
     echo Project updated.
-) else (
-    if exist "%installDir%" rmdir /s /q "%installDir%"
-    echo Cloning from GitHub...
-    git clone "%repoUrl%" "%installDir%"
-    if %errorlevel% neq 0 (
-        echo ERROR: Failed to clone repository.
-        echo Check your internet connection and try again.
-        pause
-        exit /B 1
-    )
-    echo Project cloned successfully.
+    goto clone_done
 )
+
+if exist "%installDir%" rmdir /s /q "%installDir%"
+echo Cloning from GitHub...
+git clone "%repoUrl%" "%installDir%"
+if %errorlevel% neq 0 (
+    echo ERROR: Failed to clone repository.
+    echo Check your internet connection and try again.
+    pause
+    exit /B 1
+)
+echo Project cloned successfully.
+
+:clone_done
 
 :: ─── STEP 4: Generate secure .env ───────────────────────────────────────────
 echo.
@@ -86,16 +94,18 @@ echo [4/5] Generating secure configuration...
 :: Generate a cryptographically random 96-character hex secret
 for /f %%i in ('powershell -NoProfile -Command "[System.BitConverter]::ToString([System.Security.Cryptography.RandomNumberGenerator]::GetBytes(48)).Replace('-','').ToLower()"') do set "JWT_GENERATED=%%i"
 
-:: Check if .env already has a real JWT_SECRET (not the placeholder)
+:: Check if .env already has a real JWT_SECRET (not placeholder)
 set "needsEnv=1"
-if exist "%envFile%" (
-    findstr /C:"GENERATED_AUTOMATICALLY" "%envFile%" >nul 2>&1
-    if %errorlevel% neq 0 (
-        set "needsEnv=0"
-        echo Configuration already exists with a real secret. Keeping it.
-    )
+if not exist "%envFile%" goto write_env
+
+findstr /C:"GENERATED_AUTOMATICALLY" "%envFile%" >nul 2>&1
+if %errorlevel% neq 0 (
+    set "needsEnv=0"
+    echo Configuration already exists with a real secret. Keeping it.
+    goto env_done
 )
 
+:write_env
 if "%needsEnv%"=="1" (
     echo Writing new configuration with generated JWT secret...
     (
@@ -108,6 +118,8 @@ if "%needsEnv%"=="1" (
     ) > "%envFile%"
     echo Configuration written successfully.
 )
+
+:env_done
 
 :: ─── STEP 5: Build and Start Docker Containers ──────────────────────────────
 echo.
