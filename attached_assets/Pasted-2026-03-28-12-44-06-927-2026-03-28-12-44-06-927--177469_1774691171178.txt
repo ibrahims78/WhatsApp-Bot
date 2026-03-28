@@ -1,0 +1,233 @@
+2026-03-28 12:44:06.927 | ============================================
+2026-03-28 12:44:06.927 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:06.927 | ============================================
+2026-03-28 12:44:06.927 | 
+2026-03-28 12:44:06.927 | [1/3] Running database schema migration...
+2026-03-28 12:44:07.637 | 
+2026-03-28 12:44:07.637 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:07.637 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:07.637 | 
+2026-03-28 12:44:07.643 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:07.663 | /app/lib/db:
+2026-03-28 12:44:07.663 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:07.663 | spawn ENOENT
+2026-03-28 12:44:07.665 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:44:08.139 | ============================================
+2026-03-28 12:44:08.139 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:08.139 | ============================================
+2026-03-28 12:44:08.139 | 
+2026-03-28 12:44:08.139 | [1/3] Running database schema migration...
+2026-03-28 12:44:08.876 | 
+2026-03-28 12:44:08.876 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:08.876 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:08.876 | 
+2026-03-28 12:44:08.882 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:08.903 | /app/lib/db:
+2026-03-28 12:44:08.903 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:08.903 | spawn ENOENT
+2026-03-28 12:44:08.904 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:44:09.421 | ============================================
+2026-03-28 12:44:09.421 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:09.421 | ============================================
+2026-03-28 12:44:09.421 | 
+2026-03-28 12:44:09.421 | [1/3] Running database schema migration...
+2026-03-28 12:44:10.419 | 
+2026-03-28 12:44:10.419 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:10.419 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:10.419 | 
+2026-03-28 12:44:10.430 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:10.464 | /app/lib/db:
+2026-03-28 12:44:10.464 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:10.464 | spawn ENOENT
+2026-03-28 12:44:10.466 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:44:11.339 | ============================================
+2026-03-28 12:44:11.339 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:11.339 | ============================================
+2026-03-28 12:44:11.339 | 
+2026-03-28 12:44:11.339 | [1/3] Running database schema migration...
+2026-03-28 12:44:12.212 | 
+2026-03-28 12:44:12.212 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:12.212 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:12.212 | 
+2026-03-28 12:44:12.219 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:12.238 | /app/lib/db:
+2026-03-28 12:44:12.238 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:12.238 | spawn ENOENT
+2026-03-28 12:44:13.380 | ============================================
+2026-03-28 12:44:13.381 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:13.381 | ============================================
+2026-03-28 12:44:13.381 | 
+2026-03-28 12:44:13.381 | [1/3] Running database schema migration...
+2026-03-28 12:44:14.465 | 
+2026-03-28 12:44:14.465 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:14.465 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:14.465 | 
+2026-03-28 12:44:14.478 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:14.527 | /app/lib/db:
+2026-03-28 12:44:14.527 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:14.527 | spawn ENOENT
+2026-03-28 12:44:14.529 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:44:16.582 | ============================================
+2026-03-28 12:44:16.582 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:16.582 | ============================================
+2026-03-28 12:44:16.582 | 
+2026-03-28 12:44:16.582 | [1/3] Running database schema migration...
+2026-03-28 12:44:17.259 | 
+2026-03-28 12:44:17.259 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:17.259 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:17.259 | 
+2026-03-28 12:44:17.265 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:17.281 | /app/lib/db:
+2026-03-28 12:44:17.281 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:17.281 | spawn ENOENT
+2026-03-28 12:44:20.781 | ============================================
+2026-03-28 12:44:20.781 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:20.781 | ============================================
+2026-03-28 12:44:20.781 | 
+2026-03-28 12:44:20.781 | [1/3] Running database schema migration...
+2026-03-28 12:44:21.267 | 
+2026-03-28 12:44:21.267 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:21.267 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:21.267 | 
+2026-03-28 12:44:21.273 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:21.289 | /app/lib/db:
+2026-03-28 12:44:21.289 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:21.289 | spawn ENOENT
+2026-03-28 12:44:21.289 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:44:28.089 | ============================================
+2026-03-28 12:44:28.089 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:28.089 | ============================================
+2026-03-28 12:44:28.089 | 
+2026-03-28 12:44:28.089 | [1/3] Running database schema migration...
+2026-03-28 12:44:28.566 | 
+2026-03-28 12:44:28.566 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:28.566 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:28.566 | 
+2026-03-28 12:44:28.571 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:28.586 | /app/lib/db:
+2026-03-28 12:44:28.586 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:28.586 | spawn ENOENT
+2026-03-28 12:44:28.587 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:44:41.732 | ============================================
+2026-03-28 12:44:41.732 |    WhatsApp Manager - Development Mode
+2026-03-28 12:44:41.732 | ============================================
+2026-03-28 12:44:41.732 | 
+2026-03-28 12:44:41.732 | [1/3] Running database schema migration...
+2026-03-28 12:44:42.401 | 
+2026-03-28 12:44:42.401 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:44:42.401 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:44:42.401 | 
+2026-03-28 12:44:42.406 | sh: 1: drizzle-kit: not found
+2026-03-28 12:44:42.421 | /app/lib/db:
+2026-03-28 12:44:42.421 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:44:42.421 | spawn ENOENT
+2026-03-28 12:45:15.808 | ============================================
+2026-03-28 12:45:15.808 |    WhatsApp Manager - Development Mode
+2026-03-28 12:45:15.808 | ============================================
+2026-03-28 12:45:15.808 | 
+2026-03-28 12:45:15.808 | [1/3] Running database schema migration...
+2026-03-28 12:45:16.443 | 
+2026-03-28 12:45:16.443 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:45:16.443 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:45:16.443 | 
+2026-03-28 12:45:16.449 | sh: 1: drizzle-kit: not found
+2026-03-28 12:45:16.465 | /app/lib/db:
+2026-03-28 12:45:16.465 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:45:16.465 | spawn ENOENT
+2026-03-28 12:45:16.896 | ============================================
+2026-03-28 12:45:16.896 |    WhatsApp Manager - Development Mode
+2026-03-28 12:45:16.896 | ============================================
+2026-03-28 12:45:16.896 | 
+2026-03-28 12:45:16.896 | [1/3] Running database schema migration...
+2026-03-28 12:45:17.454 | 
+2026-03-28 12:45:17.454 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:45:17.454 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:45:17.454 | 
+2026-03-28 12:45:17.459 | sh: 1: drizzle-kit: not found
+2026-03-28 12:45:17.475 | /app/lib/db:
+2026-03-28 12:45:17.475 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:45:17.475 | spawn ENOENT
+2026-03-28 12:45:17.476 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:45:17.949 | ============================================
+2026-03-28 12:45:17.949 |    WhatsApp Manager - Development Mode
+2026-03-28 12:45:17.949 | ============================================
+2026-03-28 12:45:17.949 | 
+2026-03-28 12:45:17.949 | [1/3] Running database schema migration...
+2026-03-28 12:45:18.412 | 
+2026-03-28 12:45:18.412 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:45:18.412 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:45:18.412 | 
+2026-03-28 12:45:18.417 | sh: 1: drizzle-kit: not found
+2026-03-28 12:45:18.433 | /app/lib/db:
+2026-03-28 12:45:18.433 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:45:18.433 | spawn ENOENT
+2026-03-28 12:45:18.434 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:45:19.138 | ============================================
+2026-03-28 12:45:19.138 |    WhatsApp Manager - Development Mode
+2026-03-28 12:45:19.138 | ============================================
+2026-03-28 12:45:19.138 | 
+2026-03-28 12:45:19.138 | [1/3] Running database schema migration...
+2026-03-28 12:45:19.608 | 
+2026-03-28 12:45:19.608 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:45:19.608 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:45:19.608 | 
+2026-03-28 12:45:19.614 | sh: 1: drizzle-kit: not found
+2026-03-28 12:45:19.629 | /app/lib/db:
+2026-03-28 12:45:19.629 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:45:19.629 | spawn ENOENT
+2026-03-28 12:45:19.629 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:45:20.822 | ============================================
+2026-03-28 12:45:20.822 |    WhatsApp Manager - Development Mode
+2026-03-28 12:45:20.822 | ============================================
+2026-03-28 12:45:20.822 | 
+2026-03-28 12:45:20.822 | [1/3] Running database schema migration...
+2026-03-28 12:45:21.289 | 
+2026-03-28 12:45:21.289 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:45:21.289 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:45:21.289 | 
+2026-03-28 12:45:21.294 | sh: 1: drizzle-kit: not found
+2026-03-28 12:45:21.309 | /app/lib/db:
+2026-03-28 12:45:21.309 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:45:21.309 | spawn ENOENT
+2026-03-28 12:45:21.310 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:45:23.275 | ============================================
+2026-03-28 12:45:23.275 |    WhatsApp Manager - Development Mode
+2026-03-28 12:45:23.275 | ============================================
+2026-03-28 12:45:23.275 | 
+2026-03-28 12:45:23.275 | [1/3] Running database schema migration...
+2026-03-28 12:45:23.823 | 
+2026-03-28 12:45:23.823 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:45:23.823 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:45:23.823 | 
+2026-03-28 12:45:23.828 | sh: 1: drizzle-kit: not found
+2026-03-28 12:45:23.849 | /app/lib/db:
+2026-03-28 12:45:23.849 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:45:23.849 | spawn ENOENT
+2026-03-28 12:45:27.353 | ============================================
+2026-03-28 12:45:27.353 |    WhatsApp Manager - Development Mode
+2026-03-28 12:45:27.353 | ============================================
+2026-03-28 12:45:27.353 | 
+2026-03-28 12:45:27.353 | [1/3] Running database schema migration...
+2026-03-28 12:45:27.868 | 
+2026-03-28 12:45:27.868 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:45:27.868 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:45:27.868 | 
+2026-03-28 12:45:27.874 | sh: 1: drizzle-kit: not found
+2026-03-28 12:45:27.891 | /app/lib/db:
+2026-03-28 12:45:27.891 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:45:27.891 | spawn ENOENT
+2026-03-28 12:45:27.892 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+2026-03-28 12:45:34.614 | ============================================
+2026-03-28 12:45:34.614 |    WhatsApp Manager - Development Mode
+2026-03-28 12:45:34.614 | ============================================
+2026-03-28 12:45:34.614 | 
+2026-03-28 12:45:34.614 | [1/3] Running database schema migration...
+2026-03-28 12:45:35.108 | 
+2026-03-28 12:45:35.108 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 12:45:35.108 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 12:45:35.108 | 
+2026-03-28 12:45:35.114 | sh: 1: drizzle-kit: not found
+2026-03-28 12:45:35.130 | /app/lib/db:
+2026-03-28 12:45:35.130 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+2026-03-28 12:45:35.130 | spawn ENOENT
+2026-03-28 12:45:35.131 |  WARN   Local package.json exists, but node_modules missing, did you mean to install?
