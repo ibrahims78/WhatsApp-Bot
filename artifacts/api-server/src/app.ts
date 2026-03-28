@@ -49,6 +49,15 @@ app.use(
       ) {
         return callback(null, true);
       }
+      // Allow local Docker / self-hosted deployments on localhost or 127.0.0.1
+      if (
+        origin.startsWith("http://localhost") ||
+        origin.startsWith("https://localhost") ||
+        origin.startsWith("http://127.0.0.1") ||
+        origin.startsWith("https://127.0.0.1")
+      ) {
+        return callback(null, true);
+      }
       // Allow any additional origins configured via environment variable
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
