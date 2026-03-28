@@ -28,6 +28,12 @@ services:
     volumes:
       # Mount source code for quick rebuilds without re-imaging
       - ./lib:/app/lib
+      # Protect node_modules installed by Docker from being wiped by the host mount
+      - api_nm_root:/app/node_modules
+      - api_nm_db:/app/lib/db/node_modules
+      - api_nm_api_zod:/app/lib/api-zod/node_modules
+      - api_nm_api_client:/app/lib/api-client-react/node_modules
+      - api_nm_api_spec:/app/lib/api-spec/node_modules
       - ./artifacts/api-server/src:/app/artifacts/api-server/src
       - wa_tokens_dev:/app/artifacts/api-server/tokens
       - wa_public_dev:/app/artifacts/api-server/public
@@ -53,6 +59,12 @@ services:
       # Mount source code for Vite HMR (hot module replacement)
       - ./artifacts/whatsapp-dashboard/src:/app/artifacts/whatsapp-dashboard/src
       - ./lib:/app/lib
+      # Protect node_modules installed by Docker from being wiped by the host mount
+      - dash_nm_root:/app/node_modules
+      - dash_nm_db:/app/lib/db/node_modules
+      - dash_nm_api_zod:/app/lib/api-zod/node_modules
+      - dash_nm_api_client:/app/lib/api-client-react/node_modules
+      - dash_nm_api_spec:/app/lib/api-spec/node_modules
     depends_on:
       - api
     restart: unless-stopped
@@ -63,4 +75,24 @@ volumes:
   wa_tokens_dev:
     driver: local
   wa_public_dev:
+    driver: local
+  api_nm_root:
+    driver: local
+  api_nm_db:
+    driver: local
+  api_nm_api_zod:
+    driver: local
+  api_nm_api_client:
+    driver: local
+  api_nm_api_spec:
+    driver: local
+  dash_nm_root:
+    driver: local
+  dash_nm_db:
+    driver: local
+  dash_nm_api_zod:
+    driver: local
+  dash_nm_api_client:
+    driver: local
+  dash_nm_api_spec:
     driver: local
