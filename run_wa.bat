@@ -15,15 +15,18 @@ if not exist "%shortcutPath%" (
 :: Check Docker Status
 echo Checking Docker status...
 docker info >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Starting Docker Desktop...
-    start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
-    echo Waiting for Docker (up to 90 seconds)...
-    :waiting_loop
-    timeout /t 5 /nobreak >nul
-    docker info >nul 2>&1
-    if %errorlevel% neq 0 goto waiting_loop
-)
+if %errorlevel% equ 0 goto docker_ready
+
+echo Starting Docker Desktop...
+start "" "C:\Program Files\Docker\Docker\Docker Desktop.exe"
+echo Waiting for Docker (up to 90 seconds)...
+
+:waiting_loop
+timeout /t 5 /nobreak >nul
+docker info >nul 2>&1
+if %errorlevel% neq 0 goto waiting_loop
+
+:docker_ready
 
 :: Start containers
 cd /d "%installDir%"
