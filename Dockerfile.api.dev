@@ -57,7 +57,7 @@ RUN pnpm install --frozen-lockfile
 RUN mkdir -p /app/artifacts/api-server/tokens /app/artifacts/api-server/public
 
 COPY entrypoint.dev.sh /entrypoint.dev.sh
-RUN chmod +x /entrypoint.dev.sh
+RUN sed -i 's/\r$//' /entrypoint.dev.sh && chmod +x /entrypoint.dev.sh
 
 EXPOSE 8080
 

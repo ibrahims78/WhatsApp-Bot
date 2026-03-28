@@ -65,9 +65,9 @@ RUN pnpm --filter @workspace/api-server run build
 # Create directories for persistent data (WhatsApp tokens, uploaded files)
 RUN mkdir -p /app/artifacts/api-server/tokens /app/artifacts/api-server/public
 
-# Copy the startup script and make it executable
+# Copy the startup script, strip Windows CRLF line endings, and make executable
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 EXPOSE 8080
 

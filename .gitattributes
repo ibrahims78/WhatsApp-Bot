@@ -1,0 +1,9 @@
+# Ensure shell scripts always use LF line endings on all platforms
+*.sh text eol=lf
+entrypoint*.sh text eol=lf
+
+# Windows batch files keep CRLF
+*.bat text eol=crlf
+
+# Default: auto-detect text files
+* text=auto
