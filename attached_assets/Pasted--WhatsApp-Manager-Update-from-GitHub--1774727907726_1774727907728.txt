@@ -1,0 +1,541 @@
+============================================
+   WhatsApp Manager - Update from GitHub
+============================================
+
+Which mode do you want to run?
+  [1] Production  (docker-compose.yml)
+  [2] Development (docker-compose.dev.yml)
+
+Enter choice (1/2): 1
+
+Which type of update do you want?
+  [1] Fast update  - Pull code + restart containers only (no rebuild)
+      Use this for: code changes only (src files, no new packages)
+  [2] Full rebuild - Pull code + full Docker image rebuild (no-cache)
+      Use this for: new packages added, Dockerfile changed, or first setup
+
+Enter choice (1/2): 2
+
+[1/3] Pulling latest code from GitHub...
+Already up to date.
+Code updated.
+
+[2/3] Stopping the other environment to free port 5005...
+Done.
+
+[3/3] Full rebuild: rebuilding Docker image (no cache)...
+[+] Building 58.4s (17/33)
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cdd93f  0.0s
+ => [api internal] load build context                                                                              0.1s
+ => => transferring context: 212.17kB                                                                              0.1s
+ => [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificate  54.6s
+ => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils
+ => => #   xdg-utils xkb-data
+ => => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.
+ => => # Need to get 180 MB of archives.
+ => => # After this operation, 608 MB of additional disk space will be used.
+ => => # Get:1 http://deb.debian.org/debian bullseye/main amd64 libapparmor1 amd64 2.13.6-10 [99.3 kB]
+ => CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617  0.1s
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec  0[+] Building 58.5s (17/33)                                                                                              [dashboard internal] load build context                                                                        0 => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cdd93f  0.0s => transferring context: 1.52MB                                                                                0 => [api internal] load build context                                                                              0.1s CACHED [dashboard stage-1 1/3] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc  0 => => transferring context: 212.17kB                                                                              0.1s => resolve docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e46  0 => [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificate  54.8s [dashboard builder 2/8] RUN npm install -g pnpm@10                                                            35 => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils                                          [dashboard builder 3/8] WORKDIR /app                                                                           0 => => #   xdg-utils xkb-data                                                                                           [dashboard builder 4/8] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json  0 => => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.                                               [dashboard builder 5/8] COPY lib/ ./lib/                                                                       0 => => # Need to get 180 MB of archives.                                                                                [dashboard builder 6/8] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/                     0 => => # After this operation, 608 MB of additional disk space will be used.                                            [dashboard builder 7/8] RUN pnpm install --frozen-lockfile                                                    18 => => # Get:1 http://deb.debian.org/debian bullseye/main amd64 libapparmor1 amd64 2.13.6-10 [99.3 kB]                  => # Progress: resolved 387, reused 0, downloaded 111, added 111
+ => CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617  0.1s
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec  0.1s => # Progress: resolved 387, reused 0, downloaded 112, added 112
+ => [dashboard internal] load build context                                                                        0.2s
+ => => transferring context: 1.52MB                                                                                0[+] Building 58.5s (17/33)
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cd  0.0s0 => [api internal] load build context                                                                          0.1s
+ => => transferring context: 212.17kB                                                                          0.1s0 => [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certifi  54.8s
+ => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils                                     5 => => #   xdg-utils xkb-data
+ => => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.                                          0 => => # Need to get 180 MB of archives.
+ => => # After this operation, 608 MB of additional disk space will be used.                                      [+] Building 58.7s (17/33)                                                                                          > CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379  0.1 => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cd  0.0s1s
+ => [api internal] load build context                                                                          0.1s0 => => transferring context: 1.52MB                                                                            0 => => transferring context: 212.17kB                                                                          0.1s=> CACHED [dashboard stage-1 1/3] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da4286674256771  0.1 => [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certifi  54.9s1s
+ => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils                                 
+ => => #   xdg-utils xkb-data                                                                                  
+ => => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.                                          r => [dashboard builder 5/8] COPY lib/ ./lib/                                                                   0 => => # Need to get 180 MB of archives.                                                                           => [dashboard builder 6/8] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/                 0.1 => => # After this operation, 608 MB of additional disk space will be used.                                       => [dashboard builder 7/8] RUN pnpm install --frozen-lockfile                                                19.0 => => # Get:1 http://deb.debian.org/debian bullseye/main amd64 libapparmor1 amd64 2.13.6-10 [99.3 kB]             => => #  WARN  Tarball download average speed 4 KiB/s (size 9 KiB) is below 50 KiB/s: https://registry.npmjs.org/ => CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379  0.1s=> => # ful-fs/-/graceful-fs-4.2.11.tgz (GET)
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f6  0.1s/ => => #  WARN  Tarball download average speed 27 KiB/s (size 34 KiB) is below 50 KiB/s: https://registry.npmjs. => [dashboard internal] load build context                                                                    0.2s=> => # rce-map-js/-/source-map-js-1.2.1.tgz (GET)
+ => => transferring context: 1.52MB                                                                            0.[+] Building 58.8s (17/33)
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a  0.0s. => [api internal] load build context                                                                       0.1s
+ => => transferring context: 212.17kB                                                                       0.1s. => [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-cert  55.1s
+ => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils                                  . => => #   xdg-utils xkb-data
+ => => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.                                       . => => # Need to get 180 MB of archives.
+ => => # After this operation, 608 MB of additional disk space will be used.                                    [+] Building 59.0s (17/33)                                                                                    [+] Building 59.1s (17/33)                                                                                       s => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a  0.0s0.1s => => transferring context: 212.17kB
+ => [api internal] load build context                                                                       0.1s 55.2s => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils
+ => => transferring context: 212.17kB                                                                       0.1s=> => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.
+ => [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-cert  55.4s=> => # After this operation, 608 MB of additional disk space will be used.
+ => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils                                  => CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17  0.1
+ => => #   xdg-utils xkb-data                                                                                   s => [dashboard internal] load build context                                                                 0
+ => => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.                                       .2s => CACHED [dashboard stage-1 1/3] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da4286674256
+ => => # Need to get 180 MB of archives.                                                                         0.1s => [dashboard builder 2/8] RUN npm install -g pnpm@10
+ => => # After this operation, 608 MB of additional disk space will be used.                                       0.1s => [dashboard builder 4/8] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsc
+ => => # Get:1 http://deb.debian.org/debian bullseye/main amd64 libapparmor1 amd64 2.13.6-10 [99.3 kB]               0.1s => [dashboard builder 6/8] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/
+ => CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17  0.1s      19.4s => => # Progress: resolved 387, reused 0, downloaded 112, added 112
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a0  0.1s => => # rce-map-js/-/source-map-js-1.2.1.tgz (GET)
+ => [dashboard internal] load build context                                                                 0.2s=> => #  WARN  Tarball download average speed 20 KiB/s (size 323 KiB) is below 50 KiB/s: https://registry.npmj
+ => => transferring context: 1.52MB                                                                         0.2[+] Building 59.3s (17/33)                                                                                       > CACHED [dashboard stage-1 1/3] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da4286674256  0.1
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a  0.0s=> => resolve docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9  0.1
+ => [api internal] load build context                                                                       0.1s=> [dashboard builder 2/8] RUN npm install -g pnpm@10                                                     35.3
+ => => transferring context: 212.17kB                                                                       0.1s=> [dashboard builder 3/8] WORKDIR /app                                                                    0.1
+ => [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-cert  55.5s=> [dashboard builder 4/8] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconf  0.1
+ => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils                                  => [dashboard builder 5/8] COPY lib/ ./lib/                                                                0.1
+ => => #   xdg-utils xkb-data                                                                                   => [dashboard builder 6/8] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/              0.1
+ => => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.                                       => [dashboard builder 7/8] RUN pnpm install --frozen-lockfile                                             19.6
+ => => # Need to get 180 MB of archives.                                                                        => => # Progress: resolved 387, reused 0, downloaded 112, added 112
+ => => # After this operation, 608 MB of additional disk space will be used.                                    => => #  WARN  Tarball download average speed 27 KiB/s (size 34 KiB) is below 50 KiB/s: https://registry.npmjs
+ => => # Get:1 http://deb.debian.org/debian bullseye/main amd64 libapparmor1 amd64 2.13.6-10 [99.3 kB]          => => # rce-map-js/-/source-map-js-1.2.1.tgz (GET)
+ => CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17  0.1s=> => # Progress: resolved 387, reused 0, downloaded 114, added 114
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a0  0.1s=> => #  WARN  Tarball download average speed 20 KiB/s (size 323 KiB) is below 50 KiB/s: https://registry.npmj
+ => [dashboard internal] load build context                                                                 0.2s=> => # .org/socket.io-client/-/socket.io-client-4.8.3.tgz (GET)
+ => => transferring context: 1.52MB                                                                         0.2[+] Building 59.4s (17/33)                                                                                       > CACHED [dashboard stage-1 1/3] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da4286674256  0.1
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a  0.0s=> => resolve docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9  0.1
+ => [api internal] load build context                                                                       0.1s=> [dashboard builder 2/8] RUN npm install -g pnpm@10                                                     35.3
+ => => transferring context: 212.17kB                                                                       0.1s=> [dashboard builder 3/8] WORKDIR /app                                                                    0.1
+ => [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-cert  55.7s=> [dashboard builder 4/8] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconf  0.1
+ => => #   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils                                  => [dashboard builder 5/8] COPY lib/ ./lib/                                                                0.1
+ => => #   xdg-utils xkb-data                                                                                   => [dashboard builder 6/8] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/              0.1
+ => => # 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.                                       => [dashboard builder 7/8] RUN pnpm install --frozen-lockfile                                             19.7
+ => => # Need to get 180 MB of archives.                                                                        => => # Progress: resolved 387, reused 0, downloaded 112, added 112
+ => => # After this operation, 608 MB of additional disk space will be used.                                    => => #  WARN  Tarball download average speed 27 KiB/s (size 34 KiB) is below 50 KiB/s: https://registry.npmjs
+ => => # Get:1 http://deb.debian.org/debian bullseye/main amd64 libapparmor1 amd64 2.13.6-10 [99.3 kB]          => => # rce-map-js/-/source-map-js-1.2.1.tgz (GET)
+ => CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17  0.1s=> => # Progress: resolved 387, reused 0, downloaded 114, added 114
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a0  0.1s=> => #  WARN  Tarball download average speed 20 KiB/s (size 323 KiB) is below 50 KiB/s: https://registry.npmj
+ => [dashboard internal] load build context                                                                 0.2s=> => # .org/socket.io-client/-/socket.io-client-4.8.3.tgz (GET)
+ => => transferring context: 1.52MB                                                                         0.2[+] Building 812.5s (24/35)
+ => [internal] load local bake definitions                                                                0.0s1
+ => => reading from stdin 1.02kB                                                                          0.0s
+ => [api internal] load build definition from Dockerfile.api                                              0.1s1
+ => => transferring dockerfile: 1.98kB                                                                    0.0s
+ => [dashboard internal] load build definition from Dockerfile.dashboard                                  0.1s3
+ => => transferring dockerfile: 683B                                                                      0.0s
+ => [api internal] load metadata for docker.io/library/node:20-bullseye-slim                              3.0s1
+ => [dashboard internal] load metadata for docker.io/library/nginx:1.25-alpine                            3.1s
+ => [dashboard internal] load metadata for docker.io/library/node:20-slim                                 2.9s1
+ => [dashboard internal] load .dockerignore                                                               0.0s
+ => => transferring context: 355B                                                                         0.0s1
+ => CACHED [api  1/13] FROM docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435a  0.0s
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e  0.0s1
+ => [api internal] load build context                                                                     0.1s
+ => => transferring context: 212.17kB                                                                     0.1s9
+ => ERROR [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     808.6s
+ => CACHED [dashboard builder 1/8] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb  0.1s
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22  0.1s
+ => [dashboard internal] load build context                                                               0.2ss
+ => => transferring context: 1.52MB                                                                       0.2s
+ => CACHED [dashboard stage-1 1/3] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742  0.1s
+ => => resolve docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9  0.1s
+ => [dashboard builder 2/8] RUN npm install -g pnpm@10                                                   35.3s
+ => [dashboard builder 3/8] WORKDIR /app                                                                  0.1s
+ => [dashboard builder 4/8] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsco  0.1sj
+ => [dashboard builder 5/8] COPY lib/ ./lib/                                                              0.1s
+ => [dashboard builder 6/8] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/            0.1s
+ => [dashboard builder 7/8] RUN pnpm install --frozen-lockfile                                          395.0s
+ => [dashboard builder 8/8] RUN pnpm --filter @workspace/whatsapp-dashboard run build                     9.2s
+ => [dashboard stage-1 2/3] COPY --from=builder /app/artifacts/whatsapp-dashboard/dist/public /usr/share  0.1s
+ => [dashboard stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf                                0.1s
+ => [dashboard] exporting to image                                                                        0.4s
+ => => exporting layers                                                                                   0.2s
+ => => exporting manifest sha256:1a7a4a811dc18c7f88b517371e11944c5bbfb29ec847df917a301a004ac1c4d8         0.0s
+ => => exporting config sha256:8e260a579ad45d6bb8c795f8ce5e1757e67ab88ee14c8eee0308f5a1b2fc20d4           0.0s
+ => => exporting attestation manifest sha256:d12bfda8c295a7377a475586b3c3c47a2188adb8cf066143bad997dda3b  0.0s
+ => => exporting manifest list sha256:a961f4effc6767f28f578c699e873eeb884dce663db38c8a3f0ad5581731a4ed    0.0s
+ => => naming to docker.io/library/whatsapp-manager-dashboard:latest                                      0.0s
+ => => unpacking to docker.io/library/whatsapp-manager-dashboard:latest                                   0.1s
+ => [dashboard] resolving provenance for metadata file                                                    0.0s
+------
+ > [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificates     fonts-liberation     fonts-noto-color-emoji     libasound2     libatk-bridge2.0-0     libatk1.0-0     libcairo2     libcups2     libdbus-1-3     libexpat1     libfontconfig1     libgbm1     libglib2.0-0     libgtk-3-0     libnspr4     libnss3     libpango-1.0-0     libpangocairo-1.0-0     libstdc++6     libx11-6     libx11-xcb1     libxcb1     libxcomposite1     libxcursor1     libxdamage1     libxext6     libxfixes3     libxi6     libxrandr2     libxrender1     libxss1     libxtst6     wget     xdg-utils     && rm -rf /var/lib/apt/lists/*:
+1.356 Get:1 http://deb.debian.org/debian bullseye InRelease [75.1 kB]
+1.596 Get:2 http://deb.debian.org/debian-security bullseye-security InRelease [27.2 kB]
+2.493 Get:3 http://deb.debian.org/debian bullseye-updates InRelease [44.0 kB]
+2.622 Get:4 http://deb.debian.org/debian bullseye/main amd64 Packages [8066 kB]
+38.47 Get:5 http://deb.debian.org/debian-security bullseye-security/main amd64 Packages [446 kB]
+39.82 Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [18.8 kB]
+39.84 Fetched 8677 kB in 39s (221 kB/s)
+39.84 Reading package lists...
+40.42 Reading package lists...
+40.98 Building dependency tree...
+41.10 Reading state information...
+41.27 libstdc++6 is already the newest version (10.2.1-6).
+41.27 The following additional packages will be installed:
+41.27   adwaita-icon-theme chromium-common dbus dbus-user-session
+41.27   dconf-gsettings-backend dconf-service dmsetup fontconfig fontconfig-config
+41.27   glib-networking glib-networking-common glib-networking-services
+41.27   gsettings-desktop-schemas gtk-update-icon-cache hicolor-icon-theme
+41.27   libapparmor1 libargon2-1 libasound2-data libasyncns0 libatk1.0-data
+41.27   libatomic1 libatspi2.0-0 libavahi-client3 libavahi-common-data
+41.27   libavahi-common3 libbrotli1 libbsd0 libcairo-gobject2 libcap2 libcolord2
+41.27   libcryptsetup12 libdatrie1 libdconf1 libdeflate0 libdevmapper1.02.1
+41.27   libdouble-conversion3 libdrm-amdgpu1 libdrm-common libdrm-intel1
+41.27   libdrm-nouveau2 libdrm-radeon1 libdrm2 libedit2 libelf1 libepoxy0
+41.27   libevent-2.1-7 libflac8 libfontenc1 libfreetype6 libfribidi0
+41.27   libgdk-pixbuf-2.0-0 libgdk-pixbuf2.0-common libgl1 libgl1-mesa-dri
+41.27   libglapi-mesa libglvnd0 libglx-mesa0 libglx0 libgraphite2-3 libgtk-3-common
+41.27   libharfbuzz0b libice6 libicu67 libip4tc2 libjbig0 libjpeg62-turbo libjson-c5
+41.27   libjson-glib-1.0-0 libjson-glib-1.0-common libjsoncpp24 libkmod2 liblcms2-2
+41.27   libllvm11 libmd0 libminizip1 libogg0 libopenjp2-7 libopus0 libpam-systemd
+41.27   libpangoft2-1.0-0 libpciaccess0 libpixman-1-0 libpng16-16 libproxy1v5
+41.27   libpsl5 libpulse0 librest-0.7-0 libsensors-config libsensors5 libsm6
+41.27   libsnappy1v5 libsndfile1 libsoup-gnome2.4-1 libsoup2.4-1 libsqlite3-0
+41.27   libthai-data libthai0 libtiff5 libvorbis0a libvorbisenc2 libvulkan1
+41.27   libwayland-client0 libwayland-cursor0 libwayland-egl1 libwayland-server0
+41.27   libwebp6 libwebpdemux2 libwebpmux3 libwoff1 libwrap0 libx11-data libxau6
+41.27   libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0
+41.27   libxcb-render0 libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0
+41.27   libxdmcp6 libxft2 libxinerama1 libxkbcommon0 libxkbfile1 libxml2 libxmu6
+41.27   libxmuu1 libxnvctrl0 libxpm4 libxshmfence1 libxslt1.1 libxt6 libxv1
+41.27   libxxf86dga1 libxxf86vm1 libz3-4 openssl sensible-utils shared-mime-info
+41.27   systemd systemd-sysv ucf x11-common x11-utils xkb-data
+41.28 Suggested packages:
+41.28   chromium-l10n chromium-shell chromium-driver libasound2-plugins alsa-utils
+41.28   colord cups-common gvfs liblcms2-utils opus-tools pciutils pulseaudio
+41.28   lm-sensors systemd-container policykit-1 mesa-utils
+41.28 Recommended packages:
+41.28   librsvg2-common chromium-sandbox upower libu2f-udev notification-daemon
+41.28   system-config-printer alsa-ucm-conf alsa-topology-conf at-spi2-core
+41.28   libgdk-pixbuf2.0-bin libglib2.0-data xdg-user-dirs libgtk-3-bin publicsuffix
+41.28   mesa-vulkan-drivers | vulkan-icd systemd-timesyncd | time-daemon
+41.28   libnss-systemd libfile-mimeinfo-perl libnet-dbus-perl libx11-protocol-perl
+41.28   x11-xserver-utils
+42.02 The following NEW packages will be installed:
+42.02   adwaita-icon-theme ca-certificates chromium chromium-common dbus
+42.02   dbus-user-session dconf-gsettings-backend dconf-service dmsetup fontconfig
+42.02   fontconfig-config fonts-liberation fonts-noto-color-emoji glib-networking
+42.02   glib-networking-common glib-networking-services gsettings-desktop-schemas
+42.02   gtk-update-icon-cache hicolor-icon-theme libapparmor1 libargon2-1 libasound2
+42.02   libasound2-data libasyncns0 libatk-bridge2.0-0 libatk1.0-0 libatk1.0-data
+42.02   libatomic1 libatspi2.0-0 libavahi-client3 libavahi-common-data
+42.02   libavahi-common3 libbrotli1 libbsd0 libcairo-gobject2 libcairo2 libcap2
+42.02   libcolord2 libcryptsetup12 libcups2 libdatrie1 libdbus-1-3 libdconf1
+42.02   libdeflate0 libdevmapper1.02.1 libdouble-conversion3 libdrm-amdgpu1
+42.02   libdrm-common libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libedit2
+42.02   libelf1 libepoxy0 libevent-2.1-7 libexpat1 libflac8 libfontconfig1
+42.02   libfontenc1 libfreetype6 libfribidi0 libgbm1 libgdk-pixbuf-2.0-0
+42.02   libgdk-pixbuf2.0-common libgl1 libgl1-mesa-dri libglapi-mesa libglib2.0-0
+42.03   libglvnd0 libglx-mesa0 libglx0 libgraphite2-3 libgtk-3-0 libgtk-3-common
+42.03   libharfbuzz0b libice6 libicu67 libip4tc2 libjbig0 libjpeg62-turbo libjson-c5
+42.03   libjson-glib-1.0-0 libjson-glib-1.0-common libjsoncpp24 libkmod2 liblcms2-2
+42.03   libllvm11 libmd0 libminizip1 libnspr4 libnss3 libogg0 libopenjp2-7 libopus0
+42.03   libpam-systemd libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0
+42.03   libpciaccess0 libpixman-1-0 libpng16-16 libproxy1v5 libpsl5 libpulse0
+42.03   librest-0.7-0 libsensors-config libsensors5 libsm6 libsnappy1v5 libsndfile1
+42.03   libsoup-gnome2.4-1 libsoup2.4-1 libsqlite3-0 libthai-data libthai0 libtiff5
+42.03   libvorbis0a libvorbisenc2 libvulkan1 libwayland-client0 libwayland-cursor0
+42.03   libwayland-egl1 libwayland-server0 libwebp6 libwebpdemux2 libwebpmux3
+42.03   libwoff1 libwrap0 libx11-6 libx11-data libx11-xcb1 libxau6 libxaw7
+42.03   libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-render0
+42.03   libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0 libxcb1 libxcomposite1
+42.03   libxcursor1 libxdamage1 libxdmcp6 libxext6 libxfixes3 libxft2 libxi6
+42.03   libxinerama1 libxkbcommon0 libxkbfile1 libxml2 libxmu6 libxmuu1 libxnvctrl0
+42.03   libxpm4 libxrandr2 libxrender1 libxshmfence1 libxslt1.1 libxss1 libxt6
+42.03   libxtst6 libxv1 libxxf86dga1 libxxf86vm1 libz3-4 openssl sensible-utils
+42.03   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils
+42.03   xdg-utils xkb-data
+46.79 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.
+46.79 Need to get 180 MB of archives.
+46.79 After this operation, 608 MB of additional disk space will be used.
+46.79 Get:1 http://deb.debian.org/debian bullseye/main amd64 libapparmor1 amd64 2.13.6-10 [99.3 kB]
+63.54 Get:2 http://deb.debian.org/debian-security bullseye-security/main amd64 libcap2 amd64 1:2.44-1+deb11u1 [24.2 kB]
+65.15 Get:3 http://deb.debian.org/debian bullseye/main amd64 libargon2-1 amd64 0~20171227-0.2 [19.6 kB]
+66.25 Get:4 http://deb.debian.org/debian bullseye/main amd64 dmsetup amd64 2:1.02.175-2.1 [92.1 kB]
+70.91 Get:5 http://deb.debian.org/debian bullseye/main amd64 libdevmapper1.02.1 amd64 2:1.02.175-2.1 [143 kB]
+76.48 Get:6 http://deb.debian.org/debian bullseye/main amd64 libjson-c5 amd64 0.15-2+deb11u1 [42.9 kB]
+83.02 Get:7 http://deb.debian.org/debian bullseye/main amd64 libcryptsetup12 amd64 2:2.3.7-1+deb11u1 [248 kB]
+91.47 Get:8 http://deb.debian.org/debian bullseye/main amd64 libip4tc2 amd64 1.8.7-1 [34.6 kB]
+93.23 Get:9 http://deb.debian.org/debian bullseye/main amd64 libkmod2 amd64 28-1 [55.6 kB]
+94.26 Get:10 http://deb.debian.org/debian-security bullseye-security/main amd64 systemd amd64 247.3-7+deb11u7 [4501 kB]
+178.4 Err:10 http://deb.debian.org/debian-security bullseye-security/main amd64 systemd amd64 247.3-7+deb11u7
+178.4   Connection timed out [IP: 151.101.38.132 80]
+188.4 Err:11 http://deb.debian.org/debian-security bullseye-security/main amd64 systemd-sysv amd64 247.3-7+deb11u7
+188.4   Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+198.4 Err:12 http://deb.debian.org/debian bullseye/main amd64 libdbus-1-3 amd64 1.12.28-0+deb11u1
+198.4   Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+208.4 Err:13 http://deb.debian.org/debian-security bullseye-security/main amd64 libexpat1 amd64 2.2.10-2+deb11u7
+208.4   Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+218.4 Err:14 http://deb.debian.org/debian bullseye/main amd64 dbus amd64 1.12.28-0+deb11u1
+218.4   Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+228.4 Err:15 http://deb.debian.org/debian bullseye/main amd64 sensible-utils all 0.0.14
+228.4   Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+232.8 Get:16 http://deb.debian.org/debian-security bullseye-security/main amd64 openssl amd64 1.1.1w-0+deb11u5 [859 kB]
+239.2 Get:17 http://deb.debian.org/debian-security bullseye-security/main amd64 ca-certificates all 20230311+deb12u1~deb11u1 [169 kB]
+239.8 Get:18 http://deb.debian.org/debian-security bullseye-security/main amd64 libpam-systemd amd64 247.3-7+deb11u7 [284 kB]
+240.1 Get:19 http://deb.debian.org/debian-security bullseye-security/main amd64 ucf all 3.0043+deb11u2 [74.3 kB]
+240.1 Get:20 http://deb.debian.org/debian bullseye/main amd64 libpsl5 amd64 0.21.0-1.2 [57.3 kB]
+241.4 Get:21 http://deb.debian.org/debian-security bullseye-security/main amd64 wget amd64 1.21-1+deb11u2 [964 kB]
+245.0 Get:22 http://deb.debian.org/debian bullseye/main amd64 hicolor-icon-theme all 0.17-2 [11.4 kB]
+246.5 Get:23 http://deb.debian.org/debian-security bullseye-security/main amd64 libgdk-pixbuf2.0-common all 2.42.2+dfsg-1+deb11u4 [321 kB]
+246.8 Get:24 http://deb.debian.org/debian-security bullseye-security/main amd64 libglib2.0-0 amd64 2.66.8-1+deb11u8 [1377 kB]
+253.8 Get:25 http://deb.debian.org/debian-security bullseye-security/main amd64 libicu67 amd64 67.1-7+deb11u1 [8624 kB]
+323.2 Get:26 http://deb.debian.org/debian-security bullseye-security/main amd64 libxml2 amd64 2.9.10+dfsg-6.7+deb11u9 [694 kB]
+325.3 Get:27 http://deb.debian.org/debian bullseye/main amd64 shared-mime-info amd64 2.0-1 [701 kB]
+327.3 Get:28 http://deb.debian.org/debian bullseye/main amd64 libjpeg62-turbo amd64 1:2.0.6-4 [151 kB]
+328.3 Get:29 http://deb.debian.org/debian-security bullseye-security/main amd64 libpng16-16 amd64 1.6.37-3+deb11u2 [295 kB]
+328.4 Get:30 http://deb.debian.org/debian bullseye/main amd64 libdeflate0 amd64 1.7-1 [53.1 kB]
+328.5 Get:31 http://deb.debian.org/debian bullseye/main amd64 libjbig0 amd64 2.1-3.1+b2 [31.0 kB]
+329.5 Get:32 http://deb.debian.org/debian bullseye/main amd64 libwebp6 amd64 0.6.1-2.1+deb11u2 [259 kB]
+330.7 Get:33 http://deb.debian.org/debian-security bullseye-security/main amd64 libtiff5 amd64 4.2.0-1+deb11u7 [291 kB]
+331.4 Get:34 http://deb.debian.org/debian-security bullseye-security/main amd64 libgdk-pixbuf-2.0-0 amd64 2.42.2+dfsg-1+deb11u4 [147 kB]
+331.5 Get:35 http://deb.debian.org/debian bullseye/main amd64 gtk-update-icon-cache amd64 3.24.24-4+deb11u4 [88.4 kB]
+331.5 Get:36 http://deb.debian.org/debian bullseye/main amd64 adwaita-icon-theme all 3.38.0-1 [10.9 MB]
+380.7 Get:37 http://deb.debian.org/debian-security bullseye-security/main amd64 libasound2-data all 1.2.4-1.1+deb11u1 [38.4 kB]
+381.8 Get:38 http://deb.debian.org/debian-security bullseye-security/main amd64 libasound2 amd64 1.2.4-1.1+deb11u1 [357 kB]
+383.6 Get:39 http://deb.debian.org/debian bullseye/main amd64 libatk1.0-data all 2.36.0-2 [149 kB]
+383.7 Get:40 http://deb.debian.org/debian bullseye/main amd64 libatk1.0-0 amd64 2.36.0-2 [52.2 kB]
+383.8 Get:41 http://deb.debian.org/debian bullseye/main amd64 libxau6 amd64 1:1.0.9-1 [19.7 kB]
+383.8 Get:42 http://deb.debian.org/debian bullseye/main amd64 libmd0 amd64 1.0.3-3 [28.0 kB]
+384.4 Get:43 http://deb.debian.org/debian bullseye/main amd64 libbsd0 amd64 0.11.3-1+deb11u1 [108 kB]
+384.4 Get:44 http://deb.debian.org/debian bullseye/main amd64 libxdmcp6 amd64 1:1.1.2-3 [26.3 kB]
+385.3 Get:45 http://deb.debian.org/debian bullseye/main amd64 libxcb1 amd64 1.14-3 [140 kB]
+386.3 Get:46 http://deb.debian.org/debian bullseye/main amd64 libx11-data all 2:1.7.2-1+deb11u2 [311 kB]
+388.5 Get:47 http://deb.debian.org/debian bullseye/main amd64 libx11-6 amd64 2:1.7.2-1+deb11u2 [772 kB]
+391.3 Get:48 http://deb.debian.org/debian bullseye/main amd64 libatspi2.0-0 amd64 2.38.0-4+deb11u1 [72.4 kB]
+391.6 Get:49 http://deb.debian.org/debian bullseye/main amd64 libatk-bridge2.0-0 amd64 2.38.0-1 [64.6 kB]
+391.7 Get:50 http://deb.debian.org/debian bullseye/main amd64 libatomic1 amd64 10.2.1-6 [9008 B]
+392.8 Get:51 http://deb.debian.org/debian bullseye/main amd64 libbrotli1 amd64 1.0.9-2+b2 [279 kB]
+394.6 Get:52 http://deb.debian.org/debian-security bullseye-security/main amd64 libfreetype6 amd64 2.10.4+dfsg-1+deb11u2 [418 kB]
+397.0 Get:53 http://deb.debian.org/debian bullseye/main amd64 fonts-liberation all 1:1.07.4-11 [828 kB]
+401.8 Get:54 http://deb.debian.org/debian bullseye/main amd64 fontconfig-config all 2.13.1-4.2 [281 kB]
+402.9 Get:55 http://deb.debian.org/debian bullseye/main amd64 libfontconfig1 amd64 2.13.1-4.2 [347 kB]
+404.8 Get:56 http://deb.debian.org/debian bullseye/main amd64 libpixman-1-0 amd64 0.40.0-1.1~deb11u1 [543 kB]
+407.1 Get:57 http://deb.debian.org/debian bullseye/main amd64 libxcb-render0 amd64 1.14-3 [111 kB]
+407.7 Get:58 http://deb.debian.org/debian bullseye/main amd64 libxcb-shm0 amd64 1.14-3 [101 kB]
+408.0 Get:59 http://deb.debian.org/debian bullseye/main amd64 libxext6 amd64 2:1.3.3-1.1 [52.7 kB]
+408.4 Get:60 http://deb.debian.org/debian bullseye/main amd64 libxrender1 amd64 1:0.9.10-1 [33.0 kB]
+409.4 Get:61 http://deb.debian.org/debian bullseye/main amd64 libcairo2 amd64 1.16.0-5 [694 kB]
+412.5 Get:62 http://deb.debian.org/debian-security bullseye-security/main amd64 libavahi-common-data amd64 0.8-5+deb11u3 [124 kB]
+412.6 Get:63 http://deb.debian.org/debian-security bullseye-security/main amd64 libavahi-common3 amd64 0.8-5+deb11u3 [59.0 kB]
+412.9 Get:64 http://deb.debian.org/debian-security bullseye-security/main amd64 libavahi-client3 amd64 0.8-5+deb11u3 [62.7 kB]
+413.9 Get:65 http://deb.debian.org/debian-security bullseye-security/main amd64 libcups2 amd64 2.3.3op2-3+deb11u10 [351 kB]
+415.2 Get:66 http://deb.debian.org/debian bullseye/main amd64 libdouble-conversion3 amd64 3.1.5-6.1 [41.0 kB]
+415.2 Get:67 http://deb.debian.org/debian bullseye/main amd64 libdrm-common all 2.4.104-1 [14.9 kB]
+415.5 Get:68 http://deb.debian.org/debian bullseye/main amd64 libdrm2 amd64 2.4.104-1 [41.5 kB]
+416.5 Get:69 http://deb.debian.org/debian bullseye/main amd64 libevent-2.1-7 amd64 2.1.12-stable-1 [188 kB]
+416.9 Get:70 http://deb.debian.org/debian bullseye/main amd64 libogg0 amd64 1.3.4-0.1 [27.3 kB]
+417.1 Get:71 http://deb.debian.org/debian bullseye/main amd64 libflac8 amd64 1.3.3-2+deb11u2 [112 kB]
+417.3 Get:72 http://deb.debian.org/debian bullseye/main amd64 libwayland-server0 amd64 1.18.0-2~exp1.1 [34.4 kB]
+417.7 Get:73 http://deb.debian.org/debian bullseye/main amd64 libgbm1 amd64 20.3.5-1 [73.5 kB]
+418.2 Get:74 http://deb.debian.org/debian bullseye/main amd64 libjsoncpp24 amd64 1.9.4-4 [78.9 kB]
+419.1 Get:75 http://deb.debian.org/debian bullseye/main amd64 liblcms2-2 amd64 2.12~rc1-2 [150 kB]
+419.1 Get:76 http://deb.debian.org/debian bullseye/main amd64 libminizip1 amd64 1.1-8+deb11u1 [20.1 kB]
+419.5 Get:77 http://deb.debian.org/debian bullseye/main amd64 libnspr4 amd64 2:4.29-1 [112 kB]
+420.5 Get:78 http://deb.debian.org/debian-security bullseye-security/main amd64 libsqlite3-0 amd64 3.34.1-3+deb11u1 [797 kB]
+423.7 Get:79 http://deb.debian.org/debian-security bullseye-security/main amd64 libnss3 amd64 2:3.61-1+deb11u5 [1305 kB]
+430.2 Get:80 http://deb.debian.org/debian-security bullseye-security/main amd64 libopenjp2-7 amd64 2.4.0-3+deb11u2 [173 kB]
+430.7 Get:81 http://deb.debian.org/debian bullseye/main amd64 libopus0 amd64 1.3.1-0.1 [190 kB]
+431.8 Get:82 http://deb.debian.org/debian bullseye/main amd64 fontconfig amd64 2.13.1-4.2 [417 kB]
+432.1 Get:83 http://deb.debian.org/debian bullseye/main amd64 libfribidi0 amd64 1.0.8-2+deb11u1 [64.9 kB]
+432.2 Get:84 http://deb.debian.org/debian bullseye/main amd64 libgraphite2-3 amd64 1.3.14-1 [81.2 kB]
+432.2 Get:85 http://deb.debian.org/debian bullseye/main amd64 libharfbuzz0b amd64 2.7.4-1 [1471 kB]
+436.1 Get:86 http://deb.debian.org/debian bullseye/main amd64 libthai-data all 0.1.28-3 [170 kB]
+436.2 Get:87 http://deb.debian.org/debian bullseye/main amd64 libdatrie1 amd64 0.2.13-1 [42.7 kB]
+436.5 Get:88 http://deb.debian.org/debian bullseye/main amd64 libthai0 amd64 0.1.28-3 [54.2 kB]
+436.9 Get:89 http://deb.debian.org/debian bullseye/main amd64 libpango-1.0-0 amd64 1.46.2-3 [191 kB]
+437.0 Get:90 http://deb.debian.org/debian bullseye/main amd64 libasyncns0 amd64 0.8-6+b2 [12.9 kB]
+437.2 Get:91 http://deb.debian.org/debian bullseye/main amd64 libvorbis0a amd64 1.3.7-1 [93.0 kB]
+437.3 Get:92 http://deb.debian.org/debian bullseye/main amd64 libvorbisenc2 amd64 1.3.7-1 [80.6 kB]
+437.8 Get:93 http://deb.debian.org/debian-security bullseye-security/main amd64 libsndfile1 amd64 1.0.31-2+deb11u2 [188 kB]
+437.9 Get:94 http://deb.debian.org/debian bullseye/main amd64 libwrap0 amd64 7.6.q-31 [59.0 kB]
+438.8 Get:95 http://deb.debian.org/debian bullseye/main amd64 libpulse0 amd64 14.2-2 [285 kB]
+438.8 Get:96 http://deb.debian.org/debian bullseye/main amd64 libsnappy1v5 amd64 1.1.8-1 [17.9 kB]
+439.0 Get:97 http://deb.debian.org/debian bullseye/main amd64 libwebpdemux2 amd64 0.6.1-2.1+deb11u2 [87.8 kB]
+439.3 Get:98 http://deb.debian.org/debian bullseye/main amd64 libwebpmux3 amd64 0.6.1-2.1+deb11u2 [97.7 kB]
+439.5 Get:99 http://deb.debian.org/debian bullseye/main amd64 libwoff1 amd64 1.0.2-1+b1 [42.4 kB]
+439.5 Get:100 http://deb.debian.org/debian bullseye/main amd64 libxcomposite1 amd64 1:0.4.5-1 [16.6 kB]
+439.5 Get:101 http://deb.debian.org/debian bullseye/main amd64 libxdamage1 amd64 1:1.1.5-2 [15.7 kB]
+439.5 Get:102 http://deb.debian.org/debian bullseye/main amd64 libxfixes3 amd64 1:5.0.3-2 [22.1 kB]
+440.5 Get:103 http://deb.debian.org/debian bullseye/main amd64 xkb-data all 2.29-2 [655 kB]
+442.5 Get:104 http://deb.debian.org/debian bullseye/main amd64 libxkbcommon0 amd64 1.0.3-2 [101 kB]
+442.7 Get:105 http://deb.debian.org/debian bullseye/main amd64 libxnvctrl0 amd64 470.239.06-1 [27.5 kB]
+442.7 Get:106 http://deb.debian.org/debian bullseye/main amd64 libxrandr2 amd64 2:1.5.1-1 [37.5 kB]
+442.8 Get:107 http://deb.debian.org/debian-security bullseye-security/main amd64 libxslt1.1 amd64 1.1.34-4+deb11u3 [241 kB]
+442.9 Get:108 http://deb.debian.org/debian bullseye/main amd64 libcairo-gobject2 amd64 1.16.0-5 [125 kB]
+443.0 Get:109 http://deb.debian.org/debian bullseye/main amd64 libcolord2 amd64 1.4.5-3 [144 kB]
+443.6 Get:110 http://deb.debian.org/debian bullseye/main amd64 libepoxy0 amd64 1.5.5-1 [193 kB]
+443.7 Get:111 http://deb.debian.org/debian bullseye/main amd64 libjson-glib-1.0-common all 1.6.2-1 [56.9 kB]
+443.8 Get:112 http://deb.debian.org/debian bullseye/main amd64 libjson-glib-1.0-0 amd64 1.6.2-1 [65.4 kB]
+443.9 Get:113 http://deb.debian.org/debian bullseye/main amd64 libpangoft2-1.0-0 amd64 1.46.2-3 [62.2 kB]
+444.1 Get:114 http://deb.debian.org/debian bullseye/main amd64 libpangocairo-1.0-0 amd64 1.46.2-3 [50.6 kB]
+444.2 Get:115 http://deb.debian.org/debian bullseye/main amd64 libproxy1v5 amd64 0.4.17-1 [59.5 kB]
+444.5 Get:116 http://deb.debian.org/debian bullseye/main amd64 glib-networking-common all 2.66.0-2 [68.1 kB]
+444.5 Get:117 http://deb.debian.org/debian bullseye/main amd64 glib-networking-services amd64 2.66.0-2 [17.5 kB]
+444.7 Get:118 http://deb.debian.org/debian bullseye/main amd64 dbus-user-session amd64 1.12.28-0+deb11u1 [100 kB]
+444.9 Get:119 http://deb.debian.org/debian bullseye/main amd64 libdconf1 amd64 0.38.0-2 [43.5 kB]
+444.9 Get:120 http://deb.debian.org/debian bullseye/main amd64 dconf-service amd64 0.38.0-2 [37.4 kB]
+445.0 Get:121 http://deb.debian.org/debian bullseye/main amd64 dconf-gsettings-backend amd64 0.38.0-2 [30.6 kB]
+446.1 Get:122 http://deb.debian.org/debian bullseye/main amd64 gsettings-desktop-schemas all 3.38.0-2 [588 kB]
+446.7 Get:123 http://deb.debian.org/debian bullseye/main amd64 glib-networking amd64 2.66.0-2 [67.6 kB]
+447.4 Get:124 http://deb.debian.org/debian-security bullseye-security/main amd64 libsoup2.4-1 amd64 2.72.0-2+deb11u3 [283 kB]
+447.4 Get:125 http://deb.debian.org/debian-security bullseye-security/main amd64 libsoup-gnome2.4-1 amd64 2.72.0-2+deb11u3 [24.1 kB]
+447.5 Get:126 http://deb.debian.org/debian bullseye/main amd64 librest-0.7-0 amd64 0.8.1-1.1 [33.8 kB]
+447.7 Get:127 http://deb.debian.org/debian bullseye/main amd64 libwayland-client0 amd64 1.18.0-2~exp1.1 [26.9 kB]
+447.7 Get:128 http://deb.debian.org/debian bullseye/main amd64 libwayland-cursor0 amd64 1.18.0-2~exp1.1 [14.6 kB]
+447.7 Get:129 http://deb.debian.org/debian bullseye/main amd64 libwayland-egl1 amd64 1.18.0-2~exp1.1 [8448 B]
+447.7 Get:130 http://deb.debian.org/debian bullseye/main amd64 libxcursor1 amd64 1:1.2.0-2 [37.3 kB]
+448.0 Get:131 http://deb.debian.org/debian bullseye/main amd64 libxi6 amd64 2:1.7.10-1 [83.4 kB]
+448.1 Get:132 http://deb.debian.org/debian bullseye/main amd64 libxinerama1 amd64 2:1.1.4-2 [17.7 kB]
+448.1 Get:133 http://deb.debian.org/debian bullseye/main amd64 libgtk-3-common all 3.24.24-4+deb11u4 [3757 kB]
+457.3 Get:134 http://deb.debian.org/debian bullseye/main amd64 libgtk-3-0 amd64 3.24.24-4+deb11u4 [2715 kB]
+464.1 Get:135 http://deb.debian.org/debian bullseye/main amd64 libfontenc1 amd64 1:1.1.4-1 [24.3 kB]
+464.2 Get:136 http://deb.debian.org/debian bullseye/main amd64 libglvnd0 amd64 1.3.2-1 [53.6 kB]
+464.5 Get:137 http://deb.debian.org/debian bullseye/main amd64 libglapi-mesa amd64 20.3.5-1 [71.7 kB]
+465.2 Get:138 http://deb.debian.org/debian bullseye/main amd64 libx11-xcb1 amd64 2:1.7.2-1+deb11u2 [204 kB]
+465.6 Get:139 http://deb.debian.org/debian bullseye/main amd64 libxcb-dri2-0 amd64 1.14-3 [103 kB]
+465.7 Get:140 http://deb.debian.org/debian bullseye/main amd64 libxcb-dri3-0 amd64 1.14-3 [102 kB]
+466.0 Get:141 http://deb.debian.org/debian bullseye/main amd64 libxcb-glx0 amd64 1.14-3 [118 kB]
+466.3 Get:142 http://deb.debian.org/debian bullseye/main amd64 libxcb-present0 amd64 1.14-3 [101 kB]
+466.6 Get:143 http://deb.debian.org/debian bullseye/main amd64 libxcb-sync1 amd64 1.14-3 [105 kB]
+466.8 Get:144 http://deb.debian.org/debian bullseye/main amd64 libxcb-xfixes0 amd64 1.14-3 [105 kB]
+466.9 Get:145 http://deb.debian.org/debian bullseye/main amd64 libxshmfence1 amd64 1.3-1 [8820 B]
+466.9 Get:146 http://deb.debian.org/debian bullseye/main amd64 libxxf86vm1 amd64 1:1.1.4-1+b2 [20.8 kB]
+467.0 Get:147 http://deb.debian.org/debian bullseye/main amd64 libdrm-amdgpu1 amd64 2.4.104-1 [28.5 kB]
+467.1 Get:148 http://deb.debian.org/debian bullseye/main amd64 libpciaccess0 amd64 0.16-1 [53.6 kB]
+467.3 Get:149 http://deb.debian.org/debian bullseye/main amd64 libdrm-intel1 amd64 2.4.104-1 [71.8 kB]
+467.3 Get:150 http://deb.debian.org/debian bullseye/main amd64 libdrm-nouveau2 amd64 2.4.104-1 [26.8 kB]
+467.4 Get:151 http://deb.debian.org/debian bullseye/main amd64 libdrm-radeon1 amd64 2.4.104-1 [30.2 kB]
+468.0 Get:152 http://deb.debian.org/debian bullseye/main amd64 libelf1 amd64 0.183-1 [165 kB]
+468.1 Get:153 http://deb.debian.org/debian bullseye/main amd64 libedit2 amd64 3.1-20191231-2+b1 [96.7 kB]
+468.1 Get:154 http://deb.debian.org/debian bullseye/main amd64 libz3-4 amd64 4.8.10-1 [6949 kB]
+485.5 Get:155 http://deb.debian.org/debian bullseye/main amd64 libllvm11 amd64 1:11.0.1-2 [17.9 MB]
+531.9 Get:156 http://deb.debian.org/debian bullseye/main amd64 libsensors-config all 1:3.6.0-7 [32.3 kB]
+531.9 Get:157 http://deb.debian.org/debian bullseye/main amd64 libsensors5 amd64 1:3.6.0-7 [52.3 kB]
+532.1 Get:158 http://deb.debian.org/debian bullseye/main amd64 libvulkan1 amd64 1.2.162.0-1 [103 kB]
+532.1 Get:159 http://deb.debian.org/debian bullseye/main amd64 libgl1-mesa-dri amd64 20.3.5-1 [9633 kB]
+557.4 Get:160 http://deb.debian.org/debian bullseye/main amd64 libglx-mesa0 amd64 20.3.5-1 [186 kB]
+557.6 Get:161 http://deb.debian.org/debian bullseye/main amd64 libglx0 amd64 1.3.2-1 [35.7 kB]
+557.7 Get:162 http://deb.debian.org/debian bullseye/main amd64 libgl1 amd64 1.3.2-1 [89.5 kB]
+558.3 Get:163 http://deb.debian.org/debian bullseye/main amd64 x11-common all 1:7.7+22 [252 kB]
+558.5 Get:164 http://deb.debian.org/debian bullseye/main amd64 libice6 amd64 2:1.0.10-1 [58.5 kB]
+558.5 Get:165 http://deb.debian.org/debian bullseye/main amd64 libsm6 amd64 2:1.2.3-1 [35.1 kB]
+559.1 Get:166 http://deb.debian.org/debian bullseye/main amd64 libxt6 amd64 1:1.2.0-1 [189 kB]
+559.1 Get:167 http://deb.debian.org/debian bullseye/main amd64 libxmu6 amd64 2:1.1.2-2+b3 [60.8 kB]
+559.2 Get:168 http://deb.debian.org/debian bullseye/main amd64 libxpm4 amd64 1:3.5.12-1.1+deb11u1 [50.0 kB]
+559.8 Get:169 http://deb.debian.org/debian bullseye/main amd64 libxaw7 amd64 2:1.0.13-1.1 [202 kB]
+560.0 Get:170 http://deb.debian.org/debian bullseye/main amd64 libxcb-shape0 amd64 1.14-3 [102 kB]
+560.1 Get:171 http://deb.debian.org/debian bullseye/main amd64 libxft2 amd64 2.3.2-2 [57.2 kB]
+560.3 Get:172 http://deb.debian.org/debian bullseye/main amd64 libxkbfile1 amd64 1:1.1.0-1 [75.2 kB]
+560.4 Get:173 http://deb.debian.org/debian bullseye/main amd64 libxmuu1 amd64 2:1.1.2-2+b3 [23.9 kB]
+560.4 Get:174 http://deb.debian.org/debian bullseye/main amd64 libxtst6 amd64 2:1.2.3-1 [27.8 kB]
+560.8 Get:175 http://deb.debian.org/debian bullseye/main amd64 libxv1 amd64 2:1.0.11-1 [24.6 kB]
+560.8 Get:176 http://deb.debian.org/debian bullseye/main amd64 libxxf86dga1 amd64 2:1.1.4-1+b3 [22.1 kB]
+561.3 Get:177 http://deb.debian.org/debian bullseye/main amd64 x11-utils amd64 7.7+5 [202 kB]
+561.5 Get:178 http://deb.debian.org/debian bullseye/main amd64 xdg-utils all 1.1.3-4.1 [75.5 kB]
+561.5 Get:179 http://deb.debian.org/debian bullseye/main amd64 chromium-common amd64 120.0.6099.224-1~deb11u1 [5013 kB]
+574.0 Get:180 http://deb.debian.org/debian bullseye/main amd64 chromium amd64 120.0.6099.224-1~deb11u1 [72.1 MB]
+778.6 Ign:180 http://deb.debian.org/debian bullseye/main amd64 chromium amd64 120.0.6099.224-1~deb11u1
+788.6 Err:181 http://deb.debian.org/debian bullseye/main amd64 fonts-noto-color-emoji all 0~20200916-1
+788.6   Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+798.6 Err:182 http://deb.debian.org/debian bullseye/main amd64 libxss1 amd64 1:1.2.3-1
+798.6   Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+808.6 Err:180 http://deb.debian.org/debian bullseye/main amd64 chromium amd64 120.0.6099.224-1~deb11u1
+808.6   Connection timed out [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/s/systemd/systemd_247.3-7%2bdeb11u7_amd64.deb  Connection timed out [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/s/systemd/systemd-sysv_247.3-7%2bdeb11u7_amd64.deb  Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.28-0%2bdeb11u1_amd64.deb  Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/e/expat/libexpat1_2.2.10-2%2bdeb11u7_amd64.deb  Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/dbus/dbus_1.12.28-0%2bdeb11u1_amd64.deb  Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian/pool/main/s/sensible-utils/sensible-utils_0.0.14_all.deb  Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/c/chromium/chromium_120.0.6099.224-1%7edeb11u1_amd64.deb  Connection timed out [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0%7e20200916-1_all.deb  Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+808.6 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxss/libxss1_1.2.3-1_amd64.deb  Temporary failure resolving 'deb.debian.org' [IP: 151.101.38.132 80]
+808.6 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+808.6 Fetched 93.1 MB in 12min 47s (121 kB/s)
+------
+Dockerfile.api:4
+
+--------------------
+
+   3 |     # Install Chromium + all required system dependencies for WPPConnect/Puppeteer
+
+   4 | >>> RUN apt-get update && apt-get install -y --no-install-recommends \
+
+   5 | >>>     chromium \
+
+   6 | >>>     ca-certificates \
+
+   7 | >>>     fonts-liberation \
+
+   8 | >>>     fonts-noto-color-emoji \
+
+   9 | >>>     libasound2 \
+
+  10 | >>>     libatk-bridge2.0-0 \
+
+  11 | >>>     libatk1.0-0 \
+
+  12 | >>>     libcairo2 \
+
+  13 | >>>     libcups2 \
+
+  14 | >>>     libdbus-1-3 \
+
+  15 | >>>     libexpat1 \
+
+  16 | >>>     libfontconfig1 \
+
+  17 | >>>     libgbm1 \
+
+  18 | >>>     libglib2.0-0 \
+
+  19 | >>>     libgtk-3-0 \
+
+  20 | >>>     libnspr4 \
+
+  21 | >>>     libnss3 \
+
+  22 | >>>     libpango-1.0-0 \
+
+  23 | >>>     libpangocairo-1.0-0 \
+
+  24 | >>>     libstdc++6 \
+
+  25 | >>>     libx11-6 \
+
+  26 | >>>     libx11-xcb1 \
+
+  27 | >>>     libxcb1 \
+
+  28 | >>>     libxcomposite1 \
+
+  29 | >>>     libxcursor1 \
+
+  30 | >>>     libxdamage1 \
+
+  31 | >>>     libxext6 \
+
+  32 | >>>     libxfixes3 \
+
+  33 | >>>     libxi6 \
+
+  34 | >>>     libxrandr2 \
+
+  35 | >>>     libxrender1 \
+
+  36 | >>>     libxss1 \
+
+  37 | >>>     libxtst6 \
+
+  38 | >>>     wget \
+
+  39 | >>>     xdg-utils \
+
+  40 | >>>     && rm -rf /var/lib/apt/lists/*
+
+  41 |
+
+--------------------
+
+target api: failed to solve: process "/bin/sh -c apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificates     fonts-liberation     fonts-noto-color-emoji     libasound2     libatk-bridge2.0-0     libatk1.0-0     libcairo2     libcups2     libdbus-1-3     libexpat1     libfontconfig1     libgbm1     libglib2.0-0     libgtk-3-0     libnspr4     libnss3     libpango-1.0-0     libpangocairo-1.0-0     libstdc++6     libx11-6     libx11-xcb1     libxcb1     libxcomposite1     libxcursor1     libxdamage1     libxext6     libxfixes3     libxi6     libxrandr2     libxrender1     libxss1     libxtst6     wget     xdg-utils     && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 100
+
+
+
+View build details: docker-desktop://dashboard/build/default/default/t7l8f4mpo29jww9i39lgsovdm
+
+[+] Running 3/3
+ ✔ Container whatsapp_manager_v1-dashboard-1  Started                                                     6.7s
+ ✔ Container whatsapp_manager_v1-db-1         Healthy                                                     5.8s
+ ✔ Container whatsapp_manager_v1-api-1        Started                                                     0.3s
+Rebuild complete and containers started.
+
+============================================
+  Update complete!
+============================================
+
+  http://localhost:5005
+
+Press any key to continue . . .
