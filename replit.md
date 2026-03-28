@@ -96,6 +96,16 @@ All routes prefixed with `/api/`:
 | `cleanup_wa.bat` | Full uninstall. Stops and removes all containers and volumes (prod + dev), removes all Docker images, deletes desktop shortcuts and the `C:\whatsapp-manager` folder. Requires typing YES to confirm. |
 | `reset_wa.bat` | Data reset (keep the app installed). Clears all database tables (sessions, messages, users, API keys, audit logs), removes WhatsApp token files, restarts the API so it re-seeds `admin / 123456`. Choose production or development. Requires double confirmation (YES then RESET). |
 
+### Docker Containers
+
+The application runs as three containers that work together:
+
+| Container | Image | Purpose |
+|-----------|-------|---------|
+| **db** | `postgres:15-alpine` | PostgreSQL database. Stores all persistent data: users, WhatsApp sessions, messages, API keys, and audit logs. Has a health check so other containers wait until it is fully ready before starting. Data survives container restarts via a named Docker volume. |
+| **api** | `whatsapp-manager-api` | Express 5 API server (port 8080, internal only). Handles all business logic: authentication, WhatsApp session management via WPPConnect/Puppeteer, sending/receiving messages, webhooks, and Socket.IO real-time events. On startup it runs the database schema migration and seeds the default admin account if none exists. WhatsApp session tokens and uploaded files are stored in named Docker volumes so they survive restarts. |
+| **dashboard** | `whatsapp-manager-dashboard` | React 18 frontend. In **production** it is pre-built by Vite and served as static files via Nginx (port 80 inside, mapped to 5005 outside). Nginx also reverse-proxies all `/api` and `/socket.io` requests to the API container. In **development** it runs the Vite dev server (port 5000 inside, mapped to 5005 outside) with HMR so UI changes appear instantly without rebuilding; the Vite proxy forwards API requests to the API container using the `VITE_API_TARGET=http://api:8080` environment variable. |
+
 ### Docker Details
 - Production project name: `whatsapp_manager_v1` — containers: `whatsapp_manager_v1-db-1`, `whatsapp_manager_v1-api-1`, `whatsapp_manager_v1-dashboard-1`
 - Development project name: `whatsapp_manager_dev` — containers: `whatsapp_manager_dev-db-1`, `whatsapp_manager_dev-api-1`, `whatsapp_manager_dev-dashboard-1`
