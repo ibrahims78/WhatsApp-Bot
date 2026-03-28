@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { readFileSync } from "fs";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 import { requireAuth } from "../lib/auth";
 import { db, apiKeysTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
@@ -46,7 +47,12 @@ router.get("/n8n-workflow/download", requireAuth, async (req, res): Promise<void
   });
 
   // ── 3. Read and transform the workflow template ────────────────────────────
-  const filePath = resolve(process.cwd(), "../../doc/n8n-workflow-whatsapp.json");
+  // Use import.meta.url so the path resolves correctly regardless of where
+  // the process was launched from (dev vs. production entrypoint).
+  // Built output lives at artifacts/api-server/dist/index.mjs, so going
+  // three levels up reaches the workspace root where doc/ lives.
+  const __dir = dirname(fileURLToPath(import.meta.url));
+  const filePath = resolve(__dir, "../../../doc/n8n-workflow-whatsapp.json");
 
   let raw: string;
   try {
@@ -79,7 +85,8 @@ router.get("/n8n-workflow/download", requireAuth, async (req, res): Promise<void
 });
 
 router.get("/doc/n8n-workflow-guide", requireAuth, (_req, res): void => {
-  const filePath = resolve(process.cwd(), "../../doc/n8n-workflow-guide.md");
+  const __dir = dirname(fileURLToPath(import.meta.url));
+  const filePath = resolve(__dir, "../../../doc/n8n-workflow-guide.md");
 
   let content: string;
   try {
