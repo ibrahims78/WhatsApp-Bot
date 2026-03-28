@@ -7,8 +7,9 @@ echo "============================================"
 
 echo ""
 echo "[1/3] Running database schema migration..."
+cd /app/lib/db
+pnpm exec drizzle-kit push --config ./drizzle.config.ts
 cd /app
-pnpm --filter @workspace/db push
 echo "Migration complete."
 
 echo ""

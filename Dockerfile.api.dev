@@ -51,6 +51,10 @@ COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig
 COPY lib/ ./lib/
 COPY artifacts/api-server/ ./artifacts/api-server/
 
+# Copy package.json stubs for other workspace packages so pnpm resolves the
+# full workspace graph and properly installs all binaries (e.g. drizzle-kit)
+COPY artifacts/whatsapp-dashboard/package.json ./artifacts/whatsapp-dashboard/
+
 # Install all dependencies including devDependencies
 RUN pnpm install --frozen-lockfile
 
