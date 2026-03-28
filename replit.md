@@ -84,6 +84,24 @@ All routes prefixed with `/api/`:
 - Dashboard: `PORT=5000 BASE_PATH=/ pnpm --filter @workspace/whatsapp-dashboard run dev` (port 5000)
 - Default admin: `admin` / `123456` (forced to change on first login)
 
+## Windows Deployment Scripts (C:\whatsapp-manager)
+
+| File | Purpose |
+|------|---------|
+| `start_wa.bat` | First-time install on a new machine. Clones from GitHub, generates `.env`, builds Docker images, starts production containers on port 5005. |
+| `start_dev.bat` | First-time setup for development mode. Same as above but uses `docker-compose.dev.yml` with Vite HMR. Stops production containers first to free port 5005. |
+| `update_wa.bat` | Update an existing installation. Pulls latest code from GitHub, stops the other environment, rebuilds images (`--no-cache`), and restarts chosen mode (production or development). |
+| `run_wa.bat` | Daily launcher for production. Starts Docker if needed, stops dev containers, starts production containers. Used as the desktop shortcut target. |
+| `run_dev.bat` | Daily launcher for development. Starts Docker if needed, stops production containers, starts dev containers. Used as the dev desktop shortcut target. |
+| `cleanup_wa.bat` | Full uninstall. Stops and removes all containers and volumes (prod + dev), removes all Docker images, deletes desktop shortcuts and the `C:\whatsapp-manager` folder. Requires typing YES to confirm. |
+| `reset_wa.bat` | Data reset (keep the app installed). Clears all database tables (sessions, messages, users, API keys, audit logs), removes WhatsApp token files, restarts the API so it re-seeds `admin / 123456`. Choose production or development. Requires double confirmation (YES then RESET). |
+
+### Docker Details
+- Production project name: `whatsapp_manager_v1` — containers: `whatsapp_manager_v1-db-1`, `whatsapp_manager_v1-api-1`, `whatsapp_manager_v1-dashboard-1`
+- Development project name: `whatsapp_manager_dev` — containers: `whatsapp_manager_dev-db-1`, `whatsapp_manager_dev-api-1`, `whatsapp_manager_dev-dashboard-1`
+- Both environments use port `5005` — scripts automatically stop the other before starting
+- Images: `whatsapp-manager-api:latest`, `whatsapp-manager-dashboard:latest`, `whatsapp-manager-api-dev:latest`, `whatsapp-manager-dashboard-dev:latest`
+
 ## Dependencies (Backend Key)
 - express 5, @wppconnect-team/wppconnect 1.41, socket.io 4.8, drizzle-orm, bcryptjs, jsonwebtoken, pino, sharp, uuid
 
