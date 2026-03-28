@@ -40,14 +40,11 @@ echo   [2] Development
 echo.
 set /p ENV_CHOICE="Enter choice (1/2): "
 
-if "%ENV_CHOICE%"=="1" (
-    set "DB_CONTAINER=whatsapp_manager_v1-db-1"
-    set "API_CONTAINER=whatsapp_manager_v1-api-1"
-)
-if "%ENV_CHOICE%"=="2" (
-    set "DB_CONTAINER=whatsapp_manager_dev-db-1"
-    set "API_CONTAINER=whatsapp_manager_dev-api-1"
-)
+if "%ENV_CHOICE%"=="1" set "DB_CONTAINER=whatsapp_manager_v1-db-1"
+if "%ENV_CHOICE%"=="1" set "API_CONTAINER=whatsapp_manager_v1-api-1"
+if "%ENV_CHOICE%"=="2" set "DB_CONTAINER=whatsapp_manager_dev-db-1"
+if "%ENV_CHOICE%"=="2" set "API_CONTAINER=whatsapp_manager_dev-api-1"
+
 if not defined DB_CONTAINER (
     echo Invalid choice. Operation cancelled.
     pause
@@ -58,16 +55,21 @@ echo.
 echo Starting Reset Process...
 echo ------------------------------------------------------
 
-:: [1/4] Stop API container
-echo [1/4] Stopping API container...
+:: [1/4] Clear WhatsApp token files FIRST (while API container is still running)
+echo [1/4] Clearing WhatsApp session token files...
+docker exec %API_CONTAINER% sh -c "rm -rf /app/artifacts/api-server/tokens/* /app/artifacts/api-server/public/*" 2>nul
+echo Done.
+
+:: [2/4] Stop API container before wiping the database
+echo.
+echo [2/4] Stopping API container...
 docker stop %API_CONTAINER% >nul 2>&1
 echo Done.
 
-:: [2/4] Wipe all tables (order respects foreign key constraints)
+:: [3/4] Wipe all tables (order respects foreign key constraints)
 echo.
-echo [2/4] Clearing all data from database...
-docker exec %DB_CONTAINER% psql -U %POSTGRES_USER% -d %POSTGRES_DB% -c ^
-  "DELETE FROM audit_logs; DELETE FROM api_keys; DELETE FROM messages; DELETE FROM whatsapp_sessions; DELETE FROM users;"
+echo [3/4] Clearing all data from database...
+docker exec %DB_CONTAINER% psql -U %POSTGRES_USER% -d %POSTGRES_DB% -c "DELETE FROM audit_logs; DELETE FROM api_keys; DELETE FROM messages; DELETE FROM whatsapp_sessions; DELETE FROM users;"
 
 if %errorlevel% neq 0 (
     echo.
@@ -78,12 +80,6 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 echo Data cleared.
-
-:: [3/4] Remove WhatsApp session token files
-echo.
-echo [3/4] Clearing WhatsApp session token files...
-docker exec %API_CONTAINER% sh -c "rm -rf /app/artifacts/api-server/tokens/* /app/artifacts/api-server/public/*" 2>nul
-echo Done.
 
 :: [4/4] Restart API (auto-seeds admin user on startup)
 echo.
