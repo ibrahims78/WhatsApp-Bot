@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>واتساب مانجر — نظام إدارة واتساب الاحترافي</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      line-height: 1.7;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #075e54 0%, #128c7e 60%, #25d366 100%);
+      color: #fff;
+      text-align: center;
+      padding: 80px 24px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-icon {
+      font-size: 72px;
+      margin-bottom: 20px;
+      display: block;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .hero p {
+      font-size: clamp(16px, 2.5vw, 22px);
+      opacity: 0.92;
+      max-width: 680px;
+      margin: 0 auto 32px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 50px;
+      padding: 8px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== WAVE ===== */
+    .wave {
+      display: block;
+      width: 100%;
+      margin-bottom: -2px;
+    }
+
+    /* ===== SECTIONS ===== */
+    section { padding: 64px 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      text-align: center;
+      color: #25d366;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: clamp(22px, 4vw, 36px);
+      font-weight: 800;
+      color: #075e54;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      text-align: center;
+      color: #4a5568;
+      font-size: 17px;
+      max-width: 620px;
+      margin: 0 auto 48px;
+    }
+
+    /* ===== PROBLEM STRIP ===== */
+    .problem-strip {
+      background: #fff8e1;
+      border-right: 5px solid #f6c90e;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 32px;
+    }
+    .problem-strip h3 { color: #92400e; margin-bottom: 10px; font-size: 18px; }
+    .problem-strip p { color: #78350f; font-size: 15px; }
+
+    /* ===== FEATURES GRID ===== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      transition: transform .2s, box-shadow .2s;
+      border-top: 4px solid #25d366;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+    .feature-icon {
+      font-size: 40px;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .feature-card h3 { font-size: 19px; font-weight: 700; color: #075e54; margin-bottom: 10px; }
+    .feature-card p { color: #4a5568; font-size: 15px; }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-bg { background: #fff; }
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      min-width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #075e54, #25d366);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 800;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(37,211,102,0.4);
+    }
+    .step-body h3 { font-size: 18px; font-weight: 700; color: #1a202c; margin-bottom: 6px; }
+    .step-body p { color: #4a5568; font-size: 15px; }
+
+    /* ===== BENEFITS ===== */
+    .benefits-bg { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .benefit-item {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .benefit-icon { font-size: 28px; flex-shrink: 0; }
+    .benefit-item h4 { font-size: 15px; font-weight: 700; color: #065f46; margin-bottom: 4px; }
+    .benefit-item p { font-size: 13px; color: #4a5568; }
+
+    /* ===== WHO IS IT FOR ===== */
+    .audience-bg { background: #fff; }
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .audience-card {
+      text-align: center;
+      background: #f7fafc;
+      border-radius: 14px;
+      padding: 28px 16px;
+      border: 2px solid transparent;
+      transition: border-color .2s, background .2s;
+    }
+    .audience-card:hover { border-color: #25d366; background: #f0fdf4; }
+    .audience-card .ico { font-size: 44px; margin-bottom: 12px; display: block; }
+    .audience-card h4 { font-size: 16px; font-weight: 700; color: #075e54; margin-bottom: 6px; }
+    .audience-card p { font-size: 13px; color: #4a5568; }
+
+    /* ===== STATS ===== */
+    .stats-bg { background: linear-gradient(135deg, #075e54 0%, #128c7e 100%); color: #fff; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 32px;
+      text-align: center;
+    }
+    .stat-num { font-size: 48px; font-weight: 900; color: #25d366; line-height: 1; }
+    .stat-label { font-size: 15px; opacity: 0.85; margin-top: 8px; }
+
+    /* ===== CTA ===== */
+    .cta-bg { background: #f0f4f8; text-align: center; }
+    .cta-box {
+      background: linear-gradient(135deg, #075e54, #128c7e);
+      border-radius: 24px;
+      padding: 56px 32px;
+      color: #fff;
+    }
+    .cta-box h2 { font-size: clamp(22px, 4vw, 36px); font-weight: 800; margin-bottom: 16px; }
+    .cta-box p { font-size: 17px; opacity: 0.9; margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; }
+    .btn-primary {
+      display: inline-block;
+      background: #25d366;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 16px 40px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(37,211,102,0.5);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,211,102,0.6); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #1a202c;
+      color: #a0aec0;
+      text-align: center;
+      padding: 28px 24px;
+      font-size: 14px;
+    }
+    footer strong { color: #25d366; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 60px 16px 80px; }
+      section { padding: 48px 16px; }
+      .step { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <span class="hero-icon">💬</span>
+    <h1>واتساب مانجر</h1>
+    <p>نظام احترافي لإدارة واتساب بشكل كامل — أرسل، استقبل، تابع وأتمت رسائلك من لوحة تحكم واحدة</p>
+    <span class="badge">✦ الحل الشامل لأعمالك على واتساب ✦</span>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z" fill="#f0f4f8"/>
+  </svg>
+
+  <!-- PROBLEM -->
+  <section>
+    <div class="container">
+      <div class="section-label">المشكلة التي نحلها</div>
+      <h2 class="section-title">هل تواجه هذه التحديات يومياً؟</h2>
+      <p class="section-sub">كثير من الشركات تخسر عملاء وتضيع وقتاً ثميناً بسبب إدارة واتساب بشكل يدوي وغير منظّم</p>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:20px;">
+        <div class="problem-strip">
+          <h3>⏱ ضياع الوقت في الردود اليدوية</h3>
+          <p>فريقك يقضي ساعات في الردود المتكررة بدلاً من التركيز على ما يهم فعلاً.</p>
+        </div>
+        <div class="problem-strip">
+          <h3>😓 تشتت المحادثات بين الموظفين</h3>
+          <p>كل موظف يستخدم هاتفه الخاص ولا توجد سجلات موحدة أو متابعة واضحة.</p>
+        </div>
+        <div class="problem-strip">
+          <h3>📉 فقدان فرص المبيعات</h3>
+          <p>رسائل لم تُقرأ، عملاء لم يُتابَعوا، وصفقات ضاعت بسبب الفوضى.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section style="background:#fff; padding-top:20px;">
+    <div class="container">
+      <div class="section-label">الميزات</div>
+      <h2 class="section-title">كل ما تحتاجه في مكان واحد</h2>
+      <p class="section-sub">منصة متكاملة تمنحك تحكماً كاملاً في تواصلك عبر واتساب</p>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <span class="feature-icon">📱</span>
+          <h3>ربط أجهزة متعددة</h3>
+          <p>اربط أكثر من رقم واتساب في نفس الوقت وأدِر جميعها من لوحة تحكم واحدة دون الحاجة لأي هاتف أمامك.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">📤</span>
+          <h3>إرسال رسائل جماعية</h3>
+          <p>أرسل رسائل مخصصة إلى قوائم جهات الاتصال بنقرة واحدة — مع دعم النصوص والصور والملفات.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🤖</span>
+          <h3>ردود تلقائية ذكية</h3>
+          <p>اضبط ردوداً تلقائية على الكلمات المفتاحية والأسئلة الشائعة، فيرد النظام عنك على مدار الساعة.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <h3>لوحة تحكم مباشرة</h3>
+          <p>تابع حالة كل جهاز، عدد الرسائل المُرسلة والمُستقبلة، وإحصائيات الأداء بشكل لحظي.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">👥</span>
+          <h3>إدارة المستخدمين والصلاحيات</h3>
+          <p>أنشئ حسابات لفريقك وحدد صلاحيات كل موظف — من يرى ماذا ومن يُرسل لمن.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🔒</span>
+          <h3>أمان وخصوصية تامة</h3>
+          <p>النظام يعمل على خادمك الخاص — بياناتك لا تمر عبر أي طرف ثالث، وكلمات مرور مشفرة بالكامل.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">⏰</span>
+          <h3>جدولة الرسائل</h3>
+          <p>خطط مسبقاً وحدد توقيت إرسال رسائلك — مناسبات، عروض، أو تذكيرات تلقائية.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🔗</span>
+          <h3>واجهة برمجية (API)</h3>
+          <p>اربط النظام بأي برنامج آخر تستخدمه — ERP، CRM، أو موقعك الإلكتروني — عبر API جاهزة.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">📁</span>
+          <h3>دعم كامل للوسائط</h3>
+          <p>أرسل واستقبل الصور والمقاطع الصوتية والمستندات والموقع الجغرافي — كل شيء مدعوم.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-bg">
+    <div class="container">
+      <div class="section-label">طريقة العمل</div>
+      <h2 class="section-title">كيف يعمل النظام؟</h2>
+      <p class="section-sub">بدء الاستخدام بسيط ولا يحتاج خبرة تقنية</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>تثبيت النظام على جهازك أو خادمك</h3>
+            <p>يُنصَّب النظام بأمر واحد باستخدام Docker — يعمل على ويندوز ولينكس وماك دون تعقيد.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>ربط رقم واتساب بمسح QR Code</h3>
+            <p>افتح لوحة التحكم، امسح الـ QR من هاتفك، وتصبح الأجهزة مرتبطة خلال ثوانٍ.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>إضافة فريق العمل وتوزيع الصلاحيات</h3>
+            <p>أنشئ حسابات للموظفين وحدد من يُدير أي جهاز وما الرسائل التي يمكنه الوصول إليها.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h3>ابدأ الإرسال والإدارة فوراً</h3>
+            <p>أرسل رسائل فردية أو جماعية، اضبط الردود التلقائية، وتابع كل شيء من شاشة واحدة.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h3>تتبع الأداء وقياس النتائج</h3>
+            <p>راجع الإحصائيات اليومية، اعرف معدلات الإرسال والاستلام، وحسّن استراتيجيتك باستمرار.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="benefits-bg">
+    <div class="container">
+      <div class="section-label">الفوائد المباشرة</div>
+      <h2 class="section-title">ماذا تكسب من هذا النظام؟</h2>
+      <p class="section-sub">تأثير حقيقي وملموس على إنتاجية فريقك ورضا عملائك</p>
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <span class="benefit-icon">⚡</span>
+          <div>
+            <h4>توفير 70% من وقت الردود</h4>
+            <p>الأتمتة تتولى الردود المتكررة وتترك فريقك يركز على القضايا المعقدة.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">💰</span>
+          <div>
+            <h4>زيادة المبيعات والتحويلات</h4>
+            <p>متابعة أسرع = عملاء أكثر رضا = إغلاق صفقات أكثر.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">🗂️</span>
+          <div>
+            <h4>نظام موحد لكل الفريق</h4>
+            <p>لا فوضى، لا تضارب، كل شيء في مكان واحد ومرئي للجميع.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">🌙</span>
+          <div>
+            <h4>خدمة عملاء 24/7</h4>
+            <p>الردود التلقائية تخدم عملاءك حتى في أوقات الراحة والعطل.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">📈</span>
+          <div>
+            <h4>قرارات مبنية على بيانات</h4>
+            <p>إحصائيات دقيقة تساعدك على فهم سلوك العملاء وتحسين التواصل.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">🔐</span>
+          <div>
+            <h4>خصوصية تامة لبياناتك</h4>
+            <p>النظام يعمل على بنيتك التحتية — لا أحد يرى محادثاتك غيرك.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">🌐</span>
+          <div>
+            <h4>تكامل مع أنظمتك الحالية</h4>
+            <p>API مرنة تربط النظام بأي تطبيق تستخدمه بالفعل.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">📱</span>
+          <div>
+            <h4>لا حاجة لهاتف مستمر التشغيل</h4>
+            <p>بعد الربط الأول يعمل النظام بشكل مستقل دون الحاجة لوجود الهاتف.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-bg">
+    <div class="container">
+      <div class="stats-grid">
+        <div>
+          <div class="stat-num">+10</div>
+          <div class="stat-label">أجهزة واتساب في آن واحد</div>
+        </div>
+        <div>
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">تشغيل مستمر بلا انقطاع</div>
+        </div>
+        <div>
+          <div class="stat-num">API</div>
+          <div class="stat-label">تكامل مع أي نظام خارجي</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">بيانات محلية وخاصة بك</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO IS IT FOR -->
+  <section class="audience-bg">
+    <div class="container">
+      <div class="section-label">من يستفيد من النظام؟</div>
+      <h2 class="section-title">مناسب لجميع أنواع الأعمال</h2>
+      <p class="section-sub">سواء كنت تدير عملاً صغيراً أو شركة كبيرة، النظام يتكيف مع احتياجاتك</p>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <span class="ico">🛒</span>
+          <h4>المتاجر الإلكترونية</h4>
+          <p>تأكيد الطلبات، تتبع الشحن، وخدمة ما بعد البيع تلقائياً.</p>
+        </div>
+        <div class="audience-card">
+          <span class="ico">🏥</span>
+          <h4>العيادات والمستشفيات</h4>
+          <p>تذكير المرضى بمواعيدهم وإرسال النتائج والتقارير.</p>
+        </div>
+        <div class="audience-card">
+          <span class="ico">🏦</span>
+          <h4>الخدمات المالية</h4>
+          <p>إشعارات الحسابات، تأكيد المعاملات، والدعم الفوري.</p>
+        </div>
+        <div class="audience-card">
+          <span class="ico">🎓</span>
+          <h4>المراكز التعليمية</h4>
+          <p>إرسال الجداول والواجبات والتواصل مع أولياء الأمور.</p>
+        </div>
+        <div class="audience-card">
+          <span class="ico">🏨</span>
+          <h4>الفنادق والسياحة</h4>
+          <p>تأكيد الحجوزات، الترحيب بالضيوف، ومتابعة تقييماتهم.</p>
+        </div>
+        <div class="audience-card">
+          <span class="ico">📦</span>
+          <h4>شركات التوصيل</h4>
+          <p>إشعارات التوصيل اللحظية وتتبع الطلبات بشكل تلقائي.</p>
+        </div>
+        <div class="audience-card">
+          <span class="ico">💼</span>
+          <h4>الوكالات التسويقية</h4>
+          <p>إدارة حملات واتساب للعملاء المتعددين من لوحة واحدة.</p>
+        </div>
+        <div class="audience-card">
+          <span class="ico">🏢</span>
+          <h4>الشركات والمؤسسات</h4>
+          <p>تواصل داخلي منظم وإعلانات فورية لجميع الموظفين.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-bg">
+    <div class="container">
+      <div class="cta-box">
+        <h2>ابدأ اليوم وحوّل واتساب إلى آلة مبيعات</h2>
+        <p>لا تدع المنافسين يسبقونك — النظام جاهز للتثبيت الآن ويمكنك البدء خلال دقائق.</p>
+        <a href="mailto:info@example.com" class="btn-primary">📩 تواصل معنا للحصول على النظام</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>جميع الحقوق محفوظة &copy; 2026 — <strong>واتساب مانجر</strong> | نظام إدارة واتساب الاحترافي</p>
+  </footer>
+
+</body>
+</html>
