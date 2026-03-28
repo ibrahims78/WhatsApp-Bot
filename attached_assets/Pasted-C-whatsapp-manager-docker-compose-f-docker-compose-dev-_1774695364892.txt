@@ -1,0 +1,38 @@
+C:\whatsapp-manager>docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev up -d --build api
+[+] Building 3.1s (18/18) FINISHED
+ => [internal] load local bake definitions                                                                         0.0s
+ => => reading from stdin 523B                                                                                     0.0s
+ => [internal] load build definition from Dockerfile.api.dev                                                       0.0s
+ => => transferring dockerfile: 1.55kB                                                                             0.0s
+ => [internal] load metadata for docker.io/library/node:20-bullseye-slim                                           2.3s
+ => [internal] load .dockerignore                                                                                  0.1s
+ => => transferring context: 355B                                                                                  0.0s
+ => [internal] load build context                                                                                  0.0s
+ => => transferring context: 6.00kB                                                                                0.0s
+ => [ 1/11] FROM docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cdd9  0.0s
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cdd93f  0.0s
+ => CACHED [ 2/11] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certifica  0.0s
+ => CACHED [ 3/11] RUN npm install -g pnpm@10                                                                      0.0s
+ => CACHED [ 4/11] WORKDIR /app                                                                                    0.0s
+ => CACHED [ 5/11] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./        0.0s
+ => CACHED [ 6/11] COPY lib/ ./lib/                                                                                0.0s
+ => CACHED [ 7/11] COPY artifacts/api-server/ ./artifacts/api-server/                                              0.0s
+ => CACHED [ 8/11] RUN pnpm install --frozen-lockfile                                                              0.0s
+ => CACHED [ 9/11] RUN mkdir -p /app/artifacts/api-server/tokens /app/artifacts/api-server/public                  0.0s
+ => CACHED [10/11] COPY entrypoint.dev.sh /entrypoint.dev.sh                                                       0.0s
+ => CACHED [11/11] RUN sed -i 's/\r$//' /entrypoint.dev.sh && chmod +x /entrypoint.dev.sh                          0.0s
+ => exporting to image                                                                                             0.2s
+ => => exporting layers                                                                                            0.0s
+ => => exporting manifest sha256:97fcedd3831ac891e65e0bcc8f168c18bdf82c93a37edf4f67bf4d0098e9e7f1                  0.0s
+ => => exporting config sha256:29368c1b7ef667f169f3f8004310f197142039918085ae6daf02265233d6857f                    0.0s
+ => => exporting attestation manifest sha256:3ef21b045bf45ffe13193e7b3d4d321e2b95e392b9cea4d0edef941cf2629686      0.0s
+ => => exporting manifest list sha256:160a87c67828cd344df2c8a66a5be5c049b37ce1bd0567aaefc21354593b74d8             0.0s
+ => => naming to docker.io/library/whatsapp-manager-api-dev:latest                                                 0.0s
+ => => unpacking to docker.io/library/whatsapp-manager-api-dev:latest                                              0.0s
+ => resolving provenance for metadata file                                                                         0.0s
+[+] Running 3/3
+ ✔ whatsapp-manager-api-dev:latest       Built                                                                     0.0s
+ ✔ Container whatsapp_manager_dev-db-1   Healthy                                                                   1.0s
+ ✔ Container whatsapp_manager_dev-api-1  Started                                                                   1.2s
+
+C:\whatsapp-manager>
