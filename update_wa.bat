@@ -11,16 +11,15 @@ echo ============================================
 echo.
 
 :: Ask which mode to update
-echo Which mode do you want to update?
+echo Which mode do you want to run?
 echo   [1] Production  (docker-compose.yml)
 echo   [2] Development (docker-compose.dev.yml)
-echo   [3] Both
 echo.
-set /p mode=Enter choice (1/2/3): 
+set /p mode=Enter choice (1/2): 
 
 :: Pull latest code from GitHub
 echo.
-echo [1/3] Pulling latest code from GitHub...
+echo [1/4] Pulling latest code from GitHub...
 cd /d "%installDir%"
 git pull origin main 2>nul || git pull origin master 2>nul
 if %errorlevel% neq 0 (
@@ -30,32 +29,34 @@ if %errorlevel% neq 0 (
 )
 echo Code updated.
 
-:: Rebuild and restart based on mode
+:: Stop the OTHER environment first to free port 5005
 echo.
-echo [2/3] Rebuilding Docker images...
+echo [2/4] Stopping the other environment to free port 5005...
+if "%mode%"=="1" (
+    docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev down 2>nul
+)
+if "%mode%"=="2" (
+    docker-compose -p whatsapp_manager_v1 down 2>nul
+)
+echo Done.
 
+:: Rebuild selected environment
+echo.
+echo [3/4] Rebuilding Docker image (no cache)...
 if "%mode%"=="1" (
     docker-compose -p whatsapp_manager_v1 build --no-cache
 )
 if "%mode%"=="2" (
     docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev build --no-cache
 )
-if "%mode%"=="3" (
-    docker-compose -p whatsapp_manager_v1 build --no-cache
-    docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev build --no-cache
-)
 
+:: Start selected environment
 echo.
-echo [3/3] Restarting containers...
-
+echo [4/4] Starting containers...
 if "%mode%"=="1" (
     docker-compose -p whatsapp_manager_v1 up -d
 )
 if "%mode%"=="2" (
-    docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev up -d
-)
-if "%mode%"=="3" (
-    docker-compose -p whatsapp_manager_v1 up -d
     docker-compose -f docker-compose.dev.yml -p whatsapp_manager_dev up -d
 )
 
