@@ -1,0 +1,240 @@
+2026-03-28 20:36:49.526 | ============================================
+2026-03-28 20:36:49.526 |    WhatsApp Manager - API Server Starting
+2026-03-28 20:36:49.526 | ============================================
+2026-03-28 20:36:49.526 | 
+2026-03-28 20:36:49.526 | [1/2] Running database schema migration...
+2026-03-28 20:36:50.552 | 
+2026-03-28 20:36:50.552 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-28 20:36:50.552 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-28 20:36:50.552 | 
+2026-03-28 20:36:50.808 | Reading config file '/app/lib/db/drizzle.config.ts'
+2026-03-28 20:36:51.220 | Using 'pg' driver for database querying
+2026-03-28 20:36:51.404 | [⣷] Pulling schema from database...
+2026-03-28 20:36:51.471 | [✓] Pulling schema from database...
+2026-03-28 20:36:51.615 | [✓] Changes applied
+2026-03-28 20:36:51.660 | Schema migration complete.
+2026-03-28 20:36:51.660 | 
+2026-03-28 20:36:51.660 | [2/2] Starting API server on port 8080...
+2026-03-28 20:36:52.735 | {"level":30,"time":1774719412734,"pid":1,"hostname":"6142536fe963","port":8080,"msg":"Server listening"}
+2026-03-28 20:36:52.886 | {"level":30,"time":1774719412886,"pid":1,"hostname":"6142536fe963","msg":"Default admin user created: admin / 123456"}
+2026-03-28 20:36:55.889 | {"level":30,"time":1774719415889,"pid":1,"hostname":"6142536fe963","msg":"No sessions found in DB — skipping auto-start"}
+2026-03-28 20:37:20.726 | {"level":30,"time":1774719440726,"pid":1,"hostname":"6142536fe963","req":{"id":1,"method":"GET","url":"/api/"},"res":{"statusCode":404},"responseTime":16,"msg":"request completed"}
+2026-03-28 20:37:20.731 | {"level":30,"time":1774719440731,"pid":1,"hostname":"6142536fe963","req":{"id":2,"method":"GET","url":"/api/"},"res":{"statusCode":404},"responseTime":4,"msg":"request completed"}
+2026-03-28 20:37:22.769 | {"level":30,"time":1774719442768,"pid":1,"hostname":"6142536fe963","req":{"id":3,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":5,"msg":"request completed"}
+2026-03-28 20:37:52.742 | {"level":30,"time":1774719472742,"pid":1,"hostname":"6142536fe963","req":{"id":4,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:38:22.760 | {"level":30,"time":1774719502758,"pid":1,"hostname":"6142536fe963","req":{"id":5,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-03-28 20:38:52.758 | {"level":30,"time":1774719532758,"pid":1,"hostname":"6142536fe963","req":{"id":6,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:39:22.784 | {"level":30,"time":1774719562782,"pid":1,"hostname":"6142536fe963","req":{"id":7,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":4,"msg":"request completed"}
+2026-03-28 20:39:52.777 | {"level":30,"time":1774719592777,"pid":1,"hostname":"6142536fe963","req":{"id":8,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:40:22.779 | {"level":30,"time":1774719622779,"pid":1,"hostname":"6142536fe963","req":{"id":9,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:40:52.792 | {"level":30,"time":1774719652792,"pid":1,"hostname":"6142536fe963","req":{"id":10,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:41:22.809 | {"level":30,"time":1774719682808,"pid":1,"hostname":"6142536fe963","req":{"id":11,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:41:52.809 | {"level":30,"time":1774719712809,"pid":1,"hostname":"6142536fe963","req":{"id":12,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:42:22.826 | {"level":30,"time":1774719742825,"pid":1,"hostname":"6142536fe963","req":{"id":13,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:42:52.828 | {"level":30,"time":1774719772827,"pid":1,"hostname":"6142536fe963","req":{"id":14,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:43:22.849 | {"level":30,"time":1774719802849,"pid":1,"hostname":"6142536fe963","req":{"id":15,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:43:52.847 | {"level":30,"time":1774719832846,"pid":1,"hostname":"6142536fe963","req":{"id":16,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:44:22.875 | {"level":30,"time":1774719862875,"pid":1,"hostname":"6142536fe963","req":{"id":17,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":4,"msg":"request completed"}
+2026-03-28 20:44:52.872 | {"level":30,"time":1774719892871,"pid":1,"hostname":"6142536fe963","req":{"id":18,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":5,"msg":"request completed"}
+2026-03-28 20:45:22.889 | {"level":30,"time":1774719922888,"pid":1,"hostname":"6142536fe963","req":{"id":19,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:45:52.889 | {"level":30,"time":1774719952888,"pid":1,"hostname":"6142536fe963","req":{"id":20,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:46:22.913 | {"level":30,"time":1774719982913,"pid":1,"hostname":"6142536fe963","req":{"id":21,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:46:52.911 | {"level":30,"time":1774720012910,"pid":1,"hostname":"6142536fe963","req":{"id":22,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:47:22.931 | {"level":30,"time":1774720042931,"pid":1,"hostname":"6142536fe963","req":{"id":23,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:47:52.933 | {"level":30,"time":1774720072932,"pid":1,"hostname":"6142536fe963","req":{"id":24,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-03-28 20:48:22.946 | {"level":30,"time":1774720102946,"pid":1,"hostname":"6142536fe963","req":{"id":25,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:48:52.948 | {"level":30,"time":1774720132947,"pid":1,"hostname":"6142536fe963","req":{"id":26,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:49:22.962 | {"level":30,"time":1774720162962,"pid":1,"hostname":"6142536fe963","req":{"id":27,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:49:52.964 | {"level":30,"time":1774720192963,"pid":1,"hostname":"6142536fe963","req":{"id":28,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 20:50:22.990 | {"level":30,"time":1774720222988,"pid":1,"hostname":"6142536fe963","req":{"id":29,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-03-28 20:50:52.977 | {"level":30,"time":1774720252976,"pid":1,"hostname":"6142536fe963","req":{"id":30,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:51:07.796 | {"level":30,"time":1774720267796,"pid":1,"hostname":"6142536fe963","req":{"id":31,"method":"POST","url":"/api/"},"res":{"statusCode":404},"responseTime":11,"msg":"request completed"}
+2026-03-28 20:51:22.987 | {"level":30,"time":1774720282987,"pid":1,"hostname":"6142536fe963","req":{"id":32,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:51:52.993 | {"level":30,"time":1774720312992,"pid":1,"hostname":"6142536fe963","req":{"id":33,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":4,"msg":"request completed"}
+2026-03-28 20:51:59.529 | {"level":30,"time":1774720319529,"pid":1,"hostname":"6142536fe963","req":{"id":34,"method":"POST","url":"/api/"},"res":{"statusCode":404},"responseTime":3,"msg":"request completed"}
+2026-03-28 20:52:00.136 | {"level":30,"time":1774720320136,"pid":1,"hostname":"6142536fe963","req":{"id":35,"method":"POST","url":"/api/"},"res":{"statusCode":404},"responseTime":4,"msg":"request completed"}
+2026-03-28 20:52:16.275 | {"level":30,"time":1774720336275,"pid":1,"hostname":"6142536fe963","req":{"id":36,"method":"POST","url":"/api/"},"res":{"statusCode":404},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:52:22.992 | {"level":30,"time":1774720342991,"pid":1,"hostname":"6142536fe963","req":{"id":37,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:52:52.993 | {"level":30,"time":1774720372992,"pid":1,"hostname":"6142536fe963","req":{"id":38,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:53:23.021 | {"level":30,"time":1774720403020,"pid":1,"hostname":"6142536fe963","req":{"id":39,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-03-28 20:53:53.020 | {"level":30,"time":1774720433018,"pid":1,"hostname":"6142536fe963","req":{"id":40,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-03-28 20:54:23.033 | {"level":30,"time":1774720463032,"pid":1,"hostname":"6142536fe963","req":{"id":41,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:54:53.032 | {"level":30,"time":1774720493031,"pid":1,"hostname":"6142536fe963","req":{"id":42,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:55:23.054 | {"level":30,"time":1774720523054,"pid":1,"hostname":"6142536fe963","req":{"id":43,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:55:53.057 | {"level":30,"time":1774720553057,"pid":1,"hostname":"6142536fe963","req":{"id":44,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:56:23.060 | {"level":30,"time":1774720583060,"pid":1,"hostname":"6142536fe963","req":{"id":45,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:56:53.059 | {"level":30,"time":1774720613059,"pid":1,"hostname":"6142536fe963","req":{"id":46,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:57:23.084 | {"level":30,"time":1774720643083,"pid":1,"hostname":"6142536fe963","req":{"id":47,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:57:53.081 | {"level":30,"time":1774720673081,"pid":1,"hostname":"6142536fe963","req":{"id":48,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 20:58:23.089 | {"level":30,"time":1774720703088,"pid":1,"hostname":"6142536fe963","req":{"id":49,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 20:58:53.096 | {"level":30,"time":1774720733095,"pid":1,"hostname":"6142536fe963","req":{"id":50,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:59:23.117 | {"level":30,"time":1774720763117,"pid":1,"hostname":"6142536fe963","req":{"id":51,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 20:59:53.105 | {"level":30,"time":1774720793105,"pid":1,"hostname":"6142536fe963","req":{"id":52,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:00:23.129 | {"level":30,"time":1774720823129,"pid":1,"hostname":"6142536fe963","req":{"id":53,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:00:53.125 | {"level":30,"time":1774720853124,"pid":1,"hostname":"6142536fe963","req":{"id":54,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:01:23.143 | {"level":30,"time":1774720883143,"pid":1,"hostname":"6142536fe963","req":{"id":55,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:01:53.149 | {"level":30,"time":1774720913147,"pid":1,"hostname":"6142536fe963","req":{"id":56,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 21:02:23.164 | {"level":30,"time":1774720943164,"pid":1,"hostname":"6142536fe963","req":{"id":57,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:02:53.162 | {"level":30,"time":1774720973161,"pid":1,"hostname":"6142536fe963","req":{"id":58,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:03:23.186 | {"level":30,"time":1774721003186,"pid":1,"hostname":"6142536fe963","req":{"id":59,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":3,"msg":"request completed"}
+2026-03-28 21:03:53.183 | {"level":30,"time":1774721033183,"pid":1,"hostname":"6142536fe963","req":{"id":60,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:04:23.204 | {"level":30,"time":1774721063203,"pid":1,"hostname":"6142536fe963","req":{"id":61,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:04:53.202 | {"level":30,"time":1774721093202,"pid":1,"hostname":"6142536fe963","req":{"id":62,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:05:23.205 | {"level":30,"time":1774721123205,"pid":1,"hostname":"6142536fe963","req":{"id":63,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:05:53.203 | {"level":30,"time":1774721153203,"pid":1,"hostname":"6142536fe963","req":{"id":64,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:06:23.222 | {"level":30,"time":1774721183222,"pid":1,"hostname":"6142536fe963","req":{"id":65,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:06:53.220 | {"level":30,"time":1774721213219,"pid":1,"hostname":"6142536fe963","req":{"id":66,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:07:23.242 | {"level":30,"time":1774721243242,"pid":1,"hostname":"6142536fe963","req":{"id":67,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:07:53.239 | {"level":30,"time":1774721273238,"pid":1,"hostname":"6142536fe963","req":{"id":68,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:08:23.260 | {"level":30,"time":1774721303260,"pid":1,"hostname":"6142536fe963","req":{"id":69,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:08:53.261 | {"level":30,"time":1774721333260,"pid":1,"hostname":"6142536fe963","req":{"id":70,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:09:23.278 | {"level":30,"time":1774721363278,"pid":1,"hostname":"6142536fe963","req":{"id":71,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:09:53.279 | {"level":30,"time":1774721393279,"pid":1,"hostname":"6142536fe963","req":{"id":72,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 21:10:23.302 | {"level":30,"time":1774721423301,"pid":1,"hostname":"6142536fe963","req":{"id":73,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:10:53.301 | {"level":30,"time":1774721453300,"pid":1,"hostname":"6142536fe963","req":{"id":74,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 21:11:23.319 | {"level":30,"time":1774721483319,"pid":1,"hostname":"6142536fe963","req":{"id":75,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:11:53.318 | {"level":30,"time":1774721513317,"pid":1,"hostname":"6142536fe963","req":{"id":76,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:12:23.340 | {"level":30,"time":1774721543340,"pid":1,"hostname":"6142536fe963","req":{"id":77,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:12:53.340 | {"level":30,"time":1774721573339,"pid":1,"hostname":"6142536fe963","req":{"id":78,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:12:58.351 | {"level":30,"time":1774721578350,"pid":1,"hostname":"6142536fe963","req":{"id":79,"method":"POST","url":"/api/auth/login"},"res":{"statusCode":200},"responseTime":102,"msg":"request completed"}
+2026-03-28 21:12:58.412 | {"level":30,"time":1774721578412,"pid":1,"hostname":"6142536fe963","req":{"id":80,"method":"GET","url":"/api/dashboard/stats"},"res":{"statusCode":403},"responseTime":7,"msg":"request completed"}
+2026-03-28 21:12:58.460 | {"level":30,"time":1774721578460,"pid":1,"hostname":"6142536fe963","req":{"id":81,"method":"GET","url":"/api/auth/me"},"res":{"statusCode":200},"responseTime":7,"msg":"request completed"}
+2026-03-28 21:12:59.474 | {"level":30,"time":1774721579474,"pid":1,"hostname":"6142536fe963","req":{"id":82,"method":"GET","url":"/api/dashboard/stats"},"res":{"statusCode":403},"responseTime":5,"msg":"request completed"}
+2026-03-28 21:13:21.967 | {"level":30,"time":1774721601967,"pid":1,"hostname":"6142536fe963","req":{"id":83,"method":"PATCH","url":"/api/users/1"},"res":{"statusCode":200},"responseTime":103,"msg":"request completed"}
+2026-03-28 21:13:23.339 | {"level":30,"time":1774721603338,"pid":1,"hostname":"6142536fe963","req":{"id":84,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:13:28.948 | {"level":30,"time":1774721608947,"pid":1,"hostname":"6142536fe963","req":{"id":85,"method":"GET","url":"/api/sessions"},"res":{"statusCode":200},"responseTime":16,"msg":"request completed"}
+2026-03-28 21:13:47.762 | {"level":30,"time":1774721627761,"pid":1,"hostname":"6142536fe963","req":{"id":86,"method":"POST","url":"/api/sessions"},"res":{"statusCode":201},"responseTime":46,"msg":"request completed"}
+2026-03-28 21:13:47.775 | {"level":30,"time":1774721627775,"pid":1,"hostname":"6142536fe963","req":{"id":87,"method":"GET","url":"/api/sessions"},"res":{"statusCode":200},"responseTime":10,"msg":"request completed"}
+2026-03-28 21:13:53.344 | {"level":30,"time":1774721633342,"pid":1,"hostname":"6142536fe963","req":{"id":88,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 21:13:54.810 | {"level":30,"time":1774721634809,"pid":1,"hostname":"6142536fe963","req":{"id":89,"method":"GET","url":"/api/api-keys"},"res":{"statusCode":200},"responseTime":16,"msg":"request completed"}
+2026-03-28 21:13:54.828 | {"level":30,"time":1774721634827,"pid":1,"hostname":"6142536fe963","req":{"id":90,"method":"GET","url":"/api/sessions"},"res":{"statusCode":304},"responseTime":29,"msg":"request completed"}
+2026-03-28 21:13:59.990 | {"level":30,"time":1774721639990,"pid":1,"hostname":"6142536fe963","req":{"id":91,"method":"POST","url":"/api/api-keys"},"res":{"statusCode":201},"responseTime":88,"msg":"request completed"}
+2026-03-28 21:14:00.004 | {"level":30,"time":1774721640004,"pid":1,"hostname":"6142536fe963","req":{"id":92,"method":"GET","url":"/api/api-keys"},"res":{"statusCode":200},"responseTime":9,"msg":"request completed"}
+2026-03-28 21:14:06.633 | {"level":30,"time":1774721646631,"pid":1,"hostname":"6142536fe963","req":{"id":93,"method":"GET","url":"/api/n8n-workflow/download"},"res":{"statusCode":500},"err":{"type":"Error","message":"failed with status code 500","stack":"Error: failed with status code 500\n    at onResFinished (/app/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:115:39)\n    at ServerResponse.onResponseComplete (/app/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:178:14)\n    at ServerResponse.emit (node:events:536:35)\n    at onFinish (node:_http_outgoing:1031:10)\n    at callback (node:internal/streams/writable:766:21)\n    at afterWrite (node:internal/streams/writable:710:5)\n    at afterWriteTick (node:internal/streams/writable:696:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:81:21)"},"responseTime":108,"msg":"request errored"}
+2026-03-28 21:14:23.335 | {"level":30,"time":1774721663335,"pid":1,"hostname":"6142536fe963","req":{"id":94,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:14:24.419 | {"level":30,"time":1774721664419,"pid":1,"hostname":"6142536fe963","req":{"id":95,"method":"GET","url":"/api/sessions"},"res":{"statusCode":304},"responseTime":28,"msg":"request completed"}
+2026-03-28 21:14:28.595 | {"level":30,"time":1774721668595,"pid":1,"hostname":"6142536fe963","socketId":"HmUTY0XHL08dtkY1AAAB","authenticated":true,"msg":"WebSocket client connected"}
+2026-03-28 21:14:28.598 | {"level":30,"time":1774721668597,"pid":1,"hostname":"6142536fe963","req":{"id":96,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":200},"responseTime":20,"msg":"request completed"}
+2026-03-28 21:14:28.624 | {"level":30,"time":1774721668624,"pid":1,"hostname":"6142536fe963","req":{"id":97,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/messages"},"res":{"statusCode":200},"responseTime":10,"msg":"request completed"}
+2026-03-28 21:14:30.359 | {"level":30,"time":1774721670359,"pid":1,"hostname":"6142536fe963","req":{"id":98,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":200},"responseTime":9,"msg":"request completed"}
+2026-03-28 21:14:30.383 | {"level":30,"time":1774721670383,"pid":1,"hostname":"6142536fe963","req":{"id":99,"method":"POST","url":"/api/sessions/session_de860dd2ce3c/connect"},"res":{"statusCode":200},"responseTime":31,"msg":"request completed"}
+2026-03-28 21:14:30.392 | {"level":30,"time":1774721670391,"pid":1,"hostname":"6142536fe963","req":{"id":100,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":4,"msg":"request completed"}
+2026-03-28 21:14:31.189 | info:     Checking for updates
+2026-03-28 21:14:31.238 | {"level":30,"time":1774721671238,"pid":1,"hostname":"6142536fe963","req":{"id":101,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":200},"responseTime":6,"msg":"request completed"}
+2026-03-28 21:14:32.914 | info:     You're up to date
+2026-03-28 21:14:32.917 | info:     [session_de860dd2ce3c:browser] Using browser folder '/app/tokens/session_de860dd2ce3c'
+2026-03-28 21:14:32.917 | info:     [session_de860dd2ce3c:browser] Initializing browser...
+2026-03-28 21:14:33.261 | {"level":30,"time":1774721673260,"pid":1,"hostname":"6142536fe963","req":{"id":102,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":10,"msg":"request completed"}
+2026-03-28 21:14:33.356 | http:     [session_de860dd2ce3c:browser] checking headless...
+2026-03-28 21:14:33.357 | http:     [session_de860dd2ce3c:browser] headless option is active, browser hidden
+2026-03-28 21:14:33.377 | {"level":30,"time":1774721673376,"pid":1,"hostname":"6142536fe963","req":{"id":103,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":200},"responseTime":7,"msg":"request completed"}
+2026-03-28 21:14:33.388 | info:     [session_de860dd2ce3c:client] Initializing...
+2026-03-28 21:14:33.392 | verbose:  [session_de860dd2ce3c:client] Setting WhatsApp WEB version to 2.3000.10305x
+2026-03-28 21:14:33.399 | error:    [session_de860dd2ce3c:client] Version not available for 2.3000.10305x, using latest as fallback
+2026-03-28 21:14:33.399 | verbose:  [session_de860dd2ce3c:client] Loading WhatsApp WEB
+2026-03-28 21:14:35.288 | {"level":30,"time":1774721675287,"pid":1,"hostname":"6142536fe963","req":{"id":104,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":7,"msg":"request completed"}
+2026-03-28 21:14:36.415 | {"level":30,"time":1774721676414,"pid":1,"hostname":"6142536fe963","req":{"id":105,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":304},"responseTime":13,"msg":"request completed"}
+2026-03-28 21:14:37.305 | {"level":30,"time":1774721677304,"pid":1,"hostname":"6142536fe963","req":{"id":106,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":10,"msg":"request completed"}
+2026-03-28 21:14:53.335 | {"level":30,"time":1774721693334,"pid":1,"hostname":"6142536fe963","req":{"id":107,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:14:55.502 | verbose:  [session_de860dd2ce3c:page] Page loaded
+2026-03-28 21:14:55.503 | verbose:  [session_de860dd2ce3c:client] Injecting wapi.js
+2026-03-28 21:14:55.505 | verbose:  [session_de860dd2ce3c:client] WhatsApp WEB loaded
+2026-03-28 21:14:55.537 | http:     [session_de860dd2ce3c:client] Waiting page load
+2026-03-28 21:14:57.414 | info:     [session_de860dd2ce3c:session] Session Unpaired
+2026-03-28 21:14:58.415 | {"level":30,"time":1774721698414,"pid":1,"hostname":"6142536fe963","sessionId":"session_de860dd2ce3c","status":"disconnectedMobile","msg":"WPPConnect status"}
+2026-03-28 21:14:58.415 | {"level":30,"time":1774721698415,"pid":1,"hostname":"6142536fe963","sessionId":"session_de860dd2ce3c","msg":"disconnectedMobile before first connect — ignored (startup token rejection)"}
+2026-03-28 21:14:59.777 | verbose:  [session_de860dd2ce3c:client] wapi.js injected
+2026-03-28 21:14:59.849 | http:     [session_de860dd2ce3c:client] Connected
+2026-03-28 21:14:59.849 | {"level":30,"time":1774721699849,"pid":1,"hostname":"6142536fe963","sessionId":"session_de860dd2ce3c","status":"inChat","msg":"WPPConnect status"}
+2026-03-28 21:14:59.850 | debug:    [session_de860dd2ce3c:client] Exposing onMessage function
+2026-03-28 21:14:59.924 | debug:    [session_de860dd2ce3c:client] Exposing onAnyMessage function
+2026-03-28 21:14:59.940 | info:     [session_de860dd2ce3c:client] WhatsApp WEB version: 2.3000.1036194557
+2026-03-28 21:14:59.941 | info:     [session_de860dd2ce3c:client] WA-JS version: 3.23.2
+2026-03-28 21:14:59.956 | debug:    [session_de860dd2ce3c:client] Exposing onAck function
+2026-03-28 21:15:00.037 | debug:    [session_de860dd2ce3c:client] Exposing onMessageEdit function
+2026-03-28 21:15:00.113 | http:     [session_de860dd2ce3c:client] Checking is logged...
+2026-03-28 21:15:00.129 | debug:    [session_de860dd2ce3c:client] Exposing onNotificationMessage function
+2026-03-28 21:15:00.131 | http:     [session_de860dd2ce3c:client] Waiting for QRCode Scan...
+2026-03-28 21:15:00.131 | {"level":30,"time":1774721700131,"pid":1,"hostname":"6142536fe963","sessionId":"session_de860dd2ce3c","status":"notLogged","msg":"WPPConnect status"}
+2026-03-28 21:15:00.170 | {"level":30,"time":1774721700170,"pid":1,"hostname":"6142536fe963","req":{"id":108,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":200},"responseTime":11,"msg":"request completed"}
+2026-03-28 21:15:00.399 | verbose:  [session_de860dd2ce3c:client] Waiting for QRCode Scan: Attempt 1
+2026-03-28 21:15:00.399 | {"level":30,"time":1774721700399,"pid":1,"hostname":"6142536fe963","sessionId":"session_de860dd2ce3c","attempts":1,"msg":"QR code ready"}
+2026-03-28 21:15:00.402 | debug:    [session_de860dd2ce3c:client] Exposing onParticipantsChanged function
+2026-03-28 21:15:00.416 | {"level":30,"time":1774721700415,"pid":1,"hostname":"6142536fe963","req":{"id":109,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":200},"responseTime":10,"msg":"request completed"}
+2026-03-28 21:15:00.429 | debug:    [session_de860dd2ce3c:client] Exposing onStateChange function
+2026-03-28 21:15:00.462 | debug:    [session_de860dd2ce3c:client] Exposing onStreamChange function
+2026-03-28 21:15:00.472 | debug:    [session_de860dd2ce3c:client] Exposing onStreamModeChanged function
+2026-03-28 21:15:00.480 | debug:    [session_de860dd2ce3c:client] Exposing onStreamInfoChanged function
+2026-03-28 21:15:00.486 | debug:    [session_de860dd2ce3c:client] Exposing onIncomingCall function
+2026-03-28 21:15:00.498 | debug:    [session_de860dd2ce3c:client] Exposing onInterfaceChange function
+2026-03-28 21:15:00.505 | debug:    [session_de860dd2ce3c:client] Exposing onPresenceChanged function
+2026-03-28 21:15:00.526 | debug:    [session_de860dd2ce3c:client] Exposing onLiveLocation function
+2026-03-28 21:15:00.531 | debug:    [session_de860dd2ce3c:client] Exposing onAddedToGroup function
+2026-03-28 21:15:00.543 | debug:    [session_de860dd2ce3c:client] Exposing onRevokedMessage function
+2026-03-28 21:15:00.549 | debug:    [session_de860dd2ce3c:client] Exposing onReactionMessage function
+2026-03-28 21:15:00.555 | debug:    [session_de860dd2ce3c:client] Exposing onPollResponse function
+2026-03-28 21:15:00.562 | debug:    [session_de860dd2ce3c:client] Exposing onUpdateLabel function
+2026-03-28 21:15:00.569 | debug:    [session_de860dd2ce3c:client] Exposing onOrderStatusUpdate function
+2026-03-28 21:15:00.577 | debug:    [session_de860dd2ce3c:client] Exposing onNewChat function
+2026-03-28 21:15:00.593 | debug:    [session_de860dd2ce3c:client] Emitting onInterfaceChange event (1 registered)
+2026-03-28 21:15:00.593 | http:     [session_de860dd2ce3c:client] Current state: QR (CONNECTING)
+2026-03-28 21:15:02.277 | {"level":30,"time":1774721702277,"pid":1,"hostname":"6142536fe963","req":{"id":110,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":9,"msg":"request completed"}
+2026-03-28 21:15:03.452 | {"level":30,"time":1774721703451,"pid":1,"hostname":"6142536fe963","req":{"id":111,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":304},"responseTime":4,"msg":"request completed"}
+2026-03-28 21:15:04.304 | {"level":30,"time":1774721704303,"pid":1,"hostname":"6142536fe963","req":{"id":112,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":10,"msg":"request completed"}
+2026-03-28 21:15:06.325 | {"level":30,"time":1774721706324,"pid":1,"hostname":"6142536fe963","req":{"id":113,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":5,"msg":"request completed"}
+2026-03-28 21:15:06.492 | {"level":30,"time":1774721706492,"pid":1,"hostname":"6142536fe963","req":{"id":114,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":304},"responseTime":17,"msg":"request completed"}
+2026-03-28 21:15:08.362 | {"level":30,"time":1774721708362,"pid":1,"hostname":"6142536fe963","req":{"id":115,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":16,"msg":"request completed"}
+2026-03-28 21:15:09.515 | {"level":30,"time":1774721709514,"pid":1,"hostname":"6142536fe963","req":{"id":116,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":304},"responseTime":5,"msg":"request completed"}
+2026-03-28 21:15:10.401 | {"level":30,"time":1774721710400,"pid":1,"hostname":"6142536fe963","req":{"id":117,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":6,"msg":"request completed"}
+2026-03-28 21:15:12.416 | {"level":30,"time":1774721712415,"pid":1,"hostname":"6142536fe963","req":{"id":118,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":7,"msg":"request completed"}
+2026-03-28 21:15:12.537 | {"level":30,"time":1774721712537,"pid":1,"hostname":"6142536fe963","req":{"id":119,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":304},"responseTime":5,"msg":"request completed"}
+2026-03-28 21:15:14.440 | {"level":30,"time":1774721714440,"pid":1,"hostname":"6142536fe963","req":{"id":120,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":7,"msg":"request completed"}
+2026-03-28 21:15:15.570 | {"level":30,"time":1774721715569,"pid":1,"hostname":"6142536fe963","req":{"id":121,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":304},"responseTime":10,"msg":"request completed"}
+2026-03-28 21:15:16.474 | {"level":30,"time":1774721716473,"pid":1,"hostname":"6142536fe963","req":{"id":122,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":15,"msg":"request completed"}
+2026-03-28 21:15:18.508 | {"level":30,"time":1774721718507,"pid":1,"hostname":"6142536fe963","req":{"id":123,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":304},"responseTime":6,"msg":"request completed"}
+2026-03-28 21:15:18.588 | {"level":30,"time":1774721718588,"pid":1,"hostname":"6142536fe963","req":{"id":124,"method":"GET","url":"/api/sessions/session_de860dd2ce3c/qr"},"res":{"statusCode":304},"responseTime":6,"msg":"request completed"}
+2026-03-28 21:15:19.817 | http:     [session_de860dd2ce3c:client] Checking QRCode status...
+2026-03-28 21:15:20.021 | http:     [session_de860dd2ce3c:client] Login with success
+2026-03-28 21:15:20.021 | {"level":30,"time":1774721720021,"pid":1,"hostname":"6142536fe963","sessionId":"session_de860dd2ce3c","status":"qrReadSuccess","msg":"WPPConnect status"}
+2026-03-28 21:15:20.045 | {"level":30,"time":1774721720044,"pid":1,"hostname":"6142536fe963","req":{"id":125,"method":"GET","url":"/api/sessions/session_de860dd2ce3c"},"res":{"statusCode":200},"responseTime":12,"msg":"request completed"}
+2026-03-28 21:15:20.222 | http:     [session_de860dd2ce3c:client] Checking phone is connected...
+2026-03-28 21:15:20.222 | debug:    [session_de860dd2ce3c:client] Registering onStateChange event
+2026-03-28 21:15:20.223 | debug:    [session_de860dd2ce3c:client] Registering onMessage event
+2026-03-28 21:15:20.508 | debug:    [session_de860dd2ce3c:client] Emitting onInterfaceChange event (1 registered)
+2026-03-28 21:15:20.508 | http:     [session_de860dd2ce3c:client] Current state: SYNCING (CONNECTING)
+2026-03-28 21:15:20.509 | debug:    [session_de860dd2ce3c:client] Emitting onInterfaceChange event (1 registered)
+2026-03-28 21:15:20.509 | http:     [session_de860dd2ce3c:client] Current state: SYNCING (CONNECTING)
+2026-03-28 21:15:20.509 | debug:    [session_de860dd2ce3c:client] Emitting onStateChange event (1 registered)
+2026-03-28 21:15:22.360 | debug:    [session_de860dd2ce3c:client] Emitting onInterfaceChange event (1 registered)
+2026-03-28 21:15:22.360 | http:     [session_de860dd2ce3c:client] Current state: SYNCING (CONNECTING)
+2026-03-28 21:15:22.361 | debug:    [session_de860dd2ce3c:client] Emitting onStateChange event (1 registered)
+2026-03-28 21:15:22.363 | debug:    [session_de860dd2ce3c:client] Emitting onInterfaceChange event (1 registered)
+2026-03-28 21:15:22.363 | http:     [session_de860dd2ce3c:client] Current state: SYNCING (CONNECTING)
+2026-03-28 21:15:22.364 | debug:    [session_de860dd2ce3c:client] Emitting onStateChange event (1 registered)
+2026-03-28 21:15:23.333 | {"level":30,"time":1774721723332,"pid":1,"hostname":"6142536fe963","req":{"id":126,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
+2026-03-28 21:15:29.216 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.223 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.229 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.233 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.239 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.245 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.251 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.257 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.264 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.276 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.281 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.287 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.291 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.297 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.301 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:29.305 | debug:    [session_de860dd2ce3c:client] Emitting onMessage event (1 registered)
+2026-03-28 21:15:32.051 | {"level":30,"time":1774721732051,"pid":1,"hostname":"6142536fe963","sessionId":"session_de860dd2ce3c","phone":"963948500505","via":"getWid","msg":"Phone number saved"}
+2026-03-28 21:15:34.049 | debug:    [session_de860dd2ce3c:client] Emitting onInterfaceChange event (1 registered)
+2026-03-28 21:15:34.049 | http:     [session_de860dd2ce3c:client] Current state: MAIN (NORMAL)
+2026-03-28 21:15:34.050 | debug:    [session_de860dd2ce3c:client] Emitting onInterfaceChange event (1 registered)
+2026-03-28 21:15:34.050 | http:     [session_de860dd2ce3c:client] Current state: MAIN (NORMAL)
+2026-03-28 21:15:34.050 | debug:    [session_de860dd2ce3c:client] Emitting onInterfaceChange event (1 registered)
+2026-03-28 21:15:34.051 | http:     [session_de860dd2ce3c:client] Current state: MAIN (NORMAL)
+2026-03-28 21:15:53.331 | {"level":30,"time":1774721753331,"pid":1,"hostname":"6142536fe963","req":{"id":127,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":2,"msg":"request completed"}
+2026-03-28 21:16:23.328 | {"level":30,"time":1774721783327,"pid":1,"hostname":"6142536fe963","req":{"id":128,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":0,"msg":"request completed"}
+2026-03-28 21:16:53.327 | {"level":30,"time":1774721813327,"pid":1,"hostname":"6142536fe963","req":{"id":129,"method":"GET","url":"/"},"res":{"statusCode":200},"responseTime":1,"msg":"request completed"}
