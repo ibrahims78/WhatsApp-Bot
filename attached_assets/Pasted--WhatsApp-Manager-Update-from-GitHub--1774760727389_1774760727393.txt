@@ -1,0 +1,804 @@
+============================================
+   WhatsApp Manager - Update from GitHub
+============================================
+
+Which mode do you want to run?
+  [1] Production  (docker-compose.yml)
+  [2] Development (docker-compose.dev.yml)
+
+Enter choice (1/2): 2
+
+Which type of update do you want?
+  [1] Fast update  - Pull code + restart containers only (no rebuild)
+      Use this for: code changes only (src files, no new packages)
+  [2] Full rebuild - Pull code + full Docker image rebuild (no-cache)
+      Use this for: new packages added, Dockerfile changed, or first setup
+
+Enter choice (1/2): 2
+
+[1/3] Pulling latest code from GitHub...
+Already up to date.
+Code updated.
+
+[2/3] Stopping the other environment to free port 5005...
+Done.
+
+[3/3] Full rebuild: rebuilding Docker image (no cache)...
+[+] Building 87.5s (17/28)
+ => [internal] load local bake definitions                                                                         0.0s
+ => => reading from stdin 1.04kB                                                                                   0.0s
+ => [dashboard internal] load build definition from Dockerfile.dashboard.dev                                       0.0s
+ => => transferring dockerfile: 538B                                                                               0.0s
+ => [api internal] load build definition from Dockerfile.api.dev                                                   0.0s
+ => => transferring dockerfile: 1.81kB                                                                             0.0s
+ => [api internal] load metadata for docker.io/library/node:20-bullseye-slim                                       1.7s
+ => [dashboard internal] load metadata for docker.io/library/node:20-slim                                          1.8s
+ => [dashboard internal] load .dockerignore                                                                        0.0s
+ => => transferring context: 355B                                                                                  0.0s
+ => CACHED [api  1/13] FROM docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b210374  0.0s
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cdd93f  0.0s
+ => [api internal] load build context                                                                              0.1s
+ => => transferring context: 212.40kB                                                                              0.0s
+ => ERROR [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certi  84.7s
+ => CACHED [dashboard 1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832f  0.0s
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec  0.0s
+ => [dashboard internal] load build context                                                                        0.2s
+ => => transferring context: 1.52MB                                                                                0.2s
+ => [dashboard 2/7] RUN npm install -g pnpm@10                                                                    32.2s
+ => [dashboard 3/7] WORKDIR /app                                                                                   0.1s
+ => [dashboard 4/7] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./       0.1s
+ => [dashboard 5/7] COPY lib/ ./lib/                                                                               0.1s
+ => [dashboard 6/7] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/                             0.1s
+ => CANCELED [dashboard 7/7] RUN pnpm install --frozen-lockfile                                                   52.4s
+------
+ > [api  2/13] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificates     fonts-liberation     fonts-noto-color-emoji     libasound2     libatk-bridge2.0-0     libatk1.0-0     libcairo2     libcups2     libdbus-1-3     libexpat1     libfontconfig1     libgbm1     libglib2.0-0     libgtk-3-0     libnspr4     libnss3     libpango-1.0-0     libpangocairo-1.0-0     libstdc++6     libx11-6     libx11-xcb1     libxcb1     libxcomposite1     libxcursor1     libxdamage1     libxext6     libxfixes3     libxi6     libxrandr2     libxrender1     libxss1     libxtst6     wget     xdg-utils     && rm -rf /var/lib/apt/lists/*:
+1.389 Get:1 http://deb.debian.org/debian bullseye InRelease [75.1 kB]
+1.681 Get:2 http://deb.debian.org/debian-security bullseye-security InRelease [27.1 kB]
+2.007 Get:3 http://deb.debian.org/debian bullseye-updates InRelease [44.0 kB]
+2.129 Get:4 http://deb.debian.org/debian bullseye/main amd64 Packages [8066 kB]
+35.18 Get:5 http://deb.debian.org/debian-security bullseye-security/main amd64 Packages [446 kB]
+35.26 Get:6 http://deb.debian.org/debian bullseye-updates/main amd64 Packages [18.8 kB]
+35.29 Fetched 8677 kB in 35s (248 kB/s)
+35.29 Reading package lists...
+35.92 Reading package lists...
+36.51 Building dependency tree...
+36.65 Reading state information...
+36.83 libstdc++6 is already the newest version (10.2.1-6).
+36.83 The following additional packages will be installed:
+36.83   adwaita-icon-theme chromium-common dbus dbus-user-session
+36.83   dconf-gsettings-backend dconf-service dmsetup fontconfig fontconfig-config
+36.83   glib-networking glib-networking-common glib-networking-services
+36.83   gsettings-desktop-schemas gtk-update-icon-cache hicolor-icon-theme
+36.83   libapparmor1 libargon2-1 libasound2-data libasyncns0 libatk1.0-data
+36.83   libatomic1 libatspi2.0-0 libavahi-client3 libavahi-common-data
+36.83   libavahi-common3 libbrotli1 libbsd0 libcairo-gobject2 libcap2 libcolord2
+36.83   libcryptsetup12 libdatrie1 libdconf1 libdeflate0 libdevmapper1.02.1
+36.83   libdouble-conversion3 libdrm-amdgpu1 libdrm-common libdrm-intel1
+36.83   libdrm-nouveau2 libdrm-radeon1 libdrm2 libedit2 libelf1 libepoxy0
+36.83   libevent-2.1-7 libflac8 libfontenc1 libfreetype6 libfribidi0
+36.83   libgdk-pixbuf-2.0-0 libgdk-pixbuf2.0-common libgl1 libgl1-mesa-dri
+36.83   libglapi-mesa libglvnd0 libglx-mesa0 libglx0 libgraphite2-3 libgtk-3-common
+36.83   libharfbuzz0b libice6 libicu67 libip4tc2 libjbig0 libjpeg62-turbo libjson-c5
+36.83   libjson-glib-1.0-0 libjson-glib-1.0-common libjsoncpp24 libkmod2 liblcms2-2
+36.83   libllvm11 libmd0 libminizip1 libogg0 libopenjp2-7 libopus0 libpam-systemd
+36.83   libpangoft2-1.0-0 libpciaccess0 libpixman-1-0 libpng16-16 libproxy1v5
+36.83   libpsl5 libpulse0 librest-0.7-0 libsensors-config libsensors5 libsm6
+36.83   libsnappy1v5 libsndfile1 libsoup-gnome2.4-1 libsoup2.4-1 libsqlite3-0
+36.83   libthai-data libthai0 libtiff5 libvorbis0a libvorbisenc2 libvulkan1
+36.83   libwayland-client0 libwayland-cursor0 libwayland-egl1 libwayland-server0
+36.83   libwebp6 libwebpdemux2 libwebpmux3 libwoff1 libwrap0 libx11-data libxau6
+36.83   libxaw7 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0
+36.83   libxcb-render0 libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0
+36.83   libxdmcp6 libxft2 libxinerama1 libxkbcommon0 libxkbfile1 libxml2 libxmu6
+36.83   libxmuu1 libxnvctrl0 libxpm4 libxshmfence1 libxslt1.1 libxt6 libxv1
+36.83   libxxf86dga1 libxxf86vm1 libz3-4 openssl sensible-utils shared-mime-info
+36.83   systemd systemd-sysv ucf x11-common x11-utils xkb-data
+36.83 Suggested packages:
+36.83   chromium-l10n chromium-shell chromium-driver libasound2-plugins alsa-utils
+36.83   colord cups-common gvfs liblcms2-utils opus-tools pciutils pulseaudio
+36.83   lm-sensors systemd-container policykit-1 mesa-utils
+36.83 Recommended packages:
+36.83   librsvg2-common chromium-sandbox upower libu2f-udev notification-daemon
+36.83   system-config-printer alsa-ucm-conf alsa-topology-conf at-spi2-core
+36.83   libgdk-pixbuf2.0-bin libglib2.0-data xdg-user-dirs libgtk-3-bin publicsuffix
+36.83   mesa-vulkan-drivers | vulkan-icd systemd-timesyncd | time-daemon
+36.83   libnss-systemd libfile-mimeinfo-perl libnet-dbus-perl libx11-protocol-perl
+36.83   x11-xserver-utils
+37.59 The following NEW packages will be installed:
+37.59   adwaita-icon-theme ca-certificates chromium chromium-common dbus
+37.59   dbus-user-session dconf-gsettings-backend dconf-service dmsetup fontconfig
+37.59   fontconfig-config fonts-liberation fonts-noto-color-emoji glib-networking
+37.59   glib-networking-common glib-networking-services gsettings-desktop-schemas
+37.59   gtk-update-icon-cache hicolor-icon-theme libapparmor1 libargon2-1 libasound2
+37.59   libasound2-data libasyncns0 libatk-bridge2.0-0 libatk1.0-0 libatk1.0-data
+37.59   libatomic1 libatspi2.0-0 libavahi-client3 libavahi-common-data
+37.59   libavahi-common3 libbrotli1 libbsd0 libcairo-gobject2 libcairo2 libcap2
+37.59   libcolord2 libcryptsetup12 libcups2 libdatrie1 libdbus-1-3 libdconf1
+37.59   libdeflate0 libdevmapper1.02.1 libdouble-conversion3 libdrm-amdgpu1
+37.59   libdrm-common libdrm-intel1 libdrm-nouveau2 libdrm-radeon1 libdrm2 libedit2
+37.59   libelf1 libepoxy0 libevent-2.1-7 libexpat1 libflac8 libfontconfig1
+37.59   libfontenc1 libfreetype6 libfribidi0 libgbm1 libgdk-pixbuf-2.0-0
+37.59   libgdk-pixbuf2.0-common libgl1 libgl1-mesa-dri libglapi-mesa libglib2.0-0
+37.59   libglvnd0 libglx-mesa0 libglx0 libgraphite2-3 libgtk-3-0 libgtk-3-common
+37.59   libharfbuzz0b libice6 libicu67 libip4tc2 libjbig0 libjpeg62-turbo libjson-c5
+37.59   libjson-glib-1.0-0 libjson-glib-1.0-common libjsoncpp24 libkmod2 liblcms2-2
+37.59   libllvm11 libmd0 libminizip1 libnspr4 libnss3 libogg0 libopenjp2-7 libopus0
+37.59   libpam-systemd libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0
+37.59   libpciaccess0 libpixman-1-0 libpng16-16 libproxy1v5 libpsl5 libpulse0
+37.59   librest-0.7-0 libsensors-config libsensors5 libsm6 libsnappy1v5 libsndfile1
+37.59   libsoup-gnome2.4-1 libsoup2.4-1 libsqlite3-0 libthai-data libthai0 libtiff5
+37.59   libvorbis0a libvorbisenc2 libvulkan1 libwayland-client0 libwayland-cursor0
+37.59   libwayland-egl1 libwayland-server0 libwebp6 libwebpdemux2 libwebpmux3
+37.59   libwoff1 libwrap0 libx11-6 libx11-data libx11-xcb1 libxau6 libxaw7
+37.59   libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-render0
+37.59   libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0 libxcb1 libxcomposite1
+37.59   libxcursor1 libxdamage1 libxdmcp6 libxext6 libxfixes3 libxft2 libxi6
+37.59   libxinerama1 libxkbcommon0 libxkbfile1 libxml2 libxmu6 libxmuu1 libxnvctrl0
+37.59   libxpm4 libxrandr2 libxrender1 libxshmfence1 libxslt1.1 libxss1 libxt6
+37.59   libxtst6 libxv1 libxxf86dga1 libxxf86vm1 libz3-4 openssl sensible-utils
+37.59   shared-mime-info systemd systemd-sysv ucf wget x11-common x11-utils
+37.59   xdg-utils xkb-data
+41.33 0 upgraded, 182 newly installed, 0 to remove and 0 not upgraded.
+41.33 Need to get 180 MB of archives.
+41.33 After this operation, 608 MB of additional disk space will be used.
+41.33 Get:1 http://deb.debian.org/debian bullseye/main amd64 libapparmor1 amd64 2.13.6-10 [99.3 kB]
+81.62 Err:2 http://deb.debian.org/debian-security bullseye-security/main amd64 libcap2 amd64 1:2.44-1+deb11u1
+81.62   Temporary failure resolving 'deb.debian.org' [IP: 151.101.2.132 80]
+84.52 Err:3 http://deb.debian.org/debian bullseye/main amd64 libargon2-1 amd64 0~20171227-0.2
+84.52   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.52 Err:4 http://deb.debian.org/debian bullseye/main amd64 dmsetup amd64 2:1.02.175-2.1
+84.52   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.52 Err:5 http://deb.debian.org/debian bullseye/main amd64 libdevmapper1.02.1 amd64 2:1.02.175-2.1
+84.52   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.52 Ign:6 http://deb.debian.org/debian bullseye/main amd64 libjson-c5 amd64 0.15-2+deb11u1
+84.53 Ign:7 http://deb.debian.org/debian bullseye/main amd64 libcryptsetup12 amd64 2:2.3.7-1+deb11u1
+84.53 Err:8 http://deb.debian.org/debian bullseye/main amd64 libip4tc2 amd64 1.8.7-1
+84.53   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.53 Err:9 http://deb.debian.org/debian bullseye/main amd64 libkmod2 amd64 28-1
+84.53   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:10 http://deb.debian.org/debian-security bullseye-security/main amd64 systemd amd64 247.3-7+deb11u7
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:11 http://deb.debian.org/debian-security bullseye-security/main amd64 systemd-sysv amd64 247.3-7+deb11u7
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:12 http://deb.debian.org/debian bullseye/main amd64 libdbus-1-3 amd64 1.12.28-0+deb11u1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:13 http://deb.debian.org/debian-security bullseye-security/main amd64 libexpat1 amd64 2.2.10-2+deb11u7
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:14 http://deb.debian.org/debian bullseye/main amd64 dbus amd64 1.12.28-0+deb11u1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:15 http://deb.debian.org/debian bullseye/main amd64 sensible-utils all 0.0.14
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:16 http://deb.debian.org/debian-security bullseye-security/main amd64 openssl amd64 1.1.1w-0+deb11u5
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:17 http://deb.debian.org/debian-security bullseye-security/main amd64 ca-certificates all 20230311+deb12u1~deb11u1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:18 http://deb.debian.org/debian-security bullseye-security/main amd64 libpam-systemd amd64 247.3-7+deb11u7
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:19 http://deb.debian.org/debian-security bullseye-security/main amd64 ucf all 3.0043+deb11u2
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:20 http://deb.debian.org/debian bullseye/main amd64 libpsl5 amd64 0.21.0-1.2
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:21 http://deb.debian.org/debian-security bullseye-security/main amd64 wget amd64 1.21-1+deb11u2
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:22 http://deb.debian.org/debian bullseye/main amd64 hicolor-icon-theme all 0.17-2
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:23 http://deb.debian.org/debian-security bullseye-security/main amd64 libgdk-pixbuf2.0-common all 2.42.2+dfsg-1+deb11u4
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:24 http://deb.debian.org/debian-security bullseye-security/main amd64 libglib2.0-0 amd64 2.66.8-1+deb11u8
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:25 http://deb.debian.org/debian-security bullseye-security/main amd64 libicu67 amd64 67.1-7+deb11u1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:26 http://deb.debian.org/debian-security bullseye-security/main amd64 libxml2 amd64 2.9.10+dfsg-6.7+deb11u9
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:27 http://deb.debian.org/debian bullseye/main amd64 shared-mime-info amd64 2.0-1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:28 http://deb.debian.org/debian bullseye/main amd64 libjpeg62-turbo amd64 1:2.0.6-4
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:29 http://deb.debian.org/debian-security bullseye-security/main amd64 libpng16-16 amd64 1.6.37-3+deb11u2
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:30 http://deb.debian.org/debian bullseye/main amd64 libdeflate0 amd64 1.7-1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:31 http://deb.debian.org/debian bullseye/main amd64 libjbig0 amd64 2.1-3.1+b2
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Ign:32 http://deb.debian.org/debian bullseye/main amd64 libwebp6 amd64 0.6.1-2.1+deb11u2
+84.54 Err:33 http://deb.debian.org/debian-security bullseye-security/main amd64 libtiff5 amd64 4.2.0-1+deb11u7
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:34 http://deb.debian.org/debian-security bullseye-security/main amd64 libgdk-pixbuf-2.0-0 amd64 2.42.2+dfsg-1+deb11u4
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:35 http://deb.debian.org/debian bullseye/main amd64 gtk-update-icon-cache amd64 3.24.24-4+deb11u4
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:36 http://deb.debian.org/debian bullseye/main amd64 adwaita-icon-theme all 3.38.0-1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:37 http://deb.debian.org/debian-security bullseye-security/main amd64 libasound2-data all 1.2.4-1.1+deb11u1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:38 http://deb.debian.org/debian-security bullseye-security/main amd64 libasound2 amd64 1.2.4-1.1+deb11u1
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.54 Err:39 http://deb.debian.org/debian bullseye/main amd64 libatk1.0-data all 2.36.0-2
+84.54   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:40 http://deb.debian.org/debian bullseye/main amd64 libatk1.0-0 amd64 2.36.0-2
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:41 http://deb.debian.org/debian bullseye/main amd64 libxau6 amd64 1:1.0.9-1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:42 http://deb.debian.org/debian bullseye/main amd64 libmd0 amd64 1.0.3-3
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:43 http://deb.debian.org/debian bullseye/main amd64 libbsd0 amd64 0.11.3-1+deb11u1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:44 http://deb.debian.org/debian bullseye/main amd64 libxdmcp6 amd64 1:1.1.2-3
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:45 http://deb.debian.org/debian bullseye/main amd64 libxcb1 amd64 1.14-3
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Ign:46 http://deb.debian.org/debian bullseye/main amd64 libx11-data all 2:1.7.2-1+deb11u2
+84.55 Ign:47 http://deb.debian.org/debian bullseye/main amd64 libx11-6 amd64 2:1.7.2-1+deb11u2
+84.55 Err:48 http://deb.debian.org/debian bullseye/main amd64 libatspi2.0-0 amd64 2.38.0-4+deb11u1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:49 http://deb.debian.org/debian bullseye/main amd64 libatk-bridge2.0-0 amd64 2.38.0-1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:50 http://deb.debian.org/debian bullseye/main amd64 libatomic1 amd64 10.2.1-6
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:51 http://deb.debian.org/debian bullseye/main amd64 libbrotli1 amd64 1.0.9-2+b2
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:52 http://deb.debian.org/debian-security bullseye-security/main amd64 libfreetype6 amd64 2.10.4+dfsg-1+deb11u284.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:53 http://deb.debian.org/debian bullseye/main amd64 fonts-liberation all 1:1.07.4-11
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:54 http://deb.debian.org/debian bullseye/main amd64 fontconfig-config all 2.13.1-4.2
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:55 http://deb.debian.org/debian bullseye/main amd64 libfontconfig1 amd64 2.13.1-4.2
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Ign:56 http://deb.debian.org/debian bullseye/main amd64 libpixman-1-0 amd64 0.40.0-1.1~deb11u1
+84.55 Err:57 http://deb.debian.org/debian bullseye/main amd64 libxcb-render0 amd64 1.14-3
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:58 http://deb.debian.org/debian bullseye/main amd64 libxcb-shm0 amd64 1.14-3
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:59 http://deb.debian.org/debian bullseye/main amd64 libxext6 amd64 2:1.3.3-1.1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:60 http://deb.debian.org/debian bullseye/main amd64 libxrender1 amd64 1:0.9.10-1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:61 http://deb.debian.org/debian bullseye/main amd64 libcairo2 amd64 1.16.0-5
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:62 http://deb.debian.org/debian-security bullseye-security/main amd64 libavahi-common-data amd64 0.8-5+deb11u384.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:63 http://deb.debian.org/debian-security bullseye-security/main amd64 libavahi-common3 amd64 0.8-5+deb11u3
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:64 http://deb.debian.org/debian-security bullseye-security/main amd64 libavahi-client3 amd64 0.8-5+deb11u3
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:65 http://deb.debian.org/debian-security bullseye-security/main amd64 libcups2 amd64 2.3.3op2-3+deb11u10
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:66 http://deb.debian.org/debian bullseye/main amd64 libdouble-conversion3 amd64 3.1.5-6.1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:67 http://deb.debian.org/debian bullseye/main amd64 libdrm-common all 2.4.104-1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:68 http://deb.debian.org/debian bullseye/main amd64 libdrm2 amd64 2.4.104-1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:69 http://deb.debian.org/debian bullseye/main amd64 libevent-2.1-7 amd64 2.1.12-stable-1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:70 http://deb.debian.org/debian bullseye/main amd64 libogg0 amd64 1.3.4-0.1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Ign:71 http://deb.debian.org/debian bullseye/main amd64 libflac8 amd64 1.3.3-2+deb11u2
+84.55 Err:72 http://deb.debian.org/debian bullseye/main amd64 libwayland-server0 amd64 1.18.0-2~exp1.1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:73 http://deb.debian.org/debian bullseye/main amd64 libgbm1 amd64 20.3.5-1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:74 http://deb.debian.org/debian bullseye/main amd64 libjsoncpp24 amd64 1.9.4-4
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:75 http://deb.debian.org/debian bullseye/main amd64 liblcms2-2 amd64 2.12~rc1-2
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.55 Err:76 http://deb.debian.org/debian bullseye/main amd64 libminizip1 amd64 1.1-8+deb11u1
+84.55   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:77 http://deb.debian.org/debian bullseye/main amd64 libnspr4 amd64 2:4.29-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:78 http://deb.debian.org/debian-security bullseye-security/main amd64 libsqlite3-0 amd64 3.34.1-3+deb11u1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:79 http://deb.debian.org/debian-security bullseye-security/main amd64 libnss3 amd64 2:3.61-1+deb11u5
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:80 http://deb.debian.org/debian-security bullseye-security/main amd64 libopenjp2-7 amd64 2.4.0-3+deb11u2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:81 http://deb.debian.org/debian bullseye/main amd64 libopus0 amd64 1.3.1-0.1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:82 http://deb.debian.org/debian bullseye/main amd64 fontconfig amd64 2.13.1-4.2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:83 http://deb.debian.org/debian bullseye/main amd64 libfribidi0 amd64 1.0.8-2+deb11u1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:84 http://deb.debian.org/debian bullseye/main amd64 libgraphite2-3 amd64 1.3.14-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:85 http://deb.debian.org/debian bullseye/main amd64 libharfbuzz0b amd64 2.7.4-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:86 http://deb.debian.org/debian bullseye/main amd64 libthai-data all 0.1.28-3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:87 http://deb.debian.org/debian bullseye/main amd64 libdatrie1 amd64 0.2.13-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:88 http://deb.debian.org/debian bullseye/main amd64 libthai0 amd64 0.1.28-3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:89 http://deb.debian.org/debian bullseye/main amd64 libpango-1.0-0 amd64 1.46.2-3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:90 http://deb.debian.org/debian bullseye/main amd64 libasyncns0 amd64 0.8-6+b2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:91 http://deb.debian.org/debian bullseye/main amd64 libvorbis0a amd64 1.3.7-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:92 http://deb.debian.org/debian bullseye/main amd64 libvorbisenc2 amd64 1.3.7-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:93 http://deb.debian.org/debian-security bullseye-security/main amd64 libsndfile1 amd64 1.0.31-2+deb11u2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:94 http://deb.debian.org/debian bullseye/main amd64 libwrap0 amd64 7.6.q-31
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:95 http://deb.debian.org/debian bullseye/main amd64 libpulse0 amd64 14.2-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:96 http://deb.debian.org/debian bullseye/main amd64 libsnappy1v5 amd64 1.1.8-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Ign:97 http://deb.debian.org/debian bullseye/main amd64 libwebpdemux2 amd64 0.6.1-2.1+deb11u2
+84.56 Ign:98 http://deb.debian.org/debian bullseye/main amd64 libwebpmux3 amd64 0.6.1-2.1+deb11u2
+84.56 Err:99 http://deb.debian.org/debian bullseye/main amd64 libwoff1 amd64 1.0.2-1+b1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:100 http://deb.debian.org/debian bullseye/main amd64 libxcomposite1 amd64 1:0.4.5-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:101 http://deb.debian.org/debian bullseye/main amd64 libxdamage1 amd64 1:1.1.5-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:102 http://deb.debian.org/debian bullseye/main amd64 libxfixes3 amd64 1:5.0.3-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:103 http://deb.debian.org/debian bullseye/main amd64 xkb-data all 2.29-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:104 http://deb.debian.org/debian bullseye/main amd64 libxkbcommon0 amd64 1.0.3-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:105 http://deb.debian.org/debian bullseye/main amd64 libxnvctrl0 amd64 470.239.06-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:106 http://deb.debian.org/debian bullseye/main amd64 libxrandr2 amd64 2:1.5.1-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:107 http://deb.debian.org/debian-security bullseye-security/main amd64 libxslt1.1 amd64 1.1.34-4+deb11u3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:108 http://deb.debian.org/debian bullseye/main amd64 libcairo-gobject2 amd64 1.16.0-5
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:109 http://deb.debian.org/debian bullseye/main amd64 libcolord2 amd64 1.4.5-3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:110 http://deb.debian.org/debian bullseye/main amd64 libepoxy0 amd64 1.5.5-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:111 http://deb.debian.org/debian bullseye/main amd64 libjson-glib-1.0-common all 1.6.2-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:112 http://deb.debian.org/debian bullseye/main amd64 libjson-glib-1.0-0 amd64 1.6.2-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:113 http://deb.debian.org/debian bullseye/main amd64 libpangoft2-1.0-0 amd64 1.46.2-3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:114 http://deb.debian.org/debian bullseye/main amd64 libpangocairo-1.0-0 amd64 1.46.2-3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:115 http://deb.debian.org/debian bullseye/main amd64 libproxy1v5 amd64 0.4.17-1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:116 http://deb.debian.org/debian bullseye/main amd64 glib-networking-common all 2.66.0-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:117 http://deb.debian.org/debian bullseye/main amd64 glib-networking-services amd64 2.66.0-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:118 http://deb.debian.org/debian bullseye/main amd64 dbus-user-session amd64 1.12.28-0+deb11u1
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:119 http://deb.debian.org/debian bullseye/main amd64 libdconf1 amd64 0.38.0-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:120 http://deb.debian.org/debian bullseye/main amd64 dconf-service amd64 0.38.0-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:121 http://deb.debian.org/debian bullseye/main amd64 dconf-gsettings-backend amd64 0.38.0-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:122 http://deb.debian.org/debian bullseye/main amd64 gsettings-desktop-schemas all 3.38.0-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:123 http://deb.debian.org/debian bullseye/main amd64 glib-networking amd64 2.66.0-2
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:124 http://deb.debian.org/debian-security bullseye-security/main amd64 libsoup2.4-1 amd64 2.72.0-2+deb11u3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.56 Err:125 http://deb.debian.org/debian-security bullseye-security/main amd64 libsoup-gnome2.4-1 amd64 2.72.0-2+deb11u3
+84.56   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:126 http://deb.debian.org/debian bullseye/main amd64 librest-0.7-0 amd64 0.8.1-1.1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:127 http://deb.debian.org/debian bullseye/main amd64 libwayland-client0 amd64 1.18.0-2~exp1.1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:128 http://deb.debian.org/debian bullseye/main amd64 libwayland-cursor0 amd64 1.18.0-2~exp1.1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:129 http://deb.debian.org/debian bullseye/main amd64 libwayland-egl1 amd64 1.18.0-2~exp1.1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:130 http://deb.debian.org/debian bullseye/main amd64 libxcursor1 amd64 1:1.2.0-2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:131 http://deb.debian.org/debian bullseye/main amd64 libxi6 amd64 2:1.7.10-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:132 http://deb.debian.org/debian bullseye/main amd64 libxinerama1 amd64 2:1.1.4-2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:133 http://deb.debian.org/debian bullseye/main amd64 libgtk-3-common all 3.24.24-4+deb11u4
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:134 http://deb.debian.org/debian bullseye/main amd64 libgtk-3-0 amd64 3.24.24-4+deb11u4
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:135 http://deb.debian.org/debian bullseye/main amd64 libfontenc1 amd64 1:1.1.4-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:136 http://deb.debian.org/debian bullseye/main amd64 libglvnd0 amd64 1.3.2-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:137 http://deb.debian.org/debian bullseye/main amd64 libglapi-mesa amd64 20.3.5-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Ign:138 http://deb.debian.org/debian bullseye/main amd64 libx11-xcb1 amd64 2:1.7.2-1+deb11u2
+84.57 Err:139 http://deb.debian.org/debian bullseye/main amd64 libxcb-dri2-0 amd64 1.14-3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:140 http://deb.debian.org/debian bullseye/main amd64 libxcb-dri3-0 amd64 1.14-3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:141 http://deb.debian.org/debian bullseye/main amd64 libxcb-glx0 amd64 1.14-3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:142 http://deb.debian.org/debian bullseye/main amd64 libxcb-present0 amd64 1.14-3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:143 http://deb.debian.org/debian bullseye/main amd64 libxcb-sync1 amd64 1.14-3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:144 http://deb.debian.org/debian bullseye/main amd64 libxcb-xfixes0 amd64 1.14-3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:145 http://deb.debian.org/debian bullseye/main amd64 libxshmfence1 amd64 1.3-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:146 http://deb.debian.org/debian bullseye/main amd64 libxxf86vm1 amd64 1:1.1.4-1+b2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:147 http://deb.debian.org/debian bullseye/main amd64 libdrm-amdgpu1 amd64 2.4.104-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:148 http://deb.debian.org/debian bullseye/main amd64 libpciaccess0 amd64 0.16-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:149 http://deb.debian.org/debian bullseye/main amd64 libdrm-intel1 amd64 2.4.104-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:150 http://deb.debian.org/debian bullseye/main amd64 libdrm-nouveau2 amd64 2.4.104-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:151 http://deb.debian.org/debian bullseye/main amd64 libdrm-radeon1 amd64 2.4.104-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:152 http://deb.debian.org/debian bullseye/main amd64 libelf1 amd64 0.183-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:153 http://deb.debian.org/debian bullseye/main amd64 libedit2 amd64 3.1-20191231-2+b1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:154 http://deb.debian.org/debian bullseye/main amd64 libz3-4 amd64 4.8.10-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:155 http://deb.debian.org/debian bullseye/main amd64 libllvm11 amd64 1:11.0.1-2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:156 http://deb.debian.org/debian bullseye/main amd64 libsensors-config all 1:3.6.0-7
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:157 http://deb.debian.org/debian bullseye/main amd64 libsensors5 amd64 1:3.6.0-7
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:158 http://deb.debian.org/debian bullseye/main amd64 libvulkan1 amd64 1.2.162.0-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:159 http://deb.debian.org/debian bullseye/main amd64 libgl1-mesa-dri amd64 20.3.5-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:160 http://deb.debian.org/debian bullseye/main amd64 libglx-mesa0 amd64 20.3.5-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:161 http://deb.debian.org/debian bullseye/main amd64 libglx0 amd64 1.3.2-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:162 http://deb.debian.org/debian bullseye/main amd64 libgl1 amd64 1.3.2-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:163 http://deb.debian.org/debian bullseye/main amd64 x11-common all 1:7.7+22
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:164 http://deb.debian.org/debian bullseye/main amd64 libice6 amd64 2:1.0.10-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:165 http://deb.debian.org/debian bullseye/main amd64 libsm6 amd64 2:1.2.3-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:166 http://deb.debian.org/debian bullseye/main amd64 libxt6 amd64 1:1.2.0-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:167 http://deb.debian.org/debian bullseye/main amd64 libxmu6 amd64 2:1.1.2-2+b3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Ign:168 http://deb.debian.org/debian bullseye/main amd64 libxpm4 amd64 1:3.5.12-1.1+deb11u1
+84.57 Err:169 http://deb.debian.org/debian bullseye/main amd64 libxaw7 amd64 2:1.0.13-1.1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:170 http://deb.debian.org/debian bullseye/main amd64 libxcb-shape0 amd64 1.14-3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:171 http://deb.debian.org/debian bullseye/main amd64 libxft2 amd64 2.3.2-2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:172 http://deb.debian.org/debian bullseye/main amd64 libxkbfile1 amd64 1:1.1.0-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:173 http://deb.debian.org/debian bullseye/main amd64 libxmuu1 amd64 2:1.1.2-2+b3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:174 http://deb.debian.org/debian bullseye/main amd64 libxtst6 amd64 2:1.2.3-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:175 http://deb.debian.org/debian bullseye/main amd64 libxv1 amd64 2:1.0.11-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:176 http://deb.debian.org/debian bullseye/main amd64 libxxf86dga1 amd64 2:1.1.4-1+b3
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:177 http://deb.debian.org/debian bullseye/main amd64 x11-utils amd64 7.7+5
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:178 http://deb.debian.org/debian bullseye/main amd64 xdg-utils all 1.1.3-4.1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Ign:179 http://deb.debian.org/debian bullseye/main amd64 chromium-common amd64 120.0.6099.224-1~deb11u1
+84.57 Ign:180 http://deb.debian.org/debian bullseye/main amd64 chromium amd64 120.0.6099.224-1~deb11u1
+84.57 Err:181 http://deb.debian.org/debian bullseye/main amd64 fonts-noto-color-emoji all 0~20200916-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:182 http://deb.debian.org/debian bullseye/main amd64 libxss1 amd64 1:1.2.3-1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:6 http://deb.debian.org/debian bullseye/main amd64 libjson-c5 amd64 0.15-2+deb11u1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:7 http://deb.debian.org/debian bullseye/main amd64 libcryptsetup12 amd64 2:2.3.7-1+deb11u1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:32 http://deb.debian.org/debian bullseye/main amd64 libwebp6 amd64 0.6.1-2.1+deb11u2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:46 http://deb.debian.org/debian bullseye/main amd64 libx11-data all 2:1.7.2-1+deb11u2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:47 http://deb.debian.org/debian bullseye/main amd64 libx11-6 amd64 2:1.7.2-1+deb11u2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:56 http://deb.debian.org/debian bullseye/main amd64 libpixman-1-0 amd64 0.40.0-1.1~deb11u1
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:71 http://deb.debian.org/debian bullseye/main amd64 libflac8 amd64 1.3.3-2+deb11u2
+84.57   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.57 Err:97 http://deb.debian.org/debian bullseye/main amd64 libwebpdemux2 amd64 0.6.1-2.1+deb11u2
+84.58   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.58 Err:98 http://deb.debian.org/debian bullseye/main amd64 libwebpmux3 amd64 0.6.1-2.1+deb11u2
+84.58   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.58 Err:138 http://deb.debian.org/debian bullseye/main amd64 libx11-xcb1 amd64 2:1.7.2-1+deb11u2
+84.58   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.58 Err:168 http://deb.debian.org/debian bullseye/main amd64 libxpm4 amd64 1:3.5.12-1.1+deb11u1
+84.58   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.58 Err:179 http://deb.debian.org/debian bullseye/main amd64 chromium-common amd64 120.0.6099.224-1~deb11u1
+84.58   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.58 Err:180 http://deb.debian.org/debian bullseye/main amd64 chromium amd64 120.0.6099.224-1~deb11u1
+84.58   Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 Fetched 99.3 kB in 47s (2114 B/s)
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libc/libcap2/libcap2_2.44-1%2bdeb11u1_amd64.deb  Temporary failure resolving 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/a/argon2/libargon2-1_0%7e20171227-0.2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/lvm2/dmsetup_1.02.175-2.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/lvm2/libdevmapper1.02.1_1.02.175-2.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/j/json-c/libjson-c5_0.15-2%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/c/cryptsetup/libcryptsetup12_2.3.7-1%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/i/iptables/libip4tc2_1.8.7-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/k/kmod/libkmod2_28-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/s/systemd/systemd_247.3-7%2bdeb11u7_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/s/systemd/systemd-sysv_247.3-7%2bdeb11u7_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/dbus/libdbus-1-3_1.12.28-0%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/e/expat/libexpat1_2.2.10-2%2bdeb11u7_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/dbus/dbus_1.12.28-0%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/s/sensible-utils/sensible-utils_0.0.14_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/o/openssl/openssl_1.1.1w-0%2bdeb11u5_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/c/ca-certificates/ca-certificates_20230311%2bdeb12u1%7edeb11u1_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/s/systemd/libpam-systemd_247.3-7%2bdeb11u7_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/u/ucf/ucf_3.0043%2bdeb11u2_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libp/libpsl/libpsl5_0.21.0-1.2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/w/wget/wget_1.21-1%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/h/hicolor-icon-theme/hicolor-icon-theme_0.17-2_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/g/gdk-pixbuf/libgdk-pixbuf2.0-common_2.42.2%2bdfsg-1%2bdeb11u4_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/g/glib2.0/libglib2.0-0_2.66.8-1%2bdeb11u8_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/i/icu/libicu67_67.1-7%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libx/libxml2/libxml2_2.9.10%2bdfsg-6.7%2bdeb11u9_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/s/shared-mime-info/shared-mime-info_2.0-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libj/libjpeg-turbo/libjpeg62-turbo_2.0.6-4_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libp/libpng1.6/libpng16-16_1.6.37-3%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libd/libdeflate/libdeflate0_1.7-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/j/jbigkit/libjbig0_2.1-3.1%2bb2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libw/libwebp/libwebp6_0.6.1-2.1%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/t/tiff/libtiff5_4.2.0-1%2bdeb11u7_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/g/gdk-pixbuf/libgdk-pixbuf-2.0-0_2.42.2%2bdfsg-1%2bdeb11u4_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/gtk%2b3.0/gtk-update-icon-cache_3.24.24-4%2bdeb11u4_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/a/adwaita-icon-theme/adwaita-icon-theme_3.38.0-1_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/a/alsa-lib/libasound2-data_1.2.4-1.1%2bdeb11u1_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/a/alsa-lib/libasound2_1.2.4-1.1%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/a/atk1.0/libatk1.0-data_2.36.0-2_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/a/atk1.0/libatk1.0-0_2.36.0-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxau/libxau6_1.0.9-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libm/libmd/libmd0_1.0.3-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libb/libbsd/libbsd0_0.11.3-1%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxdmcp/libxdmcp6_1.1.2-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb1_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libx/libx11/libx11-data_1.7.2-1%2bdeb11u2_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libx/libx11/libx11-6_1.7.2-1%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/a/at-spi2-core/libatspi2.0-0_2.38.0-4%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/a/at-spi2-atk/libatk-bridge2.0-0_2.38.0-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/gcc-10/libatomic1_10.2.1-6_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/b/brotli/libbrotli1_1.0.9-2%2bb2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/f/freetype/libfreetype6_2.10.4%2bdfsg-1%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/f/fonts-liberation/fonts-liberation_1.07.4-11_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/f/fontconfig/fontconfig-config_2.13.1-4.2_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/f/fontconfig/libfontconfig1_2.13.1-4.2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/p/pixman/libpixman-1-0_0.40.0-1.1%7edeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-render0_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-shm0_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxext/libxext6_1.3.3-1.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxrender/libxrender1_0.9.10-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/c/cairo/libcairo2_1.16.0-5_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/a/avahi/libavahi-common-data_0.8-5%2bdeb11u3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/a/avahi/libavahi-common3_0.8-5%2bdeb11u3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/a/avahi/libavahi-client3_0.8-5%2bdeb11u3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/c/cups/libcups2_2.3.3op2-3%2bdeb11u10_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/double-conversion/libdouble-conversion3_3.1.5-6.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libd/libdrm/libdrm-common_2.4.104-1_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libd/libdrm/libdrm2_2.4.104-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libe/libevent/libevent-2.1-7_2.1.12-stable-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libo/libogg/libogg0_1.3.4-0.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/f/flac/libflac8_1.3.3-2%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/w/wayland/libwayland-server0_1.18.0-2%7eexp1.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libgbm1_20.3.5-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libj/libjsoncpp/libjsoncpp24_1.9.4-4_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/lcms2/liblcms2-2_2.12%7erc1-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/minizip/libminizip1_1.1-8%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/n/nspr/libnspr4_4.29-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/s/sqlite3/libsqlite3-0_3.34.1-3%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/n/nss/libnss3_3.61-1%2bdeb11u5_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/o/openjpeg2/libopenjp2-7_2.4.0-3%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/o/opus/libopus0_1.3.1-0.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/f/fontconfig/fontconfig_2.13.1-4.2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/f/fribidi/libfribidi0_1.0.8-2%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/graphite2/libgraphite2-3_1.3.14-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/h/harfbuzz/libharfbuzz0b_2.7.4-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libt/libthai/libthai-data_0.1.28-3_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libd/libdatrie/libdatrie1_0.2.13-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libt/libthai/libthai0_0.1.28-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/p/pango1.0/libpango-1.0-0_1.46.2-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/liba/libasyncns/libasyncns0_0.8-6%2bb2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libv/libvorbis/libvorbis0a_1.3.7-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libv/libvorbis/libvorbisenc2_1.3.7-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libs/libsndfile/libsndfile1_1.0.31-2%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/t/tcp-wrappers/libwrap0_7.6.q-31_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/p/pulseaudio/libpulse0_14.2-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/s/snappy/libsnappy1v5_1.1.8-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libw/libwebp/libwebpdemux2_0.6.1-2.1%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libw/libwebp/libwebpmux3_0.6.1-2.1%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/w/woff2/libwoff1_1.0.2-1%2bb1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcomposite/libxcomposite1_0.4.5-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxdamage/libxdamage1_1.1.5-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxfixes/libxfixes3_5.0.3-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/x/xkeyboard-config/xkb-data_2.29-2_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxkbcommon/libxkbcommon0_1.0.3-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/n/nvidia-settings/libxnvctrl0_470.239.06-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxrandr/libxrandr2_1.5.1-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libx/libxslt/libxslt1.1_1.1.34-4%2bdeb11u3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/c/cairo/libcairo-gobject2_1.16.0-5_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/c/colord/libcolord2_1.4.5-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libe/libepoxy/libepoxy0_1.5.5-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/j/json-glib/libjson-glib-1.0-common_1.6.2-1_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/j/json-glib/libjson-glib-1.0-0_1.6.2-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/p/pango1.0/libpangoft2-1.0-0_1.46.2-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/p/pango1.0/libpangocairo-1.0-0_1.46.2-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libp/libproxy/libproxy1v5_0.4.17-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/glib-networking/glib-networking-common_2.66.0-2_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/glib-networking/glib-networking-services_2.66.0-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/dbus/dbus-user-session_1.12.28-0%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/dconf/libdconf1_0.38.0-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/dconf/dconf-service_0.38.0-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/d/dconf/dconf-gsettings-backend_0.38.0-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/gsettings-desktop-schemas/gsettings-desktop-schemas_3.38.0-2_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/glib-networking/glib-networking_2.66.0-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libs/libsoup2.4/libsoup2.4-1_2.72.0-2%2bdeb11u3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libs/libsoup2.4/libsoup-gnome2.4-1_2.72.0-2%2bdeb11u3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libr/librest/librest-0.7-0_0.8.1-1.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/w/wayland/libwayland-client0_1.18.0-2%7eexp1.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/w/wayland/libwayland-cursor0_1.18.0-2%7eexp1.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/w/wayland/libwayland-egl1_1.18.0-2%7eexp1.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcursor/libxcursor1_1.2.0-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxi/libxi6_1.7.10-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxinerama/libxinerama1_1.1.4-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/gtk%2b3.0/libgtk-3-common_3.24.24-4%2bdeb11u4_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/gtk%2b3.0/libgtk-3-0_3.24.24-4%2bdeb11u4_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libf/libfontenc/libfontenc1_1.1.4-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libg/libglvnd/libglvnd0_1.3.2-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libglapi-mesa_20.3.5-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libx/libx11/libx11-xcb1_1.7.2-1%2bdeb11u2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-dri2-0_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-dri3-0_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-glx0_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-present0_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-sync1_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-xfixes0_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxshmfence/libxshmfence1_1.3-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxxf86vm/libxxf86vm1_1.1.4-1%2bb2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libd/libdrm/libdrm-amdgpu1_2.4.104-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libp/libpciaccess/libpciaccess0_0.16-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libd/libdrm/libdrm-intel1_2.4.104-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libd/libdrm/libdrm-nouveau2_2.4.104-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libd/libdrm/libdrm-radeon1_2.4.104-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/e/elfutils/libelf1_0.183-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libe/libedit/libedit2_3.1-20191231-2%2bb1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/z/z3/libz3-4_4.8.10-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/llvm-toolchain-11/libllvm11_11.0.1-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/lm-sensors/libsensors-config_3.6.0-7_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/lm-sensors/libsensors5_3.6.0-7_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/v/vulkan-loader/libvulkan1_1.2.162.0-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libgl1-mesa-dri_20.3.5-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libglx-mesa0_20.3.5-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libg/libglvnd/libglx0_1.3.2-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libg/libglvnd/libgl1_1.3.2-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/x/xorg/x11-common_7.7%2b22_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libi/libice/libice6_1.0.10-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libs/libsm/libsm6_1.2.3-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxt/libxt6_1.2.0-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxmu/libxmu6_1.1.2-2%2bb3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/libx/libxpm/libxpm4_3.5.12-1.1%2bdeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxaw/libxaw7_1.0.13-1.1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxcb/libxcb-shape0_1.14-3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/x/xft/libxft2_2.3.2-2_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxkbfile/libxkbfile1_1.1.0-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxmu/libxmuu1_1.1.2-2%2bb3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxtst/libxtst6_1.2.3-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxv/libxv1_1.0.11-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxxf86dga/libxxf86dga1_1.1.4-1%2bb3_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/x/x11-utils/x11-utils_7.7%2b5_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/x/xdg-utils/xdg-utils_1.1.3-4.1_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/c/chromium/chromium-common_120.0.6099.224-1%7edeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/c/chromium/chromium_120.0.6099.224-1%7edeb11u1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/f/fonts-noto-color-emoji/fonts-noto-color-emoji_0%7e20200916-1_all.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxss/libxss1_1.2.3-1_amd64.deb  Could not resolve 'deb.debian.org' [IP: 151.101.2.132 80]
+84.59 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+------
+Dockerfile.api.dev:4
+
+--------------------
+
+   3 |     # Install Chromium + all required system dependencies for WPPConnect/Puppeteer
+
+   4 | >>> RUN apt-get update && apt-get install -y --no-install-recommends \
+
+   5 | >>>     chromium \
+
+   6 | >>>     ca-certificates \
+
+   7 | >>>     fonts-liberation \
+
+   8 | >>>     fonts-noto-color-emoji \
+
+   9 | >>>     libasound2 \
+
+  10 | >>>     libatk-bridge2.0-0 \
+
+  11 | >>>     libatk1.0-0 \
+
+  12 | >>>     libcairo2 \
+
+  13 | >>>     libcups2 \
+
+  14 | >>>     libdbus-1-3 \
+
+  15 | >>>     libexpat1 \
+
+  16 | >>>     libfontconfig1 \
+
+  17 | >>>     libgbm1 \
+
+  18 | >>>     libglib2.0-0 \
+
+  19 | >>>     libgtk-3-0 \
+
+  20 | >>>     libnspr4 \
+
+  21 | >>>     libnss3 \
+
+  22 | >>>     libpango-1.0-0 \
+
+  23 | >>>     libpangocairo-1.0-0 \
+
+  24 | >>>     libstdc++6 \
+
+  25 | >>>     libx11-6 \
+
+  26 | >>>     libx11-xcb1 \
+
+  27 | >>>     libxcb1 \
+
+  28 | >>>     libxcomposite1 \
+
+  29 | >>>     libxcursor1 \
+
+  30 | >>>     libxdamage1 \
+
+  31 | >>>     libxext6 \
+
+  32 | >>>     libxfixes3 \
+
+  33 | >>>     libxi6 \
+
+  34 | >>>     libxrandr2 \
+
+  35 | >>>     libxrender1 \
+
+  36 | >>>     libxss1 \
+
+  37 | >>>     libxtst6 \
+
+  38 | >>>     wget \
+
+  39 | >>>     xdg-utils \
+
+  40 | >>>     && rm -rf /var/lib/apt/lists/*
+
+  41 |
+
+--------------------
+
+target api: failed to solve: process "/bin/sh -c apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificates     fonts-liberation     fonts-noto-color-emoji     libasound2     libatk-bridge2.0-0     libatk1.0-0     libcairo2     libcups2     libdbus-1-3     libexpat1     libfontconfig1     libgbm1     libglib2.0-0     libgtk-3-0     libnspr4     libnss3     libpango-1.0-0     libpangocairo-1.0-0     libstdc++6     libx11-6     libx11-xcb1     libxcb1     libxcomposite1     libxcursor1     libxdamage1     libxext6     libxfixes3     libxi6     libxrandr2     libxrender1     libxss1     libxtst6     wget     xdg-utils     && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 100
+
+
+
+View build details: docker-desktop://dashboard/build/default/default/joufxv2lde3nryum4i17mcass
+
+[+] Running 3/3
+ ✔ Container whatsapp_manager_dev-db-1         Healthy                                                             0.6s
+ ✔ Container whatsapp_manager_dev-api-1        Running                                                             0.0s
+ ✔ Container whatsapp_manager_dev-dashboard-1  Running                                                             0.0s
+Rebuild complete and containers started.
+
+============================================
+  Update complete!
+============================================
+
+  http://localhost:5005
+
+Press any key to continue . . .
