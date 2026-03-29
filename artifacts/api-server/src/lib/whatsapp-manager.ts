@@ -105,9 +105,13 @@ const manuallyStopped = new Set<string>();         // sessions stopped on purpos
 const waitingForQR   = new Set<string>();          // sessions where QR is on screen
 const qrCodes        = new Map<string, string>();
 const keepaliveTimers  = new Map<string, ReturnType<typeof setInterval>>();
+const keepaliveFailCount = new Map<string, number>();   // consecutive keepalive failures
 const reconnectTimers  = new Map<string, ReturnType<typeof setTimeout>>();
 const reconnectCount   = new Map<string, number>();
 const lastConnectedAt  = new Map<string, number>();
+
+// States that are NOT real disconnections — WhatsApp goes through these briefly
+const VALID_WA_STATES = new Set(["CONNECTED", "SYNCING", "PAIRING"]);
 
 let io: SocketServer;
 
@@ -176,36 +180,67 @@ function startSelfPing(): void {
 // ─────────────────────────────────────────────────────────────────────────────
 // Keepalive
 // ─────────────────────────────────────────────────────────────────────────────
+// How many consecutive keepalive failures before we declare a real disconnect.
+// WhatsApp briefly enters SYNCING/PAIRING states — we must not react to these.
+const KEEPALIVE_FAIL_THRESHOLD = 3;
+
 function startKeepalive(sessionId: string): void {
   stopKeepalive(sessionId);
+  keepaliveFailCount.set(sessionId, 0);
+
   const t = setInterval(async () => {
     const client = clients.get(sessionId);
     if (!client) { stopKeepalive(sessionId); return; }
     try {
-      // Use getConnectionState for a more reliable check than isConnected()
       const state = await client.getConnectionState().catch(() => null);
-      const connected = state === "CONNECTED" || (await client.isConnected().catch(() => false));
-      if (!connected) {
-        logger.warn({ sessionId, state }, "Keepalive: not connected — scheduling reconnect");
+
+      // Accept CONNECTED, SYNCING, and PAIRING as healthy states
+      if (state && VALID_WA_STATES.has(state)) {
+        keepaliveFailCount.set(sessionId, 0); // reset on success
+        logger.debug({ sessionId, state }, "Keepalive: OK");
+        return;
+      }
+
+      // Fall back to isConnected() for additional confirmation
+      const isConn = await client.isConnected().catch(() => false);
+      if (isConn) {
+        keepaliveFailCount.set(sessionId, 0);
+        logger.debug({ sessionId, state }, "Keepalive: OK (isConnected fallback)");
+        return;
+      }
+
+      // Increment failure counter
+      const fails = (keepaliveFailCount.get(sessionId) ?? 0) + 1;
+      keepaliveFailCount.set(sessionId, fails);
+      logger.warn({ sessionId, state, consecutiveFails: fails }, "Keepalive: not connected");
+
+      // Only disconnect after KEEPALIVE_FAIL_THRESHOLD consecutive failures
+      if (fails >= KEEPALIVE_FAIL_THRESHOLD) {
+        logger.warn({ sessionId, state, fails }, "Keepalive: threshold reached — scheduling reconnect");
         stopKeepalive(sessionId);
         clients.delete(sessionId);
         scheduleReconnect(sessionId);
-      } else {
-        logger.debug({ sessionId }, "Keepalive: OK");
       }
     } catch (e) {
-      logger.warn({ sessionId, err: e }, "Keepalive error — scheduling reconnect");
-      stopKeepalive(sessionId);
-      clients.delete(sessionId);
-      scheduleReconnect(sessionId);
+      const fails = (keepaliveFailCount.get(sessionId) ?? 0) + 1;
+      keepaliveFailCount.set(sessionId, fails);
+      logger.warn({ sessionId, err: e, consecutiveFails: fails }, "Keepalive error");
+
+      if (fails >= KEEPALIVE_FAIL_THRESHOLD) {
+        logger.warn({ sessionId, fails }, "Keepalive: error threshold reached — scheduling reconnect");
+        stopKeepalive(sessionId);
+        clients.delete(sessionId);
+        scheduleReconnect(sessionId);
+      }
     }
-  }, 30_000); // every 30s (was 45s)
+  }, 30_000);
   keepaliveTimers.set(sessionId, t);
 }
 
 function stopKeepalive(sessionId: string): void {
   const t = keepaliveTimers.get(sessionId);
   if (t) { clearInterval(t); keepaliveTimers.delete(sessionId); }
+  keepaliveFailCount.delete(sessionId);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
