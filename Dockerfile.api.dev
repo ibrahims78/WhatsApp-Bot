@@ -50,6 +50,7 @@ WORKDIR /app
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./
 COPY lib/ ./lib/
 COPY artifacts/api-server/ ./artifacts/api-server/
+COPY doc/ ./doc/
 
 # Copy package.json stubs for other workspace packages so pnpm resolves the
 # full workspace graph and properly installs all binaries (e.g. drizzle-kit)

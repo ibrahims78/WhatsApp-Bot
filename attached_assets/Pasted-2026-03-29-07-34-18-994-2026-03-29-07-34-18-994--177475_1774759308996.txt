@@ -1,0 +1,1574 @@
+2026-03-29 07:34:18.994 | ============================================
+2026-03-29 07:34:18.994 |    WhatsApp Manager - Development Mode
+2026-03-29 07:34:18.994 | ============================================
+2026-03-29 07:34:18.994 | 
+2026-03-29 07:34:18.994 | [1/3] Running database schema migration...
+2026-03-29 07:34:19.611 | 
+2026-03-29 07:34:19.611 | > @workspace/db@0.0.0 push /app/lib/db
+2026-03-29 07:34:19.611 | > drizzle-kit push --config ./drizzle.config.ts
+2026-03-29 07:34:19.611 | 
+2026-03-29 07:34:19.834 | Reading config file '/app/lib/db/drizzle.config.ts'
+2026-03-29 07:34:20.159 | Using 'pg' driver for database querying
+2026-03-29 07:34:20.444 | [⣷] Pulling schema from database...
+2026-03-29 07:34:20.489 | [✓] Pulling schema from database...
+2026-03-29 07:34:20.599 | [✓] Changes applied
+2026-03-29 07:34:20.626 | Migration complete.
+2026-03-29 07:34:20.626 | 
+2026-03-29 07:34:20.626 | [2/3] Building API server...
+2026-03-29 07:34:21.122 | 
+2026-03-29 07:34:21.122 | > @workspace/api-server@0.0.0 build /app/artifacts/api-server
+2026-03-29 07:34:21.122 | > node ./build.mjs
+2026-03-29 07:34:21.122 | 
+2026-03-29 07:34:21.932 | 
+2026-03-29 07:34:21.932 |   dist/index.mjs                       3.1mb ⚠️
+2026-03-29 07:34:21.932 |   dist/pino-worker.mjs               153.4kb
+2026-03-29 07:34:21.932 |   dist/pino-file.mjs                 142.0kb
+2026-03-29 07:34:21.932 |   dist/pino-pretty.mjs               114.6kb
+2026-03-29 07:34:21.932 |   dist/thread-stream-worker.mjs        7.3kb
+2026-03-29 07:34:21.932 |   dist/index.mjs.map                   5.3mb
+2026-03-29 07:34:21.932 |   dist/pino-worker.mjs.map           256.9kb
+2026-03-29 07:34:21.932 |   dist/pino-file.mjs.map             229.0kb
+2026-03-29 07:34:21.932 |   dist/pino-pretty.mjs.map           203.9kb
+2026-03-29 07:34:21.932 |   dist/thread-stream-worker.mjs.map   12.0kb
+2026-03-29 07:34:21.932 | 
+2026-03-29 07:34:21.932 | ⚡ Done in 721ms
+2026-03-29 07:34:21.986 | Build complete.
+2026-03-29 07:34:21.986 | 
+2026-03-29 07:34:21.986 | [3/3] Starting API server (NODE_ENV=development)...
+2026-03-29 07:34:23.497 | [04:34:23.343] INFO (1): Server listening
+2026-03-29 07:34:23.498 |     port: 8080
+2026-03-29 07:34:23.563 | [04:34:23.531] INFO (1): Default admin user created: admin / 123456
+2026-03-29 07:34:26.617 | [04:34:26.536] INFO (1): No sessions found in DB — skipping auto-start
+2026-03-29 07:34:53.708 | [04:34:53.366] INFO (1): request completed
+2026-03-29 07:34:53.708 |     req: {
+2026-03-29 07:34:53.708 |       "id": 1,
+2026-03-29 07:34:53.708 |       "method": "GET",
+2026-03-29 07:34:53.708 |       "url": "/"
+2026-03-29 07:34:53.708 |     }
+2026-03-29 07:34:53.708 |     res: {
+2026-03-29 07:34:53.708 |       "statusCode": 200
+2026-03-29 07:34:53.708 |     }
+2026-03-29 07:34:53.708 |     responseTime: 7
+2026-03-29 07:35:23.800 | [04:35:23.349] INFO (1): request completed
+2026-03-29 07:35:23.800 |     req: {
+2026-03-29 07:35:23.800 |       "id": 2,
+2026-03-29 07:35:23.800 |       "method": "GET",
+2026-03-29 07:35:23.800 |       "url": "/"
+2026-03-29 07:35:23.800 |     }
+2026-03-29 07:35:23.800 |     res: {
+2026-03-29 07:35:23.800 |       "statusCode": 200
+2026-03-29 07:35:23.800 |     }
+2026-03-29 07:35:23.800 |     responseTime: 1
+2026-03-29 07:35:53.890 | [04:35:53.377] INFO (1): request completed
+2026-03-29 07:35:53.891 |     req: {
+2026-03-29 07:35:53.891 |       "id": 3,
+2026-03-29 07:35:53.891 |       "method": "GET",
+2026-03-29 07:35:53.891 |       "url": "/"
+2026-03-29 07:35:53.891 |     }
+2026-03-29 07:35:53.891 |     res: {
+2026-03-29 07:35:53.891 |       "statusCode": 200
+2026-03-29 07:35:53.891 |     }
+2026-03-29 07:35:53.891 |     responseTime: 3
+2026-03-29 07:36:23.978 | [04:36:23.370] INFO (1): request completed
+2026-03-29 07:36:23.978 |     req: {
+2026-03-29 07:36:23.978 |       "id": 4,
+2026-03-29 07:36:23.978 |       "method": "GET",
+2026-03-29 07:36:23.978 |       "url": "/"
+2026-03-29 07:36:23.978 |     }
+2026-03-29 07:36:23.978 |     res: {
+2026-03-29 07:36:23.978 |       "statusCode": 200
+2026-03-29 07:36:23.978 |     }
+2026-03-29 07:36:23.978 |     responseTime: 2
+2026-03-29 07:36:47.060 | [04:36:46.602] INFO (1): request completed
+2026-03-29 07:36:47.060 |     req: {
+2026-03-29 07:36:47.060 |       "id": 5,
+2026-03-29 07:36:47.060 |       "method": "POST",
+2026-03-29 07:36:47.060 |       "url": "/api/auth/login"
+2026-03-29 07:36:47.060 |     }
+2026-03-29 07:36:47.060 |     res: {
+2026-03-29 07:36:47.060 |       "statusCode": 200
+2026-03-29 07:36:47.060 |     }
+2026-03-29 07:36:47.060 |     responseTime: 113
+2026-03-29 07:36:47.065 | [04:36:46.670] INFO (1): request completed
+2026-03-29 07:36:47.065 |     req: {
+2026-03-29 07:36:47.065 |       "id": 6,
+2026-03-29 07:36:47.065 |       "method": "GET",
+2026-03-29 07:36:47.065 |       "url": "/api/dashboard/stats"
+2026-03-29 07:36:47.065 |     }
+2026-03-29 07:36:47.065 |     res: {
+2026-03-29 07:36:47.065 |       "statusCode": 403
+2026-03-29 07:36:47.065 |     }
+2026-03-29 07:36:47.065 |     responseTime: 6
+2026-03-29 07:36:47.065 | [04:36:46.729] INFO (1): request completed
+2026-03-29 07:36:47.065 |     req: {
+2026-03-29 07:36:47.065 |       "id": 7,
+2026-03-29 07:36:47.065 |       "method": "GET",
+2026-03-29 07:36:47.065 |       "url": "/api/auth/me"
+2026-03-29 07:36:47.065 |     }
+2026-03-29 07:36:47.065 |     res: {
+2026-03-29 07:36:47.066 |       "statusCode": 200
+2026-03-29 07:36:47.066 |     }
+2026-03-29 07:36:47.066 |     responseTime: 8
+2026-03-29 07:36:48.093 | [04:36:47.740] INFO (1): request completed
+2026-03-29 07:36:48.093 |     req: {
+2026-03-29 07:36:48.093 |       "id": 8,
+2026-03-29 07:36:48.093 |       "method": "GET",
+2026-03-29 07:36:48.093 |       "url": "/api/dashboard/stats"
+2026-03-29 07:36:48.093 |     }
+2026-03-29 07:36:48.093 |     res: {
+2026-03-29 07:36:48.093 |       "statusCode": 403
+2026-03-29 07:36:48.093 |     }
+2026-03-29 07:36:48.093 |     responseTime: 3
+2026-03-29 07:36:54.155 | [04:36:53.373] INFO (1): request completed
+2026-03-29 07:36:54.156 |     req: {
+2026-03-29 07:36:54.156 |       "id": 9,
+2026-03-29 07:36:54.156 |       "method": "GET",
+2026-03-29 07:36:54.156 |       "url": "/"
+2026-03-29 07:36:54.156 |     }
+2026-03-29 07:36:54.156 |     res: {
+2026-03-29 07:36:54.156 |       "statusCode": 200
+2026-03-29 07:36:54.156 |     }
+2026-03-29 07:36:54.156 |     responseTime: 2
+2026-03-29 07:37:11.232 | [04:37:10.319] INFO (1): request completed
+2026-03-29 07:37:11.232 |     req: {
+2026-03-29 07:37:11.232 |       "id": 10,
+2026-03-29 07:37:11.232 |       "method": "PATCH",
+2026-03-29 07:37:11.232 |       "url": "/api/users/1"
+2026-03-29 07:37:11.232 |     }
+2026-03-29 07:37:11.232 |     res: {
+2026-03-29 07:37:11.232 |       "statusCode": 200
+2026-03-29 07:37:11.232 |     }
+2026-03-29 07:37:11.232 |     responseTime: 114
+2026-03-29 07:37:18.295 | [04:37:17.795] INFO (1): request completed
+2026-03-29 07:37:18.295 |     req: {
+2026-03-29 07:37:18.295 |       "id": 11,
+2026-03-29 07:37:18.295 |       "method": "GET",
+2026-03-29 07:37:18.295 |       "url": "/api/dashboard/stats"
+2026-03-29 07:37:18.295 |     }
+2026-03-29 07:37:18.295 |     res: {
+2026-03-29 07:37:18.295 |       "statusCode": 200
+2026-03-29 07:37:18.295 |     }
+2026-03-29 07:37:18.295 |     responseTime: 17
+2026-03-29 07:37:24.356 | [04:37:23.377] INFO (1): request completed
+2026-03-29 07:37:24.356 |     req: {
+2026-03-29 07:37:24.356 |       "id": 12,
+2026-03-29 07:37:24.356 |       "method": "GET",
+2026-03-29 07:37:24.356 |       "url": "/"
+2026-03-29 07:37:24.356 |     }
+2026-03-29 07:37:24.356 |     res: {
+2026-03-29 07:37:24.356 |       "statusCode": 200
+2026-03-29 07:37:24.356 |     }
+2026-03-29 07:37:24.356 |     responseTime: 1
+2026-03-29 07:37:28.414 | [04:37:28.024] INFO (1): request completed
+2026-03-29 07:37:28.414 |     req: {
+2026-03-29 07:37:28.414 |       "id": 13,
+2026-03-29 07:37:28.414 |       "method": "GET",
+2026-03-29 07:37:28.414 |       "url": "/api/sessions"
+2026-03-29 07:37:28.414 |     }
+2026-03-29 07:37:28.414 |     res: {
+2026-03-29 07:37:28.414 |       "statusCode": 200
+2026-03-29 07:37:28.414 |     }
+2026-03-29 07:37:28.414 |     responseTime: 32
+2026-03-29 07:37:36.475 | [04:37:36.293] INFO (1): request completed
+2026-03-29 07:37:36.476 |     req: {
+2026-03-29 07:37:36.476 |       "id": 14,
+2026-03-29 07:37:36.476 |       "method": "POST",
+2026-03-29 07:37:36.476 |       "url": "/api/sessions"
+2026-03-29 07:37:36.476 |     }
+2026-03-29 07:37:36.476 |     res: {
+2026-03-29 07:37:36.476 |       "statusCode": 201
+2026-03-29 07:37:36.476 |     }
+2026-03-29 07:37:36.476 |     responseTime: 22
+2026-03-29 07:37:36.476 | [04:37:36.317] INFO (1): request completed
+2026-03-29 07:37:36.476 |     req: {
+2026-03-29 07:37:36.476 |       "id": 15,
+2026-03-29 07:37:36.476 |       "method": "GET",
+2026-03-29 07:37:36.476 |       "url": "/api/sessions"
+2026-03-29 07:37:36.476 |     }
+2026-03-29 07:37:36.476 |     res: {
+2026-03-29 07:37:36.476 |       "statusCode": 200
+2026-03-29 07:37:36.476 |     }
+2026-03-29 07:37:36.476 |     responseTime: 5
+2026-03-29 07:37:47.546 | [04:37:46.758] INFO (1): WebSocket client connected
+2026-03-29 07:37:47.547 |     socketId: "A-8t38YHX6GQRJYNAAAB"
+2026-03-29 07:37:47.547 |     authenticated: true
+2026-03-29 07:37:47.548 | [04:37:46.760] INFO (1): request completed
+2026-03-29 07:37:47.548 |     req: {
+2026-03-29 07:37:47.548 |       "id": 16,
+2026-03-29 07:37:47.548 |       "method": "GET",
+2026-03-29 07:37:47.548 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:37:47.548 |     }
+2026-03-29 07:37:47.548 |     res: {
+2026-03-29 07:37:47.548 |       "statusCode": 200
+2026-03-29 07:37:47.548 |     }
+2026-03-29 07:37:47.548 |     responseTime: 37
+2026-03-29 07:37:47.548 | [04:37:46.822] INFO (1): request completed
+2026-03-29 07:37:47.548 |     req: {
+2026-03-29 07:37:47.548 |       "id": 17,
+2026-03-29 07:37:47.548 |       "method": "GET",
+2026-03-29 07:37:47.548 |       "url": "/api/sessions/session_35df2710f6b3/messages"
+2026-03-29 07:37:47.548 |     }
+2026-03-29 07:37:47.548 |     res: {
+2026-03-29 07:37:47.548 |       "statusCode": 200
+2026-03-29 07:37:47.548 |     }
+2026-03-29 07:37:47.548 |     responseTime: 13
+2026-03-29 07:37:49.601 | [04:37:48.803] INFO (1): request completed
+2026-03-29 07:37:49.601 |     req: {
+2026-03-29 07:37:49.601 |       "id": 18,
+2026-03-29 07:37:49.601 |       "method": "GET",
+2026-03-29 07:37:49.601 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:37:49.601 |     }
+2026-03-29 07:37:49.601 |     res: {
+2026-03-29 07:37:49.601 |       "statusCode": 304
+2026-03-29 07:37:49.601 |     }
+2026-03-29 07:37:49.601 |     responseTime: 11
+2026-03-29 07:37:49.860 | [04:37:49.758] INFO (1): request completed
+2026-03-29 07:37:49.860 |     req: {
+2026-03-29 07:37:49.860 |       "id": 19,
+2026-03-29 07:37:49.860 |       "method": "GET",
+2026-03-29 07:37:49.860 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:37:49.860 |     }
+2026-03-29 07:37:49.860 |     res: {
+2026-03-29 07:37:49.860 |       "statusCode": 200
+2026-03-29 07:37:49.860 |     }
+2026-03-29 07:37:49.860 |     responseTime: 10
+2026-03-29 07:37:49.861 | [04:37:49.781] INFO (1): request completed
+2026-03-29 07:37:49.861 |     req: {
+2026-03-29 07:37:49.861 |       "id": 20,
+2026-03-29 07:37:49.861 |       "method": "POST",
+2026-03-29 07:37:49.861 |       "url": "/api/sessions/session_35df2710f6b3/connect"
+2026-03-29 07:37:49.861 |     }
+2026-03-29 07:37:49.861 |     res: {
+2026-03-29 07:37:49.861 |       "statusCode": 200
+2026-03-29 07:37:49.861 |     }
+2026-03-29 07:37:49.861 |     responseTime: 28
+2026-03-29 07:37:49.861 | [04:37:49.799] INFO (1): request completed
+2026-03-29 07:37:49.861 |     req: {
+2026-03-29 07:37:49.861 |       "id": 21,
+2026-03-29 07:37:49.861 |       "method": "GET",
+2026-03-29 07:37:49.861 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:37:49.861 |     }
+2026-03-29 07:37:49.861 |     res: {
+2026-03-29 07:37:49.861 |       "statusCode": 304
+2026-03-29 07:37:49.861 |     }
+2026-03-29 07:37:49.861 |     responseTime: 7
+2026-03-29 07:37:50.614 | info:     Checking for updates
+2026-03-29 07:37:50.890 | [04:37:50.672] INFO (1): request completed
+2026-03-29 07:37:50.890 |     req: {
+2026-03-29 07:37:50.890 |       "id": 22,
+2026-03-29 07:37:50.890 |       "method": "GET",
+2026-03-29 07:37:50.890 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:37:50.890 |     }
+2026-03-29 07:37:50.890 |     res: {
+2026-03-29 07:37:50.890 |       "statusCode": 200
+2026-03-29 07:37:50.890 |     }
+2026-03-29 07:37:50.890 |     responseTime: 6
+2026-03-29 07:37:52.688 | info:     You're up to date
+2026-03-29 07:37:52.690 | info:     [session_35df2710f6b3:browser] Using browser folder '/app/tokens/session_35df2710f6b3'
+2026-03-29 07:37:52.690 | info:     [session_35df2710f6b3:browser] Initializing browser...
+2026-03-29 07:37:52.945 | [04:37:52.761] INFO (1): request completed
+2026-03-29 07:37:52.945 |     req: {
+2026-03-29 07:37:52.945 |       "id": 23,
+2026-03-29 07:37:52.945 |       "method": "GET",
+2026-03-29 07:37:52.945 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:37:52.945 |     }
+2026-03-29 07:37:52.945 |     res: {
+2026-03-29 07:37:52.945 |       "statusCode": 304
+2026-03-29 07:37:52.945 |     }
+2026-03-29 07:37:52.945 |     responseTime: 14
+2026-03-29 07:37:52.945 | [04:37:52.782] INFO (1): request completed
+2026-03-29 07:37:52.945 |     req: {
+2026-03-29 07:37:52.945 |       "id": 24,
+2026-03-29 07:37:52.945 |       "method": "GET",
+2026-03-29 07:37:52.945 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:37:52.945 |     }
+2026-03-29 07:37:52.945 |     res: {
+2026-03-29 07:37:52.945 |       "statusCode": 200
+2026-03-29 07:37:52.945 |     }
+2026-03-29 07:37:52.945 |     responseTime: 9
+2026-03-29 07:37:53.082 | http:     [session_35df2710f6b3:browser] checking headless...
+2026-03-29 07:37:53.082 | http:     [session_35df2710f6b3:browser] headless option is active, browser hidden
+2026-03-29 07:37:53.098 | info:     [session_35df2710f6b3:client] Initializing...
+2026-03-29 07:37:53.102 | verbose:  [session_35df2710f6b3:client] Setting WhatsApp WEB version to 2.3000.10305x
+2026-03-29 07:37:53.107 | error:    [session_35df2710f6b3:client] Version not available for 2.3000.10305x, using latest as fallback
+2026-03-29 07:37:53.107 | verbose:  [session_35df2710f6b3:client] Loading WhatsApp WEB
+2026-03-29 07:37:53.462 | [04:37:53.371] INFO (1): request completed
+2026-03-29 07:37:53.462 |     req: {
+2026-03-29 07:37:53.463 |       "id": 25,
+2026-03-29 07:37:53.463 |       "method": "GET",
+2026-03-29 07:37:53.463 |       "url": "/"
+2026-03-29 07:37:53.463 |     }
+2026-03-29 07:37:53.463 |     res: {
+2026-03-29 07:37:53.463 |       "statusCode": 200
+2026-03-29 07:37:53.463 |     }
+2026-03-29 07:37:53.463 |     responseTime: 1
+2026-03-29 07:37:55.515 | [04:37:54.800] INFO (1): request completed
+2026-03-29 07:37:55.515 |     req: {
+2026-03-29 07:37:55.515 |       "id": 26,
+2026-03-29 07:37:55.515 |       "method": "GET",
+2026-03-29 07:37:55.515 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:37:55.515 |     }
+2026-03-29 07:37:55.515 |     res: {
+2026-03-29 07:37:55.515 |       "statusCode": 304
+2026-03-29 07:37:55.515 |     }
+2026-03-29 07:37:55.515 |     responseTime: 7
+2026-03-29 07:37:56.027 | [04:37:55.818] INFO (1): request completed
+2026-03-29 07:37:56.027 |     req: {
+2026-03-29 07:37:56.028 |       "id": 27,
+2026-03-29 07:37:56.028 |       "method": "GET",
+2026-03-29 07:37:56.028 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:37:56.028 |     }
+2026-03-29 07:37:56.028 |     res: {
+2026-03-29 07:37:56.028 |       "statusCode": 304
+2026-03-29 07:37:56.028 |     }
+2026-03-29 07:37:56.028 |     responseTime: 7
+2026-03-29 07:37:57.055 | [04:37:56.834] INFO (1): request completed
+2026-03-29 07:37:57.055 |     req: {
+2026-03-29 07:37:57.055 |       "id": 28,
+2026-03-29 07:37:57.055 |       "method": "GET",
+2026-03-29 07:37:57.055 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:37:57.055 |     }
+2026-03-29 07:37:57.055 |     res: {
+2026-03-29 07:37:57.055 |       "statusCode": 304
+2026-03-29 07:37:57.055 |     }
+2026-03-29 07:37:57.055 |     responseTime: 17
+2026-03-29 07:37:59.105 | [04:37:58.848] INFO (1): request completed
+2026-03-29 07:37:59.105 |     req: {
+2026-03-29 07:37:59.105 |       "id": 29,
+2026-03-29 07:37:59.105 |       "method": "GET",
+2026-03-29 07:37:59.105 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:37:59.105 |     }
+2026-03-29 07:37:59.105 |     res: {
+2026-03-29 07:37:59.105 |       "statusCode": 304
+2026-03-29 07:37:59.105 |     }
+2026-03-29 07:37:59.105 |     responseTime: 8
+2026-03-29 07:37:59.105 | [04:37:58.867] INFO (1): request completed
+2026-03-29 07:37:59.105 |     req: {
+2026-03-29 07:37:59.105 |       "id": 30,
+2026-03-29 07:37:59.105 |       "method": "GET",
+2026-03-29 07:37:59.105 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:37:59.105 |     }
+2026-03-29 07:37:59.105 |     res: {
+2026-03-29 07:37:59.105 |       "statusCode": 304
+2026-03-29 07:37:59.105 |     }
+2026-03-29 07:37:59.105 |     responseTime: 7
+2026-03-29 07:38:01.156 | [04:38:00.918] INFO (1): request completed
+2026-03-29 07:38:01.156 |     req: {
+2026-03-29 07:38:01.156 |       "id": 31,
+2026-03-29 07:38:01.156 |       "method": "GET",
+2026-03-29 07:38:01.156 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:01.156 |     }
+2026-03-29 07:38:01.156 |     res: {
+2026-03-29 07:38:01.156 |       "statusCode": 304
+2026-03-29 07:38:01.156 |     }
+2026-03-29 07:38:01.156 |     responseTime: 6
+2026-03-29 07:38:02.181 | [04:38:01.893] INFO (1): request completed
+2026-03-29 07:38:02.181 |     req: {
+2026-03-29 07:38:02.181 |       "id": 32,
+2026-03-29 07:38:02.181 |       "method": "GET",
+2026-03-29 07:38:02.181 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:38:02.181 |     }
+2026-03-29 07:38:02.181 |     res: {
+2026-03-29 07:38:02.181 |       "statusCode": 304
+2026-03-29 07:38:02.181 |     }
+2026-03-29 07:38:02.181 |     responseTime: 11
+2026-03-29 07:38:02.503 | verbose:  [session_35df2710f6b3:page] Page loaded
+2026-03-29 07:38:02.504 | verbose:  [session_35df2710f6b3:client] Injecting wapi.js
+2026-03-29 07:38:02.507 | verbose:  [session_35df2710f6b3:client] WhatsApp WEB loaded
+2026-03-29 07:38:02.536 | http:     [session_35df2710f6b3:client] Waiting page load
+2026-03-29 07:38:03.208 | [04:38:02.953] INFO (1): request completed
+2026-03-29 07:38:03.208 |     req: {
+2026-03-29 07:38:03.208 |       "id": 33,
+2026-03-29 07:38:03.208 |       "method": "GET",
+2026-03-29 07:38:03.208 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:03.208 |     }
+2026-03-29 07:38:03.208 |     res: {
+2026-03-29 07:38:03.208 |       "statusCode": 304
+2026-03-29 07:38:03.208 |     }
+2026-03-29 07:38:03.208 |     responseTime: 9
+2026-03-29 07:38:04.154 | info:     [session_35df2710f6b3:session] Session Unpaired
+2026-03-29 07:38:05.260 | [04:38:04.922] INFO (1): request completed
+2026-03-29 07:38:05.260 |     req: {
+2026-03-29 07:38:05.260 |       "id": 34,
+2026-03-29 07:38:05.260 |       "method": "GET",
+2026-03-29 07:38:05.260 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:38:05.260 |     }
+2026-03-29 07:38:05.260 |     res: {
+2026-03-29 07:38:05.260 |       "statusCode": 304
+2026-03-29 07:38:05.260 |     }
+2026-03-29 07:38:05.260 |     responseTime: 7
+2026-03-29 07:38:05.261 | [04:38:04.983] INFO (1): request completed
+2026-03-29 07:38:05.261 |     req: {
+2026-03-29 07:38:05.261 |       "id": 35,
+2026-03-29 07:38:05.261 |       "method": "GET",
+2026-03-29 07:38:05.261 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:05.261 |     }
+2026-03-29 07:38:05.261 |     res: {
+2026-03-29 07:38:05.261 |       "statusCode": 304
+2026-03-29 07:38:05.261 |     }
+2026-03-29 07:38:05.261 |     responseTime: 9
+2026-03-29 07:38:05.261 | [04:38:05.156] INFO (1): WPPConnect status
+2026-03-29 07:38:05.261 |     sessionId: "session_35df2710f6b3"
+2026-03-29 07:38:05.261 |     status: "disconnectedMobile"
+2026-03-29 07:38:05.261 | [04:38:05.156] INFO (1): disconnectedMobile before first connect — ignored (startup token rejection)
+2026-03-29 07:38:05.261 |     sessionId: "session_35df2710f6b3"
+2026-03-29 07:38:07.311 | [04:38:07.019] INFO (1): request completed
+2026-03-29 07:38:07.312 |     req: {
+2026-03-29 07:38:07.312 |       "id": 36,
+2026-03-29 07:38:07.312 |       "method": "GET",
+2026-03-29 07:38:07.312 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:07.312 |     }
+2026-03-29 07:38:07.312 |     res: {
+2026-03-29 07:38:07.312 |       "statusCode": 304
+2026-03-29 07:38:07.312 |     }
+2026-03-29 07:38:07.312 |     responseTime: 10
+2026-03-29 07:38:08.239 | verbose:  [session_35df2710f6b3:client] wapi.js injected
+2026-03-29 07:38:08.338 | [04:38:07.950] INFO (1): request completed
+2026-03-29 07:38:08.338 |     req: {
+2026-03-29 07:38:08.338 |       "id": 37,
+2026-03-29 07:38:08.338 |       "method": "GET",
+2026-03-29 07:38:08.338 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:38:08.338 |     }
+2026-03-29 07:38:08.338 |     res: {
+2026-03-29 07:38:08.338 |       "statusCode": 304
+2026-03-29 07:38:08.338 |     }
+2026-03-29 07:38:08.338 |     responseTime: 6
+2026-03-29 07:38:09.365 | [04:38:09.051] INFO (1): request completed
+2026-03-29 07:38:09.365 |     req: {
+2026-03-29 07:38:09.365 |       "id": 38,
+2026-03-29 07:38:09.365 |       "method": "GET",
+2026-03-29 07:38:09.365 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:09.365 |     }
+2026-03-29 07:38:09.365 |     res: {
+2026-03-29 07:38:09.365 |       "statusCode": 304
+2026-03-29 07:38:09.365 |     }
+2026-03-29 07:38:09.365 |     responseTime: 7
+2026-03-29 07:38:09.418 | http:     [session_35df2710f6b3:client] Connected
+2026-03-29 07:38:09.419 | debug:    [session_35df2710f6b3:client] Exposing onMessage function
+2026-03-29 07:38:09.430 | [04:38:09.418] INFO (1): WPPConnect status
+2026-03-29 07:38:09.430 |     sessionId: "session_35df2710f6b3"
+2026-03-29 07:38:09.430 |     status: "inChat"
+2026-03-29 07:38:09.664 | debug:    [session_35df2710f6b3:client] Exposing onAnyMessage function
+2026-03-29 07:38:09.668 | http:     [session_35df2710f6b3:client] Checking is logged...
+2026-03-29 07:38:09.713 | info:     [session_35df2710f6b3:client] WhatsApp WEB version: 2.3000.1036203775
+2026-03-29 07:38:09.714 | info:     [session_35df2710f6b3:client] WA-JS version: 3.23.2
+2026-03-29 07:38:09.715 | http:     [session_35df2710f6b3:client] Waiting for QRCode Scan...
+2026-03-29 07:38:09.761 | debug:    [session_35df2710f6b3:client] Exposing onAck function
+2026-03-29 07:38:09.800 | debug:    [session_35df2710f6b3:client] Exposing onMessageEdit function
+2026-03-29 07:38:09.830 | debug:    [session_35df2710f6b3:client] Exposing onNotificationMessage function
+2026-03-29 07:38:09.887 | debug:    [session_35df2710f6b3:client] Exposing onParticipantsChanged function
+2026-03-29 07:38:09.943 | [04:38:09.715] INFO (1): WPPConnect status
+2026-03-29 07:38:09.943 |     sessionId: "session_35df2710f6b3"
+2026-03-29 07:38:09.943 |     status: "notLogged"
+2026-03-29 07:38:09.943 | [04:38:09.741] INFO (1): request completed
+2026-03-29 07:38:09.943 |     req: {
+2026-03-29 07:38:09.943 |       "id": 39,
+2026-03-29 07:38:09.943 |       "method": "GET",
+2026-03-29 07:38:09.943 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:09.943 |     }
+2026-03-29 07:38:09.943 |     res: {
+2026-03-29 07:38:09.943 |       "statusCode": 200
+2026-03-29 07:38:09.943 |     }
+2026-03-29 07:38:09.943 |     responseTime: 8
+2026-03-29 07:38:09.953 | debug:    [session_35df2710f6b3:client] Exposing onStateChange function
+2026-03-29 07:38:09.957 | debug:    [session_35df2710f6b3:client] Exposing onStreamChange function
+2026-03-29 07:38:09.961 | debug:    [session_35df2710f6b3:client] Exposing onStreamModeChanged function
+2026-03-29 07:38:09.967 | debug:    [session_35df2710f6b3:client] Exposing onStreamInfoChanged function
+2026-03-29 07:38:09.971 | debug:    [session_35df2710f6b3:client] Exposing onIncomingCall function
+2026-03-29 07:38:09.974 | debug:    [session_35df2710f6b3:client] Exposing onInterfaceChange function
+2026-03-29 07:38:09.978 | debug:    [session_35df2710f6b3:client] Exposing onPresenceChanged function
+2026-03-29 07:38:09.984 | debug:    [session_35df2710f6b3:client] Exposing onLiveLocation function
+2026-03-29 07:38:09.988 | debug:    [session_35df2710f6b3:client] Exposing onAddedToGroup function
+2026-03-29 07:38:09.994 | debug:    [session_35df2710f6b3:client] Exposing onRevokedMessage function
+2026-03-29 07:38:09.999 | debug:    [session_35df2710f6b3:client] Exposing onReactionMessage function
+2026-03-29 07:38:10.003 | debug:    [session_35df2710f6b3:client] Exposing onPollResponse function
+2026-03-29 07:38:10.006 | debug:    [session_35df2710f6b3:client] Exposing onUpdateLabel function
+2026-03-29 07:38:10.010 | debug:    [session_35df2710f6b3:client] Exposing onOrderStatusUpdate function
+2026-03-29 07:38:10.023 | debug:    [session_35df2710f6b3:client] Exposing onNewChat function
+2026-03-29 07:38:10.033 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:10.034 | http:     [session_35df2710f6b3:client] Current state: QR (CONNECTING)
+2026-03-29 07:38:10.222 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:10.222 | http:     [session_35df2710f6b3:client] Current state: QR (CONNECTING)
+2026-03-29 07:38:11.322 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:11.322 | http:     [session_35df2710f6b3:client] Current state: QR (CONNECTING)
+2026-03-29 07:38:11.653 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:11.653 | http:     [session_35df2710f6b3:client] Current state: QR (CONNECTING)
+2026-03-29 07:38:11.939 | verbose:  [session_35df2710f6b3:client] Waiting for QRCode Scan: Attempt 1
+2026-03-29 07:38:11.995 | [04:38:10.986] INFO (1): request completed
+2026-03-29 07:38:11.995 |     req: {
+2026-03-29 07:38:11.995 |       "id": 40,
+2026-03-29 07:38:11.995 |       "method": "GET",
+2026-03-29 07:38:11.995 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:38:11.995 |     }
+2026-03-29 07:38:11.995 |     res: {
+2026-03-29 07:38:11.995 |       "statusCode": 200
+2026-03-29 07:38:11.995 |     }
+2026-03-29 07:38:11.995 |     responseTime: 7
+2026-03-29 07:38:11.995 | [04:38:11.791] INFO (1): request completed
+2026-03-29 07:38:11.995 |     req: {
+2026-03-29 07:38:11.995 |       "id": 41,
+2026-03-29 07:38:11.995 |       "method": "GET",
+2026-03-29 07:38:11.995 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:11.995 |     }
+2026-03-29 07:38:11.995 |     res: {
+2026-03-29 07:38:11.995 |       "statusCode": 304
+2026-03-29 07:38:11.995 |     }
+2026-03-29 07:38:11.995 |     responseTime: 10
+2026-03-29 07:38:11.995 | [04:38:11.939] INFO (1): QR code ready
+2026-03-29 07:38:11.995 |     sessionId: "session_35df2710f6b3"
+2026-03-29 07:38:11.995 |     attempts: 1
+2026-03-29 07:38:11.995 | [04:38:11.962] INFO (1): request completed
+2026-03-29 07:38:11.995 |     req: {
+2026-03-29 07:38:11.995 |       "id": 42,
+2026-03-29 07:38:11.995 |       "method": "GET",
+2026-03-29 07:38:11.995 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:38:11.995 |     }
+2026-03-29 07:38:11.995 |     res: {
+2026-03-29 07:38:11.995 |       "statusCode": 200
+2026-03-29 07:38:11.995 |     }
+2026-03-29 07:38:11.995 |     responseTime: 6
+2026-03-29 07:38:14.048 | [04:38:13.834] INFO (1): request completed
+2026-03-29 07:38:14.048 |     req: {
+2026-03-29 07:38:14.048 |       "id": 43,
+2026-03-29 07:38:14.048 |       "method": "GET",
+2026-03-29 07:38:14.048 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:14.048 |     }
+2026-03-29 07:38:14.048 |     res: {
+2026-03-29 07:38:14.048 |       "statusCode": 304
+2026-03-29 07:38:14.048 |     }
+2026-03-29 07:38:14.048 |     responseTime: 5
+2026-03-29 07:38:15.076 | [04:38:15.010] INFO (1): request completed
+2026-03-29 07:38:15.076 |     req: {
+2026-03-29 07:38:15.076 |       "id": 44,
+2026-03-29 07:38:15.076 |       "method": "GET",
+2026-03-29 07:38:15.076 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:38:15.076 |     }
+2026-03-29 07:38:15.076 |     res: {
+2026-03-29 07:38:15.076 |       "statusCode": 304
+2026-03-29 07:38:15.076 |     }
+2026-03-29 07:38:15.076 |     responseTime: 5
+2026-03-29 07:38:16.105 | [04:38:15.864] INFO (1): request completed
+2026-03-29 07:38:16.106 |     req: {
+2026-03-29 07:38:16.106 |       "id": 45,
+2026-03-29 07:38:16.106 |       "method": "GET",
+2026-03-29 07:38:16.106 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:16.106 |     }
+2026-03-29 07:38:16.106 |     res: {
+2026-03-29 07:38:16.106 |       "statusCode": 304
+2026-03-29 07:38:16.106 |     }
+2026-03-29 07:38:16.106 |     responseTime: 5
+2026-03-29 07:38:18.161 | [04:38:17.907] INFO (1): request completed
+2026-03-29 07:38:18.161 |     req: {
+2026-03-29 07:38:18.161 |       "id": 46,
+2026-03-29 07:38:18.161 |       "method": "GET",
+2026-03-29 07:38:18.161 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:18.161 |     }
+2026-03-29 07:38:18.161 |     res: {
+2026-03-29 07:38:18.161 |       "statusCode": 304
+2026-03-29 07:38:18.161 |     }
+2026-03-29 07:38:18.161 |     responseTime: 12
+2026-03-29 07:38:18.162 | [04:38:18.031] INFO (1): request completed
+2026-03-29 07:38:18.162 |     req: {
+2026-03-29 07:38:18.162 |       "id": 47,
+2026-03-29 07:38:18.162 |       "method": "GET",
+2026-03-29 07:38:18.162 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:38:18.162 |     }
+2026-03-29 07:38:18.162 |     res: {
+2026-03-29 07:38:18.162 |       "statusCode": 304
+2026-03-29 07:38:18.162 |     }
+2026-03-29 07:38:18.162 |     responseTime: 6
+2026-03-29 07:38:20.218 | [04:38:19.946] INFO (1): request completed
+2026-03-29 07:38:20.218 |     req: {
+2026-03-29 07:38:20.218 |       "id": 48,
+2026-03-29 07:38:20.218 |       "method": "GET",
+2026-03-29 07:38:20.218 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:20.218 |     }
+2026-03-29 07:38:20.218 |     res: {
+2026-03-29 07:38:20.218 |       "statusCode": 304
+2026-03-29 07:38:20.218 |     }
+2026-03-29 07:38:20.218 |     responseTime: 6
+2026-03-29 07:38:21.250 | [04:38:21.069] INFO (1): request completed
+2026-03-29 07:38:21.250 |     req: {
+2026-03-29 07:38:21.250 |       "id": 49,
+2026-03-29 07:38:21.250 |       "method": "GET",
+2026-03-29 07:38:21.250 |       "url": "/api/sessions/session_35df2710f6b3/qr"
+2026-03-29 07:38:21.250 |     }
+2026-03-29 07:38:21.250 |     res: {
+2026-03-29 07:38:21.250 |       "statusCode": 304
+2026-03-29 07:38:21.250 |     }
+2026-03-29 07:38:21.250 |     responseTime: 6
+2026-03-29 07:38:22.203 | http:     [session_35df2710f6b3:client] Checking QRCode status...
+2026-03-29 07:38:22.277 | [04:38:21.971] INFO (1): request completed
+2026-03-29 07:38:22.277 |     req: {
+2026-03-29 07:38:22.277 |       "id": 50,
+2026-03-29 07:38:22.278 |       "method": "GET",
+2026-03-29 07:38:22.278 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:22.278 |     }
+2026-03-29 07:38:22.278 |     res: {
+2026-03-29 07:38:22.278 |       "statusCode": 304
+2026-03-29 07:38:22.278 |     }
+2026-03-29 07:38:22.278 |     responseTime: 7
+2026-03-29 07:38:22.406 | http:     [session_35df2710f6b3:client] Login with success
+2026-03-29 07:38:22.534 | [04:38:22.406] INFO (1): WPPConnect status
+2026-03-29 07:38:22.534 |     sessionId: "session_35df2710f6b3"
+2026-03-29 07:38:22.534 |     status: "qrReadSuccess"
+2026-03-29 07:38:22.534 | [04:38:22.427] INFO (1): request completed
+2026-03-29 07:38:22.534 |     req: {
+2026-03-29 07:38:22.534 |       "id": 51,
+2026-03-29 07:38:22.534 |       "method": "GET",
+2026-03-29 07:38:22.534 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:22.534 |     }
+2026-03-29 07:38:22.534 |     res: {
+2026-03-29 07:38:22.534 |       "statusCode": 200
+2026-03-29 07:38:22.534 |     }
+2026-03-29 07:38:22.534 |     responseTime: 6
+2026-03-29 07:38:22.606 | http:     [session_35df2710f6b3:client] Checking phone is connected...
+2026-03-29 07:38:22.607 | debug:    [session_35df2710f6b3:client] Registering onStateChange event
+2026-03-29 07:38:22.607 | debug:    [session_35df2710f6b3:client] Registering onMessage event
+2026-03-29 07:38:22.661 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:22.662 | http:     [session_35df2710f6b3:client] Current state: SYNCING (CONNECTING)
+2026-03-29 07:38:22.663 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:22.663 | http:     [session_35df2710f6b3:client] Current state: SYNCING (CONNECTING)
+2026-03-29 07:38:22.663 | debug:    [session_35df2710f6b3:client] Emitting onStateChange event (1 registered)
+2026-03-29 07:38:23.560 | [04:38:23.368] INFO (1): request completed
+2026-03-29 07:38:23.560 |     req: {
+2026-03-29 07:38:23.560 |       "id": 52,
+2026-03-29 07:38:23.560 |       "method": "GET",
+2026-03-29 07:38:23.560 |       "url": "/"
+2026-03-29 07:38:23.560 |     }
+2026-03-29 07:38:23.560 |     res: {
+2026-03-29 07:38:23.560 |       "statusCode": 200
+2026-03-29 07:38:23.560 |     }
+2026-03-29 07:38:23.560 |     responseTime: 1
+2026-03-29 07:38:24.056 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:24.056 | http:     [session_35df2710f6b3:client] Current state: SYNCING (CONNECTING)
+2026-03-29 07:38:24.057 | debug:    [session_35df2710f6b3:client] Emitting onStateChange event (1 registered)
+2026-03-29 07:38:24.058 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:24.058 | http:     [session_35df2710f6b3:client] Current state: SYNCING (CONNECTING)
+2026-03-29 07:38:24.062 | debug:    [session_35df2710f6b3:client] Emitting onStateChange event (1 registered)
+2026-03-29 07:38:24.585 | [04:38:24.452] INFO (1): request completed
+2026-03-29 07:38:24.585 |     req: {
+2026-03-29 07:38:24.585 |       "id": 53,
+2026-03-29 07:38:24.585 |       "method": "GET",
+2026-03-29 07:38:24.585 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:24.585 |     }
+2026-03-29 07:38:24.585 |     res: {
+2026-03-29 07:38:24.585 |       "statusCode": 304
+2026-03-29 07:38:24.585 |     }
+2026-03-29 07:38:24.585 |     responseTime: 7
+2026-03-29 07:38:26.635 | [04:38:26.478] INFO (1): request completed
+2026-03-29 07:38:26.635 |     req: {
+2026-03-29 07:38:26.635 |       "id": 54,
+2026-03-29 07:38:26.635 |       "method": "GET",
+2026-03-29 07:38:26.635 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:26.635 |     }
+2026-03-29 07:38:26.635 |     res: {
+2026-03-29 07:38:26.635 |       "statusCode": 304
+2026-03-29 07:38:26.635 |     }
+2026-03-29 07:38:26.635 |     responseTime: 7
+2026-03-29 07:38:28.687 | [04:38:28.514] INFO (1): request completed
+2026-03-29 07:38:28.688 |     req: {
+2026-03-29 07:38:28.688 |       "id": 55,
+2026-03-29 07:38:28.688 |       "method": "GET",
+2026-03-29 07:38:28.688 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:28.688 |     }
+2026-03-29 07:38:28.688 |     res: {
+2026-03-29 07:38:28.688 |       "statusCode": 304
+2026-03-29 07:38:28.688 |     }
+2026-03-29 07:38:28.688 |     responseTime: 9
+2026-03-29 07:38:29.045 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.052 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.066 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.072 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.079 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.086 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.091 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.097 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.103 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.113 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.118 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.123 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.128 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.134 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.143 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.149 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:29.153 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:38:30.741 | [04:38:30.537] INFO (1): request completed
+2026-03-29 07:38:30.741 |     req: {
+2026-03-29 07:38:30.741 |       "id": 56,
+2026-03-29 07:38:30.741 |       "method": "GET",
+2026-03-29 07:38:30.741 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:30.741 |     }
+2026-03-29 07:38:30.741 |     res: {
+2026-03-29 07:38:30.741 |       "statusCode": 304
+2026-03-29 07:38:30.741 |     }
+2026-03-29 07:38:30.741 |     responseTime: 7
+2026-03-29 07:38:32.793 | [04:38:32.570] INFO (1): request completed
+2026-03-29 07:38:32.793 |     req: {
+2026-03-29 07:38:32.793 |       "id": 57,
+2026-03-29 07:38:32.793 |       "method": "GET",
+2026-03-29 07:38:32.793 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:32.793 |     }
+2026-03-29 07:38:32.793 |     res: {
+2026-03-29 07:38:32.793 |       "statusCode": 304
+2026-03-29 07:38:32.793 |     }
+2026-03-29 07:38:32.793 |     responseTime: 7
+2026-03-29 07:38:34.303 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:34.303 | http:     [session_35df2710f6b3:client] Current state: MAIN (NORMAL)
+2026-03-29 07:38:34.304 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:34.304 | http:     [session_35df2710f6b3:client] Current state: MAIN (NORMAL)
+2026-03-29 07:38:34.305 | debug:    [session_35df2710f6b3:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:38:34.305 | http:     [session_35df2710f6b3:client] Current state: MAIN (NORMAL)
+2026-03-29 07:38:34.847 | [04:38:34.601] INFO (1): request completed
+2026-03-29 07:38:34.847 |     req: {
+2026-03-29 07:38:34.847 |       "id": 58,
+2026-03-29 07:38:34.847 |       "method": "GET",
+2026-03-29 07:38:34.847 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:34.847 |     }
+2026-03-29 07:38:34.847 |     res: {
+2026-03-29 07:38:34.847 |       "statusCode": 304
+2026-03-29 07:38:34.847 |     }
+2026-03-29 07:38:34.847 |     responseTime: 6
+2026-03-29 07:38:35.361 | [04:38:35.173] INFO (1): Phone number saved
+2026-03-29 07:38:35.361 |     sessionId: "session_35df2710f6b3"
+2026-03-29 07:38:35.361 |     phone: "963948500505"
+2026-03-29 07:38:35.361 |     via: "getWid"
+2026-03-29 07:38:37.413 | [04:38:36.624] INFO (1): request completed
+2026-03-29 07:38:37.413 |     req: {
+2026-03-29 07:38:37.413 |       "id": 59,
+2026-03-29 07:38:37.413 |       "method": "GET",
+2026-03-29 07:38:37.413 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:37.413 |     }
+2026-03-29 07:38:37.413 |     res: {
+2026-03-29 07:38:37.413 |       "statusCode": 200
+2026-03-29 07:38:37.413 |     }
+2026-03-29 07:38:37.413 |     responseTime: 9
+2026-03-29 07:38:39.464 | [04:38:38.649] INFO (1): request completed
+2026-03-29 07:38:39.464 |     req: {
+2026-03-29 07:38:39.464 |       "id": 60,
+2026-03-29 07:38:39.464 |       "method": "GET",
+2026-03-29 07:38:39.464 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:39.464 |     }
+2026-03-29 07:38:39.464 |     res: {
+2026-03-29 07:38:39.464 |       "statusCode": 304
+2026-03-29 07:38:39.464 |     }
+2026-03-29 07:38:39.464 |     responseTime: 6
+2026-03-29 07:38:41.514 | [04:38:40.685] INFO (1): request completed
+2026-03-29 07:38:41.514 |     req: {
+2026-03-29 07:38:41.514 |       "id": 61,
+2026-03-29 07:38:41.514 |       "method": "GET",
+2026-03-29 07:38:41.514 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:41.514 |     }
+2026-03-29 07:38:41.514 |     res: {
+2026-03-29 07:38:41.514 |       "statusCode": 304
+2026-03-29 07:38:41.514 |     }
+2026-03-29 07:38:41.514 |     responseTime: 7
+2026-03-29 07:38:43.564 | [04:38:42.703] INFO (1): request completed
+2026-03-29 07:38:43.564 |     req: {
+2026-03-29 07:38:43.564 |       "id": 62,
+2026-03-29 07:38:43.564 |       "method": "GET",
+2026-03-29 07:38:43.564 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:43.564 |     }
+2026-03-29 07:38:43.564 |     res: {
+2026-03-29 07:38:43.564 |       "statusCode": 304
+2026-03-29 07:38:43.564 |     }
+2026-03-29 07:38:43.564 |     responseTime: 6
+2026-03-29 07:38:45.616 | [04:38:44.740] INFO (1): request completed
+2026-03-29 07:38:45.616 |     req: {
+2026-03-29 07:38:45.616 |       "id": 63,
+2026-03-29 07:38:45.616 |       "method": "GET",
+2026-03-29 07:38:45.616 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:45.616 |     }
+2026-03-29 07:38:45.616 |     res: {
+2026-03-29 07:38:45.616 |       "statusCode": 304
+2026-03-29 07:38:45.616 |     }
+2026-03-29 07:38:45.616 |     responseTime: 9
+2026-03-29 07:38:47.667 | [04:38:46.774] INFO (1): request completed
+2026-03-29 07:38:47.667 |     req: {
+2026-03-29 07:38:47.667 |       "id": 64,
+2026-03-29 07:38:47.667 |       "method": "GET",
+2026-03-29 07:38:47.667 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:47.667 |     }
+2026-03-29 07:38:47.667 |     res: {
+2026-03-29 07:38:47.667 |       "statusCode": 304
+2026-03-29 07:38:47.667 |     }
+2026-03-29 07:38:47.667 |     responseTime: 6
+2026-03-29 07:38:49.720 | [04:38:48.804] INFO (1): request completed
+2026-03-29 07:38:49.720 |     req: {
+2026-03-29 07:38:49.720 |       "id": 65,
+2026-03-29 07:38:49.720 |       "method": "GET",
+2026-03-29 07:38:49.720 |       "url": "/api/sessions/session_35df2710f6b3"
+2026-03-29 07:38:49.720 |     }
+2026-03-29 07:38:49.720 |     res: {
+2026-03-29 07:38:49.720 |       "statusCode": 304
+2026-03-29 07:38:49.720 |     }
+2026-03-29 07:38:49.720 |     responseTime: 8
+2026-03-29 07:38:51.772 | [04:38:50.801] INFO (1): WebSocket client disconnected
+2026-03-29 07:38:51.772 |     socketId: "A-8t38YHX6GQRJYNAAAB"
+2026-03-29 07:38:51.773 | [04:38:50.827] INFO (1): request completed
+2026-03-29 07:38:51.773 |     req: {
+2026-03-29 07:38:51.773 |       "id": 66,
+2026-03-29 07:38:51.773 |       "method": "GET",
+2026-03-29 07:38:51.773 |       "url": "/api/sessions"
+2026-03-29 07:38:51.773 |     }
+2026-03-29 07:38:51.773 |     res: {
+2026-03-29 07:38:51.773 |       "statusCode": 200
+2026-03-29 07:38:51.773 |     }
+2026-03-29 07:38:51.773 |     responseTime: 16
+2026-03-29 07:38:53.825 | [04:38:53.371] INFO (1): request completed
+2026-03-29 07:38:53.825 |     req: {
+2026-03-29 07:38:53.825 |       "id": 67,
+2026-03-29 07:38:53.825 |       "method": "GET",
+2026-03-29 07:38:53.825 |       "url": "/"
+2026-03-29 07:38:53.825 |     }
+2026-03-29 07:38:53.825 |     res: {
+2026-03-29 07:38:53.825 |       "statusCode": 200
+2026-03-29 07:38:53.825 |     }
+2026-03-29 07:38:53.825 |     responseTime: 0
+2026-03-29 07:39:11.894 | [04:39:11.800] INFO (1): request completed
+2026-03-29 07:39:11.894 |     req: {
+2026-03-29 07:39:11.894 |       "id": 68,
+2026-03-29 07:39:11.894 |       "method": "POST",
+2026-03-29 07:39:11.894 |       "url": "/api/sessions"
+2026-03-29 07:39:11.894 |     }
+2026-03-29 07:39:11.894 |     res: {
+2026-03-29 07:39:11.894 |       "statusCode": 201
+2026-03-29 07:39:11.894 |     }
+2026-03-29 07:39:11.894 |     responseTime: 42
+2026-03-29 07:39:11.894 | [04:39:11.833] INFO (1): request completed
+2026-03-29 07:39:11.894 |     req: {
+2026-03-29 07:39:11.894 |       "id": 69,
+2026-03-29 07:39:11.894 |       "method": "GET",
+2026-03-29 07:39:11.894 |       "url": "/api/sessions"
+2026-03-29 07:39:11.894 |     }
+2026-03-29 07:39:11.894 |     res: {
+2026-03-29 07:39:11.894 |       "statusCode": 200
+2026-03-29 07:39:11.894 |     }
+2026-03-29 07:39:11.894 |     responseTime: 10
+2026-03-29 07:39:17.952 | [04:39:17.134] INFO (1): request completed
+2026-03-29 07:39:17.952 |     req: {
+2026-03-29 07:39:17.952 |       "id": 70,
+2026-03-29 07:39:17.952 |       "method": "GET",
+2026-03-29 07:39:17.952 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:17.952 |     }
+2026-03-29 07:39:17.952 |     res: {
+2026-03-29 07:39:17.952 |       "statusCode": 200
+2026-03-29 07:39:17.952 |     }
+2026-03-29 07:39:17.952 |     responseTime: 11
+2026-03-29 07:39:17.953 | [04:39:17.157] INFO (1): WebSocket client connected
+2026-03-29 07:39:17.953 |     socketId: "j4kAu3Feerb9w_pJAAAD"
+2026-03-29 07:39:17.953 |     authenticated: true
+2026-03-29 07:39:17.953 | [04:39:17.194] INFO (1): request completed
+2026-03-29 07:39:17.953 |     req: {
+2026-03-29 07:39:17.953 |       "id": 71,
+2026-03-29 07:39:17.953 |       "method": "GET",
+2026-03-29 07:39:17.953 |       "url": "/api/sessions/session_06d1b90ff9b6/messages"
+2026-03-29 07:39:17.953 |     }
+2026-03-29 07:39:17.953 |     res: {
+2026-03-29 07:39:17.953 |       "statusCode": 200
+2026-03-29 07:39:17.953 |     }
+2026-03-29 07:39:17.953 |     responseTime: 10
+2026-03-29 07:39:20.006 | [04:39:19.177] INFO (1): request completed
+2026-03-29 07:39:20.006 |     req: {
+2026-03-29 07:39:20.006 |       "id": 72,
+2026-03-29 07:39:20.006 |       "method": "GET",
+2026-03-29 07:39:20.006 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:20.006 |     }
+2026-03-29 07:39:20.006 |     res: {
+2026-03-29 07:39:20.006 |       "statusCode": 304
+2026-03-29 07:39:20.006 |     }
+2026-03-29 07:39:20.006 |     responseTime: 7
+2026-03-29 07:39:20.007 | [04:39:19.537] INFO (1): request completed
+2026-03-29 07:39:20.007 |     req: {
+2026-03-29 07:39:20.007 |       "id": 73,
+2026-03-29 07:39:20.007 |       "method": "GET",
+2026-03-29 07:39:20.007 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:20.007 |     }
+2026-03-29 07:39:20.007 |     res: {
+2026-03-29 07:39:20.007 |       "statusCode": 200
+2026-03-29 07:39:20.007 |     }
+2026-03-29 07:39:20.007 |     responseTime: 14
+2026-03-29 07:39:20.007 | [04:39:19.559] INFO (1): request completed
+2026-03-29 07:39:20.007 |     req: {
+2026-03-29 07:39:20.007 |       "id": 74,
+2026-03-29 07:39:20.007 |       "method": "POST",
+2026-03-29 07:39:20.007 |       "url": "/api/sessions/session_06d1b90ff9b6/connect"
+2026-03-29 07:39:20.007 |     }
+2026-03-29 07:39:20.007 |     res: {
+2026-03-29 07:39:20.007 |       "statusCode": 200
+2026-03-29 07:39:20.007 |     }
+2026-03-29 07:39:20.007 |     responseTime: 32
+2026-03-29 07:39:20.007 | [04:39:19.581] INFO (1): request completed
+2026-03-29 07:39:20.007 |     req: {
+2026-03-29 07:39:20.007 |       "id": 75,
+2026-03-29 07:39:20.007 |       "method": "GET",
+2026-03-29 07:39:20.007 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:20.007 |     }
+2026-03-29 07:39:20.007 |     res: {
+2026-03-29 07:39:20.007 |       "statusCode": 304
+2026-03-29 07:39:20.007 |     }
+2026-03-29 07:39:20.007 |     responseTime: 6
+2026-03-29 07:39:20.374 | info:     [session_06d1b90ff9b6:browser] Using browser folder '/app/tokens/session_06d1b90ff9b6'
+2026-03-29 07:39:20.374 | info:     [session_06d1b90ff9b6:browser] Initializing browser...
+2026-03-29 07:39:20.520 | [04:39:20.430] INFO (1): request completed
+2026-03-29 07:39:20.520 |     req: {
+2026-03-29 07:39:20.520 |       "id": 76,
+2026-03-29 07:39:20.520 |       "method": "GET",
+2026-03-29 07:39:20.520 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:20.520 |     }
+2026-03-29 07:39:20.520 |     res: {
+2026-03-29 07:39:20.520 |       "statusCode": 200
+2026-03-29 07:39:20.520 |     }
+2026-03-29 07:39:20.520 |     responseTime: 15
+2026-03-29 07:39:20.717 | http:     [session_06d1b90ff9b6:browser] checking headless...
+2026-03-29 07:39:20.717 | http:     [session_06d1b90ff9b6:browser] headless option is active, browser hidden
+2026-03-29 07:39:20.730 | info:     [session_06d1b90ff9b6:client] Initializing...
+2026-03-29 07:39:20.734 | verbose:  [session_06d1b90ff9b6:client] Setting WhatsApp WEB version to 2.3000.10305x
+2026-03-29 07:39:20.737 | error:    [session_06d1b90ff9b6:client] Version not available for 2.3000.10305x, using latest as fallback
+2026-03-29 07:39:20.737 | verbose:  [session_06d1b90ff9b6:client] Loading WhatsApp WEB
+2026-03-29 07:39:22.573 | [04:39:22.457] INFO (1): request completed
+2026-03-29 07:39:22.573 |     req: {
+2026-03-29 07:39:22.573 |       "id": 77,
+2026-03-29 07:39:22.573 |       "method": "GET",
+2026-03-29 07:39:22.573 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:22.573 |     }
+2026-03-29 07:39:22.573 |     res: {
+2026-03-29 07:39:22.573 |       "statusCode": 304
+2026-03-29 07:39:22.573 |     }
+2026-03-29 07:39:22.573 |     responseTime: 7
+2026-03-29 07:39:22.573 | [04:39:22.564] INFO (1): request completed
+2026-03-29 07:39:22.573 |     req: {
+2026-03-29 07:39:22.573 |       "id": 78,
+2026-03-29 07:39:22.573 |       "method": "GET",
+2026-03-29 07:39:22.573 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:22.573 |     }
+2026-03-29 07:39:22.573 |     res: {
+2026-03-29 07:39:22.573 |       "statusCode": 200
+2026-03-29 07:39:22.573 |     }
+2026-03-29 07:39:22.573 |     responseTime: 7
+2026-03-29 07:39:23.600 | [04:39:23.369] INFO (1): request completed
+2026-03-29 07:39:23.600 |     req: {
+2026-03-29 07:39:23.600 |       "id": 79,
+2026-03-29 07:39:23.600 |       "method": "GET",
+2026-03-29 07:39:23.600 |       "url": "/"
+2026-03-29 07:39:23.600 |     }
+2026-03-29 07:39:23.600 |     res: {
+2026-03-29 07:39:23.600 |       "statusCode": 200
+2026-03-29 07:39:23.600 |     }
+2026-03-29 07:39:23.601 |     responseTime: 2
+2026-03-29 07:39:24.631 | [04:39:24.528] INFO (1): request completed
+2026-03-29 07:39:24.631 |     req: {
+2026-03-29 07:39:24.631 |       "id": 80,
+2026-03-29 07:39:24.631 |       "method": "GET",
+2026-03-29 07:39:24.631 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:24.631 |     }
+2026-03-29 07:39:24.631 |     res: {
+2026-03-29 07:39:24.631 |       "statusCode": 304
+2026-03-29 07:39:24.631 |     }
+2026-03-29 07:39:24.631 |     responseTime: 32
+2026-03-29 07:39:25.668 | [04:39:25.607] INFO (1): request completed
+2026-03-29 07:39:25.668 |     req: {
+2026-03-29 07:39:25.668 |       "id": 81,
+2026-03-29 07:39:25.668 |       "method": "GET",
+2026-03-29 07:39:25.668 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:25.668 |     }
+2026-03-29 07:39:25.668 |     res: {
+2026-03-29 07:39:25.668 |       "statusCode": 304
+2026-03-29 07:39:25.668 |     }
+2026-03-29 07:39:25.668 |     responseTime: 14
+2026-03-29 07:39:26.695 | [04:39:26.592] INFO (1): request completed
+2026-03-29 07:39:26.695 |     req: {
+2026-03-29 07:39:26.695 |       "id": 82,
+2026-03-29 07:39:26.695 |       "method": "GET",
+2026-03-29 07:39:26.695 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:26.695 |     }
+2026-03-29 07:39:26.695 |     res: {
+2026-03-29 07:39:26.695 |       "statusCode": 304
+2026-03-29 07:39:26.695 |     }
+2026-03-29 07:39:26.695 |     responseTime: 16
+2026-03-29 07:39:28.747 | [04:39:28.632] INFO (1): request completed
+2026-03-29 07:39:28.747 |     req: {
+2026-03-29 07:39:28.747 |       "id": 83,
+2026-03-29 07:39:28.747 |       "method": "GET",
+2026-03-29 07:39:28.747 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:28.747 |     }
+2026-03-29 07:39:28.747 |     res: {
+2026-03-29 07:39:28.747 |       "statusCode": 304
+2026-03-29 07:39:28.747 |     }
+2026-03-29 07:39:28.747 |     responseTime: 10
+2026-03-29 07:39:28.747 | [04:39:28.655] INFO (1): request completed
+2026-03-29 07:39:28.747 |     req: {
+2026-03-29 07:39:28.747 |       "id": 84,
+2026-03-29 07:39:28.747 |       "method": "GET",
+2026-03-29 07:39:28.747 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:28.747 |     }
+2026-03-29 07:39:28.747 |     res: {
+2026-03-29 07:39:28.747 |       "statusCode": 304
+2026-03-29 07:39:28.747 |     }
+2026-03-29 07:39:28.747 |     responseTime: 9
+2026-03-29 07:39:30.314 | verbose:  [session_06d1b90ff9b6:page] Page loaded
+2026-03-29 07:39:30.314 | verbose:  [session_06d1b90ff9b6:client] Injecting wapi.js
+2026-03-29 07:39:30.317 | verbose:  [session_06d1b90ff9b6:client] WhatsApp WEB loaded
+2026-03-29 07:39:30.343 | http:     [session_06d1b90ff9b6:client] Waiting page load
+2026-03-29 07:39:30.797 | [04:39:30.687] INFO (1): request completed
+2026-03-29 07:39:30.797 |     req: {
+2026-03-29 07:39:30.797 |       "id": 85,
+2026-03-29 07:39:30.798 |       "method": "GET",
+2026-03-29 07:39:30.798 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:30.798 |     }
+2026-03-29 07:39:30.798 |     res: {
+2026-03-29 07:39:30.798 |       "statusCode": 304
+2026-03-29 07:39:30.798 |     }
+2026-03-29 07:39:30.798 |     responseTime: 10
+2026-03-29 07:39:31.824 | [04:39:31.715] INFO (1): request completed
+2026-03-29 07:39:31.824 |     req: {
+2026-03-29 07:39:31.824 |       "id": 86,
+2026-03-29 07:39:31.824 |       "method": "GET",
+2026-03-29 07:39:31.824 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:31.824 |     }
+2026-03-29 07:39:31.824 |     res: {
+2026-03-29 07:39:31.824 |       "statusCode": 304
+2026-03-29 07:39:31.824 |     }
+2026-03-29 07:39:31.824 |     responseTime: 8
+2026-03-29 07:39:31.868 | info:     [session_06d1b90ff9b6:session] Session Unpaired
+2026-03-29 07:39:32.848 | [04:39:32.723] INFO (1): request completed
+2026-03-29 07:39:32.848 |     req: {
+2026-03-29 07:39:32.848 |       "id": 87,
+2026-03-29 07:39:32.848 |       "method": "GET",
+2026-03-29 07:39:32.848 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:32.848 |     }
+2026-03-29 07:39:32.848 |     res: {
+2026-03-29 07:39:32.848 |       "statusCode": 304
+2026-03-29 07:39:32.848 |     }
+2026-03-29 07:39:32.848 |     responseTime: 10
+2026-03-29 07:39:32.881 | [04:39:32.867] INFO (1): WPPConnect status
+2026-03-29 07:39:32.881 |     sessionId: "session_06d1b90ff9b6"
+2026-03-29 07:39:32.881 |     status: "disconnectedMobile"
+2026-03-29 07:39:32.881 | [04:39:32.867] INFO (1): disconnectedMobile before first connect — ignored (startup token rejection)
+2026-03-29 07:39:32.881 |     sessionId: "session_06d1b90ff9b6"
+2026-03-29 07:39:34.931 | [04:39:34.745] INFO (1): request completed
+2026-03-29 07:39:34.931 |     req: {
+2026-03-29 07:39:34.931 |       "id": 88,
+2026-03-29 07:39:34.931 |       "method": "GET",
+2026-03-29 07:39:34.931 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:34.931 |     }
+2026-03-29 07:39:34.931 |     res: {
+2026-03-29 07:39:34.931 |       "statusCode": 304
+2026-03-29 07:39:34.931 |     }
+2026-03-29 07:39:34.931 |     responseTime: 12
+2026-03-29 07:39:34.931 | [04:39:34.775] INFO (1): request completed
+2026-03-29 07:39:34.931 |     req: {
+2026-03-29 07:39:34.931 |       "id": 89,
+2026-03-29 07:39:34.931 |       "method": "GET",
+2026-03-29 07:39:34.931 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:34.931 |     }
+2026-03-29 07:39:34.931 |     res: {
+2026-03-29 07:39:34.931 |       "statusCode": 304
+2026-03-29 07:39:34.931 |     }
+2026-03-29 07:39:34.931 |     responseTime: 14
+2026-03-29 07:39:36.984 | [04:39:36.829] INFO (1): request completed
+2026-03-29 07:39:36.984 |     req: {
+2026-03-29 07:39:36.984 |       "id": 90,
+2026-03-29 07:39:36.984 |       "method": "GET",
+2026-03-29 07:39:36.984 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:36.984 |     }
+2026-03-29 07:39:36.984 |     res: {
+2026-03-29 07:39:36.984 |       "statusCode": 304
+2026-03-29 07:39:36.984 |     }
+2026-03-29 07:39:36.984 |     responseTime: 8
+2026-03-29 07:39:38.010 | [04:39:37.820] INFO (1): request completed
+2026-03-29 07:39:38.010 |     req: {
+2026-03-29 07:39:38.010 |       "id": 91,
+2026-03-29 07:39:38.010 |       "method": "GET",
+2026-03-29 07:39:38.010 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:38.010 |     }
+2026-03-29 07:39:38.010 |     res: {
+2026-03-29 07:39:38.010 |       "statusCode": 304
+2026-03-29 07:39:38.010 |     }
+2026-03-29 07:39:38.010 |     responseTime: 12
+2026-03-29 07:39:38.811 | verbose:  [session_06d1b90ff9b6:client] wapi.js injected
+2026-03-29 07:39:39.040 | [04:39:38.871] INFO (1): request completed
+2026-03-29 07:39:39.040 |     req: {
+2026-03-29 07:39:39.040 |       "id": 92,
+2026-03-29 07:39:39.040 |       "method": "GET",
+2026-03-29 07:39:39.040 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:39.040 |     }
+2026-03-29 07:39:39.040 |     res: {
+2026-03-29 07:39:39.040 |       "statusCode": 304
+2026-03-29 07:39:39.040 |     }
+2026-03-29 07:39:39.041 |     responseTime: 9
+2026-03-29 07:39:39.648 | http:     [session_06d1b90ff9b6:client] Connected
+2026-03-29 07:39:39.649 | debug:    [session_06d1b90ff9b6:client] Exposing onMessage function
+2026-03-29 07:39:39.735 | debug:    [session_06d1b90ff9b6:client] Exposing onAnyMessage function
+2026-03-29 07:39:39.748 | http:     [session_06d1b90ff9b6:client] Checking is logged...
+2026-03-29 07:39:39.981 | info:     [session_06d1b90ff9b6:client] WhatsApp WEB version: 2.3000.1036203775
+2026-03-29 07:39:39.982 | info:     [session_06d1b90ff9b6:client] WA-JS version: 3.23.2
+2026-03-29 07:39:39.982 | http:     [session_06d1b90ff9b6:client] Waiting for QRCode Scan...
+2026-03-29 07:39:40.067 | [04:39:39.648] INFO (1): WPPConnect status
+2026-03-29 07:39:40.067 |     sessionId: "session_06d1b90ff9b6"
+2026-03-29 07:39:40.067 |     status: "inChat"
+2026-03-29 07:39:40.068 | [04:39:39.982] INFO (1): WPPConnect status
+2026-03-29 07:39:40.068 |     sessionId: "session_06d1b90ff9b6"
+2026-03-29 07:39:40.068 |     status: "notLogged"
+2026-03-29 07:39:40.068 | [04:39:40.049] INFO (1): request completed
+2026-03-29 07:39:40.068 |     req: {
+2026-03-29 07:39:40.068 |       "id": 93,
+2026-03-29 07:39:40.068 |       "method": "GET",
+2026-03-29 07:39:40.068 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:40.068 |     }
+2026-03-29 07:39:40.068 |     res: {
+2026-03-29 07:39:40.068 |       "statusCode": 200
+2026-03-29 07:39:40.068 |     }
+2026-03-29 07:39:40.068 |     responseTime: 32
+2026-03-29 07:39:40.090 | debug:    [session_06d1b90ff9b6:client] Exposing onAck function
+2026-03-29 07:39:40.151 | debug:    [session_06d1b90ff9b6:client] Exposing onMessageEdit function
+2026-03-29 07:39:40.183 | debug:    [session_06d1b90ff9b6:client] Exposing onNotificationMessage function
+2026-03-29 07:39:40.231 | debug:    [session_06d1b90ff9b6:client] Exposing onParticipantsChanged function
+2026-03-29 07:39:40.291 | debug:    [session_06d1b90ff9b6:client] Exposing onStateChange function
+2026-03-29 07:39:40.306 | debug:    [session_06d1b90ff9b6:client] Exposing onStreamChange function
+2026-03-29 07:39:40.313 | debug:    [session_06d1b90ff9b6:client] Exposing onStreamModeChanged function
+2026-03-29 07:39:40.317 | debug:    [session_06d1b90ff9b6:client] Exposing onStreamInfoChanged function
+2026-03-29 07:39:40.322 | debug:    [session_06d1b90ff9b6:client] Exposing onIncomingCall function
+2026-03-29 07:39:40.327 | debug:    [session_06d1b90ff9b6:client] Exposing onInterfaceChange function
+2026-03-29 07:39:40.330 | debug:    [session_06d1b90ff9b6:client] Exposing onPresenceChanged function
+2026-03-29 07:39:40.333 | debug:    [session_06d1b90ff9b6:client] Exposing onLiveLocation function
+2026-03-29 07:39:40.340 | debug:    [session_06d1b90ff9b6:client] Exposing onAddedToGroup function
+2026-03-29 07:39:40.345 | debug:    [session_06d1b90ff9b6:client] Exposing onRevokedMessage function
+2026-03-29 07:39:40.349 | debug:    [session_06d1b90ff9b6:client] Exposing onReactionMessage function
+2026-03-29 07:39:40.353 | debug:    [session_06d1b90ff9b6:client] Exposing onPollResponse function
+2026-03-29 07:39:40.358 | debug:    [session_06d1b90ff9b6:client] Exposing onUpdateLabel function
+2026-03-29 07:39:40.361 | debug:    [session_06d1b90ff9b6:client] Exposing onOrderStatusUpdate function
+2026-03-29 07:39:40.366 | debug:    [session_06d1b90ff9b6:client] Exposing onNewChat function
+2026-03-29 07:39:40.375 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:39:40.375 | http:     [session_06d1b90ff9b6:client] Current state: QR (CONNECTING)
+2026-03-29 07:39:40.596 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:39:40.596 | http:     [session_06d1b90ff9b6:client] Current state: QR (CONNECTING)
+2026-03-29 07:39:41.096 | [04:39:40.847] INFO (1): request completed
+2026-03-29 07:39:41.096 |     req: {
+2026-03-29 07:39:41.096 |       "id": 94,
+2026-03-29 07:39:41.096 |       "method": "GET",
+2026-03-29 07:39:41.096 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:41.096 |     }
+2026-03-29 07:39:41.096 |     res: {
+2026-03-29 07:39:41.096 |       "statusCode": 200
+2026-03-29 07:39:41.096 |     }
+2026-03-29 07:39:41.096 |     responseTime: 5
+2026-03-29 07:39:41.347 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:39:41.347 | http:     [session_06d1b90ff9b6:client] Current state: QR (CONNECTING)
+2026-03-29 07:39:41.639 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:39:41.639 | http:     [session_06d1b90ff9b6:client] Current state: QR (CONNECTING)
+2026-03-29 07:39:41.884 | verbose:  [session_06d1b90ff9b6:client] Waiting for QRCode Scan: Attempt 1
+2026-03-29 07:39:42.123 | [04:39:41.884] INFO (1): QR code ready
+2026-03-29 07:39:42.123 |     sessionId: "session_06d1b90ff9b6"
+2026-03-29 07:39:42.123 |     attempts: 1
+2026-03-29 07:39:42.123 | [04:39:41.908] INFO (1): request completed
+2026-03-29 07:39:42.123 |     req: {
+2026-03-29 07:39:42.123 |       "id": 95,
+2026-03-29 07:39:42.123 |       "method": "GET",
+2026-03-29 07:39:42.123 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:42.123 |     }
+2026-03-29 07:39:42.123 |     res: {
+2026-03-29 07:39:42.123 |       "statusCode": 200
+2026-03-29 07:39:42.123 |     }
+2026-03-29 07:39:42.123 |     responseTime: 8
+2026-03-29 07:39:42.123 | [04:39:42.086] INFO (1): request completed
+2026-03-29 07:39:42.123 |     req: {
+2026-03-29 07:39:42.123 |       "id": 96,
+2026-03-29 07:39:42.123 |       "method": "GET",
+2026-03-29 07:39:42.123 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:42.123 |     }
+2026-03-29 07:39:42.123 |     res: {
+2026-03-29 07:39:42.123 |       "statusCode": 304
+2026-03-29 07:39:42.123 |     }
+2026-03-29 07:39:42.123 |     responseTime: 6
+2026-03-29 07:39:44.190 | [04:39:44.112] INFO (1): request completed
+2026-03-29 07:39:44.190 |     req: {
+2026-03-29 07:39:44.190 |       "id": 97,
+2026-03-29 07:39:44.190 |       "method": "GET",
+2026-03-29 07:39:44.190 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:44.190 |     }
+2026-03-29 07:39:44.190 |     res: {
+2026-03-29 07:39:44.190 |       "statusCode": 304
+2026-03-29 07:39:44.190 |     }
+2026-03-29 07:39:44.190 |     responseTime: 9
+2026-03-29 07:39:45.212 | [04:39:44.969] INFO (1): request completed
+2026-03-29 07:39:45.213 |     req: {
+2026-03-29 07:39:45.213 |       "id": 98,
+2026-03-29 07:39:45.213 |       "method": "GET",
+2026-03-29 07:39:45.213 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:45.213 |     }
+2026-03-29 07:39:45.213 |     res: {
+2026-03-29 07:39:45.213 |       "statusCode": 304
+2026-03-29 07:39:45.213 |     }
+2026-03-29 07:39:45.213 |     responseTime: 12
+2026-03-29 07:39:46.239 | [04:39:46.153] INFO (1): request completed
+2026-03-29 07:39:46.239 |     req: {
+2026-03-29 07:39:46.239 |       "id": 99,
+2026-03-29 07:39:46.239 |       "method": "GET",
+2026-03-29 07:39:46.239 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:46.239 |     }
+2026-03-29 07:39:46.239 |     res: {
+2026-03-29 07:39:46.239 |       "statusCode": 304
+2026-03-29 07:39:46.239 |     }
+2026-03-29 07:39:46.239 |     responseTime: 9
+2026-03-29 07:39:48.291 | [04:39:47.998] INFO (1): request completed
+2026-03-29 07:39:48.291 |     req: {
+2026-03-29 07:39:48.291 |       "id": 100,
+2026-03-29 07:39:48.291 |       "method": "GET",
+2026-03-29 07:39:48.291 |       "url": "/api/sessions/session_06d1b90ff9b6/qr"
+2026-03-29 07:39:48.291 |     }
+2026-03-29 07:39:48.291 |     res: {
+2026-03-29 07:39:48.291 |       "statusCode": 304
+2026-03-29 07:39:48.291 |     }
+2026-03-29 07:39:48.291 |     responseTime: 6
+2026-03-29 07:39:48.291 | [04:39:48.183] INFO (1): request completed
+2026-03-29 07:39:48.291 |     req: {
+2026-03-29 07:39:48.291 |       "id": 101,
+2026-03-29 07:39:48.291 |       "method": "GET",
+2026-03-29 07:39:48.291 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:48.291 |     }
+2026-03-29 07:39:48.291 |     res: {
+2026-03-29 07:39:48.291 |       "statusCode": 304
+2026-03-29 07:39:48.291 |     }
+2026-03-29 07:39:48.291 |     responseTime: 8
+2026-03-29 07:39:49.434 | http:     [session_06d1b90ff9b6:client] Checking QRCode status...
+2026-03-29 07:39:49.637 | http:     [session_06d1b90ff9b6:client] Login with success
+2026-03-29 07:39:49.839 | http:     [session_06d1b90ff9b6:client] Checking phone is connected...
+2026-03-29 07:39:49.840 | debug:    [session_06d1b90ff9b6:client] Registering onStateChange event
+2026-03-29 07:39:49.841 | debug:    [session_06d1b90ff9b6:client] Registering onMessage event
+2026-03-29 07:39:50.271 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:39:50.271 | http:     [session_06d1b90ff9b6:client] Current state: SYNCING (CONNECTING)
+2026-03-29 07:39:50.272 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:39:50.272 | http:     [session_06d1b90ff9b6:client] Current state: SYNCING (CONNECTING)
+2026-03-29 07:39:50.273 | debug:    [session_06d1b90ff9b6:client] Emitting onStateChange event (1 registered)
+2026-03-29 07:39:50.342 | [04:39:49.636] INFO (1): WPPConnect status
+2026-03-29 07:39:50.342 |     sessionId: "session_06d1b90ff9b6"
+2026-03-29 07:39:50.342 |     status: "qrReadSuccess"
+2026-03-29 07:39:50.342 | [04:39:49.662] INFO (1): request completed
+2026-03-29 07:39:50.342 |     req: {
+2026-03-29 07:39:50.342 |       "id": 102,
+2026-03-29 07:39:50.342 |       "method": "GET",
+2026-03-29 07:39:50.342 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:50.342 |     }
+2026-03-29 07:39:50.342 |     res: {
+2026-03-29 07:39:50.342 |       "statusCode": 200
+2026-03-29 07:39:50.342 |     }
+2026-03-29 07:39:50.342 |     responseTime: 9
+2026-03-29 07:39:52.104 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:39:52.105 | http:     [session_06d1b90ff9b6:client] Current state: SYNCING (CONNECTING)
+2026-03-29 07:39:52.105 | debug:    [session_06d1b90ff9b6:client] Emitting onStateChange event (1 registered)
+2026-03-29 07:39:52.109 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:39:52.109 | http:     [session_06d1b90ff9b6:client] Current state: SYNCING (CONNECTING)
+2026-03-29 07:39:52.111 | debug:    [session_06d1b90ff9b6:client] Emitting onStateChange event (1 registered)
+2026-03-29 07:39:52.392 | [04:39:51.700] INFO (1): request completed
+2026-03-29 07:39:52.392 |     req: {
+2026-03-29 07:39:52.393 |       "id": 103,
+2026-03-29 07:39:52.393 |       "method": "GET",
+2026-03-29 07:39:52.393 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:52.393 |     }
+2026-03-29 07:39:52.393 |     res: {
+2026-03-29 07:39:52.393 |       "statusCode": 304
+2026-03-29 07:39:52.393 |     }
+2026-03-29 07:39:52.393 |     responseTime: 20
+2026-03-29 07:39:53.419 | [04:39:53.369] INFO (1): request completed
+2026-03-29 07:39:53.419 |     req: {
+2026-03-29 07:39:53.419 |       "id": 104,
+2026-03-29 07:39:53.419 |       "method": "GET",
+2026-03-29 07:39:53.419 |       "url": "/"
+2026-03-29 07:39:53.419 |     }
+2026-03-29 07:39:53.419 |     res: {
+2026-03-29 07:39:53.419 |       "statusCode": 200
+2026-03-29 07:39:53.419 |     }
+2026-03-29 07:39:53.419 |     responseTime: 2
+2026-03-29 07:39:53.934 | [04:39:53.741] INFO (1): request completed
+2026-03-29 07:39:53.934 |     req: {
+2026-03-29 07:39:53.934 |       "id": 105,
+2026-03-29 07:39:53.934 |       "method": "GET",
+2026-03-29 07:39:53.934 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:53.934 |     }
+2026-03-29 07:39:53.934 |     res: {
+2026-03-29 07:39:53.934 |       "statusCode": 304
+2026-03-29 07:39:53.934 |     }
+2026-03-29 07:39:53.934 |     responseTime: 15
+2026-03-29 07:39:55.985 | [04:39:55.772] INFO (1): request completed
+2026-03-29 07:39:55.985 |     req: {
+2026-03-29 07:39:55.985 |       "id": 106,
+2026-03-29 07:39:55.985 |       "method": "GET",
+2026-03-29 07:39:55.985 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:55.985 |     }
+2026-03-29 07:39:55.985 |     res: {
+2026-03-29 07:39:55.985 |       "statusCode": 304
+2026-03-29 07:39:55.985 |     }
+2026-03-29 07:39:55.985 |     responseTime: 7
+2026-03-29 07:39:58.036 | [04:39:57.807] INFO (1): request completed
+2026-03-29 07:39:58.036 |     req: {
+2026-03-29 07:39:58.036 |       "id": 107,
+2026-03-29 07:39:58.036 |       "method": "GET",
+2026-03-29 07:39:58.036 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:39:58.036 |     }
+2026-03-29 07:39:58.036 |     res: {
+2026-03-29 07:39:58.036 |       "statusCode": 304
+2026-03-29 07:39:58.036 |     }
+2026-03-29 07:39:58.036 |     responseTime: 8
+2026-03-29 07:40:00.087 | [04:39:59.830] INFO (1): request completed
+2026-03-29 07:40:00.087 |     req: {
+2026-03-29 07:40:00.087 |       "id": 108,
+2026-03-29 07:40:00.087 |       "method": "GET",
+2026-03-29 07:40:00.087 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:40:00.087 |     }
+2026-03-29 07:40:00.087 |     res: {
+2026-03-29 07:40:00.087 |       "statusCode": 304
+2026-03-29 07:40:00.087 |     }
+2026-03-29 07:40:00.087 |     responseTime: 7
+2026-03-29 07:40:02.139 | [04:40:01.859] INFO (1): request completed
+2026-03-29 07:40:02.139 |     req: {
+2026-03-29 07:40:02.139 |       "id": 109,
+2026-03-29 07:40:02.139 |       "method": "GET",
+2026-03-29 07:40:02.139 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:40:02.139 |     }
+2026-03-29 07:40:02.139 |     res: {
+2026-03-29 07:40:02.139 |       "statusCode": 304
+2026-03-29 07:40:02.139 |     }
+2026-03-29 07:40:02.139 |     responseTime: 6
+2026-03-29 07:40:02.139 | [04:40:02.022] INFO (1): Phone number saved
+2026-03-29 07:40:02.139 |     sessionId: "session_06d1b90ff9b6"
+2026-03-29 07:40:02.139 |     phone: "963933706403"
+2026-03-29 07:40:02.139 |     via: "getWid"
+2026-03-29 07:40:04.191 | [04:40:03.896] INFO (1): request completed
+2026-03-29 07:40:04.191 |     req: {
+2026-03-29 07:40:04.191 |       "id": 110,
+2026-03-29 07:40:04.191 |       "method": "GET",
+2026-03-29 07:40:04.191 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:40:04.191 |     }
+2026-03-29 07:40:04.191 |     res: {
+2026-03-29 07:40:04.191 |       "statusCode": 200
+2026-03-29 07:40:04.191 |     }
+2026-03-29 07:40:04.191 |     responseTime: 12
+2026-03-29 07:40:06.244 | [04:40:05.943] INFO (1): request completed
+2026-03-29 07:40:06.244 |     req: {
+2026-03-29 07:40:06.244 |       "id": 111,
+2026-03-29 07:40:06.244 |       "method": "GET",
+2026-03-29 07:40:06.244 |       "url": "/api/sessions/session_06d1b90ff9b6"
+2026-03-29 07:40:06.244 |     }
+2026-03-29 07:40:06.244 |     res: {
+2026-03-29 07:40:06.244 |       "statusCode": 304
+2026-03-29 07:40:06.244 |     }
+2026-03-29 07:40:06.244 |     responseTime: 11
+2026-03-29 07:40:06.244 | [04:40:06.225] INFO (1): WebSocket client disconnected
+2026-03-29 07:40:06.244 |     socketId: "j4kAu3Feerb9w_pJAAAD"
+2026-03-29 07:40:06.312 | [04:40:06.293] INFO (1): request completed
+2026-03-29 07:40:06.312 |     req: {
+2026-03-29 07:40:06.312 |       "id": 112,
+2026-03-29 07:40:06.312 |       "method": "GET",
+2026-03-29 07:40:06.312 |       "url": "/api/sessions"
+2026-03-29 07:40:06.312 |     }
+2026-03-29 07:40:06.312 |     res: {
+2026-03-29 07:40:06.312 |       "statusCode": 200
+2026-03-29 07:40:06.312 |     }
+2026-03-29 07:40:06.312 |     responseTime: 21
+2026-03-29 07:40:07.307 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.353 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.373 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.386 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.399 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.412 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.427 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.436 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.454 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.495 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.526 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.534 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.543 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.550 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.557 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.563 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.570 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.578 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.589 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.599 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.606 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.615 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.621 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.627 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.638 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.646 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.654 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.663 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.672 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.680 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.688 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.693 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.701 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.708 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.716 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.724 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.731 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.738 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.743 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.749 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.756 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.763 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.772 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.781 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.787 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.794 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.801 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.807 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.813 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.823 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.831 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.837 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.843 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.850 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.856 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.863 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.869 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.875 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.880 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.886 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.893 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.900 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.905 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.912 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.920 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.927 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.934 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.942 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.948 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.954 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.961 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.969 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.983 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.990 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:07.998 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:08.005 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:08.015 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:08.025 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:08.032 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:08.039 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:08.044 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:08.219 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:40:08.219 | http:     [session_06d1b90ff9b6:client] Current state: MAIN (NORMAL)
+2026-03-29 07:40:08.220 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:40:08.220 | http:     [session_06d1b90ff9b6:client] Current state: MAIN (NORMAL)
+2026-03-29 07:40:08.221 | debug:    [session_06d1b90ff9b6:client] Emitting onInterfaceChange event (1 registered)
+2026-03-29 07:40:08.221 | http:     [session_06d1b90ff9b6:client] Current state: MAIN (NORMAL)
+2026-03-29 07:40:20.383 | [04:40:19.842] INFO (1): request completed
+2026-03-29 07:40:20.383 |     req: {
+2026-03-29 07:40:20.383 |       "id": 113,
+2026-03-29 07:40:20.383 |       "method": "POST",
+2026-03-29 07:40:20.383 |       "url": "/api/send/text"
+2026-03-29 07:40:20.383 |     }
+2026-03-29 07:40:20.383 |     res: {
+2026-03-29 07:40:20.383 |       "statusCode": 200
+2026-03-29 07:40:20.383 |     }
+2026-03-29 07:40:20.383 |     responseTime: 2404
+2026-03-29 07:40:20.982 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:23.436 | [04:40:23.358] INFO (1): request completed
+2026-03-29 07:40:23.436 |     req: {
+2026-03-29 07:40:23.436 |       "id": 114,
+2026-03-29 07:40:23.436 |       "method": "GET",
+2026-03-29 07:40:23.436 |       "url": "/"
+2026-03-29 07:40:23.436 |     }
+2026-03-29 07:40:23.436 |     res: {
+2026-03-29 07:40:23.436 |       "statusCode": 200
+2026-03-29 07:40:23.436 |     }
+2026-03-29 07:40:23.436 |     responseTime: 1
+2026-03-29 07:40:47.569 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:40:48.511 | [04:40:47.771] INFO (1): request completed
+2026-03-29 07:40:48.511 |     req: {
+2026-03-29 07:40:48.511 |       "id": 115,
+2026-03-29 07:40:48.511 |       "method": "POST",
+2026-03-29 07:40:48.511 |       "url": "/api/send/text"
+2026-03-29 07:40:48.511 |     }
+2026-03-29 07:40:48.511 |     res: {
+2026-03-29 07:40:48.511 |       "statusCode": 200
+2026-03-29 07:40:48.511 |     }
+2026-03-29 07:40:48.511 |     responseTime: 6744
+2026-03-29 07:40:50.562 | [04:40:49.852] INFO (1): request completed
+2026-03-29 07:40:50.562 |     req: {
+2026-03-29 07:40:50.562 |       "id": 116,
+2026-03-29 07:40:50.562 |       "method": "GET",
+2026-03-29 07:40:50.562 |       "url": "/api/api-keys"
+2026-03-29 07:40:50.562 |     }
+2026-03-29 07:40:50.562 |     res: {
+2026-03-29 07:40:50.562 |       "statusCode": 200
+2026-03-29 07:40:50.562 |     }
+2026-03-29 07:40:50.562 |     responseTime: 29
+2026-03-29 07:40:50.562 | [04:40:49.900] INFO (1): request completed
+2026-03-29 07:40:50.562 |     req: {
+2026-03-29 07:40:50.562 |       "id": 117,
+2026-03-29 07:40:50.562 |       "method": "GET",
+2026-03-29 07:40:50.562 |       "url": "/api/sessions"
+2026-03-29 07:40:50.562 |     }
+2026-03-29 07:40:50.562 |     res: {
+2026-03-29 07:40:50.562 |       "statusCode": 200
+2026-03-29 07:40:50.562 |     }
+2026-03-29 07:40:50.562 |     responseTime: 65
+2026-03-29 07:40:53.615 | [04:40:53.355] INFO (1): request completed
+2026-03-29 07:40:53.615 |     req: {
+2026-03-29 07:40:53.615 |       "id": 118,
+2026-03-29 07:40:53.615 |       "method": "GET",
+2026-03-29 07:40:53.615 |       "url": "/"
+2026-03-29 07:40:53.615 |     }
+2026-03-29 07:40:53.615 |     res: {
+2026-03-29 07:40:53.615 |       "statusCode": 200
+2026-03-29 07:40:53.615 |     }
+2026-03-29 07:40:53.615 |     responseTime: 1
+2026-03-29 07:40:59.670 | [04:40:59.072] INFO (1): request completed
+2026-03-29 07:40:59.670 |     req: {
+2026-03-29 07:40:59.670 |       "id": 119,
+2026-03-29 07:40:59.670 |       "method": "POST",
+2026-03-29 07:40:59.671 |       "url": "/api/api-keys"
+2026-03-29 07:40:59.671 |     }
+2026-03-29 07:40:59.671 |     res: {
+2026-03-29 07:40:59.671 |       "statusCode": 201
+2026-03-29 07:40:59.671 |     }
+2026-03-29 07:40:59.671 |     responseTime: 89
+2026-03-29 07:40:59.671 | [04:40:59.096] INFO (1): request completed
+2026-03-29 07:40:59.671 |     req: {
+2026-03-29 07:40:59.671 |       "id": 120,
+2026-03-29 07:40:59.671 |       "method": "GET",
+2026-03-29 07:40:59.671 |       "url": "/api/api-keys"
+2026-03-29 07:40:59.671 |     }
+2026-03-29 07:40:59.671 |     res: {
+2026-03-29 07:40:59.671 |       "statusCode": 200
+2026-03-29 07:40:59.671 |     }
+2026-03-29 07:40:59.671 |     responseTime: 8
+2026-03-29 07:41:06.726 | [04:41:06.671] INFO (1): request errored
+2026-03-29 07:41:06.726 |     req: {
+2026-03-29 07:41:06.726 |       "id": 121,
+2026-03-29 07:41:06.726 |       "method": "GET",
+2026-03-29 07:41:06.726 |       "url": "/api/n8n-workflow/download"
+2026-03-29 07:41:06.726 |     }
+2026-03-29 07:41:06.726 |     res: {
+2026-03-29 07:41:06.726 |       "statusCode": 500
+2026-03-29 07:41:06.726 |     }
+2026-03-29 07:41:06.726 |     responseTime: 147
+2026-03-29 07:41:06.726 |     err: {
+2026-03-29 07:41:06.726 |       "type": "Error",
+2026-03-29 07:41:06.726 |       "message": "failed with status code 500",
+2026-03-29 07:41:06.726 |       "stack":
+2026-03-29 07:41:06.726 |           Error: failed with status code 500
+2026-03-29 07:41:06.726 |               at onResFinished (/app/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:115:39)
+2026-03-29 07:41:06.726 |               at ServerResponse.onResponseComplete (/app/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:178:14)
+2026-03-29 07:41:06.726 |               at ServerResponse.emit (node:events:536:35)
+2026-03-29 07:41:06.726 |               at onFinish (node:_http_outgoing:1031:10)
+2026-03-29 07:41:06.726 |               at callback (node:internal/streams/writable:766:21)
+2026-03-29 07:41:06.726 |               at afterWrite (node:internal/streams/writable:710:5)
+2026-03-29 07:41:06.726 |               at afterWriteTick (node:internal/streams/writable:696:10)
+2026-03-29 07:41:06.726 |               at process.processTicksAndRejections (node:internal/process/task_queues:81:21)
+2026-03-29 07:41:06.726 |     }
+2026-03-29 07:41:23.792 | [04:41:23.356] INFO (1): request completed
+2026-03-29 07:41:23.793 |     req: {
+2026-03-29 07:41:23.793 |       "id": 122,
+2026-03-29 07:41:23.793 |       "method": "GET",
+2026-03-29 07:41:23.793 |       "url": "/"
+2026-03-29 07:41:23.793 |     }
+2026-03-29 07:41:23.793 |     res: {
+2026-03-29 07:41:23.793 |       "statusCode": 200
+2026-03-29 07:41:23.793 |     }
+2026-03-29 07:41:23.793 |     responseTime: 1
+2026-03-29 07:41:27.760 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
+2026-03-29 07:41:27.841 | debug:    [session_06d1b90ff9b6:client] Emitting onMessage event (1 registered)
+2026-03-29 07:41:31.190 | debug:    [session_35df2710f6b3:client] Emitting onMessage event (1 registered)
