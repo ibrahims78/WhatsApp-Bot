@@ -1,0 +1,113 @@
+============================================
+  WhatsApp Manager - Development Mode
+============================================
+
+[1/6] Checking Git installation...
+Git found. OK.
+
+[2/6] Checking Docker status...
+Docker is running. OK.
+
+[3/6] Stopping production containers (if running) to free port 5005...
+Done.
+
+[4/6] Setting up project from GitHub...
+Project found. Pulling latest changes...
+Already up to date.
+Updated.
+
+[5/6] Generating secure configuration...
+Configuration already exists. Keeping it.
+
+[6/6] Building and starting DEV containers (5-15 minutes first time)...
+[+] Building 1083.1s (31/31) FINISHED
+ => [internal] load local bake definitions                                                                         0.0s
+ => => reading from stdin 1.04kB                                                                                   0.0s
+ => [api internal] load build definition from Dockerfile.api.dev                                                   0.0s
+ => => transferring dockerfile: 1.79kB                                                                             0.0s
+ => [dashboard internal] load build definition from Dockerfile.dashboard.dev                                       0.0s
+ => => transferring dockerfile: 538B                                                                               0.0s
+ => [api internal] load metadata for docker.io/library/node:20-bullseye-slim                                       3.7s
+ => [dashboard internal] load metadata for docker.io/library/node:20-slim                                          3.8s
+ => [dashboard internal] load .dockerignore                                                                        0.0s
+ => => transferring context: 355B                                                                                  0.0s
+ => CACHED [api  1/12] FROM docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b210374  0.0s
+ => => resolve docker.io/library/node:20-bullseye-slim@sha256:400a016038a720b2d9d34476d435af0b2103743e7e7a3cdd93f  0.0s
+ => [api internal] load build context                                                                              0.1s
+ => => transferring context: 6.11kB                                                                                0.0s
+ => CACHED [dashboard 1/7] FROM docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832f  0.0s
+ => => resolve docker.io/library/node:20-slim@sha256:1e85773c98c31d4fe5b545e4cb17379e617b348832fb3738b22a08f68dec  0.0s
+ => [dashboard internal] load build context                                                                        0.1s
+ => => transferring context: 11.40kB                                                                               0.0s
+ => [api  2/12] RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificat  712.5s
+ => [dashboard 2/7] RUN npm install -g pnpm@10                                                                    28.6s
+ => [dashboard 3/7] WORKDIR /app                                                                                   0.1s
+ => [dashboard 4/7] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./       0.1s
+ => [dashboard 5/7] COPY lib/ ./lib/                                                                               0.1s
+ => [dashboard 6/7] COPY artifacts/whatsapp-dashboard/ ./artifacts/whatsapp-dashboard/                             0.1s
+ => [dashboard 7/7] RUN pnpm install --frozen-lockfile                                                           483.9s
+ => [dashboard] exporting to image                                                                                37.9s
+ => => exporting layers                                                                                           18.2s
+ => => exporting manifest sha256:72689dccc5f1806f1df59f4233a239764c5e3f9d03391cff545e73c50c7a86a5                  0.0s
+ => => exporting config sha256:1570ee290b945a7e17ba02cf1ca1a68b2235d2ab110c00efdfeef195db43b3d7                    0.0s
+ => => exporting attestation manifest sha256:0f94ce005b455fa163cbd1400c71f30aad9e9a164fe3c1c8ee107731f7de0487      0.0s
+ => => exporting manifest list sha256:2a1bb56afcb7699ca10513cdc8fe958e658d0af3e6f6ab9ae32d101e12d1c047             0.0s
+ => => naming to docker.io/library/whatsapp-manager-dashboard-dev:latest                                           0.0s
+ => => unpacking to docker.io/library/whatsapp-manager-dashboard-dev:latest                                       19.5s
+ => [dashboard] resolving provenance for metadata file                                                             0.0s
+ => [api  3/12] RUN npm install -g pnpm@10                                                                        15.9s
+ => [api  4/12] WORKDIR /app                                                                                       0.1s
+ => [api  5/12] COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./           0.1s
+ => [api  6/12] COPY lib/ ./lib/                                                                                   0.1s
+ => [api  7/12] COPY artifacts/api-server/ ./artifacts/api-server/                                                 0.1s
+ => [api  8/12] COPY artifacts/whatsapp-dashboard/package.json ./artifacts/whatsapp-dashboard/                     0.1s
+ => [api  9/12] RUN pnpm install --frozen-lockfile                                                               293.8s
+ => [api 10/12] RUN mkdir -p /app/artifacts/api-server/tokens /app/artifacts/api-server/public                     0.9s
+ => [api 11/12] COPY entrypoint.dev.sh /entrypoint.dev.sh                                                          0.0s
+ => [api 12/12] RUN sed -i 's/\r$//' /entrypoint.dev.sh && chmod +x /entrypoint.dev.sh                             0.3s
+ => [api] exporting to image                                                                                      54.5s
+ => => exporting layers                                                                                           25.4s
+ => => exporting manifest sha256:56e1c1f4ce34655a9c6dc3ab1b3a2d1ec26d53206b61b4fb57d9d76abd4bd903                  0.0s
+ => => exporting config sha256:a350ec4609ac7b0cf9425bcf35fe539e9743f63cc22354fef4e1abfd567b1f36                    0.0s
+ => => exporting attestation manifest sha256:6ad59cfb8df73487443018513b3900f7948b036e004b20a3ef1605da3b25376a      0.0s
+ => => exporting manifest list sha256:8c6bd81ceae88a578624649e0e07951b0f2a9c82b01d33afe9f17a9f93237534             0.0s
+ => => naming to docker.io/library/whatsapp-manager-api-dev:latest                                                 0.0s
+ => => unpacking to docker.io/library/whatsapp-manager-api-dev:latest                                             28.9s
+ => [api] resolving provenance for metadata file                                                                   0.0s
+[+] Building 2/2
+ ✔ whatsapp-manager-api-dev:latest        Built                                                                    0.0s
+ ✔ whatsapp-manager-dashboard-dev:latest  Built                                                                    0.0s
+[+] Running 17/17
+ ✔ Network whatsapp_manager_dev_default            Created                                                         0.1s
+ ✔ Volume whatsapp_manager_dev_api_nm_root         Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_api_nm_db           Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_dash_nm_api_spec    Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_wa_public_dev       Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_dash_nm_root        Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_api_nm_api_zod      Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_dash_nm_db          Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_dash_nm_api_zod     Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_postgres_data_dev   Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_dash_nm_api_client  Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_api_nm_api_client   Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_api_nm_api_spec     Created                                                         0.0s
+ ✔ Volume whatsapp_manager_dev_wa_tokens_dev       Created                                                         0.0s
+ ✔ Container whatsapp_manager_dev-db-1             Healthy                                                        28.3s
+ ✔ Container whatsapp_manager_dev-api-1            Started                                                        24.5s
+ ✔ Container whatsapp_manager_dev-dashboard-1      Started                                                        14.4s
+Desktop shortcut created.
+
+Waiting for services to be ready (45 seconds - Vite startup takes longer)...
+
+============================================
+  Development mode ready!
+============================================
+
+  URL:      http://localhost:5005
+  Mode:     Development (HMR enabled)
+  Username: admin  |  Password: 123456
+
+  Dashboard HMR: Changes to src/ reflect instantly in browser.
+  API changes:   Restart the API container after changes.
+
+Press any key to continue . . .
