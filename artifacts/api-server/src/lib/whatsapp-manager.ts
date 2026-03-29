@@ -178,6 +178,27 @@ function startSelfPing(): void {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Gracefully close an existing client (removes from map + kills browser)
+// Called before scheduling a reconnect to prevent two browsers running at once,
+// which causes WhatsApp "Session Unpaired" (invalidated token).
+// ─────────────────────────────────────────────────────────────────────────────
+async function closeClientGracefully(sessionId: string): Promise<void> {
+  const oldClient = clients.get(sessionId);
+  clients.delete(sessionId);
+  if (oldClient) {
+    try { await oldClient.close(); } catch { /* ignore */ }
+    try {
+      const proc = oldClient.browser?.process?.();
+      if (proc) proc.kill("SIGKILL");
+      await oldClient.browser?.close().catch(() => {});
+    } catch { /* ignore */ }
+  }
+  forceKillChrome(sessionId);
+  await new Promise((r) => setTimeout(r, 600));
+  cleanChromeLocks(sessionId);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Keepalive
 // ─────────────────────────────────────────────────────────────────────────────
 // How many consecutive keepalive failures before we declare a real disconnect.
@@ -218,7 +239,7 @@ function startKeepalive(sessionId: string): void {
       if (fails >= KEEPALIVE_FAIL_THRESHOLD) {
         logger.warn({ sessionId, state, fails }, "Keepalive: threshold reached — scheduling reconnect");
         stopKeepalive(sessionId);
-        clients.delete(sessionId);
+        await closeClientGracefully(sessionId);
         scheduleReconnect(sessionId);
       }
     } catch (e) {
@@ -229,7 +250,7 @@ function startKeepalive(sessionId: string): void {
       if (fails >= KEEPALIVE_FAIL_THRESHOLD) {
         logger.warn({ sessionId, fails }, "Keepalive: error threshold reached — scheduling reconnect");
         stopKeepalive(sessionId);
-        clients.delete(sessionId);
+        await closeClientGracefully(sessionId);
         scheduleReconnect(sessionId);
       }
     }

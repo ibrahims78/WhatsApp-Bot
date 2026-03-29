@@ -1,0 +1,39 @@
+2026-03-29 07:34:19.919 | 
+2026-03-29 07:34:19.919 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-29 07:34:19.919 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-29 07:34:19.919 | 
+2026-03-29 07:34:20.416 | 
+2026-03-29 07:34:20.416 |   VITE v7.3.1  ready in 428 ms
+2026-03-29 07:34:20.416 | 
+2026-03-29 07:34:20.416 |   ➜  Local:   http://localhost:5000/
+2026-03-29 07:34:20.416 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-29 08:10:10.336 | /app/artifacts/whatsapp-dashboard:
+2026-03-29 08:10:10.336 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-29 08:10:10.336 | Command failed with signal "SIGTERM"
+2026-03-29 08:10:12.050 | 
+2026-03-29 08:10:12.050 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-29 08:10:12.050 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-29 08:10:12.050 | 
+2026-03-29 08:10:12.451 | 
+2026-03-29 08:10:12.451 |   VITE v7.3.1  ready in 356 ms
+2026-03-29 08:10:12.451 | 
+2026-03-29 08:10:12.452 |   ➜  Local:   http://localhost:5000/
+2026-03-29 08:10:12.452 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-29 08:10:19.923 | 5:10:19 AM [vite] http proxy error: /api/auth/me
+2026-03-29 08:10:19.923 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-29 08:10:19.923 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-29 08:10:19.925 | 5:10:19 AM [vite] http proxy error: /api/sessions
+2026-03-29 08:10:19.925 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-29 08:10:19.925 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-29 10:05:16.737 | /app/artifacts/whatsapp-dashboard:
+2026-03-29 10:05:16.737 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-29 10:05:16.737 | Command failed with signal "SIGTERM"
+2026-03-29 10:05:18.994 | 
+2026-03-29 10:05:18.994 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-29 10:05:18.994 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-29 10:05:18.994 | 
+2026-03-29 10:05:19.492 | 
+2026-03-29 10:05:19.492 |   VITE v7.3.1  ready in 439 ms
+2026-03-29 10:05:19.492 | 
+2026-03-29 10:05:19.492 |   ➜  Local:   http://localhost:5000/
+2026-03-29 10:05:19.492 |   ➜  Network: http://172.26.0.4:5000/
