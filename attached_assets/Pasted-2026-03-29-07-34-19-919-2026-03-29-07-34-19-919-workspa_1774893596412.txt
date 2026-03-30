@@ -1,0 +1,207 @@
+2026-03-29 07:34:19.919 | 
+2026-03-29 07:34:19.919 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-29 07:34:19.919 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-29 07:34:19.919 | 
+2026-03-29 07:34:20.416 | 
+2026-03-29 07:34:20.416 |   VITE v7.3.1  ready in 428 ms
+2026-03-29 07:34:20.416 | 
+2026-03-29 07:34:20.416 |   ➜  Local:   http://localhost:5000/
+2026-03-29 07:34:20.416 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-29 08:10:10.336 | /app/artifacts/whatsapp-dashboard:
+2026-03-29 08:10:10.336 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-29 08:10:10.336 | Command failed with signal "SIGTERM"
+2026-03-29 08:10:12.050 | 
+2026-03-29 08:10:12.050 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-29 08:10:12.050 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-29 08:10:12.050 | 
+2026-03-29 08:10:12.451 | 
+2026-03-29 08:10:12.451 |   VITE v7.3.1  ready in 356 ms
+2026-03-29 08:10:12.451 | 
+2026-03-29 08:10:12.452 |   ➜  Local:   http://localhost:5000/
+2026-03-29 08:10:12.452 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-29 08:10:19.923 | 5:10:19 AM [vite] http proxy error: /api/auth/me
+2026-03-29 08:10:19.923 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-29 08:10:19.923 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-29 08:10:19.925 | 5:10:19 AM [vite] http proxy error: /api/sessions
+2026-03-29 08:10:19.925 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-29 08:10:19.925 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-29 10:05:16.737 | /app/artifacts/whatsapp-dashboard:
+2026-03-29 10:05:16.737 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-29 10:05:16.737 | Command failed with signal "SIGTERM"
+2026-03-29 10:05:18.994 | 
+2026-03-29 10:05:18.994 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-29 10:05:18.994 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-29 10:05:18.994 | 
+2026-03-29 10:05:19.492 | 
+2026-03-29 10:05:19.492 |   VITE v7.3.1  ready in 439 ms
+2026-03-29 10:05:19.492 | 
+2026-03-29 10:05:19.492 |   ➜  Local:   http://localhost:5000/
+2026-03-29 10:05:19.492 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-29 10:14:48.862 | /app/artifacts/whatsapp-dashboard:
+2026-03-29 10:14:48.862 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-29 10:14:48.862 | Command failed with signal "SIGTERM"
+2026-03-29 10:14:50.244 | 
+2026-03-29 10:14:50.244 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-29 10:14:50.244 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-29 10:14:50.244 | 
+2026-03-29 10:14:50.673 | 
+2026-03-29 10:14:50.673 |   VITE v7.3.1  ready in 374 ms
+2026-03-29 10:14:50.673 | 
+2026-03-29 10:14:50.674 |   ➜  Local:   http://localhost:5000/
+2026-03-29 10:14:50.674 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-29 23:54:04.564 | /app/artifacts/whatsapp-dashboard:
+2026-03-29 23:54:04.564 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-29 23:54:04.564 | Command failed with signal "SIGTERM"
+2026-03-29 23:54:06.194 | 
+2026-03-29 23:54:06.194 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-29 23:54:06.194 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-29 23:54:06.194 | 
+2026-03-29 23:54:06.724 | 
+2026-03-29 23:54:06.724 |   VITE v7.3.1  ready in 447 ms
+2026-03-29 23:54:06.724 | 
+2026-03-29 23:54:06.724 |   ➜  Local:   http://localhost:5000/
+2026-03-29 23:54:06.724 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-29 23:54:08.728 | 8:54:08 PM [vite] http proxy error: /socket.io/?EIO=4&transport=polling&t=8lq8lx70
+2026-03-29 23:54:08.728 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-29 23:54:08.728 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-30 06:34:31.461 | 
+2026-03-30 06:34:31.474 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 06:34:31.474 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 06:34:31.474 | 
+2026-03-30 06:34:33.483 | 
+2026-03-30 06:34:33.483 |   VITE v7.3.1  ready in 1532 ms
+2026-03-30 06:34:33.483 | 
+2026-03-30 06:34:33.483 |   ➜  Local:   http://localhost:5000/
+2026-03-30 06:34:33.483 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-30 06:55:58.034 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 06:55:58.034 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 06:55:58.034 | Command failed with signal "SIGTERM"
+2026-03-30 06:55:59.579 | 
+2026-03-30 06:55:59.579 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 06:55:59.579 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 06:55:59.579 | 
+2026-03-30 06:55:59.963 | 
+2026-03-30 06:55:59.963 |   VITE v7.3.1  ready in 336 ms
+2026-03-30 06:55:59.963 | 
+2026-03-30 06:55:59.963 |   ➜  Local:   http://localhost:5000/
+2026-03-30 06:55:59.963 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-30 07:01:20.356 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 07:01:20.356 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 07:01:20.356 | Command failed with signal "SIGTERM"
+2026-03-30 07:01:21.651 | 
+2026-03-30 07:01:21.651 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 07:01:21.651 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 07:01:21.651 | 
+2026-03-30 07:01:22.220 | 
+2026-03-30 07:01:22.220 |   VITE v7.3.1  ready in 486 ms
+2026-03-30 07:01:22.220 | 
+2026-03-30 07:01:22.220 |   ➜  Local:   http://localhost:5000/
+2026-03-30 07:01:22.220 |   ➜  Network: http://172.26.0.2:5000/
+2026-03-30 07:18:10.385 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 07:18:10.386 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 07:18:10.386 | Command failed with signal "SIGTERM"
+2026-03-30 07:18:11.658 | 
+2026-03-30 07:18:11.658 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 07:18:11.658 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 07:18:11.658 | 
+2026-03-30 07:18:12.174 | 
+2026-03-30 07:18:12.174 |   VITE v7.3.1  ready in 404 ms
+2026-03-30 07:18:12.174 | 
+2026-03-30 07:18:12.174 |   ➜  Local:   http://localhost:5000/
+2026-03-30 07:18:12.175 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-30 07:18:12.782 | 4:18:12 AM [vite] http proxy error: /socket.io/?EIO=4&transport=polling&t=ogsvn017
+2026-03-30 07:18:12.782 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-30 07:18:12.782 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-30 07:23:36.420 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 07:23:36.420 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 07:23:36.420 | Command failed with signal "SIGTERM"
+2026-03-30 07:23:37.887 | 
+2026-03-30 07:23:37.887 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 07:23:37.887 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 07:23:37.887 | 
+2026-03-30 07:23:38.348 | 
+2026-03-30 07:23:38.348 |   VITE v7.3.1  ready in 403 ms
+2026-03-30 07:23:38.348 | 
+2026-03-30 07:23:38.348 |   ➜  Local:   http://localhost:5000/
+2026-03-30 07:23:38.348 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-30 07:23:38.694 | 4:23:38 AM [vite] http proxy error: /socket.io/?EIO=4&transport=polling&t=onsf42pv
+2026-03-30 07:23:38.694 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-30 07:23:38.694 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-30 07:23:40.655 | 4:23:40 AM [vite] http proxy error: /socket.io/?EIO=4&transport=polling&t=ontyhy6e
+2026-03-30 07:23:40.655 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-30 07:23:40.655 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-30 07:42:10.082 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 07:42:10.082 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 07:42:10.082 | Command failed with signal "SIGTERM"
+2026-03-30 07:42:11.535 | 
+2026-03-30 07:42:11.535 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 07:42:11.535 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 07:42:11.535 | 
+2026-03-30 07:42:11.968 | 
+2026-03-30 07:42:11.968 |   VITE v7.3.1  ready in 366 ms
+2026-03-30 07:42:11.968 | 
+2026-03-30 07:42:11.969 |   ➜  Local:   http://localhost:5000/
+2026-03-30 07:42:11.969 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-30 07:42:13.698 | 4:42:13 AM [vite] http proxy error: /socket.io/?EIO=4&transport=polling&t=pboraaen
+2026-03-30 07:42:13.698 | Error: connect ECONNREFUSED 172.26.0.3:8080
+2026-03-30 07:42:13.698 |     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)
+2026-03-30 09:11:09.629 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 09:11:09.629 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 09:11:09.629 | Command failed with signal "SIGTERM"
+2026-03-30 09:11:11.277 | 
+2026-03-30 09:11:11.277 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 09:11:11.277 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 09:11:11.277 | 
+2026-03-30 09:11:11.813 | 
+2026-03-30 09:11:11.813 |   VITE v7.3.1  ready in 475 ms
+2026-03-30 09:11:11.813 | 
+2026-03-30 09:11:11.813 |   ➜  Local:   http://localhost:5000/
+2026-03-30 09:11:11.814 |   ➜  Network: http://172.26.0.2:5000/
+2026-03-30 09:17:45.064 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 09:17:45.064 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 09:17:45.064 | Command failed with signal "SIGTERM"
+2026-03-30 09:17:46.543 | 
+2026-03-30 09:17:46.543 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 09:17:46.543 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 09:17:46.543 | 
+2026-03-30 09:17:47.100 | 
+2026-03-30 09:17:47.100 |   VITE v7.3.1  ready in 488 ms
+2026-03-30 09:17:47.100 | 
+2026-03-30 09:17:47.101 |   ➜  Local:   http://localhost:5000/
+2026-03-30 09:17:47.101 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-30 09:25:10.502 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 09:25:10.502 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 09:25:10.502 | Command failed with signal "SIGTERM"
+2026-03-30 09:25:24.131 | 
+2026-03-30 09:25:24.131 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 09:25:24.131 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 09:25:24.131 | 
+2026-03-30 09:25:24.949 | 
+2026-03-30 09:25:24.949 |   VITE v7.3.1  ready in 718 ms
+2026-03-30 09:25:24.949 | 
+2026-03-30 09:25:24.949 |   ➜  Local:   http://localhost:5000/
+2026-03-30 09:25:24.950 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-30 20:08:21.437 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 20:08:21.437 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 20:08:21.437 | Command failed with signal "SIGTERM"
+2026-03-30 20:08:23.146 | 
+2026-03-30 20:08:23.146 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 20:08:23.147 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 20:08:23.147 | 
+2026-03-30 20:08:23.694 | 
+2026-03-30 20:08:23.695 |   VITE v7.3.1  ready in 489 ms
+2026-03-30 20:08:23.695 | 
+2026-03-30 20:08:23.695 |   ➜  Local:   http://localhost:5000/
+2026-03-30 20:08:23.695 |   ➜  Network: http://172.26.0.4:5000/
+2026-03-30 20:40:48.487 | /app/artifacts/whatsapp-dashboard:
+2026-03-30 20:40:48.487 |  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/whatsapp-dashboard@0.0.0 dev: `vite --config vite.config.ts --host 0.0.0.0`
+2026-03-30 20:40:48.487 | Command failed with signal "SIGTERM"
+2026-03-30 20:41:00.453 | 
+2026-03-30 20:41:00.453 | > @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+2026-03-30 20:41:00.453 | > vite --config vite.config.ts --host 0.0.0.0
+2026-03-30 20:41:00.453 | 
+2026-03-30 20:41:00.967 | 
+2026-03-30 20:41:00.967 |   VITE v7.3.1  ready in 447 ms
+2026-03-30 20:41:00.967 | 
+2026-03-30 20:41:00.967 |   ➜  Local:   http://localhost:5000/
+2026-03-30 20:41:00.967 |   ➜  Network: http://172.26.0.4:5000/
