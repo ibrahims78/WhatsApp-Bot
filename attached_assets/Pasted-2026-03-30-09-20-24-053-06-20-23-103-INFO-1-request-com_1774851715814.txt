@@ -1,0 +1,104 @@
+2026-03-30 09:20:24.053 | [06:20:23.103] INFO (1): request completed
+2026-03-30 09:20:24.053 |     req: {
+2026-03-30 09:20:24.053 |       "id": 13,
+2026-03-30 09:20:24.053 |       "method": "GET",
+2026-03-30 09:20:24.053 |       "url": "/"
+2026-03-30 09:20:24.053 |     }
+2026-03-30 09:20:24.053 |     res: {
+2026-03-30 09:20:24.053 |       "statusCode": 200
+2026-03-30 09:20:24.053 |     }
+2026-03-30 09:20:24.053 |     responseTime: 0
+2026-03-30 09:20:53.140 | [06:20:53.101] INFO (1): request completed
+2026-03-30 09:20:53.140 |     req: {
+2026-03-30 09:20:53.140 |       "id": 14,
+2026-03-30 09:20:53.140 |       "method": "GET",
+2026-03-30 09:20:53.140 |       "url": "/"
+2026-03-30 09:20:53.140 |     }
+2026-03-30 09:20:53.140 |     res: {
+2026-03-30 09:20:53.140 |       "statusCode": 200
+2026-03-30 09:20:53.140 |     }
+2026-03-30 09:20:53.140 |     responseTime: 0
+2026-03-30 09:21:23.225 | [06:21:22.478] INFO (1): request completed
+2026-03-30 09:21:23.225 |     req: {
+2026-03-30 09:21:23.225 |       "id": 15,
+2026-03-30 09:21:23.225 |       "method": "GET",
+2026-03-30 09:21:23.225 |       "url": "/api/sessions"
+2026-03-30 09:21:23.225 |     }
+2026-03-30 09:21:23.225 |     res: {
+2026-03-30 09:21:23.225 |       "statusCode": 304
+2026-03-30 09:21:23.225 |     }
+2026-03-30 09:21:23.225 |     responseTime: 33
+2026-03-30 09:21:23.225 | [06:21:23.102] INFO (1): request completed
+2026-03-30 09:21:23.225 |     req: {
+2026-03-30 09:21:23.225 |       "id": 16,
+2026-03-30 09:21:23.225 |       "method": "GET",
+2026-03-30 09:21:23.226 |       "url": "/"
+2026-03-30 09:21:23.226 |     }
+2026-03-30 09:21:23.226 |     res: {
+2026-03-30 09:21:23.226 |       "statusCode": 200
+2026-03-30 09:21:23.226 |     }
+2026-03-30 09:21:23.226 |     responseTime: 2
+2026-03-30 09:21:34.288 | [06:21:34.013] ERROR (1): Failed to send text
+2026-03-30 09:21:34.288 |     req: {
+2026-03-30 09:21:34.288 |       "id": 17,
+2026-03-30 09:21:34.288 |       "method": "POST",
+2026-03-30 09:21:34.288 |       "url": "/api/send/text"
+2026-03-30 09:21:34.288 |     }
+2026-03-30 09:21:34.288 |     sessionId: "session_de30491e83ac"
+2026-03-30 09:21:34.288 |     err: {
+2026-03-30 09:21:34.288 |       "type": "Error",
+2026-03-30 09:21:34.288 |       "message": "MasterDatabaseMessageEncryptionKey.chat was accessed before init",
+2026-03-30 09:21:34.288 |       "stack":
+2026-03-30 09:21:34.288 |           DbMsgEncKeyNotLoaded: MasterDatabaseMessageEncryptionKey.chat was accessed before init
+2026-03-30 09:21:34.288 |               at /app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/helpers/evaluate-and-return.js:107:31
+2026-03-30 09:21:34.288 |               at step (/app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/helpers/evaluate-and-return.js:49:23)
+2026-03-30 09:21:34.288 |               at Object.next (/app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/helpers/evaluate-and-return.js:30:53)
+2026-03-30 09:21:34.288 |               at fulfilled (/app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/helpers/evaluate-and-return.js:21:58)
+2026-03-30 09:21:34.288 |           JS Stack: DbMsgEncKeyNotLoaded: MasterDatabaseMessageEncryptionKey.chat was accessed before init
+2026-03-30 09:21:34.288 |               at /app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/helpers/evaluate-and-return.js:104:33
+2026-03-30 09:21:34.288 |               at step (/app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/helpers/evaluate-and-return.js:49:23)
+2026-03-30 09:21:34.288 |               at Object.next (/app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/helpers/evaluate-and-return.js:30:53)
+2026-03-30 09:21:34.288 |               at fulfilled (/app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/helpers/evaluate-and-return.js:21:58)
+2026-03-30 09:21:34.288 |           Function: function (_a) {
+2026-03-30 09:21:34.288 |                                       var to = _a.to, content = _a.content, options = _a.options;
+2026-03-30 09:21:34.288 |                                       return WPP.chat.sendTextMessage(to, content, __assign(__assign({}, options), { waitForAck: true }));
+2026-03-30 09:21:34.288 |                                   }
+2026-03-30 09:21:34.288 |       "taalOpcodes": [
+2026-03-30 09:21:34.288 |         2,
+2026-03-30 09:21:34.288 |         2
+2026-03-30 09:21:34.288 |       ],
+2026-03-30 09:21:34.288 |       "name": "DbMsgEncKeyNotLoaded",
+2026-03-30 09:21:34.288 |       "project": "wa_web",
+2026-03-30 09:21:34.288 |       "errorName": "DbMsgEncKeyNotLoaded",
+2026-03-30 09:21:34.288 |       "loggingSource": "FBLOGGER",
+2026-03-30 09:21:34.288 |       "messageFormat": "MasterDatabaseMessageEncryptionKey.chat was accessed before init [Caught in: idb failed to do Operation: %s on Table: %s. Failed with error %s (storage-error)]",
+2026-03-30 09:21:34.288 |       "messageParams": [
+2026-03-30 09:21:34.288 |         "anyOf",
+2026-03-30 09:21:34.288 |         "chat",
+2026-03-30 09:21:34.288 |         ""
+2026-03-30 09:21:34.288 |       ]
+2026-03-30 09:21:34.288 |     }
+2026-03-30 09:21:34.288 | [06:21:34.014] INFO (1): request errored
+2026-03-30 09:21:34.288 |     req: {
+2026-03-30 09:21:34.288 |       "id": 17,
+2026-03-30 09:21:34.288 |       "method": "POST",
+2026-03-30 09:21:34.288 |       "url": "/api/send/text"
+2026-03-30 09:21:34.288 |     }
+2026-03-30 09:21:34.288 |     res: {
+2026-03-30 09:21:34.288 |       "statusCode": 500
+2026-03-30 09:21:34.288 |     }
+2026-03-30 09:21:34.288 |     responseTime: 96
+2026-03-30 09:21:34.288 |     err: {
+2026-03-30 09:21:34.288 |       "type": "Error",
+2026-03-30 09:21:34.288 |       "message": "failed with status code 500",
+2026-03-30 09:21:34.288 |       "stack":
+2026-03-30 09:21:34.288 |           Error: failed with status code 500
+2026-03-30 09:21:34.288 |               at onResFinished (/app/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:115:39)
+2026-03-30 09:21:34.288 |               at ServerResponse.onResponseComplete (/app/node_modules/.pnpm/pino-http@10.5.0/node_modules/pino-http/logger.js:178:14)
+2026-03-30 09:21:34.288 |               at ServerResponse.emit (node:events:536:35)
+2026-03-30 09:21:34.288 |               at onFinish (node:_http_outgoing:1031:10)
+2026-03-30 09:21:34.288 |               at callback (node:internal/streams/writable:766:21)
+2026-03-30 09:21:34.288 |               at afterWrite (node:internal/streams/writable:710:5)
+2026-03-30 09:21:34.288 |               at afterWriteTick (node:internal/streams/writable:696:10)
+2026-03-30 09:21:34.288 |               at process.processTicksAndRejections (node:internal/process/task_queues:81:21)
+2026-03-30 09:21:34.288 |     }
