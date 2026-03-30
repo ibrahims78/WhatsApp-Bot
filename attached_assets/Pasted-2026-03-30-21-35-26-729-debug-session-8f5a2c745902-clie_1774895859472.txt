@@ -1,0 +1,194 @@
+2026-03-30 21:35:26.729 | debug:    [session_8f5a2c745902:client] Emitting onMessage event (1 registered)
+2026-03-30 21:35:27.077 | [18:35:26.435] WARN (1): Webhook permanently failed after all retries
+2026-03-30 21:35:27.077 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:35:27.077 |     err: "This operation was aborted"
+2026-03-30 21:35:27.077 | [18:35:26.750] INFO (1): Webhook check for incoming message
+2026-03-30 21:35:27.077 |     sessionId: "session_8f5a2c745902"
+2026-03-30 21:35:27.078 |     webhookUrl: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:35:27.078 |     events: []
+2026-03-30 21:35:27.078 |     willSend: true
+2026-03-30 21:35:37.141 | [18:35:36.748] WARN (1): Webhook failed — retrying (1/3)
+2026-03-30 21:35:37.141 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:35:37.141 |     attempt: 1
+2026-03-30 21:35:37.142 |     err: "This operation was aborted"
+2026-03-30 21:35:40.197 | [18:35:39.919] INFO (1): request completed
+2026-03-30 21:35:40.197 |     req: {
+2026-03-30 21:35:40.197 |       "id": 136,
+2026-03-30 21:35:40.197 |       "method": "GET",
+2026-03-30 21:35:40.197 |       "url": "/"
+2026-03-30 21:35:40.197 |     }
+2026-03-30 21:35:40.197 |     res: {
+2026-03-30 21:35:40.198 |       "statusCode": 200
+2026-03-30 21:35:40.198 |     }
+2026-03-30 21:35:40.198 |     responseTime: 2
+2026-03-30 21:35:49.259 | [18:35:48.751] WARN (1): Webhook failed — retrying (2/3)
+2026-03-30 21:35:49.259 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:35:49.259 |     attempt: 2
+2026-03-30 21:35:49.259 |     err: "This operation was aborted"
+2026-03-30 21:36:03.323 | [18:36:02.754] WARN (1): Webhook permanently failed after all retries
+2026-03-30 21:36:03.323 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:36:03.323 |     err: "This operation was aborted"
+2026-03-30 21:36:08.112 | verbose:  [session_a4ef1bbfa2b3:client] Waiting for QRCode Scan: Attempt 32
+2026-03-30 21:36:08.380 | [18:36:08.112] INFO (1): QR code ready
+2026-03-30 21:36:08.380 |     sessionId: "session_a4ef1bbfa2b3"
+2026-03-30 21:36:08.380 |     attempts: 32
+2026-03-30 21:36:10.435 | [18:36:09.915] INFO (1): request completed
+2026-03-30 21:36:10.435 |     req: {
+2026-03-30 21:36:10.435 |       "id": 137,
+2026-03-30 21:36:10.435 |       "method": "GET",
+2026-03-30 21:36:10.435 |       "url": "/"
+2026-03-30 21:36:10.435 |     }
+2026-03-30 21:36:10.435 |     res: {
+2026-03-30 21:36:10.435 |       "statusCode": 200
+2026-03-30 21:36:10.435 |     }
+2026-03-30 21:36:10.435 |     responseTime: 1
+2026-03-30 21:36:22.933 | debug:    [session_8f5a2c745902:client] Emitting onMessage event (1 registered)
+2026-03-30 21:36:23.507 | [18:36:22.957] INFO (1): Webhook check for incoming message
+2026-03-30 21:36:23.507 |     sessionId: "session_8f5a2c745902"
+2026-03-30 21:36:23.507 |     webhookUrl: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:36:23.507 |     events: []
+2026-03-30 21:36:23.508 |     willSend: true
+2026-03-30 21:36:28.111 | verbose:  [session_a4ef1bbfa2b3:client] Waiting for QRCode Scan: Attempt 33
+2026-03-30 21:36:28.561 | [18:36:28.111] INFO (1): QR code ready
+2026-03-30 21:36:28.561 |     sessionId: "session_a4ef1bbfa2b3"
+2026-03-30 21:36:28.561 |     attempts: 33
+2026-03-30 21:36:33.614 | [18:36:32.961] WARN (1): Webhook failed — retrying (1/3)
+2026-03-30 21:36:33.615 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:36:33.615 |     attempt: 1
+2026-03-30 21:36:33.615 |     err: "This operation was aborted"
+2026-03-30 21:36:40.675 | [18:36:39.915] INFO (1): request completed
+2026-03-30 21:36:40.675 |     req: {
+2026-03-30 21:36:40.675 |       "id": 138,
+2026-03-30 21:36:40.675 |       "method": "GET",
+2026-03-30 21:36:40.675 |       "url": "/"
+2026-03-30 21:36:40.675 |     }
+2026-03-30 21:36:40.675 |     res: {
+2026-03-30 21:36:40.675 |       "statusCode": 200
+2026-03-30 21:36:40.675 |     }
+2026-03-30 21:36:40.675 |     responseTime: 3
+2026-03-30 21:36:44.045 | debug:    [session_8f5a2c745902:client] Emitting onMessage event (1 registered)
+2026-03-30 21:36:44.731 | [18:36:44.071] INFO (1): Webhook check for incoming message
+2026-03-30 21:36:44.731 |     sessionId: "session_8f5a2c745902"
+2026-03-30 21:36:44.731 |     webhookUrl: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:36:44.731 |     events: []
+2026-03-30 21:36:44.732 |     willSend: true
+2026-03-30 21:36:44.990 | [18:36:44.957] WARN (1): Webhook failed — retrying (2/3)
+2026-03-30 21:36:44.990 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:36:44.990 |     attempt: 2
+2026-03-30 21:36:44.990 |     err: "This operation was aborted"
+2026-03-30 21:36:48.102 | verbose:  [session_a4ef1bbfa2b3:client] Waiting for QRCode Scan: Attempt 34
+2026-03-30 21:36:49.046 | [18:36:48.101] INFO (1): QR code ready
+2026-03-30 21:36:49.046 |     sessionId: "session_a4ef1bbfa2b3"
+2026-03-30 21:36:49.046 |     attempts: 34
+2026-03-30 21:36:54.100 | [18:36:54.073] WARN (1): Webhook failed — retrying (1/3)
+2026-03-30 21:36:54.100 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:36:54.100 |     attempt: 1
+2026-03-30 21:36:54.100 |     err: "This operation was aborted"
+2026-03-30 21:36:58.157 | [18:36:57.537] INFO (1): request completed
+2026-03-30 21:36:58.157 |     req: {
+2026-03-30 21:36:58.157 |       "id": 140,
+2026-03-30 21:36:58.157 |       "method": "GET",
+2026-03-30 21:36:58.157 |       "url": "/api/auth/me"
+2026-03-30 21:36:58.157 |     }
+2026-03-30 21:36:58.157 |     res: {
+2026-03-30 21:36:58.157 |       "statusCode": 304
+2026-03-30 21:36:58.157 |     }
+2026-03-30 21:36:58.157 |     responseTime: 24
+2026-03-30 21:36:58.157 | [18:36:57.541] INFO (1): request completed
+2026-03-30 21:36:58.157 |     req: {
+2026-03-30 21:36:58.157 |       "id": 139,
+2026-03-30 21:36:58.157 |       "method": "GET",
+2026-03-30 21:36:58.157 |       "url": "/api/sessions"
+2026-03-30 21:36:58.157 |     }
+2026-03-30 21:36:58.157 |     res: {
+2026-03-30 21:36:58.157 |       "statusCode": 200
+2026-03-30 21:36:58.157 |     }
+2026-03-30 21:36:58.157 |     responseTime: 31
+2026-03-30 21:36:59.183 | [18:36:58.959] WARN (1): Webhook permanently failed after all retries
+2026-03-30 21:36:59.183 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:36:59.183 |     err: "This operation was aborted"
+2026-03-30 21:36:59.184 | [18:36:59.124] INFO (1): request completed
+2026-03-30 21:36:59.184 |     req: {
+2026-03-30 21:36:59.184 |       "id": 141,
+2026-03-30 21:36:59.184 |       "method": "GET",
+2026-03-30 21:36:59.184 |       "url": "/api/auth/me"
+2026-03-30 21:36:59.184 |     }
+2026-03-30 21:36:59.184 |     res: {
+2026-03-30 21:36:59.184 |       "statusCode": 304
+2026-03-30 21:36:59.184 |     }
+2026-03-30 21:36:59.184 |     responseTime: 5
+2026-03-30 21:36:59.184 | [18:36:59.135] INFO (1): request completed
+2026-03-30 21:36:59.184 |     req: {
+2026-03-30 21:36:59.184 |       "id": 142,
+2026-03-30 21:36:59.184 |       "method": "GET",
+2026-03-30 21:36:59.184 |       "url": "/api/sessions"
+2026-03-30 21:36:59.184 |     }
+2026-03-30 21:36:59.184 |     res: {
+2026-03-30 21:36:59.184 |       "statusCode": 304
+2026-03-30 21:36:59.184 |     }
+2026-03-30 21:36:59.184 |     responseTime: 13
+2026-03-30 21:37:00.214 | [18:37:00.208] INFO (1): request completed
+2026-03-30 21:37:00.214 |     req: {
+2026-03-30 21:37:00.214 |       "id": 143,
+2026-03-30 21:37:00.214 |       "method": "GET",
+2026-03-30 21:37:00.214 |       "url": "/api/auth/me"
+2026-03-30 21:37:00.214 |     }
+2026-03-30 21:37:00.214 |     res: {
+2026-03-30 21:37:00.214 |       "statusCode": 304
+2026-03-30 21:37:00.214 |     }
+2026-03-30 21:37:00.214 |     responseTime: 8
+2026-03-30 21:37:00.222 | [18:37:00.217] INFO (1): request completed
+2026-03-30 21:37:00.222 |     req: {
+2026-03-30 21:37:00.222 |       "id": 144,
+2026-03-30 21:37:00.222 |       "method": "GET",
+2026-03-30 21:37:00.222 |       "url": "/api/sessions"
+2026-03-30 21:37:00.222 |     }
+2026-03-30 21:37:00.222 |     res: {
+2026-03-30 21:37:00.222 |       "statusCode": 304
+2026-03-30 21:37:00.222 |     }
+2026-03-30 21:37:00.222 |     responseTime: 13
+2026-03-30 21:37:01.249 | [18:37:00.985] INFO (1): request completed
+2026-03-30 21:37:01.249 |     req: {
+2026-03-30 21:37:01.249 |       "id": 145,
+2026-03-30 21:37:01.249 |       "method": "GET",
+2026-03-30 21:37:01.249 |       "url": "/api/auth/me"
+2026-03-30 21:37:01.249 |     }
+2026-03-30 21:37:01.249 |     res: {
+2026-03-30 21:37:01.249 |       "statusCode": 304
+2026-03-30 21:37:01.249 |     }
+2026-03-30 21:37:01.249 |     responseTime: 12
+2026-03-30 21:37:01.250 | [18:37:00.992] INFO (1): request completed
+2026-03-30 21:37:01.250 |     req: {
+2026-03-30 21:37:01.250 |       "id": 146,
+2026-03-30 21:37:01.250 |       "method": "GET",
+2026-03-30 21:37:01.250 |       "url": "/api/sessions"
+2026-03-30 21:37:01.250 |     }
+2026-03-30 21:37:01.250 |     res: {
+2026-03-30 21:37:01.250 |       "statusCode": 304
+2026-03-30 21:37:01.250 |     }
+2026-03-30 21:37:01.250 |     responseTime: 14
+2026-03-30 21:37:06.309 | [18:37:06.075] WARN (1): Webhook failed — retrying (2/3)
+2026-03-30 21:37:06.309 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:37:06.309 |     attempt: 2
+2026-03-30 21:37:06.309 |     err: "This operation was aborted"
+2026-03-30 21:37:08.141 | verbose:  [session_a4ef1bbfa2b3:client] Waiting for QRCode Scan: Attempt 35
+2026-03-30 21:37:08.361 | [18:37:08.141] INFO (1): QR code ready
+2026-03-30 21:37:08.361 |     sessionId: "session_a4ef1bbfa2b3"
+2026-03-30 21:37:08.361 |     attempts: 35
+2026-03-30 21:37:10.413 | [18:37:09.910] INFO (1): request completed
+2026-03-30 21:37:10.413 |     req: {
+2026-03-30 21:37:10.413 |       "id": 147,
+2026-03-30 21:37:10.413 |       "method": "GET",
+2026-03-30 21:37:10.413 |       "url": "/"
+2026-03-30 21:37:10.413 |     }
+2026-03-30 21:37:10.413 |     res: {
+2026-03-30 21:37:10.413 |       "statusCode": 200
+2026-03-30 21:37:10.413 |     }
+2026-03-30 21:37:10.413 |     responseTime: 1
+2026-03-30 21:37:20.475 | [18:37:20.077] WARN (1): Webhook permanently failed after all retries
+2026-03-30 21:37:20.475 |     url: "https://n8ncourse.sidawin8n.cfd/webhook/whatsapp-incoming"
+2026-03-30 21:37:20.475 |     err: "This operation was aborted"
+2026-03-30 21:37:28.121 | verbose:  [session_a4ef1bbfa2b3:client] Waiting for QRCode Scan: Attempt 36
+2026-03-30 21:37:28.533 | [18:37:28.121] INFO (1): QR code ready
+2026-03-30 21:37:28.533 |     sessionId: "session_a4ef1bbfa2b3"
+2026-03-30 21:37:28.533 |     attempts: 36
