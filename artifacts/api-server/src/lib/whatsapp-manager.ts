@@ -626,11 +626,20 @@ export async function startSession(sessionId: string): Promise<void> {
 
         emitToAll("message", { sessionId, message });
 
-        if (session.webhookUrl) {
+        if (!session.webhookUrl) {
+          logger.warn({ sessionId }, "Webhook skipped: no webhookUrl configured for this session");
+        } else {
           let events: string[] = [];
           try { events = session.webhookEvents ? JSON.parse(session.webhookEvents) : []; }
-          catch { /* bad JSON */ }
-          if (events.includes("message.received") || events.length === 0) {
+          catch { logger.warn({ sessionId }, "Webhook: failed to parse webhookEvents JSON"); }
+
+          const willSend = events.includes("message.received") || events.length === 0;
+          logger.info(
+            { sessionId, webhookUrl: session.webhookUrl, events, willSend },
+            "Webhook check for incoming message"
+          );
+
+          if (willSend) {
             const rawFrom     = message.from ?? "";
             const phoneNumber = rawFrom.includes("@") ? rawFrom.split("@")[0] : rawFrom;
             triggerWebhook(session.webhookUrl, {
@@ -649,6 +658,11 @@ export async function startSession(sessionId: string): Promise<void> {
                 mimetype:  message.mimetype  ?? null,
               },
             }, session.webhookSecret ?? null);
+          } else {
+            logger.warn(
+              { sessionId, events },
+              "Webhook skipped: 'message.received' not in configured webhookEvents"
+            );
           }
         }
       } catch (e) {
