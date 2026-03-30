@@ -1,0 +1,273 @@
+element.style {
+}
+<style>
+.glass {
+    --tw-backdrop-blur: blur(var(--blur-xl));
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur, ) var(--tw-backdrop-brightness, ) var(--tw-backdrop-contrast, ) var(--tw-backdrop-grayscale, ) var(--tw-backdrop-hue-rotate, ) var(--tw-backdrop-invert, ) var(--tw-backdrop-opacity, ) var(--tw-backdrop-saturate, ) var(--tw-backdrop-sepia, );
+}
+<style>
+.glass {
+    @supports (color: color-mix(in lab, red, red)) {
+        background-color: 
+color-mix(in oklab, hsl(var(--background)) 60%, transparent);
+    }
+}
+<style>
+.glass {
+    background-color: hsl(var(--background));
+}
+<style>
+.glass {
+    @supports (color: color-mix(in lab, red, red)) {
+        border-color: 
+color-mix(in oklab, hsl(var(--border)) 50%, transparent);
+    }
+}
+<style>
+.glass {
+    border-color: hsl(var(--border));
+}
+<style>
+.md\:px-6 {
+}
+<style>
+.py-3 {
+    padding-block: calc(var(--spacing) * 3);
+}
+<style>
+.px-4 {
+    padding-inline: calc(var(--spacing) * 4);
+}
+<style>
+.border-border\/50 {
+    @supports (color: color-mix(in lab, red, red)) {
+        border-color: 
+color-mix(in oklab, hsl(var(--border)) 50%, transparent);
+    }
+}
+<style>
+.border-border\/50 {
+    border-color: hsl(var(--border));
+}
+<style>
+.border-b {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
+}
+<style>
+.justify-between {
+    justify-content: space-between;
+}
+<style>
+.items-center {
+    align-items: center;
+}
+<style>
+.shrink-0 {
+    flex-shrink: 0;
+}
+<style>
+.flex {
+    display: flex;
+}
+<style>
+.z-30 {
+    z-index: 30;
+}
+<style>
+.top-0 {
+    top: calc(var(--spacing) * 0);
+}
+<style>
+.sticky {
+    position: sticky;
+}
+<style>
+* {
+    border-color: hsl(var(--border));
+}
+<style>
+*, ::after, ::before, ::backdrop, ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+}
+user agent stylesheet
+header {
+    display: block;
+    unicode-bidi: isolate;
+}
+style attribute {
+    --sidebar-width: 17rem;
+    --sidebar-width-icon: 4rem;
+}
+<style>
+body {
+    background-color: hsl(var(--background));
+    font-family: var(--app-font-sans);
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
+}
+<style>
+[dir="rtl"] {
+    --app-font-sans: 'Cairo', sans-serif;
+}
+<style>
+:root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --card-border: 214 32% 91%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --popover-border: 214 32% 91%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-ring: 221 83% 53%;
+    --radius: 0.75rem;
+    --app-font-sans: 'Inter', sans-serif;
+    --elevate-1: rgba(0, 0, 0, .03);
+    --elevate-2: rgba(0, 0, 0, .08);
+}
+<style>
+html, :host {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: var(--default-font-family);
+    font-feature-settings: var(--default-font-feature-settings, normal);
+    font-variation-settings: var(--default-font-variation-settings, normal);
+    -webkit-tap-highlight-color: transparent;
+}
+<style>
+:root, :host {
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --color-red-50: oklch(97.1% 0.013 17.38);
+    --color-red-300: oklch(80.8% 0.114 19.571);
+    --color-red-400: oklch(70.4% 0.191 22.216);
+    --color-red-500: oklch(63.7% 0.237 25.331);
+    --color-red-600: oklch(57.7% 0.245 27.325);
+    --color-amber-500: oklch(76.9% 0.188 70.08);
+    --color-yellow-500: oklch(79.5% 0.184 86.047);
+    --color-green-500: oklch(72.3% 0.219 149.579);
+    --color-green-600: oklch(62.7% 0.194 149.214);
+    --color-green-700: oklch(52.7% 0.154 150.069);
+    --color-blue-500: oklch(62.3% 0.214 259.815);
+    --color-blue-600: oklch(54.6% 0.245 262.881);
+    --color-black: #000;
+    --color-white: #fff;
+    --spacing: 0.25rem;
+    --container-xs: 20rem;
+    --container-sm: 24rem;
+    --container-md: 28rem;
+    --container-lg: 32rem;
+    --container-3xl: 48rem;
+    --container-7xl: 80rem;
+    --text-xs: 0.75rem;
+    --text-xs--line-height: calc(1 / 0.75);
+    --text-sm: 0.875rem;
+    --text-sm--line-height: calc(1.25 / 0.875);
+    --text-base: 1rem;
+    --text-base--line-height: calc(1.5 / 1);
+    --text-lg: 1.125rem;
+    --text-lg--line-height: calc(1.75 / 1.125);
+    --text-xl: 1.25rem;
+    --text-xl--line-height: calc(1.75 / 1.25);
+    --text-2xl: 1.5rem;
+    --text-2xl--line-height: calc(2 / 1.5);
+    --text-3xl: 1.875rem;
+    --text-3xl--line-height: calc(2.25 / 1.875);
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --tracking-tight: -0.025em;
+    --tracking-wider: 0.05em;
+    --tracking-widest: 0.1em;
+    --leading-tight: 1.25;
+    --leading-snug: 1.375;
+    --leading-normal: 1.5;
+    --leading-relaxed: 1.625;
+    --radius-2xl: 1rem;
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+Show all properties (9 more)
+}
+<style>
+*, ::after, ::before, ::backdrop, ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+}
+<style>
+*, ::after, ::before, ::backdrop, ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+}
+<style>
+*, ::after, ::before, ::backdrop, ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+}
+<style>
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+<style>
+::-webkit-scrollbar-thumb {
+    @supports (color: color-mix(in lab, red, red)) {
+        background-color: 
+color-mix(in oklab, hsl(var(--muted-foreground)) 30%, transparent);
+    }
+}
+<style>
+::-webkit-scrollbar-thumb {
+    border-radius: calc(infinity * 1px);
+    background-color: hsl(var(--muted-foreground));
+}
+<style>
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+@font-face {
+    font-family: 'Cairo';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/cairo/v31/SLXVc1nY6HkvangtZmpQdkhzfH5lkSscQyyS4J0.woff2) format('woff2');
+    unicode-range: U +0600 -06FF, U +0750 -077F, U +0870 -088E, U +0890 -0891, U +0897 -08E1, U +08E3 -08FF, U +200C -200E, U +2010 -2011, U +204F, U +2E41, U + FB50-FDFF, U + FE70-FE74, U + FE76-FEFC, U +102E0 -102FB, U +10E60 -10E7E, U +10EC2 -10EC4, U +10EFC -10EFF, U +1EE00 -1EE03, U +1EE05 -1EE1F, U +1EE21 -1EE22, U +1EE24, U +1EE27, U +1EE29 -1EE32, U +1EE34 -1EE37, U +1EE39, U +1EE3B, U +1EE42, U +1EE47, U +1EE49, U +1EE4B, U +1EE4D -1EE4F, U +1EE51 -1EE52, U +1EE54, U +1EE57, U +1EE59, U +1EE5B, U +1EE5D, U +1EE5F, U +1EE61 -1EE62, U +1EE64, U +1EE67 -1EE6A, U +1EE6C -1EE72, U +1EE74 -1EE77, U +1EE79 -1EE7C, U +1EE7E, U +1EE80 -1EE89, U +1EE8B -1EE9B, U +1EEA1 -1EEA3, U +1EEA5 -1EEA9, U +1EEAB -1EEBB, U +1EEF0 -1EEF1;
+}
+MCP server
