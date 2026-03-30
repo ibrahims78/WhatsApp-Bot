@@ -1,0 +1,22 @@
+C:\whatsapp-manager>docker ps -a
+CONTAINER ID   IMAGE                                   COMMAND                  CREATED        STATUS                      PORTS                                         NAMES
+e12a06b51cc7   whatsapp-manager-api-dev:latest         "docker-entrypoint.s…"   12 hours ago   Up 11 hours                 0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp   whatsapp-manager-api-1
+da4f31b1c150   postgres:15-alpine                      "docker-entrypoint.s…"   12 hours ago   Up 12 hours (healthy)       5432/tcp                                      whatsapp-manager-db-1
+edf0ac1d87ed   whatsapp-manager-dashboard-dev:latest   "docker-entrypoint.s…"   37 hours ago   Up 29 minutes               0.0.0.0:5005->5000/tcp, [::]:5005->5000/tcp   whatsapp_manager_dev-dashboard-1
+b8189f6d186a   whatsapp-manager-api-dev:latest         "docker-entrypoint.s…"   37 hours ago   Up 29 minutes               8080/tcp                                      whatsapp_manager_dev-api-1
+ee29b44c405b   postgres:15-alpine                      "docker-entrypoint.s…"   37 hours ago   Up 29 minutes (healthy)     5432/tcp                                      whatsapp_manager_dev-db-1
+dce8987b51c3   staff_health_2026-app                   "/entrypoint.sh"         2 weeks ago    Exited (137) 2 weeks ago                                                  staff-health-app
+8f515b9ea0de   postgres:15-alpine                      "docker-entrypoint.s…"   2 weeks ago    Exited (0) 2 weeks ago                                                    staff-health-db
+3518a76c6f68   metabase/metabase                       "/app/run_metabase.sh"   3 weeks ago    Exited (143) 3 weeks ago                                                  charity_metabase
+7da98e68e40f   scva-member-registry-app                "docker-entrypoint.s…"   5 weeks ago    Exited (255) 4 weeks ago    0.0.0.0:5000->5000/tcp                        scva-member-registry-app-1
+4ec532f9a219   postgres:15                             "docker-entrypoint.s…"   5 weeks ago    Exited (0) 4 weeks ago                                                    scva-member-registry-db-1
+f27e14a4cf11   cloudflare/cloudflared:latest           "cloudflared --no-au…"   5 weeks ago    Exited (137) 4 weeks ago                                                  cloudflared_connector
+b46621553e39   phpmyadmin:latest                       "/docker-entrypoint.…"   5 weeks ago    Exited (0) 14 hours ago                                                   charity_phpmyadmin
+441420fb314c   mysql:8.0                               "docker-entrypoint.s…"   5 weeks ago    Exited (137) 14 hours ago                                                 charity_mysql_db
+ff821c14294e   n8n-data-whatsapp-bot                   "docker-entrypoint.s…"   7 weeks ago    Exited (137) 3 weeks ago                                                  whatsapp_bridge
+97872002e775   n8nio/n8n:latest                        "tini -- /docker-ent…"   7 weeks ago    Exited (0) 3 weeks ago                                                    n8n
+6f3bc409f810   smartportal-platform                    "docker-entrypoint.s…"   2 months ago   Exited (137) 14 hours ago                                                 data_portal
+257723186f91   ankane/pgvector:v0.5.1                  "docker-entrypoint.s…"   2 months ago   Exited (0) 14 hours ago                                                   platform_db
+59a74cd6b9d9   cloudflare/cloudflared:latest           "cloudflared --no-au…"   2 months ago   Exited (0) 14 hours ago                                                   cloudflared_tunnel
+
+C:\whatsapp-manager>
