@@ -20,6 +20,8 @@ services:
       context: .
       dockerfile: Dockerfile.api.dev
     image: whatsapp-manager-api-dev:latest
+    ports:
+      - "8080:8080"
     environment:
       - DATABASE_URL=postgres://${POSTGRES_USER:-wauser}:${POSTGRES_PASSWORD:-wapassword123}@db:5432/${POSTGRES_DB:-whatsapp_manager_db}
       - PORT=8080
