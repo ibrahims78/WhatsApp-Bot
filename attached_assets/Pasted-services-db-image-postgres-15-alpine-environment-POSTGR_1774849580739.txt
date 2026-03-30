@@ -1,0 +1,98 @@
+services:
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-wauser}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-wapassword123}
+      - POSTGRES_DB=${POSTGRES_DB:-whatsapp_manager_db}
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-wauser} -d ${POSTGRES_DB:-whatsapp_manager_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api.dev
+    image: whatsapp-manager-api-dev:latest
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER:-wauser}:${POSTGRES_PASSWORD:-wapassword123}@db:5432/${POSTGRES_DB:-whatsapp_manager_db}
+      - PORT=8080
+      - JWT_SECRET=${JWT_SECRET}
+      - NODE_ENV=development
+    volumes:
+      # Mount source code for quick rebuilds without re-imaging
+      - ./lib:/app/lib
+      # Protect node_modules installed by Docker from being wiped by the host mount
+      - api_nm_root:/app/node_modules
+      - api_nm_db:/app/lib/db/node_modules
+      - api_nm_api_zod:/app/lib/api-zod/node_modules
+      - api_nm_api_client:/app/lib/api-client-react/node_modules
+      - api_nm_api_spec:/app/lib/api-spec/node_modules
+      - ./artifacts/api-server/src:/app/artifacts/api-server/src
+      - wa_tokens_dev:/app/artifacts/api-server/tokens
+      - wa_public_dev:/app/artifacts/api-server/public
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard.dev
+    image: whatsapp-manager-dashboard-dev:latest
+    ports:
+      - "${APP_PORT:-5005}:5000"
+    environment:
+      - BASE_PATH=/
+      - PORT=5000
+      - NODE_ENV=development
+      # Points Vite proxy to the API container (not localhost)
+      - VITE_API_TARGET=http://api:8080
+    volumes:
+      # Mount source code for Vite HMR (hot module replacement)
+      - ./artifacts/whatsapp-dashboard/src:/app/artifacts/whatsapp-dashboard/src
+      - ./lib:/app/lib
+      # Protect node_modules installed by Docker from being wiped by the host mount
+      - dash_nm_root:/app/node_modules
+      - dash_nm_db:/app/lib/db/node_modules
+      - dash_nm_api_zod:/app/lib/api-zod/node_modules
+      - dash_nm_api_client:/app/lib/api-client-react/node_modules
+      - dash_nm_api_spec:/app/lib/api-spec/node_modules
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  postgres_data_dev:
+    driver: local
+  wa_tokens_dev:
+    driver: local
+  wa_public_dev:
+    driver: local
+  api_nm_root:
+    driver: local
+  api_nm_db:
+    driver: local
+  api_nm_api_zod:
+    driver: local
+  api_nm_api_client:
+    driver: local
+  api_nm_api_spec:
+    driver: local
+  dash_nm_root:
+    driver: local
+  dash_nm_db:
+    driver: local
+  dash_nm_api_zod:
+    driver: local
+  dash_nm_api_client:
+    driver: local
+  dash_nm_api_spec:
+    driver: local
