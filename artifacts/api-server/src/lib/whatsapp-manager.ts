@@ -802,6 +802,10 @@ export async function initializeSessions(): Promise<void> {
 
 /** Block private/loopback IP ranges to prevent SSRF attacks */
 function isPrivateUrl(urlStr: string): boolean {
+  // If ALLOW_PRIVATE_WEBHOOK_URLS=true, skip SSRF protection entirely.
+  // Use this when n8n or other services run on the same Docker/private network.
+  if (process.env.ALLOW_PRIVATE_WEBHOOK_URLS === "true") return false;
+
   try {
     const { hostname } = new URL(urlStr);
     if (hostname === "localhost") return true;
