@@ -1,0 +1,55 @@
+ibrahimsidawi@charity-server:~/proteach-n8n$ # اعرف الـ network الصحيح واسم المتغيرات الحالية للـ API
+sudo docker inspect proteach-wa-api --format '{{json .NetworkSettings.Networks}}' | python3 -m json.tool
+
+sudo docker inspect proteach-wa-api --format '{{json .Config.Env}}' | python3 -m json.tool
+
+sudo docker inspect proteach-wa-api --format '{{json .HostConfig.Binds}}' | python3 -m json.tool
+{
+    "proteach-n8n_n8n-network": {
+        "IPAMConfig": null,
+        "Links": null,
+        "Aliases": [
+            "proteach-wa-api",
+            "wa-api"
+        ],
+        "MacAddress": "96:a2:75:fe:71:88",
+        "DriverOpts": null,
+        "GwPriority": 0,
+        "NetworkID": "de71726b995409c29229dd1ec354889157d92239f7abc1f3e75b93b62fbe2fd2",
+        "EndpointID": "10a20bcb569b52a8b7b1bbe4b9b46c110de56e376ce5a13dc524fda23968c19a",
+        "Gateway": "172.20.0.1",
+        "IPAddress": "172.20.0.7",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "DNSNames": [
+            "proteach-wa-api",
+            "wa-api",
+            "7a42f0a85c4e"
+        ]
+    }
+}
+[
+    "PORT=8080",
+    "JWT_SECRET=c80d81eb4deb8e1900ac5f7ab607971ed952a73c9d3dc846d35d0a9ac11e34491063e5414741b7a457ca1422875f8960b8c8262a7aa4ddd61c0e65b26f7bc325",
+    "NODE_ENV=development",
+    "DATABASE_URL=postgres://wauser:WaPass2026!@wa-db:5432/whatsapp_manager_db",
+    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "NODE_VERSION=20.20.2",
+    "YARN_VERSION=1.22.22",
+    "CHROME_PATH=/usr/bin/chromium",
+    "PUPPETEER_SKIP_DOWNLOAD=true"
+]
+[
+    "proteach-n8n_wa_api_nm_spec:/app/lib/api-spec/node_modules:rw",
+    "/home/ibrahimsidawi/proteach-n8n/whatsapp-manager/artifacts/api-server/src:/app/artifacts/api-server/src:rw",
+    "/home/ibrahimsidawi/proteach-n8n/wa_tokens:/app/artifacts/api-server/tokens:rw",
+    "proteach-n8n_wa_api_nm_root:/app/node_modules:rw",
+    "proteach-n8n_wa_api_nm_zod:/app/lib/api-zod/node_modules:rw",
+    "proteach-n8n_wa_api_nm_client:/app/lib/api-client-react/node_modules:rw",
+    "/home/ibrahimsidawi/proteach-n8n/whatsapp-manager/lib:/app/lib:rw",
+    "/home/ibrahimsidawi/proteach-n8n/wa_public:/app/artifacts/api-server/public:rw",
+    "proteach-n8n_wa_api_nm_db:/app/lib/db/node_modules:rw"
+]
+ibrahimsidawi@charity-server:~/proteach-n8n$ 
