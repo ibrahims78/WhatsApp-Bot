@@ -30,3 +30,9 @@ id = "oq25uaKp7V5Vxg2LvqSAF"
 uri = "file://README_proteach_n8n.md"
 type = "text"
 title = "README احترافي لمشروع ProTeach n8n Stack"
+
+[[outputs]]
+id = "mOxxZ7X2Kz7nPWnD5LC4B"
+uri = "file://README_new.md"
+type = "text"
+title = "README احترافي بالعربي — proteach-n8n-setup"
