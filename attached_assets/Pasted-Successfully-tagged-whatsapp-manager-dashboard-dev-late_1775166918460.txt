@@ -1,0 +1,84 @@
+Successfully tagged whatsapp-manager-dashboard-dev:latest
+[+] up 19/19
+ ✔ Image whatsapp-manager-api-dev:latest       Built                                                                           167.4s
+ ✔ Image whatsapp-manager-dashboard-dev:latest Built                                                                           80.7s
+ ✔ Volume proteach-n8n_wa_dash_nm_db           Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_dash_nm_spec         Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_api_nm_zod           Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_dash_nm_root         Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_api_nm_root          Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_dash_nm_zod          Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_api_nm_db            Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_api_nm_client        Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_api_nm_spec          Created                                                                         0.0s
+ ✔ Volume proteach-n8n_wa_dash_nm_client       Created                                                                         0.0s
+ ✔ Container proteach-npm                      Running                                                                         0.0s
+ ✔ Container proteach-portainer                Running                                                                         0.0s
+ ✔ Container proteach-db                       Running                                                                         0.0s
+ ✔ Container proteach-n8n                      Running                                                                         0.0s
+ ✔ Container proteach-wa-db                    Healthy                                                                         28.1s
+ ✔ Container proteach-wa-api                   Started                                                                         28.4s
+ ✔ Container proteach-wa-dashboard             Started                                                                         16.3s
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker ps
+CONTAINER ID   IMAGE                                   COMMAND                  CREATED         STATUS                   PORTS                                                                                      NAMES
+d968713d5359   whatsapp-manager-dashboard-dev:latest   "docker-entrypoint.s…"   3 minutes ago   Up 2 minutes             0.0.0.0:5005->5000/tcp, [::]:5005->5000/tcp                                                proteach-wa-dashboard
+7a42f0a85c4e   whatsapp-manager-api-dev:latest         "docker-entrypoint.s…"   3 minutes ago   Up 2 minutes             8080/tcp                                                                                   proteach-wa-api
+ae95b221fee9   postgres:15-alpine                      "docker-entrypoint.s…"   3 minutes ago   Up 2 minutes (healthy)   5432/tcp                                                                                   proteach-wa-db
+54cb8d94e0e0   n8nio/n8n:latest                        "tini -- /docker-ent…"   24 hours ago    Up 24 hours              5678/tcp                                                                                   proteach-n8n
+85f6d13a8e01   postgres:16-alpine                      "docker-entrypoint.s…"   24 hours ago    Up 24 hours              5432/tcp                                                                                   proteach-db
+929e9647592b   jc21/nginx-proxy-manager:latest         "/init"                  24 hours ago    Up 24 hours              0.0.0.0:80-81->80-81/tcp, [::]:80-81->80-81/tcp, 0.0.0.0:443->443/tcp, [::]:443->443/tcp   proteach-npm
+e9296b7fe18f   portainer/portainer-ce:latest           "/portainer"             24 hours ago    Up 23 hours              8000/tcp, 9000/tcp, 9443/tcp                                                               proteach-portainer
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker logs proteach-wa-dashboard
+
+> @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+> vite --config vite.config.ts --host 0.0.0.0
+
+
+  VITE v7.3.1  ready in 1283 ms
+
+  ➜  Local:   http://localhost:5000/
+  ➜  Network: http://172.20.0.8:5000/
+ibrahimsidawi@charity-server:~/proteach-n8n$ ^C
+ibrahimsidawi@charity-server:~/proteach-n8n$ curl http://localhost:8080/
+curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+ibrahimsidawi@charity-server:~/proteach-n8n$ curl -I http://localhost:5005
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"6e2-WoIQozYvCAUjMi+jF3ha5UVA1dE"
+Date: Thu, 02 Apr 2026 21:31:11 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker logs proteach-wa-api --tail 20
+[21:30:49.973] INFO (1): request completed
+    req: {
+      "id": 24,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 1
+[21:31:19.973] INFO (1): request completed
+    req: {
+      "id": 25,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 1
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker logs proteach-wa-dashboard --tail 20
+
+> @workspace/whatsapp-dashboard@0.0.0 dev /app/artifacts/whatsapp-dashboard
+> vite --config vite.config.ts --host 0.0.0.0
+
+
+  VITE v7.3.1  ready in 1283 ms
+
+  ➜  Local:   http://localhost:5000/
+  ➜  Network: http://172.20.0.8:5000/
