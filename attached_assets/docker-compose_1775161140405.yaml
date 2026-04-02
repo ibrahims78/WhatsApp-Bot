@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # قاعدة البيانات (PostgreSQL 16)
+  db:
+    image: postgres:16-alpine
+    container_name: proteach-db
+    restart: always
+    environment:
+      - POSTGRES_USER=n8n_user
+      - POSTGRES_PASSWORD=VMware2@
+      - POSTGRES_DB=n8n_database
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - n8n-network
+
+  # محرك الأتمتة (n8n)
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: proteach-n8n
+    restart: always
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=db
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n_database
+      - DB_POSTGRESDB_USER=n8n_user
+      - DB_POSTGRESDB_PASSWORD=VMware2@
+      - N8N_HOST=n8n.sidawin8n.cfd
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://n8n.sidawin8n.cfd/
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+    depends_on:
+      - db
+    networks:
+      - n8n-network
+
+  # بوابة الإدارة (Nginx Proxy Manager)
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: proteach-npm
+    restart: always
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./npm_data:/data
+      - ./npm_letsencrypt:/etc/letsencrypt
+    networks:
+      - n8n-network
+
+  # واجهة الإدارة الرسومية (Portainer)
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: proteach-portainer
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer_data:/data
+    networks:
+      - n8n-network
+
+networks:
+  n8n-network:
+    driver: bridge

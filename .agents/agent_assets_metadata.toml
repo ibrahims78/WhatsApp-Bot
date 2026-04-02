@@ -6,3 +6,9 @@ id = "eAriqkwqCK1tDlOLrpaPq"
 uri = "file://n8n-workflow-whatsapp.json"
 type = "unspecified"
 title = "n8n Workflow — تم إضافة تأخير 2 ثانية"
+
+[[outputs]]
+id = "lCzIH39unOgW4yjXhec0W"
+uri = "file://attached_assets/docker-compose-vps-updated.yaml"
+type = "unspecified"
+title = "docker-compose.yaml المُحدَّث للـ VPS"
