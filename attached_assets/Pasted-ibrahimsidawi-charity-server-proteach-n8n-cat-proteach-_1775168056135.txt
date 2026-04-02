@@ -1,0 +1,66 @@
+ibrahimsidawi@charity-server:~/proteach-n8n$ cat > ~/proteach-n8n/artifacts/whatsapp-dashboard/vite.config.ts << 'EOF'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
+import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+const rawPort = process.env.PORT;
+if (!rawPort) throw new Error("PORT environment variable is required but was not provided.");
+const port = Number(rawPort);
+if (Number.isNaN(port) || port <= 0) throw new Error(`Invalid PORT value: "${rawPort}"`);
+
+const basePath = process.env.BASE_PATH;
+if (!basePath) throw new Error("BASE_PATH environment variable is required but was not provided.");
+
+export default defineConfig({
+  base: basePath,
+  plugins: [
+    react(),
+    tailwindcss(),
+    runtimeErrorOverlay(),
+    ...(process.env.NODE_ENV !== "production" && process.env.REPL_ID !== undefined
+      ? [
+          await import("@replit/vite-plugin-cartographer").then((m) =>
+            m.cartographer({ root: path.resolve(import.meta.dirname, "..") })
+          ),
+          await import("@replit/vite-plugin-dev-banner").then((m) => m.devBanner()),
+        ]
+      : []),
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "src"),
+      "@assets": path.resolve(import.meta.dirname, "..", "..", "attached_assets"),
+    },
+    dedupe: ["react", "react-dom"],
+  },
+  root: path.resolve(import.meta.dirname),
+EOFreview: { port, host: "0.0.0.0", allowedHosts: true },calhost:8080",
+-bash: /home/ibrahimsidawi/proteach-n8n/artifacts/whatsapp-dashboard/vite.config.ts: No such file or directory
+ibrahimsidawi@charity-server:~/proteach-n8n$ cd ~/proteach-n8n
+sudo docker stop proteach-wa-dashboard && sudo docker rm proteach-wa-dashboard
+sudo docker build -f Dockerfile.dashboard.dev -t whatsapp-manager-dashboard-dev:latest .
+proteach-wa-dashboard
+proteach-wa-dashboard
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/ibrahimsidawi/proteach-n8n/Dockerfile.dashboard.dev: no such file or directory
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker run -d \
+  --name proteach-wa-dashboard \
+  --network proteach-n8n_default \
+  -p 5005:5000 \
+  -e BASE_PATH=/ \
+  -e PORT=5000 \
+  -e NODE_ENV=development \
+  -e VITE_API_TARGET=http://proteach-wa-api:8080 \
+  -v $(pwd)/artifacts/whatsapp-dashboard/src:/app/artifacts/whatsapp-dashboard/src \
+  -v $(pwd)/lib:/app/lib \
+  whatsapp-manager-dashboard-dev:latest
+1b7b2f69b3cd419d9abde609e558ea86ea1e5a0803262ba178ebfcd0d9045dc2
+docker: Error response from daemon: failed to set up container networking: network proteach-n8n_default not found
+
+Run 'docker run --help' for more information
+ibrahimsidawi@charity-server:~/proteach-n8n$ 
