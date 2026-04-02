@@ -12,3 +12,15 @@ id = "lCzIH39unOgW4yjXhec0W"
 uri = "file://attached_assets/docker-compose-vps-updated.yaml"
 type = "unspecified"
 title = "docker-compose.yaml المُحدَّث للـ VPS"
+
+[[outputs]]
+id = "xWOFNCBL61mJ_sJoCSKd5"
+uri = "file://attached_assets/docker-compose-vps-final.yaml"
+type = "unspecified"
+title = "docker-compose.yaml النهائي جاهز للـ VPS"
+
+[[outputs]]
+id = "rt9ayouH3rTtHV0iYf53K"
+uri = "file://doc/vps-cloudflare-npm-setup.md"
+type = "text"
+title = "دليل إعداد Cloudflare + NPM"
