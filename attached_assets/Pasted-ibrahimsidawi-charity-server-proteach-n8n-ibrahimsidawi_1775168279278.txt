@@ -1,0 +1,42 @@
+ibrahimsidawi@charity-server:~/proteach-n8n$ 
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker stop proteach-wa-api && sudo docker rm proteach-wa-api
+
+sudo docker run -d \
+  --name proteach-wa-api \
+  --network proteach-n8n_n8n-network \
+  --network-alias wa-api \
+  --restart unless-stopped \
+  -e PORT=8080 \
+  -e NODE_ENV=development \
+  -e DATABASE_URL=postgres://wauser:WaPass2026!@wa-db:5432/whatsapp_manager_db \
+  -e JWT_SECRET=c80d81eb4deb8e1900ac5f7ab607971ed952a73c9d3dc846d35d0a9ac11e34491063e5414741b7a457ca1422875f8960b8c8262a7aa4ddd61c0e65b26f7bc325 \
+  -e CHROME_PATH=/usr/bin/chromium \
+  -e PUPPETEER_SKIP_DOWNLOAD=true \
+  -e ALLOWED_ORIGINS=https://wa.sidawin8n.cfd \
+  -v proteach-n8n_wa_api_nm_root:/app/node_modules \
+  -v proteach-n8n_wa_api_nm_db:/app/lib/db/node_modules \
+  -v proteach-n8n_wa_api_nm_zod:/app/lib/api-zod/node_modules \
+  -v proteach-n8n_wa_api_nm_client:/app/lib/api-client-react/node_modules \
+  -v proteach-n8n_wa_api_nm_spec:/app/lib/api-spec/node_modules \
+  -v /home/ibrahimsidawi/proteach-n8n/whatsapp-manager/artifacts/api-server/src:/app/artifacts/api-server/src \
+  -v /home/ibrahimsidawi/proteach-n8n/whatsapp-manager/lib:/app/lib \
+  -v /home/ibrahimsidawi/proteach-n8n/wa_tokens:/app/artifacts/api-server/tokens \
+  -v /home/ibrahimsidawi/proteach-n8n/wa_public:/app/artifacts/api-server/public \
+  whatsapp-manager-api-dev:latest
+proteach-wa-api
+proteach-wa-api
+-bash: !@wa: event not found
+108b107060529fc6951455159b27d749ed7ae95b024ec431b32da58dd2fec8cb
+ibrahimsidawi@charity-server:~/proteach-n8n$ ^C
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker logs proteach-wa-api --tail 10
+[1/3] Running database schema migration...
+
+> @workspace/db@0.0.0 push /app/lib/db
+> drizzle-kit push --config ./drizzle.config.ts
+
+Reading config file '/app/lib/db/drizzle.config.ts'
+DATABASE_URL, ensure the database is provisioned
+/app/lib/db:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/db@0.0.0 push: `drizzle-kit push --config ./drizzle.config.ts`
+Exit status 1
+ibrahimsidawi@charity-server:~/proteach-n8n$ 
