@@ -1,0 +1,46 @@
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker stop proteach-wa-api && sudo docker rm proteach-wa-api
+proteach-wa-api
+proteach-wa-api
+ibrahimsidawi@charity-server:~/proteach-n8n$ cat > /tmp/wa-api.env << 'EOF'
+PORT=8080
+NODE_ENV=development
+DATABASE_URL=postgres://wauser:WaPass2026!@wa-db:5432/whatsapp_manager_db
+JWT_SECRET=c80d81eb4deb8e1900ac5f7ab607971ed952a73c9d3dc846d35d0a9ac11e34491063e5414741b7a457ca1422875f8960b8c8262a7aa4ddd61c0e65b26f7bc325
+CHROME_PATH=/usr/bin/chromium
+PUPPETEER_SKIP_DOWNLOAD=true
+ALLOWED_ORIGINS=https://wa.sidawin8n.cfd
+EOF
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker run -d \
+  --name proteach-wa-api \
+  --network proteach-n8n_n8n-network \
+  --network-alias wa-api \
+  --restart unless-stopped \
+  --env-file /tmp/wa-api.env \
+  -v proteach-n8n_wa_api_nm_root:/app/node_modules \
+  -v proteach-n8n_wa_api_nm_db:/app/lib/db/node_modules \
+  -v proteach-n8n_wa_api_nm_zod:/app/lib/api-zod/node_modules \
+  -v proteach-n8n_wa_api_nm_client:/app/lib/api-client-react/node_modules \
+  -v proteach-n8n_wa_api_nm_spec:/app/lib/api-spec/node_modules \
+  -v /home/ibrahimsidawi/proteach-n8n/whatsapp-manager/artifacts/api-server/src:/app/artifacts/api-server/src \
+  -v /home/ibrahimsidawi/proteach-n8n/whatsapp-manager/lib:/app/lib \
+  -v /home/ibrahimsidawi/proteach-n8n/wa_tokens:/app/artifacts/api-server/tokens \
+  -v /home/ibrahimsidawi/proteach-n8n/wa_public:/app/artifacts/api-server/public \
+  whatsapp-manager-api-dev:latest
+7cdad79030971de9d76d9e1d908fa1cfdcc82ebde2ffe0b6e3186371b08ac343
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker logs proteach-wa-api --tail 15
+  dist/pino-pretty.mjs               114.6kb
+  dist/thread-stream-worker.mjs        7.3kb
+  dist/index.mjs.map                   5.3mb
+  dist/pino-worker.mjs.map           256.9kb
+  dist/pino-file.mjs.map             229.0kb
+  dist/pino-pretty.mjs.map           203.9kb
+  dist/thread-stream-worker.mjs.map   12.0kb
+
+⚡ Done in 1383ms
+Build complete.
+
+[3/3] Starting API server (NODE_ENV=development)...
+[22:19:35.622] INFO (1): Server listening
+    port: 8080
+[22:19:35.785] INFO (1): Admin user(s) already exist — skipping seed
+ibrahimsidawi@charity-server:~/proteach-n8n$ 
