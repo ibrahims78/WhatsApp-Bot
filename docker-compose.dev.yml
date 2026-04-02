@@ -27,6 +27,8 @@ services:
       - PORT=8080
       - JWT_SECRET=${JWT_SECRET}
       - NODE_ENV=development
+      # Comma-separated list of allowed CORS origins (e.g. your public domain)
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-}
     volumes:
       # Mount source code for quick rebuilds without re-imaging
       - ./lib:/app/lib
