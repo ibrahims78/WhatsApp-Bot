@@ -24,3 +24,9 @@ id = "rt9ayouH3rTtHV0iYf53K"
 uri = "file://doc/vps-cloudflare-npm-setup.md"
 type = "text"
 title = "دليل إعداد Cloudflare + NPM"
+
+[[outputs]]
+id = "oq25uaKp7V5Vxg2LvqSAF"
+uri = "file://README_proteach_n8n.md"
+type = "text"
+title = "README احترافي لمشروع ProTeach n8n Stack"
