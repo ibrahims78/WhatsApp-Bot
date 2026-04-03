@@ -25,6 +25,7 @@ services:
       - PORT=8080
       - JWT_SECRET=${JWT_SECRET}
       - NODE_ENV=production
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-https://wa.sidawin8n.cfd}
     volumes:
       - wa_tokens:/app/artifacts/api-server/tokens
       - wa_public:/app/artifacts/api-server/public
