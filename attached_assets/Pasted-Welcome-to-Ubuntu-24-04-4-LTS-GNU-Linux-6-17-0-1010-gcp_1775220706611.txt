@@ -1,0 +1,314 @@
+Welcome to Ubuntu 24.04.4 LTS (GNU/Linux 6.17.0-1010-gcp x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, you can run the 'unminimize' command.
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+1 additional security update can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+Last login: Fri Apr  3 11:49:39 2026 from 35.235.249.18
+ibrahimsidawi@charity-server:~$ cd ~/proteach-n8n
+
+# إعادة تشغيل حاوية الـ API فقط
+sudo docker-compose restart wa-api
+
+# تابع السجلات للتأكد من إعادة الاتصال
+sudo docker logs proteach-wa-api --tail 30 -f
+WARN[0000] /home/ibrahimsidawi/proteach-n8n/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] restart 0/1
+ ⠏ Container proteach-wa-api Restarting                                                                                                                     10.9s
+              at Object.next (/app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/layers/host.layer.js:41:53)
+              at fulfilled (/app/node_modules/.pnpm/@wppconnect-team+wppconnect@1.41.1_puppeteer-core@24.40.0_typescript@5.9.3/node_modules/@wppconnect-team/wppconnect/dist/api/layers/host.layer.js:32:58)
+    }
+[12:50:28.862] INFO (1): Auto-reconnect starting
+    sessionId: "session_de11c7693988"
+    attempt: 1
+[12:50:28.878] INFO (1): Auto-reconnect starting
+    sessionId: "session_94cd2286bf6f"
+    attempt: 1
+info:     [session_de11c7693988:browser] Using browser folder '/app/tokens/session_de11c7693988'
+info:     [session_de11c7693988:browser] Initializing browser...
+info:     [session_94cd2286bf6f:browser] Using browser folder '/app/tokens/session_94cd2286bf6f'
+info:     [session_94cd2286bf6f:browser] Initializing browser...
+http:     [session_de11c7693988:browser] checking headless...
+http:     [session_de11c7693988:browser] headless option is active, browser hidden
+http:     [session_94cd2286bf6f:browser] checking headless...
+http:     [session_94cd2286bf6f:browser] headless option is active, browser hidden
+info:     [session_de11c7693988:client] Initializing...
+info:     [session_94cd2286bf6f:client] Initializing...
+verbose:  [session_de11c7693988:client] Setting WhatsApp WEB version to 2.3000.10305x
+error:    [session_de11c7693988:client] Version not available for 2.3000.10305x, using latest as fallback
+verbose:  [session_de11c7693988:client] Loading WhatsApp WEB
+verbose:  [session_94cd2286bf6f:client] Setting WhatsApp WEB version to 2.3000.10305x
+error:    [session_94cd2286bf6f:client] Version not available for 2.3000.10305x, using latest as fallback
+verbose:  [session_94cd2286bf6f:client] Loading WhatsApp WEB
+============================================
+   WhatsApp Manager - Development Mode
+============================================
+
+[1/3] Running database schema migration...
+
+> @workspace/db@0.0.0 push /app/lib/db
+> drizzle-kit push --config ./drizzle.config.ts
+
+Reading config file '/app/lib/db/drizzle.config.ts'
+Using 'pg' driver for database querying
+[⣷] Pulling schema from database...
+[⣯] Pulling schema from database...
+[⣟] Pulling schema from database...
+[✓] Pulling schema from database...
+[i] No changes detected
+Migration complete.
+
+[2/3] Building API server...
+
+> @workspace/api-server@0.0.0 build /app/artifacts/api-server
+> node ./build.mjs
+
+
+  dist/index.mjs                       3.1mb ⚠️
+  dist/pino-worker.mjs               153.4kb
+  dist/pino-file.mjs                 142.0kb
+  dist/pino-pretty.mjs               114.6kb
+  dist/thread-stream-worker.mjs        7.3kb
+  dist/index.mjs.map                   5.3mb
+  dist/pino-worker.mjs.map           256.9kb
+  dist/pino-file.mjs.map             229.0kb
+  dist/pino-pretty.mjs.map           203.9kb
+  dist/thread-stream-worker.mjs.map   12.0kb
+
+⚡ Done in 1344ms
+Build complete.
+
+[3/3] Starting API server (NODE_ENV=development)...
+[12:50:41.097] INFO (1): Server listening
+    port: 8080
+[12:50:41.273] INFO (1): Admin user(s) already exist — skipping seed
+[12:50:44.282] INFO (1): Auto-starting sessions on boot
+    count: 2
+[12:50:44.282] INFO (1): Auto-starting session
+    sessionId: "session_de11c7693988"
+    index: 0
+info:     Checking for updates
+info:     You're up to date
+info:     [session_de11c7693988:browser] Using browser folder '/app/tokens/session_de11c7693988'
+info:     [session_de11c7693988:browser] Initializing browser...
+http:     [session_de11c7693988:browser] checking headless...
+http:     [session_de11c7693988:browser] headless option is active, browser hidden
+info:     [session_de11c7693988:client] Initializing...
+verbose:  [session_de11c7693988:client] Setting WhatsApp WEB version to 2.3000.10305x
+error:    [session_de11c7693988:client] Version not available for 2.3000.10305x, using latest as fallback
+verbose:  [session_de11c7693988:client] Loading WhatsApp WEB
+verbose:  [session_de11c7693988:page] Page loaded
+verbose:  [session_de11c7693988:client] Injecting wapi.js
+verbose:  [session_de11c7693988:client] WhatsApp WEB loaded
+http:     [session_de11c7693988:client] Waiting page load
+[12:50:48.315] INFO (1): Auto-starting session
+    sessionId: "session_94cd2286bf6f"
+    index: 1
+info:     [session_94cd2286bf6f:browser] Using browser folder '/app/tokens/session_94cd2286bf6f'
+info:     [session_94cd2286bf6f:browser] Initializing browser...
+http:     [session_94cd2286bf6f:browser] checking headless...
+http:     [session_94cd2286bf6f:browser] headless option is active, browser hidden
+info:     [session_94cd2286bf6f:client] Initializing...
+verbose:  [session_94cd2286bf6f:client] Setting WhatsApp WEB version to 2.3000.10305x
+error:    [session_94cd2286bf6f:client] Version not available for 2.3000.10305x, using latest as fallback
+verbose:  [session_94cd2286bf6f:client] Loading WhatsApp WEB
+verbose:  [session_94cd2286bf6f:page] Page loaded
+verbose:  [session_94cd2286bf6f:client] Injecting wapi.js
+verbose:  [session_94cd2286bf6f:client] WhatsApp WEB loaded
+http:     [session_94cd2286bf6f:client] Waiting page load
+verbose:  [session_de11c7693988:client] wapi.js injected
+http:     [session_de11c7693988:client] Connected
+debug:    [session_de11c7693988:client] Exposing onMessage function
+debug:    [session_de11c7693988:client] Exposing onAnyMessage function
+http:     [session_de11c7693988:client] Checking is logged...
+[12:50:57.808] INFO (1): WPPConnect status
+    sessionId: "session_de11c7693988"
+    status: "inChat"
+info:     [session_de11c7693988:client] WhatsApp WEB version: 2.3000.1036609119
+info:     [session_de11c7693988:client] WA-JS version: 3.23.2
+http:     [session_de11c7693988:client] Authenticated
+[12:50:58.559] INFO (1): WPPConnect status
+    sessionId: "session_de11c7693988"
+    status: "isLogged"
+debug:    [session_de11c7693988:client] Exposing onAck function
+http:     [session_de11c7693988:client] Checking phone is connected...
+debug:    [session_de11c7693988:client] Registering onStateChange event
+debug:    [session_de11c7693988:client] Registering onMessage event
+debug:    [session_de11c7693988:client] Exposing onMessageEdit function
+debug:    [session_de11c7693988:client] Exposing onNotificationMessage function
+debug:    [session_de11c7693988:client] Exposing onParticipantsChanged function
+debug:    [session_de11c7693988:client] Exposing onStateChange function
+debug:    [session_de11c7693988:client] Exposing onStreamChange function
+debug:    [session_de11c7693988:client] Exposing onStreamModeChanged function
+debug:    [session_de11c7693988:client] Exposing onStreamInfoChanged function
+debug:    [session_de11c7693988:client] Exposing onIncomingCall function
+debug:    [session_de11c7693988:client] Exposing onInterfaceChange function
+debug:    [session_de11c7693988:client] Exposing onPresenceChanged function
+debug:    [session_de11c7693988:client] Exposing onLiveLocation function
+debug:    [session_de11c7693988:client] Exposing onAddedToGroup function
+debug:    [session_de11c7693988:client] Exposing onRevokedMessage function
+debug:    [session_de11c7693988:client] Exposing onReactionMessage function
+debug:    [session_de11c7693988:client] Exposing onPollResponse function
+debug:    [session_de11c7693988:client] Exposing onUpdateLabel function
+debug:    [session_de11c7693988:client] Exposing onOrderStatusUpdate function
+debug:    [session_de11c7693988:client] Exposing onNewChat function
+debug:    [session_de11c7693988:client] Emitting onStateChange event (1 registered)
+debug:    [session_de11c7693988:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_de11c7693988:client] Current state: SYNCING (CONNECTING)
+verbose:  [session_94cd2286bf6f:client] wapi.js injected
+http:     [session_94cd2286bf6f:client] Connected
+debug:    [session_94cd2286bf6f:client] Exposing onMessage function
+[12:51:05.154] INFO (1): request completed
+    req: {
+      "id": 1,
+      "method": "GET",
+      "url": "/api/sessions"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 104
+[12:51:05.205] INFO (1): request completed
+    req: {
+      "id": 2,
+      "method": "GET",
+      "url": "/api/auth/me"
+    }
+    res: {
+      "statusCode": 401
+    }
+    responseTime: 28
+[12:51:05.555] INFO (1): WPPConnect status
+    sessionId: "session_94cd2286bf6f"
+    status: "inChat"
+debug:    [session_94cd2286bf6f:client] Exposing onAnyMessage function
+http:     [session_94cd2286bf6f:client] Checking is logged...
+info:     [session_94cd2286bf6f:client] WhatsApp WEB version: 2.3000.1036609119
+info:     [session_94cd2286bf6f:client] WA-JS version: 3.23.2
+http:     [session_94cd2286bf6f:client] Authenticated
+[12:51:06.106] INFO (1): WPPConnect status
+    sessionId: "session_94cd2286bf6f"
+    status: "isLogged"
+http:     [session_94cd2286bf6f:client] Checking phone is connected...
+debug:    [session_94cd2286bf6f:client] Registering onStateChange event
+debug:    [session_94cd2286bf6f:client] Registering onMessage event
+debug:    [session_94cd2286bf6f:client] Exposing onAck function
+debug:    [session_94cd2286bf6f:client] Exposing onMessageEdit function
+debug:    [session_de11c7693988:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_de11c7693988:client] Current state: SYNCING (CONNECTING)
+debug:    [session_de11c7693988:client] Emitting onStateChange event (1 registered)
+debug:    [session_de11c7693988:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_de11c7693988:client] Current state: SYNCING (CONNECTING)
+debug:    [session_de11c7693988:client] Emitting onStateChange event (1 registered)
+debug:    [session_94cd2286bf6f:client] Exposing onNotificationMessage function
+debug:    [session_94cd2286bf6f:client] Exposing onParticipantsChanged function
+debug:    [session_94cd2286bf6f:client] Exposing onStateChange function
+debug:    [session_94cd2286bf6f:client] Exposing onStreamChange function
+debug:    [session_94cd2286bf6f:client] Exposing onStreamModeChanged function
+debug:    [session_94cd2286bf6f:client] Exposing onStreamInfoChanged function
+debug:    [session_94cd2286bf6f:client] Exposing onIncomingCall function
+debug:    [session_94cd2286bf6f:client] Exposing onInterfaceChange function
+debug:    [session_94cd2286bf6f:client] Exposing onPresenceChanged function
+debug:    [session_94cd2286bf6f:client] Exposing onLiveLocation function
+debug:    [session_94cd2286bf6f:client] Exposing onAddedToGroup function
+debug:    [session_94cd2286bf6f:client] Exposing onRevokedMessage function
+debug:    [session_94cd2286bf6f:client] Exposing onReactionMessage function
+debug:    [session_94cd2286bf6f:client] Exposing onPollResponse function
+debug:    [session_94cd2286bf6f:client] Exposing onUpdateLabel function
+debug:    [session_94cd2286bf6f:client] Exposing onOrderStatusUpdate function
+debug:    [session_94cd2286bf6f:client] Exposing onNewChat function
+debug:    [session_94cd2286bf6f:client] Emitting onStateChange event (1 registered)
+debug:    [session_94cd2286bf6f:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_94cd2286bf6f:client] Current state: SYNCING (CONNECTING)
+[12:51:11.154] INFO (1): request completed
+    req: {
+      "id": 3,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 13
+[12:51:13.853] INFO (1): request completed
+    req: {
+      "id": 4,
+      "method": "POST",
+      "url": "/api/auth/login"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 1675
+[12:51:14.449] INFO (1): request completed
+    req: {
+      "id": 5,
+      "method": "GET",
+      "url": "/api/dashboard/stats"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 368
+[12:51:14.507] INFO (1): request completed
+    req: {
+      "id": 6,
+      "method": "GET",
+      "url": "/api/auth/me"
+    }
+    res: {
+      "statusCode": 304
+    }
+    responseTime: 379
+debug:    [session_94cd2286bf6f:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_94cd2286bf6f:client] Current state: SYNCING (CONNECTING)
+debug:    [session_94cd2286bf6f:client] Emitting onStateChange event (1 registered)
+debug:    [session_94cd2286bf6f:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_94cd2286bf6f:client] Current state: SYNCING (CONNECTING)
+debug:    [session_94cd2286bf6f:client] Emitting onStateChange event (1 registered)
+[12:51:16.743] INFO (1): Phone number saved
+    sessionId: "session_de11c7693988"
+    phone: "963948500505"
+    via: "getWid"
+[12:51:16.886] INFO (1): request completed
+    req: {
+      "id": 7,
+      "method": "GET",
+      "url": "/api/sessions"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 63
+debug:    [session_de11c7693988:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_de11c7693988:client] Current state: SYNCING (SYNCING)
+debug:    [session_de11c7693988:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_de11c7693988:client] Current state: MAIN (NORMAL)
+debug:    [session_de11c7693988:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_de11c7693988:client] Current state: MAIN (NORMAL)
+debug:    [session_de11c7693988:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_de11c7693988:client] Current state: MAIN (NORMAL)
+[12:51:24.824] INFO (1): Phone number saved
+    sessionId: "session_94cd2286bf6f"
+    phone: "963933706403"
+    via: "getWid"
+debug:    [session_94cd2286bf6f:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_94cd2286bf6f:client] Current state: SYNCING (SYNCING)
+debug:    [session_94cd2286bf6f:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_94cd2286bf6f:client] Current state: MAIN (NORMAL)
+debug:    [session_94cd2286bf6f:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_94cd2286bf6f:client] Current state: MAIN (NORMAL)
+debug:    [session_94cd2286bf6f:client] Emitting onInterfaceChange event (1 registered)
+http:     [session_94cd2286bf6f:client] Current state: MAIN (NORMAL)
