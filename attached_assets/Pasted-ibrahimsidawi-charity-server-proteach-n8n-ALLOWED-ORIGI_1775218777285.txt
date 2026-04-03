@@ -1,0 +1,134 @@
+ibrahimsidawi@charity-server:~/proteach-n8n$ # أضف ALLOWED_ORIGINS لملف .env على VPS
+echo 'ALLOWED_ORIGINS=https://wa.sidawin8n.cfd' >> ~/proteach-n8n/.env
+
+# أعد تشغيل حاوية الـ API فقط
+cd ~/proteach-n8n
+sudo docker-compose up -d --force-recreate wa-api
+WARN[0000] /home/ibrahimsidawi/proteach-n8n/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] up 2/2
+ ✔ Container proteach-wa-db  Healthy                                                                                                                        11.2s
+ ✔ Container proteach-wa-api Started                                                                                                                        11.6s
+ibrahimsidawi@charity-server:~/proteach-n8n$ # عدّل ملف docker-compose على VPS
+nano ~/proteach-n8n/docker-compose.yaml
+ibrahimsidawi@charity-server:~/proteach-n8n$ # 1. جلب آخر تحديثات الكود
+cd ~/proteach-n8n/whatsapp-manager
+git pull origin main
+
+# 2. إعادة بناء صورة الـ API فقط (مع التحديثات)
+cd ~/proteach-n8n
+sudo docker-compose build wa-api
+
+# 3. إعادة تشغيل الحاوية مع التحديثات
+sudo docker-compose up -d --force-recreate wa-api
+remote: Enumerating objects: 28, done.
+remote: Counting objects: 100% (28/28), done.
+remote: Compressing objects: 100% (9/9), done.
+remote: Total 23 (delta 17), reused 20 (delta 14), pack-reused 0 (from 0)
+Unpacking objects: 100% (23/23), 635.29 KiB | 1.44 MiB/s, done.
+From https://github.com/ibrahims78/WhatsApp-Bot
+ * branch            main       -> FETCH_HEAD
+   a534034..b3bbd3d  main       -> origin/main
+Updating a534034..b3bbd3d
+Fast-forward
+ .agents/agent_assets_metadata.toml                                                               |   6 ++
+ attached_assets/Capture_1775218273560.PNG                                                        | Bin 0 -> 655168 bytes
+ attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-cd-proteach-n_1775218069547.txt | 129 ++++++++++++++++++++++++++++++++++++++++++
+ attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-cd-proteach-n_1775218188570.txt |  51 +++++++++++++++++
+ attached_assets/docker-compose_1775218455716.yaml                                                | 170 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ attached_assets/docker-compose_vps_updated.yaml                                                  | 171 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ docker-compose.yml                                                                               |   1 +
+ 7 files changed, 528 insertions(+)
+ create mode 100644 attached_assets/Capture_1775218273560.PNG
+ create mode 100644 attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-cd-proteach-n_1775218069547.txt
+ create mode 100644 attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-cd-proteach-n_1775218188570.txt
+ create mode 100644 attached_assets/docker-compose_1775218455716.yaml
+ create mode 100644 attached_assets/docker-compose_vps_updated.yaml
+WARN[0000] /home/ibrahimsidawi/proteach-n8n/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+WARN[0000] Docker Compose requires buildx plugin to be installed 
+Sending build context to Docker daemon  1.461MB
+Step 1/19 : FROM node:20-bullseye-slim
+ ---> ab7f224fc018
+Step 2/19 : RUN apt-get update && apt-get install -y --no-install-recommends     chromium     ca-certificates     fonts-liberation     fonts-noto-color-emoji     libasound2     libatk-bridge2.0-0     libatk1.0-0     libcairo2     libcups2     libdbus-1-3     libexpat1     libfontconfig1     libgbm1     libglib2.0-0     libgtk-3-0     libnspr4     libnss3     libpango-1.0-0     libpangocairo-1.0-0     libstdc++6     libx11-6     libx11-xcb1     libxcb1     libxcomposite1     libxcursor1     libxdamage1     libxext6     libxfixes3     libxi6     libxrandr2     libxrender1     libxss1     libxtst6     wget     xdg-utils     && rm -rf /var/lib/apt/lists/*
+ ---> Using cache
+ ---> c7057ec9b160
+Step 3/19 : ENV CHROME_PATH=/usr/bin/chromium
+ ---> Using cache
+ ---> 4341d3886e5e
+Step 4/19 : ENV PUPPETEER_SKIP_DOWNLOAD=true
+ ---> Using cache
+ ---> 52f2f6b15ba2
+Step 5/19 : ENV NODE_ENV=development
+ ---> Using cache
+ ---> 250b3157a3da
+Step 6/19 : RUN npm install -g pnpm@10
+ ---> Using cache
+ ---> 81922efcf51a
+Step 7/19 : WORKDIR /app
+ ---> Using cache
+ ---> a21c145b327e
+Step 8/19 : COPY pnpm-workspace.yaml package.json pnpm-lock.yaml tsconfig.base.json tsconfig.json ./
+ ---> Using cache
+ ---> 68c13a656135
+Step 9/19 : COPY lib/ ./lib/
+ ---> Using cache
+ ---> b59d4014aeda
+Step 10/19 : COPY artifacts/api-server/ ./artifacts/api-server/
+ ---> Using cache
+ ---> 52af5b4f8a57
+Step 11/19 : COPY doc/ ./doc/
+ ---> Using cache
+ ---> a0ee2c3b7057
+Step 12/19 : COPY artifacts/whatsapp-dashboard/package.json ./artifacts/whatsapp-dashboard/
+ ---> Using cache
+ ---> e4c58beb368b
+Step 13/19 : RUN pnpm install --frozen-lockfile
+ ---> Using cache
+ ---> 819128bb0a11
+Step 14/19 : RUN mkdir -p /app/artifacts/api-server/tokens /app/artifacts/api-server/public
+ ---> Using cache
+ ---> 965782234380
+Step 15/19 : COPY entrypoint.dev.sh /entrypoint.dev.sh
+ ---> Using cache
+ ---> 1e77ecc563ea
+Step 16/19 : RUN sed -i 's/\r$//' /entrypoint.dev.sh && chmod +x /entrypoint.dev.sh
+ ---> Using cache
+ ---> 1409e3bbcd2d
+Step 17/19 : EXPOSE 8080
+ ---> Using cache
+ ---> 64b6f44e2b54
+Step 18/19 : CMD ["/entrypoint.dev.sh"]
+ ---> Using cache
+ ---> 940d058cab0e
+Step 19/19 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 7ec9135b0555
+Successfully built 7ec9135b0555
+Successfully tagged whatsapp-manager-api-dev:latest
+[+] build 1/1
+ ✔ Image whatsapp-manager-api-dev:latest Built                                                                                                               0.5s
+WARN[0000] /home/ibrahimsidawi/proteach-n8n/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] up 2/2
+ ✔ Container proteach-wa-db  Healthy                                                                                                                        11.3s
+ ✔ Container proteach-wa-api Started                                                                                                                        11.6s
+ibrahimsidawi@charity-server:~/proteach-n8n$ sudo docker logs proteach-wa-api --tail 20
+
+> @workspace/api-server@0.0.0 build /app/artifacts/api-server
+> node ./build.mjs
+
+
+  dist/index.mjs                       3.1mb ⚠️
+  dist/pino-worker.mjs               153.4kb
+  dist/pino-file.mjs                 142.0kb
+  dist/pino-pretty.mjs               114.6kb
+  dist/thread-stream-worker.mjs        7.3kb
+  dist/index.mjs.map                   5.3mb
+  dist/pino-worker.mjs.map           256.9kb
+  dist/pino-file.mjs.map             229.0kb
+  dist/pino-pretty.mjs.map           203.9kb
+  dist/thread-stream-worker.mjs.map   12.0kb
+
+⚡ Done in 1054ms
+Build complete.
+
+[3/3] Starting API server (NODE_ENV=development)...
+ibrahimsidawi@charity-server:~/proteach-n8n$ 
