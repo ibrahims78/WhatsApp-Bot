@@ -1,0 +1,51 @@
+ibrahimsidawi@charity-server:~/proteach-n8n$ cd ~/proteach-n8n/whatsapp-manager
+git branch -r
+  origin/HEAD -> origin/main
+  origin/main
+ibrahimsidawi@charity-server:~/proteach-n8n/whatsapp-manager$ git pull origin main
+remote: Enumerating objects: 67, done.
+remote: Counting objects: 100% (67/67), done.
+remote: Compressing objects: 100% (21/21), done.
+remote: Total 59 (delta 44), reused 53 (delta 38), pack-reused 0 (from 0)
+Unpacking objects: 100% (59/59), 804.62 KiB | 3.94 MiB/s, done.
+From https://github.com/ibrahims78/WhatsApp-Bot
+ * branch            main       -> FETCH_HEAD
+   20fe00c..a534034  main       -> origin/main
+Updating 20fe00c..a534034
+Fast-forward
+ .agents/agent_assets_metadata.toml                                                               |  12 ++
+ .env.example                                                                                     |  18 +++
+ README_new.md                                                                                    | 425 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ README_proteach_n8n.md                                                                           | 275 ++++++++++++++++++++++++++++++++++++
+ artifacts/whatsapp-dashboard/vite.config.ts                                                      |  12 ++
+ attached_assets/Capture_1775167133537.PNG                                                        | Bin 0 -> 627613 bytes
+ attached_assets/Capture_1775168455196.PNG                                                        | Bin 0 -> 103756 bytes
+ attached_assets/Capture_1775168880443.PNG                                                        | Bin 0 -> 104929 bytes
+ attached_assets/Pasted--Docs-Input-Variables-and-context-now-2026-04-03T07-00-_1775214071353.txt |  90 ++++++++++++
+ attached_assets/Pasted-Successfully-tagged-whatsapp-manager-dashboard-dev-late_1775166918460.txt |  84 +++++++++++
+ attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-cat-proteach-_1775168056135.txt |  66 +++++++++
+ attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-ibrahimsidawi_1775168279278.txt |  42 ++++++
+ attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-network-AP-17_1775168152497.txt |  55 ++++++++
+ attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-sudo-docker-s_1775168396706.txt |  46 ++++++
+ docker-compose.dev.yml                                                                           |   2 +
+ 15 files changed, 1127 insertions(+)
+ create mode 100644 .env.example
+ create mode 100644 README_new.md
+ create mode 100644 README_proteach_n8n.md
+ create mode 100644 attached_assets/Capture_1775167133537.PNG
+ create mode 100644 attached_assets/Capture_1775168455196.PNG
+ create mode 100644 attached_assets/Capture_1775168880443.PNG
+ create mode 100644 attached_assets/Pasted--Docs-Input-Variables-and-context-now-2026-04-03T07-00-_1775214071353.txt
+ create mode 100644 attached_assets/Pasted-Successfully-tagged-whatsapp-manager-dashboard-dev-late_1775166918460.txt
+ create mode 100644 attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-cat-proteach-_1775168056135.txt
+ create mode 100644 attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-ibrahimsidawi_1775168279278.txt
+ create mode 100644 attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-network-AP-17_1775168152497.txt
+ create mode 100644 attached_assets/Pasted-ibrahimsidawi-charity-server-proteach-n8n-sudo-docker-s_1775168396706.txt
+ibrahimsidawi@charity-server:~/proteach-n8n/whatsapp-manager$ cd ~/proteach-n8n
+sudo docker-compose up -d wa-api wa-dashboard
+WARN[0000] /home/ibrahimsidawi/proteach-n8n/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] up 3/3
+ ✔ Container proteach-wa-db        Healthy                                                                                                                   0.7s
+ ✔ Container proteach-wa-api       Started                                                                                                                   1.1s
+ ✔ Container proteach-wa-dashboard Started                                                                                                                   1.3s
+ibrahimsidawi@charity-server:~/proteach-n8n$
