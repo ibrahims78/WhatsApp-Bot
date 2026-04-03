@@ -36,3 +36,9 @@ id = "mOxxZ7X2Kz7nPWnD5LC4B"
 uri = "file://README_new.md"
 type = "text"
 title = "README.md — proteach-n8n-setup"
+
+[[outputs]]
+id = "85lo71SObVO_X2zho6rXY"
+uri = "file://attached_assets/docker-compose_vps_updated.yaml"
+type = "unspecified"
+title = "docker-compose.yaml — محدث مع ALLOWED_ORIGINS"
