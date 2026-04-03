@@ -1,0 +1,90 @@
+
+
+
+Docs
+Input
+Variables and context
+$now
+2026-04-03T07:00:22.172-04:00
+$today
+2026-04-03T00:00:00.000-04:00
+$vars
+⏱️ Wait 2 Seconds
+1 item
+sessionId
+session_941058596176
+phoneNumber
+72087234449573
+replyText
+مرحباً بك! كيف يمكنني مساعدتك اليوم؟ 😊
+
+⚙️ Format AI Output
+1 item
+🤖 AI Agent
+1 item
+
+🔍 Extract Message Fields
+1 item
+
+📥 Receive WhatsApp Message
+1 item
+
+
+Parameters
+Settings
+Method
+POST
+URL
+https://wa-api:8080/api/sessions/{{ $json.sessionId }}/send/text
+ 
+https://wa-api:8080/api/sessions/session_941058596176/send/text
+Authentication
+None
+
+Send Query Parameters
+
+Send Headers
+Specify Headers
+Using Fields Below
+Headers
+
+X-API-Key
+Name
+X-API-Key
+Value
+3afba6308cb5497ebf52fbfbfa71cd859f638d3ab241452788ed76d9dbcf1640
+
+Send Body
+Body Content Type
+JSON
+Specify Body
+Using Fields Below
+Body Parameters
+
+number
+
+message
+Options
+
+Response
+
+Include Response Headers and Status
+
+Never Error
+Response Format
+Autodetect
+You can view the raw requests this node makes in your browser's developer console
+I wish this node would...
+Output
+Execution will continue even if the node fails
+Success Branch
+Error Branch (1 item)
+sessionId
+phoneNumber
+replyText
+error
+session_941058596176	72087234449573	مرحباً بك! كيف يمكنني مساعدتك اليوم؟ 😊	
+message:write EPROTO 50E22193B5740000:error:0A0000C6:SSL routines:tls_get_more_records:packet length too long:../../deps/openssl/openssl/ssl/record/methods/tls_common.c:660:\n
+name:Error
+stack:Error: write EPROTO 50E22193B5740000:error:0A0000C6:SSL routines:tls_get_more_records:packet length too long:../../deps/openssl/openssl/ssl/record/methods/tls_common.c:660:\n\n    at AxiosError.from (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/axios@1.13.5/node_modules/axios/lib/core/AxiosError.js:7:28)\n    at RedirectableRequest.handleRequestError (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/axios@1.13.5/node_modules/axios/lib/adapters/http.js:820:25)\n    at RedirectableRequest.emit (node:events:520:35)\n    at ClientRequest.eventHandlers.<computed> (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/follow-redirects@1.15.11/node_modules/follow-redirects/index.js:49:24)\n    at ClientRequest.emit (node:events:508:28)\n    at emitErrorEvent (node:_http_client:108:11)\n    at TLSSocket.socketErrorListener (node:_http_client:575:5)\n    at TLSSocket.emit (node:events:508:28)\n    at emitErrorNT (node:internal/streams/destroy:170:8)\n    at emitErrorCloseNT (node:internal/streams/destroy:129:3)\n    at Axios.request (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/axios@1.13.5/node_modules/axios/lib/core/Axios.js:46:41)\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at invokeAxios (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+exporter-trace-otlp_9f358c3eeaef0d2736f54ac9757ada43/node_modules/n8n-core/src/execution-engine/node-execution-context/utils/request-helper-functions.ts:303:10)\n    at proxyRequestToAxios (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+exporter-trace-otlp_9f358c3eeaef0d2736f54ac9757ada43/node_modules/n8n-core/src/execution-engine/node-execution-context/utils/request-helper-functions.ts:684:20)\n    at Object.request (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+exporter-trace-otlp_9f358c3eeaef0d2736f54ac9757ada43/node_modules/n8n-core/src/execution-engine/node-execution-context/utils/request-helper-functions.ts:1841:4)
+code:EPROTO
